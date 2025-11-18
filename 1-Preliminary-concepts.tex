@@ -1,0 +1,555 @@
+\chapter{Preliminary Concepts}
+
+\section{Introduction} This section aims to describe certain basic concepts in order to create an intuitive background that will be useful when providing formal definitions.
+
+\begin{paragraph}{The Problem: Runtime Errors vs.~Mathematical Certainty.}
+    Conventional programming languages permit runtime errors that are inconceivable in mathematical practice. A classic example is the ``out-of-bounds'' condition: an instruction like $\fun{v[i]}$ can fail because the type of $\fun i$ (e.g., $\fun{integer}$) is too general to guarantee its value is within the valid domain of the array.
+
+    While software techniques like preconditions, runtime checks, or user-defined types can mitigate this, they do so at the cost of increased complexity or efficiency loss, without ever fully eliminating the problem.
+
+    This class of error is alien to mathematics because the validity of an expression is pre-established. An expression like $v_i$ is only well-formed if the index $i$ is known---explicitly or implicitly---to belong to the appropriate domain. In essence, every term in a mathematical expression carries with it the assumption or proof of its own applicability.
+
+    Type Theory seeks to integrate this mathematical property into the programming paradigm itself. However, the traditional approach based on Zermelo-Fraenkel (ZFC) set theory is not the best choice for this.
+
+    The reason is that ZFC operates in a two-layered system: a theory of \textit{objects} (sets) and an \textit{external} system of propositional logic used to make and prove claims \textit{about} those objects. This separation introduces a complexity that scales poorly when building verified software.
+
+    Type Theory offers a more integrated solution by unifying these two concepts. In this paradigm, a \textit{type} embodies both the object and the logic (the proposition). A term of that type is not just a value; it is a \textit{witness} (or proof) that the proposition it represents is true. We also say $a$ is an \textsl{element} of the type~$A$ when $a\colon A$.
+
+    By constructing a term of a specific type, the construction itself \textit{is} the proof that the term satisfies the required properties. This eliminates the problem of uncertain validity, not by checking for it, but by making it logically impossible to express. Since the proof of correctness is inherent in the construction of the terms, the solution is not an added burden that ``scales'' with software complexity---it \textit{is} the paradigm itself.
+\end{paragraph}
+
+\begin{lpar}{Atoms.}
+    Intuitively, \textsl{mathematical expressions} denoting \textit{values} or \textit{quantities} are composable under the grammar defined in a given theory. The building blocks of these expressions are \textsl{atomic}, while the well-formed expressions derived from them are \textsl{compound} (or \textsl{higher-order}). For example $\emptyset$ is atomic and $\set\emptyset$ is compound.
+\end{lpar}
+
+\begin{lpar}{Judgments.}
+    A \textsl{deductive system} is a set of \textsl{rules} that can be applied to derive \textsl{judgments}. For example, in the deductive system of first-order logic (on which set theory is based), there is only one kind of judgment: that a given proposition has a proof. Thus, in the deductive system of first-order, if $A$ and $B$ are propositions, then \textsc{$A$ has a proof} and \textsc{$B$ has a proof} are judgments and we can derive the judgment \textsc{$A\wedge B$ has a proof}.
+
+    The foundation of Type Theory is the deductive system. The theory operates fundamentally using a set of established \textit{rules} for deriving judgments. The rules of Type Theory can be grouped into \textit{type formers}. Each type former consists of a way to construct types (possibly making use of previously constructed types), together with rules for the construction and behavior of elements of that type (see \nref{para:witnesses}).
+\end{lpar}
+
+\begin{lpar}{Metatheory.}
+    The conceptual space where theorems about the deductive system are stated and proven is called the \textsl{metatheory}.
+\end{lpar}
+
+\begin{lpar}{Witnesses.}\label{para:witnesses}
+    In Type Theory, the judgment $a\colon A$ is analogous to the notion that $A$ has a proof. This atomic expression is interpreted by saying that $a$ is a \textsl{witness} of the provability of the type $A$. Another analogy with Set Theory links $a\colon A$ with $a\in A$. However, $a\in A$ is a proposition not a judgment, whereas $a\colon A$ is a judgment, not a proposition.
+
+    The type-theoretic perspective treats proofs not merely as communicative means but as first-class mathematical objects in their own right, on par with familiar objects like numbers and functions. Calling the term $a$ a witness (or \textsl{evidence}) highlights that $a$ is a \textit{construction}, consistent with the view of proofs as mathematical objects
+    
+    The word ``witness'' helps maintain the distinction: \textit{$A$ is provable} is a metatheoretic statement ($A$ is \textsl{inhabited}), while $a$ is the specific internal object providing the justification.
+    
+    In summary, referring to $a$ as a \textit{proof} is avoided. This emphasizes that $a$ is an object or construction (a witness) within the theory's types, not merely an abstract, metatheoretic declaration of provability.
+    
+    Note also that in Type Theory, we cannot introduce a variable without specifying its type using an atomic judgment such as $a\colon A$.
+\end{lpar}
+
+\begin{lpar}{Equalities.}
+    Since in Type Theory propositions are types, this means that equality is a type: for elements $a, b\colon A$ (that is, both $a\colon A$ and $b\colon A$) we have a type $a=_Ab$. When $a=_Ab$ is inhabited we say that $a$ and $b$ are \textsl{propositionally equal}.
+
+    The second concept of equality is that of \textsl{judgmental} or \textsl{definitional equality}, which is denoted by $a\equiv b\colon A$ and means that $a$ and $b$ are equal by definition. For instance, if $f(x)=x^2$, then $f(3)$ and $9$ are equal by definition. The idea is that definitional equality is algorithmically decidable (though the algorithm is metatheoretic, not internal to the theory, i.e., is part of the implementation of the type checker in a computer language, not a function defined within the formal system itself).
+
+    The rule that links both concepts of equality establishes that $a\colon A$ and $A\equiv B$ allow us to derive $a\colon B$. In our example, if $p\colon3^2=9$, then $p\colon f(3)=9$.
+
+    We shall use $:\equiv$ to define a thing as (judgmentally) equal to another. For instance $f(x):\equiv x^2$.
+\end{lpar}
+
+\begin{lpar}{Precedence.}
+    Syntactically, the precedence of $:$ and $\equiv$ are the lowest in an expression. The reason is that both symbols are used for judgments, which cannot be put together into more complicated statements. Thus, $A\equiv x=y$ means $A\equiv(x=y)$ since $x=y$ is a type and a judgment (like $A\equiv x$) cannot be equal to anything.\footnote{In fact, judgments cannot be terms in any propositional equality.}
+\end{lpar}
+
+\begin{lpar}{Assumptions.}\label{para:assumptions}
+    Judgments may depend on \textsl{assumptions} of the form $x\colon A$. The collection of assumptions is a \textsl{context}, which must be specified by an ordered list because any assumption might depend on a previous assumption in the list. For example $x,y\colon A$ and $p\colon x=_Ay$ might form the context for $p^{-1}\colon y=_Ax$. When the type involved represents a proposition, assumptions play the role of \textit{hypotheses}.
+\end{lpar}
+
+\begin{lpar}{Substitution.}\label{para:substitution}
+    Given that $x\equiv y$ is not a type, we cannot have it as an assumption. What we can do instead is to \textsl{substitute $a\colon A$ for $x$} and obtain a more specific type or element. Even though not technically an assumption, the language ``assume $x\equiv a$'' will be used to refer to this process of substitution.
+\end{lpar}
+
+\begin{lpar}{Functions.}
+    Given types $A$ and $B$, we can construct the type $A\to B$ of \textsl{functions with domain $A$ and codomain $B$}. We also sometimes refer to functions as \textsl{maps}. Unlike in set theory, functions are not defined as functional relations; rather they are a primitive concept in Type Theory. We explain the function type by prescribing what we can do with functions, how to construct them and what equalities they induce. Note also that $f\colon A\to B$ stands for both, the traditional notation and the type judgment. In both cases the expression is known as the \textsl{signature} of~$f$.
+
+    Given a function $f\colon A\to B$ and an element of the domain $a\colon A$, we can \textsl{apply} the function to obtain an element of the codomain $B$, denoted $f(a)$ and called the \textsl{value of\/ $f$ at\/ $a$}. It is common in Type Theory to omit the parentheses and denote $f(a)$ simply by $f\,a$.
+
+    \textit{Note:} Functions are a primitive concept.
+\end{lpar}
+
+\begin{lpar}{Binders.}\label{para:binders}
+    A \textsl{binder} (a.k.a.~\textsl{variable binder}) is an \textit{operator}~$B$ that can be applied to a variable $x$ of type $A$, and an expression $E$ using the syntax $Bx\colon A.\, E$.
+\end{lpar}
+
+\begin{lpar}{Function abstraction.}
+    There are two ways of defining a function. We define $f\colon A\to B$ by giving an equation
+    \[
+        f(x) :\equiv\Phi
+    \]
+    where $x$ is a variable and $\Phi$ is an expression which may use $x$. In order for this to be valid, we have to check that $\Phi\colon B$ assuming $x\colon A$ (see \nref{para:assumptions}). For example, $f(x):\equiv x^2$ defines a function $f\colon\N\to\N$, and so $f(3)$ is judgmentally equal to $3^2$.
+
+    We can also use the \textsl{$\lambda$-abstraction} binder
+    \[
+        (\lambda x\colon A.\,\Phi)\colon A\to B.
+    \]
+    For example, $(\lambda x\colon\N.\,x^2)\colon\N\to\N$ defines the same function as above. Another example is the \textsl{constant function} $(\lambda x\colon A.\,b)\colon A\to B$, where $b\colon B$. This function has the value $b$ at every $a\colon A$.
+\end{lpar}
+
+\begin{lpar}{Implicit notation.}
+    Whenever the type $A\to B$ is clear from the context, the $\lambda$-notation can be relaxed to $\lambda x.\,\Phi$.
+
+    Another way to express the same is $(x\mapsto\Phi)\colon A\to B$.
+
+    When an additional variable is present, we can use a \textit{placeholder} and denote $\lambda y.\,g(x,y)$ by $g(x,{}\cdot{})$. Similarly, we can use place holders to represent $\lambda x.\,\lambda y.\,g(x,y)$ as $g({}\cdot{},{}\cdot{})$.
+\end{lpar}
+
+\begin{lpar}{Computation rule.}
+    Evaluation at $a$ takes the form
+    \[
+        (\lambda x.\,\Phi)(a)\equiv\Phi',
+    \]
+    where $\Phi'$ is obtained from $\Phi$ by substitution of $a$ for $x$ (see \nref{para:substitution}). This rule is also known as \textsl{$\beta$-conversion} or \textsl{$\beta$-reduction}.
+\end{lpar}
+
+\begin{lpar}{Uniqueness principle for function types.}
+    This principle expresses that each function $f\colon A\to B$, is judgmentally equal to its $\lambda$-abstraction, i.e.,
+    \[
+        f\equiv\lambda x.\,f(x),
+    \]
+    meaning that $f$ is uniquely determined by its values. This expression is also known as \textsl{$\eta$-conversion} or \textsl{$\eta$-expansion}.
+\end{lpar}
+
+\begin{lpar}{Bound variables.}\label{para:bound-variables}
+    Consider the expression
+    \[
+        f(x):\equiv\lambda y.\,x+y.
+    \]
+    Here the variable $y$ is \textsl{bound} to the scope of the expression in the \rhs. It is, in other words, \textsl{dummy} in the sense that it can be replaced with another variable, say $z$, without changing the meaning of the expression. In particular,
+    \[
+        f(x)\equiv\lambda z.\,x+z.
+    \]
+    This allows us to perform the substitution of $y$ for $x$ in the first expression, by first using the second:
+    \[
+        f(y)\equiv\lambda z.\,y+z.
+    \]
+    This change of variable is intended to avoid the accidental \textit{capture} of the substituted variable.
+\end{lpar}
+
+\begin{lpar}{Curried form.}\label{para:currying}
+    If $f\colon A\times B\to C$ is a function its \textsl{Curried form} is the function $g\colon A\to(B\to C$) defined as $g(a)(b)=f(a,b)$. The equivalence between a function and its Curried form is extended inductively to the case where the domain is $A_1\times\cdots\times A_n$.
+
+    In combination with $\lambda$-abstractions, for $f\colon A\to B\to C$ given by
+    \[
+        f(x, y) :\equiv\Phi
+    \]
+    where $\Phi\colon C$ assuming $x\colon A$ and $y\colon B$, corresponds to
+    \[
+        f :\equiv\lambda x.\,\lambda y.\,\Phi.
+    \]
+    From the viewpoint of Logic, currying is the transformation of
+    \[
+        A\wedge B\implies C
+    \]
+    into
+    \[
+        A\implies(B\implies C).
+    \]
+\end{lpar}
+
+\begin{lpar}{Universes.}\label{para:universes}
+    Given that every term must have a type, types must have a type as well. To avoid paradoxical situations derived from the global universe, there is a family of universes $\univ_0$, $\univ_1$, $\univ_2,\dots$, such that $\univ_i\colon\univ_{i+1}$ for all $i\ge0$. Thus, $\univ_0$ is the universe of \textsl{small} types, such as $\N$, etc., while $\univ_{i+1}$ is the universe of types in the universe $\univ_i$.
+
+    In addition, this family of universes is \textsl{cumulative}, meaning that $A\colon U_{i+1}$ assuming that $A\colon U_i$.
+
+    Since there is no universe\/ $\univ_\infty$, the expression $\lambda i\colon\N.\,\univ_i$ does not define a function (otherwise, its codomain would be a global universe).
+
+    Note however, that to simplify the notation, the subindex $i$ is usually omitted and $\univ$ is used instead of $\univ_i$. When some universe $\univ$ is assumed, its types are also called \textsl{small}.
+\end{lpar}
+
+\begin{lpar}{Family types.}\label{para:family-types}
+    A \textsl{family type} is a function $B\colon A\to\univ$ whose codomain is a universe. There are two important examples. The first one is the \textsl{constant} type family defined by
+    \[
+        (\lambda x.\,B)\colon A\to\univ
+    \]
+    under the assumption $B\colon\univ$. The second is the family of \textsl{finite} sets
+    \[
+        \fun{Fin}\colon\N\to\univ,
+    \]
+    where $\fun{Fin}(0)$ is the empty type (it has no elements), $\fun{Fin}(1)$ is a type with exactly one element\footnote{See also \nref{para:unit-type}.}, and so on. By its cumulative character (see \nref{para:universes}), $\fun{Fin}(n)$ has $n$ elements denoted by $0_n,\dots,(n-1)_n$. The idea behind this definition is to have integer numbers $i$ equipped with a proof that $0\le i<n$.
+
+    The $\fun{Fun}$ function is relevant to define a function like
+    \[
+        \fun{get\_elem}\colon\fun{Vect}\,A\, n\to\fun{Fin}(n)\to A,
+    \]
+    whose second argument is guaranteed to be in the range $\nset[0]{n-1}$.
+\end{lpar}
+
+\begin{lpar}{Dependent function types}\hspace{-1em} (a.k.a.~$\Pi$-types). \label{para:Pi-types}
+    Given a type $A\colon\univ$ and a family $B\colon A\to\univ$, we may construct the type of \textsl{dependent functions}
+    \[
+        \prod_{x\colon A}B(x)\colon\univ,
+    \]
+    by means of the binder $\Pi x\colon A.\,B(x)\colon\univ$ (see \nref{para:binders}).
+    
+    This type is a generalization of the function type $A\to B$, which can be recovered by taking the constant family $\lambda x\colon A.\,B$, which produces
+    \[
+        \prod_{x\colon A}B\equiv A\to B.
+    \]
+    As before, we can apply a dependent function $f\colon\prod_{x\colon A}B(x)$ to an argument $a\colon A$ and obtain an element $f(a)\colon B(a)$. In particular, we have the following computation rule: if $a\colon A$ and $f(x):\equiv\Phi$, then $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$, where $\Phi'$ is obtained by replacing all free occurrences of $x$ in $\Phi$ by $a$, i.e., avoiding dummy variable captures (see \nref{para:bound-variables}).
+
+    An example that will become useful later is the dependent function
+    \[
+        \fun{fmax}\colon\prod_{n\colon\N}\fun{Fin}(n+1)
+    \]
+    that selects the last element of each nonempty finite type (see \nref{para:family-types})
+    \[
+        \fun{fmax}(n):\equiv n_{n+1}.
+    \]
+    When not limited by parentheses, the scope of $\Pi$ extends over the rest of the expression. In particular,
+    \[
+        \prod_{x\colon A}A\to A\text{ stands for }\prod_{x\colon A}(A\to A).
+    \]
+\end{lpar}
+
+\begin{lpar}{Polymorphic functions.}
+    A \textsl{polymorphic} function is one which takes a type as one of its arguments, and then acts on elements of that type (or of other types constructed from it).
+
+    An example is the \textsl{polymorphic identity} function
+    \[
+        \id\equiv\prod_{A\colon\univ}A\to A,\quad
+        \lambda A\colon\univ.\,\lambda x\colon A.\,x,
+    \]
+    or $\id_A(x):\equiv x$ for short.
+
+    When using the curried form to define dependent functions with several arguments, the second domain may depend on the first one, and the codomain may depend on both. That is, given $A\colon\univ$ and type families $B\colon A\to\univ$ and $C\colon\prod_{x\colon A}B(x)\to\univ$, we may construct the type
+    \[
+        \prod_{x\colon A}\;\prod_{y\colon B(x)}C(x,y)
+    \]
+    of functions with two arguments.
+    
+    In the case where $B$ is constant and equal to $A$, we may condense the notation and write $\prod_{x,y\colon A}C(x,y)$.
+
+    Consider, for instance, the function
+    \[
+        \fun{swap}\colon
+            \prod_{A,B,C\colon U}(A\to B\to C)\to(B\to A\to C)
+    \]
+    defined as
+    \[
+        \fun{swap}(A,B,C,f):\equiv\lambda b.\,\lambda a.\,f(a,b)
+    \]
+    that swaps the order of the arguments and may also be denoted by 
+    \[
+        \fun{swap}_{A,B,C}(f)(b,a)=f(a,b).
+    \]
+    Note also that given $f\colon\prod_{(x\colon A)}\prod_{(y\colon B(x))}C(x,y)$, we have $f(a,b)\colon C(a,b)$, assuming $a\colon A$ and $b\colon B$.
+\end{lpar}
+
+\begin{lpar}{Product types.}
+    Given types $A,B\colon\univ$ we introduce their \textsl{cartesian product} $A\times B\colon\univ$.
+    
+    Note that this type makes no attempt at specifying that the elements of $A\times B$ are pairs $(a,b)\colon A\times B$, where $a\colon A$ and $b\colon B$ (as is the case in Set Theory). Here, we will derive this fact as a theorem. For now, we will only declare $A\times B$ as a (new) type and will specify that all pairs $(a,b)$ with $a\colon A$ and $b\colon B$ satisfy $(a,b)\colon A\times B$.
+    
+    In \nref{para:products-revisited}, we will further specify the additional rules for defining this new type.
+\end{lpar}
+
+\begin{lpar}{Unit type.}\label{para:unit-type}
+    The \textsl{unit type} is the nullary product type (i.e., the cartesian product of zero types), denoted by $\fun1\colon\univ$. The \textsl{canonical} element is $\fun\star\colon\fun1$.
+
+    Note that this definition is consistent with $\fun{Fin(1)}$. However, a fundamental difference is that the unit type does not rely on $\N$. In particular, it does not depend on the definition of the entire $\fun{Fin}$ family.
+\end{lpar}
+
+\begin{lpar}{Type specification.}\label{para:type-spec}
+    When introducing a new type, we must specify the following
+    \begin{enumerate}[i),font=\scshape]
+        \item \textit{Formation rules.} Indicate how to form new types. Example: $A\to B$, $\prod_{x\colon A}B(x)$, etc.
+
+        \item \textit{Constructors.} Define how to introduce elements of that type. Example: $f(x):\equiv x^2$, $\lambda x.\,x^2$, for $f\colon A\to B$ and $x\colon A$.
+
+        \item \textit{Eliminators.} Establish how to use (or operate on) elements of the type. Example: $f(a)$.
+
+        \item \textit{Computation rules.} Also known as $\beta$-reductions, prescribe how eliminators operate on constructors. Example: $(\lambda x\colon A.\,\Phi)(a)\equiv\Phi'$, where $a\colon A$, and $\Phi'$ is obtained fom $\Phi$ by substitution of $a$ for $x$.
+
+        \item \textit{Uniqueness principle$^*$} (optional). Also known as $\eta$-expansions, express how constructors act on eliminators, dually to the computation rule. Example: $f\equiv\lambda x.\,f(x)$.
+
+        Sometimes, the uniqueness principle is propositional, meaning that the element is propositionally equal to another element obtained from other rules for the type. Similarly, some types include \textit{propositional} computation rules.
+
+        In some cases the uniqueness principle indicates that it is not required to specify $f\colon A\to B$ on all elements of type $A$, and that it suffices to specify it on all the constructors of $A$.
+    \end{enumerate}
+\end{lpar}
+
+\begin{lpar}{Canonical elements.}\label{para:canonical-elements}
+    While a constructor is the rule that enables the creation of new elements of a type, an element formed by the direct application of such a rule is called \textsl{canonical}. For instance, the constructor for the type $A\times B$ is the rule that creates the pair $(a,b)\colon A\times B$ from $a\colon A$ and $b\colon B$. The pair $(a,b)$ itself is a canonical element of $A\times B$.
+\end{lpar}
+
+\begin{lpar}{Products revisited.}\label{para:products-revisited}
+    The way type specification works in the case of products is the following
+    \begin{enumerate}[i),font=\scshape]
+        \item \textit{Formation rules.} Given two types $A$ and $B$ we can form $A\times B$. Moreover, given zero types we have the unit type $\fun1$.
+
+        \item \textit{Constructors.} Given $a\colon A$ and $b\colon B$ we have $(a,b)\colon A\times B$. In addition, $\fun\star$ is the unique element of type $\fun1$.
+
+        \item \textit{Eliminators.} If $f\colon A\times B\to C$, the prescription for evaluating $f$ is given by providing a function $g\colon A\to B\to C$ and defining
+        \[
+            f((a,b)) :\equiv g(a)(b),
+        \]
+        where $a\colon A$ and $b\colon B$.\footnote{This does not assume that all elements with type $A\times B$ are necessarily pairs. It only specifies that function evaluation is defined by how it works on pairs.}
+
+        \item \textit{Computation rule.} Let's first recall that the universal property of the product is summarized in the following commutative diagram
+        \begin{equation}\label{dgm:product}
+            \begin{tikzcd}
+            C
+                    \arrow[rd,dashed,"\exists!f"]
+                    \arrow[rrd,"f_1",bend left]
+                    \arrow[rdd,"f_2"',bend right]\\
+                &A\times B
+                    \arrow[r,"\pi_2"]
+                    \arrow[d,"\pi_1"']
+                &B\\
+                &A
+            \end{tikzcd}
+        \end{equation}
+        However, this definition relies on the existence of the projections $\pi_1$ and $\pi_2$. Therefore, we need to define them first. Consider the $\Pi$-type
+        \[
+            \prod_{C\colon\univ}A\to B\to C.
+        \]
+        It represents the type of all functions $f$ satisfying $\dom(f)\equiv A\times B$, of which $\pi_1$ and $\pi_2$ are instances. So, we can define the \textsl{recursor} function
+        \[
+            \fun{rec}_{A\times B}\colon
+                \prod_{C\colon\univ}(A\to B\to C)
+                \to
+                A\times B\to C
+        \]
+        specified as
+        \[
+            \fun{rec}_{A\times B}(C,g)((a,b)) :\equiv g(a)(b),
+        \]
+        where we are using the uniqueness principle that establishes that, to specify a function $f\colon A\times B\to C$, it is enough to specify it on the pairs $(a,b)$ (see \nref{para:type-spec}~\textsc{v})
+        
+        As a consequence, we can derive the projections as
+        \begin{align*}
+            \pi_1 &:\equiv \fun{rec}_{A\times B}
+                (A.\,\lambda a.\,\lambda b.\,a)\\
+            \pi_2 &:\equiv \fun{rec}_{A\times B}
+                (B.\,\lambda a.\,\lambda b.\,b),
+        \end{align*}
+        which satisfy $\pi_1((a,b))\equiv a$ and $\pi_2((a,b))\equiv b$, and we can take as the computation rules associated with the product.
+
+        More generally, the function $\fun{rec}_{A\times B}$, called the \textsl{recursor} for product types, allows us to define functions of type $A\times B\to C$, a property referred to as the \textsl{recursion principle}.
+
+        Note that the judgment
+        \[
+            \fun{rec}_{A\times B}(C,g)
+                \equiv \lambda x.\,g(\pi_1(x))(\pi_2(x))
+        \]
+        shows that $\fun{rec}$ is also derivable from the projections.
+
+        {\footnotesize
+        The viewpoint under which $\fun{rec}$ is introduced is not the one expressed in the universal property of the product \eqref{dgm:product}, but the fact that the functors $F(A)=A\times B$ and $G(C)=\Hom(B,C)$ satisfy $F\dashv G$, i.e., $\Hom(F(A),C)\cong\Hom(A,G(C))$. In this regard, the universal property leads us to view the product as a function codomain, while the adjoint relation leads us to consider it as a domain.}
+
+        The version of $\fun{rec}$ for the empty product type $\fun1$ (where $A$ and $B$ are missing) is
+        \[
+            \fun{rec}_{\fun1}\colon\prod_{C\colon\univ}C
+                \to \fun1\to C
+        \]
+        specified as
+        \[
+            \fun{rec}_{\fun1}(C,g)(\fun\star)
+                :\equiv\lambda\fun\star.\,g(\fun\star)
+        \]
+        and since every $g\colon\fun1\to C$ is equivalent to choosing one element $c\colon C$, we have
+        \[
+            \fun{rec}_{\fun1}(C,g)(\fun\star)\equiv c.
+        \]
+    \end{enumerate}
+\end{lpar}
+
+\begin{lpar}{Recursion significance.}
+    While projections and recursion are mutually definable for product types, this equivalence does not hold in general. As we will see, recursion is the more fundamental concept; in fact, it is a primitive of Type Theory. For instance, even though $\fun{rec}_{\fun1}$ is well-defined, the Unit type (the empty product) has no projections.
+
+    In colloquial terms, while projections merely extract the parts so that we may operate on them, recursion asks what calculation we wish to perform \textsl{using} the parts, and then carries it out.
+
+    In Object-Oriented Programming, recursion is mediated by encapsulation: an object exposes methods that recursively delegate work to the methods of its constituent parts. In Structured Programming, by contrast, processing operates directly on the data stored in record fields rather than through behavior exported by the data itself.
+
+    Note also that $\fun{rec}$ implements \textsl{uncurrying}. In Logic, this corresponds to the transformation from $A\Rightarrow (B\Rightarrow C)$ to $A \wedge B\Rightarrow C$ (cf.~\nref{para:currying}).
+\end{lpar}
+
+\begin{lpar}{Identity types.}
+    Given a type $A$ and terms $x,y\colon A$ we can form the type $x =_A y$. If the type $x=_Ay$ is inhabited (has a term), the equality is true. If the type $x=_Ay$ is empty (has no terms), the equality is false.
+    
+    The type for equality is called the \textsl{identity type}, written $\Id_A(x,y)$ or $x=_Ay$. So, $\Id_A(x,y)$ represents the \textit{type of all proofs that\/ $x$ equals\/ $y$}.
+    
+    The name of the \textit{unique} canonical term that inhabits the identity type $\Id_A(x,x)$ is $\fun{refl}_x$. With signature $\fun{refl}_x\colon\Id_A(x,x)$, its meaning is that $\fun{refl}_x$ is a witness that $x$ equals itself.
+    
+    The fact that $\Id_A(x,x)$ has a unique canonical witness is the key to the identity type's elimination rule (see \nref{para:induction}), which states that to prove something for all equalities $p\colon x=_Ay$, we only need to prove it for the case $p\equiv\fun{refl}_x$. Note however that this does not mean that $\fun{refl}_x$ is the only element of $\Id(x,x)$; in fact, there are cases where there are infinitely many, as well as cases where there is only one.
+\end{lpar}
+
+\begin{lpar}{Dependent functions over product.}\label{para:Pi-types-over-product}
+    According to the specification of $\Pi$-types (see \nref{para:Pi-types}), given $A,B\colon\univ$ and a family type $C\colon A\times B\to\univ$, a dependent function
+    \[
+        f\colon\prod_{x\colon A\times B}C(x)
+    \]
+    is defined by means of a function 
+    \[
+        g\colon\prod_{(u\colon A)}\prod_{(v\colon B)}C((u,v))
+    \]
+    as
+    \[
+        f((u,v)) :\equiv g(u)(v).
+    \]
+    This means that $f$ is well defined on (any element of) $A\times B$ as soon as its values are specified in the \textsl{canonical} elements of the product, i.e., the pairs.
+    
+    Since given $(a,b)\colon A\times B$ we have (see \nref{para:products-revisited})
+    \[
+        \pi_1((a,b))\equiv a\quad\text{and}\quad
+        \pi_2((a,b)))\equiv b,
+    \]
+    we deduce that for $x\colon A\times B$,
+    \[
+        \fun{refl}_{(a,b)}\colon
+            (\pi_1((a,b)),\pi_2((a,b)))=_{A\times B}(a,b).
+    \]
+    Therefore, the specification
+    \[
+        \fun{uniq}_{A\times B}((u,v)):\equiv\fun{refl}_{(u,v)}
+    \]
+    defines a function with signature
+    \[
+        \fun{uniq}_{A\times B}\colon\prod_{x\colon A\times B}
+            (\pi_1(x),\pi_2(x))=_{A\times B}x.
+    \]
+    This function $\fun{uniq}_{A\times B}$ is a witness (formal proof) of the uniqueness principle (or $\eta$-expansion) for products, fulfilling the claim from \nref{para:products-revisited} that all terms of type $A \times B$ are (propositionally) pairs.
+    
+    In the case of $\fun1$, we have
+    \[
+        \fun{uniq}_{\fun1}\colon\prod_{x\colon\fun1}
+            x=_{\fun1}\fun\star
+    \]
+    with
+    \[
+        \fun{uniq}_{\fun1}(\fun\star):\equiv\fun{refl}_{\fun\star},
+    \]
+    which shows that $\fun\ast$ is the unique element of $\fun1$.
+\end{lpar}
+
+\begin{lpar}{Induction.}\label{para:induction}
+    Using the principle that defining a function on a product $A\times B$ amounts to specifying its value on each pair, we introduce the induction map
+    \[
+        \fun{ind}_{A\times B}\colon
+            \prod_{C\colon A\times B\to\univ}
+                \Big(\prod_{x\colon A}\prod_{y\colon B} C(x,y)\Big)
+            \to
+            \prod_{u\colon A\times B} C(u),
+    \]
+    given by
+    \[
+        \fun{ind}_{A\times B}(C)(g)\big((a,b)\big)\;\coloneqq\;g(a)(b),
+    \]
+    or, in abbreviated form,
+    \[
+        \fun{ind}_{A\times B}(C,g,(a,b))\;\coloneqq\;g(a)(b).
+    \]
+    When the family $C$ is constant we obtain
+    \[
+        \prod_{(x\colon A)}\prod_{y\colon B}C((x,y))
+            \equiv A\to B\to C
+        \quad\text{and}\quad
+        \prod_{x\colon A\times B}C(x)\equiv A\times B\to C,
+    \]
+    Hence, in this particular case, $\fun{ind}_{A\times B}$ becomes $\fun{rec}_{A\times B}$. Consequently, induction is the (\textsl{dependent}) \textsl{eliminator} and recursion the \textsl{non-dependent eliminator}.
+
+    In the case of the unit type (see \nref{para:unit-type}), where types $A$ and $B$ are both missing, the eliminator is
+    \begin{equation}\label{eq:ind1}
+        \fun{ind}_{\fun1}\colon\prod_{C\colon\fun1\to\univ}
+            \Big(C(\fun\star)\to\prod_{x\colon\fun1}C(x)\Big)
+    \end{equation}
+    specified by
+    \[
+        \fun{ind}_{\fun1}(C,g,\fun\star):\equiv g,\footnote{A more precise notation is $\fun{ind}_{\fun1}(C)(g)(\fun\star):\equiv g$.}
+    \]
+    
+    \textbf{Note.} The interpretation of this function is that given $C\colon\fun1\to\univ$ and a witness $g\colon C(\fun\star)$, the resulting term $\fun{ind}_{\fun1}(C,g)$ ---i.e., $\fun{ind}_{\fun1}(C)(g)$--- is a dependent function $f\colon \prod_{x\colon\fun1}C(x)$ that serves as a witness for $C(x)$ for all $x\colon\fun1$.
+        
+    \needspace{2\baselineskip}
+    In summary, we have:
+    \begin{enumerate}[label=\roman*), font=\scshape]
+        \item \textit{Type:} There is a type called $\mathbf{1}$.
+        \item \textit{Constructor:} There is a term $\fun\star\colon\fun1$.
+        \item \textit{Eliminator:} There is a function $\fun{ind}_{\fun1}$ with type signature \eqref{eq:ind1}.
+        \item \textit{Computation Rule:} $\fun{ind}_{\fun1}(C,g,\fun\star):\equiv g$.
+    \end{enumerate}
+
+    \medskip
+    
+    If for $C\colon\fun1\to\univ$ we take
+    \[
+        C:\equiv\lambda x.\,(x=_{\fun1}\fun\star)
+    \]
+    and for $g\colon C(\fun\star)$ we take $\fun{refl}_{\fun\star}$, then the result is
+    \[
+        \fun{ind}_{\fun1}((\lambda x.
+            \,x=_{\fun1}\fun\star)
+            ,\fun{refl}_{\fun\star}
+            ,\fun\star)\equiv\fun{refl}_{\fun\star},
+    \]
+    which is judgmentally equal to $\fun{uniq}_{\fun1}(\fun\star)$ (see \nref{para:Pi-types-over-product}). Thus,
+    \begin{equation}\label{eq:uniq1-from-ind1}
+        \fun{ind}_{\fun1}\big(\lambda x.\,x =_{\fun1} \fun\star,\;\fun{refl}_{\fun\star}\big)
+        \equiv\fun{uniq}_{\fun1}.
+    \end{equation}
+    Note that $\fun{ind}_{\fun1}$ is strictly more general than $\fun{uniq}_{\fun1}$, since it is defined for an arbitrary family $C\colon\fun1\to\univ$. Equation~\eqref{eq:uniq1-from-ind1} shows that $\fun{uniq}_{\fun1}$ is simply a specific instance of $\fun{ind}_{\fun1}$. Thus the fact that $\fun1$ is a singleton type is subsumed by the more general induction principle.
+\end{lpar}
+
+\section{Exercises}
+
+\newpage
+
+\begin{exr}${}$
+    \begin{enumerate}[a), font=\upshape]
+        \item Given\/ $f \colon A \to B$ and\/ $g \colon B \to C$, define their composite\/ $g \circ f \colon A \to C$.
+    
+        \item Show that we have\/ $h \circ (g \circ f) \equiv (h \circ g) \circ f$.
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}${}$
+    \begin{enumerate}[a)]
+        \item The specification of $g\circ f\colon A\to C$ is given by
+        \[
+            g\circ f :\equiv\lambda x.\,g(f(x)).
+        \]
+        To check that this is valid we have to verify that $g(f(x))\colon C$, assuming $x\colon A$. But, given that $f\colon A\to B$, we know that $f(x)\colon B$. And since $g\colon B\to C$, we obtain $g(f(x))\colon C$.
+        
+        \item From part a) we deduce that
+        \[
+            \circ\colon \prod_{(A,B,C\colon\univ)}\;
+                \prod_{(g\colon B\to C)}\;
+                \prod_{(f\colon A\to B)}A\to C,
+        \]
+        with specification
+        \[
+            \circ :\equiv
+                \lambda A.\,\lambda B.\,\lambda C
+                .\,\lambda g.\,\lambda f.\,\lambda x
+                .\,g(f(x)).
+        \]
+        Therefore, assuming $h\colon C\to D$, $g\colon B\to C$ and $f\colon A\to B$, we obtain
+        \[
+            g\circ f\colon A\to C\quad\text{and}\quad
+            h\circ g\colon B\to D.
+        \]
+        Therefore,
+        \[
+            h\circ(g\circ f)\colon A\to D\quad\text{and}\quad
+            (h\circ g)\circ f\colon A\to D.
+        \]
+        Moreover,
+        \begin{align*}
+            h\circ(g\circ f) &:\equiv \lambda x.\,h((g\circ f)(x))\\
+                &\phantom:\equiv\lambda x.\,h(g(f(x))
+                    &&\text{; by part a)}\\
+        \intertext{and}
+            (h\circ g)\circ f &:\equiv\lambda x.\,(h\circ g)(f(x))\\
+                &\phantom:\equiv\lambda x.\,h(g(f(x))
+                    &&\text{; $h\circ g :\equiv\lambda y.\,h(g(y))$}
+        \end{align*}
+        show that $h\circ(g\circ f)\equiv (h\circ g)\circ f$.
+    \end{enumerate}
+\end{solution}

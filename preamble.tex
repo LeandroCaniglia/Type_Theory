@@ -1,0 +1,448 @@
+\usepackage[utf8]{inputenc}
+\usepackage[greek,english]{babel}
+\usepackage{lmodern}
+\usepackage{amsthm}
+\usepackage{etoolbox}
+%\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{amsmath}
+\usepackage[shortlabels]{enumitem}
+%\usepackage{supertabular}
+\usepackage{stmaryrd}
+\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
+\usepackage{xparse}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{array}
+%\usepackage{booktabs} % Required for \cmidrule
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\tikzset{close/.style={outer sep=-2pt}}
+\usetikzlibrary{arrows.meta, positioning, calc}
+\usetikzlibrary{intersections}
+\usetikzlibrary{patterns}
+\usetikzlibrary{matrix,arrows,decorations.pathmorphing}
+\usepackage{mathrsfs} %for calligraphic text
+\usetikzlibrary{angles,quotes}
+\usetikzlibrary{calc}
+%\usepackage{ifthen}
+\usepackage{chngcntr}
+%\usepackage{caption}
+%\usepackage{subdepth}
+%\usepackage[mathletters]{ucs}
+%\usepackage[utf8x]{inputenc}
+%\usepackage{newunicodechar}
+\usepackage{cancel}
+\usepackage{needspace}
+%\usepackage{tabularray}
+\usepackage[T1]{fontenc}
+%\usepackage[outline]{contour}
+%   \contourlength{0.1pt}
+%   \contournumber{10}
+%\usepackage [cal=dutchcal]{mathalfa}
+
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage[square,sort,comma]{natbib}
+
+%\usepackage{arydshln}
+\usepackage{xspace}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkgray,
+    citecolor=black,  % Set citation color to black
+    urlcolor=darkgray
+    }
+\usepackage{graphicx} % Required for inserting images
+
+\usepackage{listings}     % The main package for code listings
+\usepackage{textcomp}     % For upquote option if needed
+%\usepackage{lmodern}
+ 
+%{\fontfamily{cmss}\selectfont
+%This text uses a different font typeface
+%}
+
+%NEW COMMANDS
+\newcommand{\T}[1]{#1^{\rm T}}
+\newcommand{\col}[1]{\mathbf{#1}}
+\newcommand{\row}[1]{\T{\col#1}}
+\newcommand{\dotp}[2]{\row{#1}\col{#2}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\Proj}[1]{\mathbb{P}^#1}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\Rn}{\R^n}
+\newcommand{\Rm}{\R^m}
+\newcommand{\Rk}{\R^k}
+\newcommand{\Rd}{\R^d}
+\newcommand{\Rnxn}{\R^{n\times n}}
+\newcommand{\Rmxn}{\R^{m\times n}}
+\newcommand{\Rkxn}{\R^{k\times n}}
+\newcommand{\Rnxm}{\R^{n\times m}}
+\newcommand{\Sph}[1]{\mathbb S^{#1}}
+\newcommand{\Sn}{\Sph n}
+\newcommand{\D}[1]{\mathbb D^{#1}}
+\newcommand{\csum}{\mathbin{\ooalign{$\hidewidth\#\hidewidth$\cr$\phantom{+}$}}}
+
+%\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\widebar{#1}}
+
+\newcommand{\norm}[1]{\Vert{#1}\Vert}
+\newcommand{\abs}[1]{\left\vert{#1}\right\vert}
+\newcommand{\noend}{\ifmmode\to\leftarrow\else$\to\leftarrow$\fi}
+\DeclareMathOperator{\tr}{tr}
+\newcommand{\rank}[1]{\op{rank}#1}
+\newcommand{\ev}[1]{{\rm ev}_{#1}}
+\newcommand{\im}[1]{\op{im}#1}
+\newcommand{\id}{\fun{id}}
+\newcommand{\nset}[2][1]{\llbracket#1,#2\rrbracket}
+\newcommand{\dom}{\mathrm{dom}}
+\newcommand{\epi}{{\rm\bf epi}}
+\newcommand{\cl}{\mathrm{cl}}
+\newcommand{\hypo}{{\rm\bf hypo}}
+\newcommand{\prob}{{\rm prob}}
+\newcommand{\diag}{{\op{diag}}}
+\newcommand{\sg}{\op{sg}}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\alg}{\fontfamily{cmss}\selectfont}
+\newcommand{\since}{\Longleftarrow{}}
+\DeclareMathOperator*{\liminfd}{lim\,inf\vphantom{\limsup}}
+\newcommand{\overbar}[1]{\,\overline{\!{#1}}}
+\DeclareMathOperator{\argmin}{argmin}
+\DeclareMathOperator{\Cov}{Cov}
+\newcommand{\seq}[2][n]{(#2)_{#1\in\N}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\blank}{\vbox{\medskip\medskip}}
+\newtheorem{thm}{\blank Theorem}[section]
+\newtheorem{ntn}[thm]{\blank Notation}
+\newtheorem{ntns}[thm]{\blank Notations}
+\newtheorem{lem}[thm]{\blank Lemma}
+\newtheorem{cor}[thm]{\blank Corollary}
+\newtheorem{prop}[thm]{\blank Proposition}
+\newtheorem{probl}[thm]{\blank Problem}
+\newtheorem{exr}[thm]{\blank Exercise}
+\newtheorem{ill}[thm]{Illustration}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{defns}[thm]{Definitions}
+
+\theoremstyle{definition}
+    \newtheorem{rem}[thm]{\blank Remark}
+    \newtheorem{rems}[thm]{\blank Remarks}
+    \newenvironment{solution}[1][]
+      {\begin{proof}[Solution#1]${}$}
+      {\end{proof}}
+    \newtheorem{xmpl}[thm]{Example}
+    \newtheorem{xmpls}[thm]{Examples}
+    \newtheorem{test}[thm]{\blank Test}
+\theoremstyle{plain}
+
+\AtBeginEnvironment{test}{\small}
+\AtEndEnvironment{test}{\normalsize}
+
+
+\newcounter{num}
+\setcounter{num}{1}
+\newcommand{\incnum}{\setcounter{num}{\value{num}+1}}
+\newcommand{\resetnum}{\setcounter{num}{1}}
+\newcommand{\num}{\arabic{num}\incnum}
+\newcommand{\numlabel}[1]{\newcounter{#1}\setcounter{#1}{\value{num}}}
+%\newcommand{\qed}{\hfill$\quad\square$}
+\newcommand{\preferbreak}{\vfil\penalty-50\vfilneg}
+\newcommand{\widechar}[2]{\DeclareUnicodeCharacter{#1}{#2}}
+%\newcommand{\proof}{\vskip\parskip{\it Proof.\ }}
+\counterwithin*{equation}{section}
+\counterwithin*{equation}{subsection}
+\newcommand\Ccancel[2][black]{%
+  {%
+    \renewcommand\CancelColor{\color{#1}}%
+    \cancel{#2}%
+  }%
+}
+\newcommand{\mbf}[1]{\textrm{\boldmath$#1$}}
+
+
+\newcounter{paranum}
+\renewcommand{\theparanum}{\arabic{paranum}}
+
+% --- Start here ---
+\makeatletter 
+\newenvironment{lpar}[1]
+  {%
+    \par 
+    \refstepcounter{paranum}%
+    % This part saves the title (#1) for \nameref
+    \let\@currentlabelname\relax 
+    \def\@currentlabelname{#1} 
+    %
+    \noindent 
+    \textsc{\theparanum.\;#1}%
+    \hspace{1em}%
+  }
+  {%
+    \par 
+  }
+\makeatother
+\newcommand{\nref}[1]{\textsc{\ref{#1}.\;\nameref{#1}}}
+
+
+% topology
+\newcommand{\freeh}[1]{\lceil{#1}\rceil}
+\newcommand{\fcong}{\stackrel{\cong}{F}}
+\newcommand{\inner}[2]{\langle#1,#2\rangle}
+
+
+\makeatletter
+\newcommand{\superimpose}[2]{%
+  {\ooalign{$#1\@firstoftwo#2$\cr\hfil$#1\@secondoftwo#2$\hfil\cr}}}
+\makeatother
+\newcommand{\tcap}{\mathbin{\mathpalette\superimpose{{\cap}{|}}}}
+
+% widebar (https://tex.stackexchange.com/a/60253/102342)
+    \makeatletter
+    \let\save@mathaccent\mathaccent
+    \newcommand*\if@single[3]{%
+      \setbox0\hbox{${\mathaccent"0362{#1}}^H$}%
+      \setbox2\hbox{${\mathaccent"0362{\kern0pt#1}}^H$}%
+      \ifdim\ht0=\ht2 #3\else #2\fi
+      }
+    %The bar will be moved to the right by a half of \macc@kerna, which is computed by amsmath:
+    \newcommand*\rel@kern[1]{\kern#1\dimexpr\macc@kerna}
+    %If there's a superscript following the bar, then no negative kern may follow the bar;
+    %an additional {} makes sure that the superscript is high enough in this case:
+    \newcommand*\widebar[1]{\@ifnextchar^{{\wide@bar{#1}{0}}}{\wide@bar{#1}{1}}}
+    %Use a separate algorithm for single symbols:
+    \newcommand*\wide@bar[2]{\if@single{#1}{\wide@bar@{#1}{#2}{1}}{\wide@bar@{#1}{#2}{2}}}
+    \newcommand*\wide@bar@[3]{%
+      \begingroup
+      \def\mathaccent##1##2{%
+    %Enable nesting of accents:
+        \let\mathaccent\save@mathaccent
+    %If there's more than a single symbol, use the first character instead (see below):
+        \if#32 \let\macc@nucleus\first@char \fi
+    %Determine the italic correction:
+        \setbox\z@\hbox{$\macc@style{\macc@nucleus}_{}$}%
+        \setbox\tw@\hbox{$\macc@style{\macc@nucleus}{}_{}$}%
+        \dimen@\wd\tw@
+        \advance\dimen@-\wd\z@
+    %Now \dimen@ is the italic correction of the symbol.
+        \divide\dimen@ 3
+        \@tempdima\wd\tw@
+        \advance\@tempdima-\scriptspace
+    %Now \@tempdima is the width of the symbol.
+        \divide\@tempdima 10
+        \advance\dimen@-\@tempdima
+    %Now \dimen@ = (italic correction / 3) - (Breite / 10)
+        \ifdim\dimen@>\z@ \dimen@0pt\fi
+    %The bar will be shortened in the case \dimen@<0 !
+        \rel@kern{0.6}\kern-\dimen@
+        \if#31
+          \overline{\rel@kern{-0.6}\kern\dimen@\macc@nucleus\rel@kern{0.4}\kern\dimen@}%
+          \advance\dimen@0.4\dimexpr\macc@kerna
+    %Place the combined final kern (-\dimen@) if it is >0 or if a superscript follows:
+          \let\final@kern#2%
+          \ifdim\dimen@<\z@ \let\final@kern1\fi
+          \if\final@kern1 \kern-\dimen@\fi
+        \else
+          \overline{\rel@kern{-0.6}\kern\dimen@#1}%
+        \fi
+      }%
+      \macc@depth\@ne
+      \let\math@bgroup\@empty \let\math@egroup\macc@set@skewchar
+      \mathsurround\z@ \frozen@everymath{\mathgroup\macc@group\relax}%
+      \macc@set@skewchar\relax
+      \let\mathaccentV\macc@nested@a
+    %The following initialises \macc@kerna and calls \mathaccent:
+      \if#31
+        \macc@nested@a\relax111{#1}%
+      \else
+    %If the argument consists of more than one symbol, and if the first token is
+    %a letter, use that letter for the computations:
+        \def\gobble@till@marker##1\endmarker{}%
+        \futurelet\first@char\gobble@till@marker#1\endmarker
+        \ifcat\noexpand\first@char A\else
+          \def\first@char{}%
+        \fi
+        \macc@nested@a\relax111{\first@char}%
+      \fi
+      \endgroup
+    }
+
+%groups
+\newcommand{\grp}[1]{\langle#1\rangle}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\Sym}[1]{{\rm Sym}#1}
+\newcommand{\Alt}[1]{{\rm Alt}#1}
+%\newcommand{\Aut}[1]{{\rm GL}#1}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\Elt}{\mathrm{Elt}}
+\newcommand{\Hom}{{\rm Hom}}
+\newcommand{\End}[1]{{\op{End}}#1}
+\newcommand{\Inn}[1]{{\rm Inn}#1}
+\newcommand{\Syl}[1]{{\rm Syl}#1}
+\newcommand{\Hall}[1]{{\rm Hall}#1}
+\newcommand{\Core}{{\rm Core}}
+\newcommand{\normal}{\lhd}
+\newcommand{\snormal}{\mathrel{\triangleleft\triangleleft}}
+\newcommand{\comm}{\mathrel\leftrightarrow}
+\newcommand{\cnjcls}[1]{\left[#1\right]}
+\newcommand{\spec}[1]{\operatorname{spec}#1}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\ct}{\operatorname{ct}}
+\newcommand{\subgroup}{\leqslant}
+\DeclareMathOperator{\CD}{{\cal CD}}
+\DeclareMathOperator{\Nm}{{\cal N}_m}
+\newcommand{\Soc}[1]{{\rm Soc}#1}
+\newcommand{\sd}{{\rm sd}}
+\newcommand{\ch}{\mathrel{\textcolor{black!65}\blacktriangleleft}}
+\newcommand{\Fpn}[1][n]{\mathbb{F}_{p^{#1}}}
+\newcommand{\Fq}[1][q]{\mathbb{F}_{#1}}
+\newcommand{\nnormal}{\mathrel{\ooalign{\hss$/$\hss\cr$\normal$}}}
+\DeclareMathOperator{\Hol}{Hol}
+%\newcommand{\lcosets}[2]{#1\!:\!#2}
+\newcommand{\lco}[2]{#1\mathbin:#2}
+
+\DeclareMathSymbol{\skw}{\mathbin}{letters}{"3F}
+
+\newcommand{\cat}[1]{\mathbf{#1}}
+\newcommand{\xto}[1]{\xrightarrow{#1}}
+
+
+\newcommand{\V}{\mathbb V}
+\newcommand{\W}{\mathbb W}
+\newcommand{\U}{\mathbb U}
+\newcommand{\Si}{\mathbb S}
+\newcommand{\TT}{\mathbb T}
+\newcommand{\M}{\mathbb M}
+%\newcommand{\NN}{\mathbb N}
+\newcommand{\J}{\mathbb J}
+%\newcommand{\grp}[1]{\langle#1\rangle}
+\DeclareMathOperator{\Ann}{\op{Ann}}
+\newcommand{\GL}[2]{\op{GL}(#1,#2)}
+\newcommand{\fchar}{\op{char}}
+\newcommand{\basis}[1]{\mathcal #1}
+\newcommand{\lsp}[1]{\langle#1\rangle}
+\newcommand{\gen}[1]{\mbf(#1\mbf)}
+
+\newcommand{\separator}{
+\vspace{0.5em} % Space above the line
+\centerline{\rule{0.2\textwidth}{0.5pt}} % Centered line
+\vspace{1em} % Space below the line
+}
+
+
+% Geometry
+
+\newcommand{\pts}{\mathcal{P}}
+\newcommand{\blocks}{\mathcal{B}}
+%\newcommand{\incidence}{\textrm{\upshape\textsc{i}}}
+\newcommand{\incidence}{\mbf\imath}
+\newcommand{\igeo}{(\pts,\blocks,\incidence}
+
+\let\oldpts\pts
+\let\oldblocks\blocks
+\let\oldinc\incidence
+
+\renewcommand{\pts}[1][]{\oldpts#1}
+\renewcommand{\blocks}[1][]{\oldblocks#1}
+\renewcommand{\incidence}[1][]{\mathrel{{\oldinc#1}}}
+
+\usepackage{centernot}
+
+% Base definition
+%\newcommand{\incidence}{\mathrel{\textsc{i}}}
+
+% Extended version with optional argument
+%\let\oldinc\incidence
+\renewcommand{\incidence}[1][]{\mathrel{{\oldinc#1}}}
+
+% Negated version
+\newcommand{\nincidence}[1][]{\centernot{\incidence[#1]}}
+
+\renewcommand{\igeo}[1][]{%
+  (\pts#1,\,\blocks#1,\,\incidence#1)}
+
+%\newcommand{\block}[1][]{\mathsf#1}
+\newcommand{\fun}[1][]{\mathsf#1}
+
+\newcommand{\mols}{\upshape\textsc{mols}}
+
+
+\newcommand{\iq}{\mathsf{i}}
+\newcommand{\jq}{\mathsf{j}}
+\newcommand{\kq}{\mathsf{k}}
+
+\newcommand{\lhs}{\textsc{lhs}\xspace}
+\newcommand{\rhs}{\textsc{rhs}\xspace}
+
+\newcommand{\persp}[3]{\block#1\wedge_#2\block#3}
+
+\newcommand{\vect}[1]{\mathtt#1}
+\DeclareMathOperator{\FixOp}{\mathsf{Fix}}
+\newcommand{\Fix}[1]{\FixOp(#1)}
+
+\DeclareMathOperator{\PG}{PG}
+\DeclareMathOperator{\AG}{AG}
+\DeclareMathOperator{\pl}{pl}
+\newcommand{\rr}{\hyperref[eq:rotation-rule]{rotation rule}}
+\newcommand{\qr}{\hyperref[rem:quad-rule]{quad rule}}
+\newcommand{\ter}[1][R]{\block #1}
+\definecolor{lightblue}{RGB}{120, 220, 255}
+
+
+\newcommand{\PP}[1]{{\upshape\ref{P#1}}}
+\newcommand{\altP}{\hyperref[lem:alternative-projective-axiom]{\upshape\textsc{p$_3$\!'}}}
+\newcommand{\altPp}{\hyperref[lem:alternative-projective-axiom]{\upshape\textsc{p$_3$\!''}}}
+
+\newcommand{\hallP}[1]{\hyperref[xmpl:hall-plane]{\upshape\textsc{p$_#1$\!'}}}
+
+\newcommand{\+}{\dotplus}
+
+\makeatletter
+\newcommand{\dotminus}{\mathbin{\mathpalette\dotminus@{}}}
+\newcommand{\dotminus@}[2]{%
+  \ooalign{%
+    $\m@th#1-$\cr
+    \hidewidth$\m@th#1\dot{}\hidewidth$\cr
+  }%
+}
+\makeatother
+
+
+\newcommand{\ulcolor}[2]{%
+    \begingroup
+    \colorlet{saved@color}{.}%
+    \textcolor{#1}{\underline{\textcolor{saved@color}{#2}}}%
+    \endgroup
+}
+\newcommand{\olcolor}[2]{%
+    \begingroup
+    \colorlet{saved@color}{.}%
+    \textcolor{#1}{\overline{\textcolor{saved@color}{#2}}}%
+    \endgroup
+}
+
+\newcommand{\bslash}{\mathbin{\backslash}}
+\newcommand{\fslash}{\mathbin{/}}
+
+
+% 1. Define the color you want to use
+
+% 2. Redefine the internal command \@makefnmark
+\makeatletter
+\renewcommand{\@makefnmark}{%
+    \hbox{\@textsuperscript{\normalfont\color{teal}\@thefnmark}}%
+}
+\makeatother
+
+\newcommand{\Id}{\fun{Id}}
+\newcommand{\univ}[1][U]{\mathcal{#1}}

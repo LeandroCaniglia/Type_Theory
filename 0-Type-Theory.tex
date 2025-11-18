@@ -1,0 +1,30 @@
+\documentclass{book}
+
+\title{Type Theory}
+\author{Leandro Caniglia}
+\date{November 2025}
+
+
+\input preamble
+
+\begin{document}
+
+\frontmatter
+\thispagestyle{empty} % Removes page number from the title page
+\maketitle
+
+\thispagestyle{empty} % Removes page number from the table of contents page
+\tableofcontents
+
+\mainmatter
+
+\setlength{\parindent}{0pt}
+
+\include{1-Preliminary-concepts}
+
+
+\bibliographystyle{natbib/plainnat}  % Choose a bibliography style
+\bibliography{bibliography}     % Specify your .bib file without the extension
+
+
+\end{document}
