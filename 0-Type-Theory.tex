@@ -1,30 +1,25 @@
-\documentclass{book}
-
+\documentclass[openany]{book}
 \title{Type Theory}
 \author{Leandro Caniglia}
 \date{November 2025}
-
-
-\input preamble
+\input{preamble}
 
 \begin{document}
-
 \frontmatter
-\thispagestyle{empty} % Removes page number from the title page
+\thispagestyle{empty}
 \maketitle
 
-\thispagestyle{empty} % Removes page number from the table of contents page
+\phantomsection
+\pdfbookmark[0]{\contentsname}{toc}
 \tableofcontents
+\cleardoublepage
 
 \mainmatter
-
 \setlength{\parindent}{0pt}
-
 \include{1-Preliminary-concepts}
 
-
-\bibliographystyle{natbib/plainnat}  % Choose a bibliography style
-\bibliography{bibliography}     % Specify your .bib file without the extension
-
+\backmatter
+\bibliographystyle{natbib/plainnat}
+\bibliography{bibliography}
 
 \end{document}

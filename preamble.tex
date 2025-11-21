@@ -15,6 +15,7 @@
 \usepackage{amssymb}
 \usepackage{array}
 %\usepackage{booktabs} % Required for \cmidrule
+\usepackage[nottoc]{tocbibind}
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{tikz-cd}
@@ -41,6 +42,7 @@
 %   \contourlength{0.1pt}
 %   \contournumber{10}
 %\usepackage [cal=dutchcal]{mathalfa}
+%\usepackage{FiraSans}
 
 \usepackage[dvipsnames]{xcolor}
 
@@ -183,7 +185,7 @@
     \let\@currentlabelname\relax 
     \def\@currentlabelname{#1} 
     %
-    \noindent 
+    \noindent
     \textsc{\theparanum.\;#1}%
     \hspace{1em}%
   }
@@ -446,3 +448,4 @@
 
 \newcommand{\Id}{\fun{Id}}
 \newcommand{\univ}[1][U]{\mathcal{#1}}
+\newcommand{\defeq}{\mathrel{:\equiv}}
