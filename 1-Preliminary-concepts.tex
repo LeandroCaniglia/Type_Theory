@@ -177,7 +177,7 @@
 \end{lpar}
 
 \begin{lpar}{Family types.}\label{lpar:family-types}
-    A \textsl{family type} is a function $B\colon A\to\univ$ whose codomain is a universe. There are two important examples. The first one is the \textsl{constant} type family defined by
+    A \textsl{type family} is a function $B\colon A\to\univ$ whose codomain is a universe. There are two important examples. The first one is the \textsl{constant} type family defined by
     \[
         (\lambda x.\,B)\colon A\to\univ
     \]
@@ -396,7 +396,7 @@
 \end{lpar}
 
 \begin{lpar}{Dependent functions over product.}\label{lpar:Pi-types-over-product}
-    According to the specification of $\Pi$-types (see \nref{lpar:Pi-types}), given $A,B\colon\univ$ and a family type $C\colon A\times B\to\univ$, a dependent function
+    According to the specification of $\Pi$-types (see \nref{lpar:Pi-types}), given $A,B\colon\univ$ and a type family $C\colon A\times B\to\univ$, a dependent function
     \[
         f\colon\prod_{x:A\times B}C(x)
     \]
@@ -588,7 +588,7 @@
     \[
         \pi_2((a,b)) \defeq b.
     \]
-    More generally, we need the \textsl{induction principle} of $\Sigma$-types, which says that, given a family type
+    More generally, we need the \textsl{induction principle} of $\Sigma$-types, which says that, given a type family
     \[
         C\colon\sum_{x:A}B(x)\to\univ,
     \]
@@ -785,6 +785,120 @@
             \prod_{s:\fun0}C(s).
     \]
     This function asserts that if we assume an element of the empty type, we can derive any conclusion $C(s)$ (the principle of \textsl{ex falso quodlibet}).\footnote{In classical logic, intuitionistic logic, and similar logical systems, the \textsl{principle of explosion} is the law according to which any statement can be proven from a contradiction. That is, from a contradiction, any proposition (including its negation) can be inferred; this is known as deductive \textsl{explosion}. Note however the existence of the field of Inconsistent Mathematics, a theory the explains and study paradoxes and paraconsistency.}
+\end{lpar}
+
+\section{Boolean Type}
+
+\begin{lpar}{The type of booleans.}
+    The \textsl{boolean type} is denoted $\fun2\colon\univ$. Its constructors yield $0_{\fun2}$ and $1_{\fun2}$. To derive a function $f\colon\fun2\to C$ we have to specify two elements $c_0,c_1\colon C$ and declare
+    \[
+        f(0_{\fun2}) \defeq c_0
+        \quad\text{and}\quad
+        f(1_{\fun2}) \defeq c_1.
+    \]
+    Therefore, the recursor is given by
+    \[
+        \fun{rec}_{\fun2}\colon\prod_{C:\univ}C\to C\to\fun2\to C,
+    \]
+    specified by
+    \begin{align*}
+        \fun{rec}_{\fun2}(C,c_0,c_1,0_{\fun2})&\defeq c_0,\\
+        \fun{rec}_{\fun2}(C,c_0,c_1,1_{\fun2})&\defeq c_1,
+    \end{align*}
+    which express the fact that $f\colon\fun2\to C$ is given by a pair of elements of type $C$.
+
+    In the case of dependent functions, given a type family $C\colon\fun2\to\univ$, we define
+    \[
+        f\colon\prod_{x:\fun2}C(x)
+    \]
+    specifying $c_0\colon C(0_{\fun2})$ and $c_1\colon C(1_{\fun2})$ and setting
+    \[
+        f(0_{\fun2})\defeq c_0
+        \quad\text{and}\quad
+        f(1_{\fun2})\defeq c_1.
+    \]
+    For a dependent function
+    \[
+        f\colon\prod_{x:\fun2}C(x),
+    \]
+    where $C\colon\fun2\to\univ$, we have
+    \[
+        \fun{ind}_{\fun2}\colon\prod_{C:\univ}\;
+            C(0_{\fun2})\to C(1_{\fun2})
+            \to\fun2
+            \to\prod_{x:\fun2}C(x)
+    \]
+    along with
+    \begin{align*}
+        \fun{ind}_{\fun2}(C,c_0,c_1,0_{\fun2})&\defeq c_0,\\
+        \fun{ind}_{\fun2}(C,c_0,c_1,0_{\fun2})&\defeq c_1.
+    \end{align*}
+\end{lpar}
+
+\begin{lpar}{Exactly two booleans.}
+    Here we will use $\fun{ind}_{\fun2}$ to prove that the boolean type $\fun2$ has exactly two elements, namely, $0_{\fun2}$ and $1_{\fun2}$.
+
+    To see this we use the type family
+    \[
+        C\colon\fun2\to\univ,\quad
+            C\defeq\lambda x.\,(x=_{\fun2}0_{\fun2})+(x=_{\fun2}1_{\fun2}).
+    \]
+    Now,
+    \begin{align*}
+        C(0_{\fun2})&\equiv
+            (0_{\fun2}=_{\fun2}0_{\fun2})
+                +(0_{\fun2}=_{\fun2}1_{\fun2}),\\
+        C(1_{\fun2})&\equiv
+            (1_{\fun2}=_{\fun2}0_{\fun2})
+                +(1_{\fun2}=_{\fun2}1_{\fun2}).
+    \end{align*}
+    Therefore,
+    \[
+        \fun{inl}(\fun{refl}_{0_{\fun2}})\colon C(0_{\fun2})
+        \quad\text{and}\quad
+        \fun{inr}(\fun{refl}_{1_{\fun2}})\colon C(1_{\fun2})
+    \]
+    and so we obtain
+    \[
+        \fun{ind}_{\fun2}\big(C,
+            \fun{inl}(\fun{refl}_{0_{\fun2}}),
+            \fun{inr}(\fun{refl}_{1_{\fun2}})\big)
+            \colon\prod_{x:\fun2}
+                (x=_{\fun2}0_{\fun2})+(x=_{\fun2}1_{\fun2}).
+    \]
+\end{lpar}
+
+\begin{lpar}{Exactly two booleans.}
+    Here we will use $\fun{ind}_{\fun2}$ to prove that the boolean type $\fun2$ has exactly two elements, namely, $0_{\fun2}$ and $1_{\fun2}$.
+
+    To see this we use the type family
+    \[
+        C\colon\fun2\to\univ,\quad
+            C\defeq\lambda x.\,(x=_{\fun2}0_{\fun2})+(x=_{\fun2}1_{\fun2}).
+    \]
+    Now, evaluation at the constructors yields
+    \begin{align*}
+        C(0_{\fun2})&\equiv
+            (0_{\fun2}=_{\fun2}0_{\fun2})
+                +(0_{\fun2}=_{\fun2}1_{\fun2}),\\
+        C(1_{\fun2})&\equiv
+            (1_{\fun2}=_{\fun2}0_{\fun2})
+                +(1_{\fun2}=_{\fun2}1_{\fun2}).
+    \end{align*}
+    Therefore, we have valid witnesses
+    \[
+        \fun{inl}(\fun{refl}_{0_{\fun2}})\colon C(0_{\fun2})
+        \quad\text{and}\quad
+        \fun{inr}(\fun{refl}_{1_{\fun2}})\colon C(1_{\fun2}).
+    \]
+    And so we obtain the proof:
+    \[
+        \fun{ind}_{\fun2}\big(C,
+            \fun{inl}(\fun{refl}_{0_{\fun2}}),
+            \fun{inr}(\fun{refl}_{1_{\fun2}})\big)
+            \colon\prod_{x:\fun2}
+                (x=_{\fun2}0_{\fun2})+(x=_{\fun2}1_{\fun2}).
+    \]
 \end{lpar}
 
 \section{Exercises}
