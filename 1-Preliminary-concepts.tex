@@ -661,7 +661,7 @@
     However, there is no term $\omega$ for which $(3,\omega)\colon\sum_{n:\N}R(2,n)$, because the type $R(2,3)$ is uninhabited (there is no proof of $2\mid 3$).    
 \end{lpar}
 
-\begin{lpar}{Type-theoretic Axiom of choice.}\label{lpar:axiom-of-choice}
+\begin{lpar}{Type-theoretic Axiom of Choice.}\label{lpar:axiom-of-choice}
     Now consider the following principle, where $A$ and $B$ are types and $R\colon A\to B\to\univ$:
     \[
         \fun{ac}\colon\Big(\prod_{x:A}\;\sum_{y:B}
@@ -671,11 +671,11 @@
     \[
         g\colon \prod_{x:A}\;\sum_{y:B}R(x,y).
     \]
-    For $x\colon A$, the term $g(x)$ is a pair. We can therefore define the \textit{choice function\/} $f\colon A\to B$ as
+    For $x\colon A$, the term $g(x)$ is a pair $(y,\omega)$ where $y\colon B$ and $\omega\colon R(x,y)$. We can therefore define the \textit{choice function\/} $f\colon A\to B$ as
     \[
         f\defeq\lambda x.\,\pi_1(g(x)).
     \]
-    Since $\pi_2(g(x))\colon R(x,\pi_1(g(x)))$, we obtain $\pi_2(g(x))\colon R(x,f(x))$. Thus, we can define
+    Since $\pi_2(g(x))\colon R(x,\pi_1(g(x)))$, we obtain $\pi_2(g(x))\colon R(x,f(x))$. In addition,
     \[
         \omega\defeq\lambda x.\,\pi_2(g(x)).
     \]
@@ -684,7 +684,7 @@
         \fun{ac}&\defeq\lambda g.\,(f,\omega)\\
             &\phantom:\equiv\lambda g.\,
                 \big(
-                \lambda x.\,\pi_1(g(x)),\; \lambda x.\,\pi_2(g(x))
+                \lambda x.\,\pi_1(g(x)),\,\lambda x.\,\pi_2(g(x))
                 \big).
     \end{align*}
     
@@ -704,8 +704,87 @@
 \end{lpar}
 
 \section{Coproduct Types}
-\begin{lpar}{Coproducts.}
-    
+    \begin{lpar}{Coproducts.} Given types $A,B\colon\univ$ their \textsl{coproduct} is the type $A+B\colon\univ$, a type that corresponds to the \textit{disjoint union} in Set Theory. Its constructors consist of two maps
+    \begin{align*}
+        \fun{inl}\colon A&\to A+B
+            &(\textsl{left injection})\\
+        \fun{inr}\colon B&\to A+B
+            &(\textsl{right injection})
+    \end{align*}
+    There is also a nullary version, the \textsl{empty coproduct} (i.e., the coproduct of no type), denoted by $\fun0\colon\univ$, which has no constructors.
+
+    Given $C\colon\univ$, to define a function $f\colon A+B\to C$ we have to provide two maps, as illustrated in the following diagram
+    \[
+        \begin{tikzcd}
+                &B
+                    \arrow[d,"\fun{inr}"']
+                    \arrow[rdd,"g_1", bend left]\\
+            A
+                    \arrow[r,"\fun{inl}"]
+                    \arrow[rrd,"g_0"', bend right]
+                &A+B
+                    \arrow[rd,"f",dashed]&\\
+                &&C
+        \end{tikzcd}
+    \]
+    This means that to specify $f$ we have to provide to maps $g_0$ and $g_1$ and define
+    \[
+        f(\fun{inl}(a))\defeq g_0(a)\quad\text{and}\quad
+        f(\fun{inr}(b))\defeq g_1(b),
+    \]
+    for $a\colon A$ and $b\colon B$.
+
+    In the case of the null coproduct, which is known as the \textsl{empty type}, given $C\colon\univ$ there is a unique function $f\colon\fun0\to C$. Since the type $\fun0$ has no elements, this function has no further specification.
+\end{lpar}
+
+\begin{lpar}{Coproduct recursion.}
+    Consistent with the way functions with domain in a coproduct are defined, we introduce the recursor
+    \[
+    \fun{rec}_{A+B} \colon \prod_{C\colon\univ}
+        (A \to C) \to (B \to C) \to A + B \to C
+    \]
+    with specification
+    \begin{align*}
+        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inl}(a)) &:\equiv g_0(a),\\
+        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inr}(b)) &:\equiv g_1(b).
+    \end{align*}
+    Additionally,
+    \[
+        \fun{rec}_{\fun0}\colon\prod_{C:\univ}\fun0\to C
+    \]
+    constructs the unique function $\fun0\to C$ for every $C\colon\univ$.
+\end{lpar}
+
+\begin{lpar}{Coproduct induction.}
+    Given a type family $C\colon(A+B)\to\univ$, to define a dependent function
+    \[
+        f\colon\prod_{s:A+B}C(s)
+    \]
+    we have to provide two dependent functions
+    \begin{align*}
+        g_0 &\colon \prod_{x:A}C(\fun{inl}(x)),\\
+        g_1 &\colon \prod_{y:B}C(\fun{inr}(y))
+    \end{align*}
+    and specify, for $a\colon A$ and $b\colon B$,
+    \[
+        f(\fun{inl}(a))\defeq g_0(a)\quad\text{and}\quad
+        f(\fun{inr}(b))\defeq g_1(b).
+    \]
+    As a result, we obtain the \textsl{induction principle for coproducts}
+    \[
+        \fun{ind}_{A+B}\colon\prod_{C:(A+B)\to\univ}\;
+            \prod_{x:A}C(\fun{inl}(x))
+            \to
+            \prod_{y:B}C(\fun{inr}(y))
+            \to
+            \prod_{s:A+B}C(s).
+    \]
+    In the case of the empty type $\fun0$ (the nullary coproduct), there are no constructors to handle. Thus, the induction principle for the empty type (a.k.a.~eliminator) reduces to
+    \[
+        \fun{ind}_{\fun0}\colon\prod_{C:\fun0\to\univ}\;
+            \prod_{s:\fun0}C(s).
+    \]
+    This function asserts that if we assume an element of the empty type, we can derive any conclusion $C(s)$ (the principle of \textsl{ex falso quodlibet}).\footnote{In classical logic, intuitionistic logic, and similar logical systems, the \textsl{principle of explosion} is the law according to which any statement can be proven from a contradiction. That is, from a contradiction, any proposition (including its negation) can be inferred; this is known as deductive \textsl{explosion}. Note however the existence of the field of Inconsistent Mathematics, a theory the explains and study paradoxes and paraconsistency.}
 \end{lpar}
 
 \section{Exercises}
