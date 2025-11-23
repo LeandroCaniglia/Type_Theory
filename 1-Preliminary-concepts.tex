@@ -48,7 +48,7 @@
 \begin{lpar}{Equalities.}
     Since in Type Theory propositions are types, this means that equality is a type: for elements $a, b\colon A$ (that is, both $a\colon A$ and $b\colon A$) we have a type $a=_Ab$. When $a=_Ab$ is inhabited we say that $a$ and $b$ are \textsl{propositionally equal}.
 
-    The second concept of equality is that of \textsl{judgmental}, \textsl{computational}, or \textsl{definitional equality}, denoted by $a\equiv b\colon A$. This means that $a$ and $b$ are syntactically identical or reduce to the same form via the theory's computation rules. For instance, if $f(x)=x^2$, then $f(3)$ and $9$ are equal by definition. The idea is that definitional equality is algorithmically decidable (though the algorithm is metatheoretic, not internal to the theory, i.e., is part of the implementation of the type checker in a computer language, not a function defined within the formal system itself).
+    The second concept of equality is that of \textsl{judgmental}, \textsl{computational}, or \textsl{definitional equality}, denoted by $a\equiv b\colon A$. This means that $a$ and $b$ are syntactically identical or reduce to the same form via the so called theory's \textsl{computation rules}, which allow automatic rewriting of expressions. For instance, if $f(x)=x^2$, then $f(3)$ and $3^2$ are equal by definition. The idea is that definitional equality is algorithmically decidable (though the algorithm is metatheoretic, not internal to the theory, i.e., is part of the implementation of the type checker in a computer language, not a function defined within the formal system itself).
 
     The rule that links both concepts of equality establishes that $a\colon A$ and $A\equiv B$ allow us to derive $a\colon B$. In our example, if $p\colon3^2=9$, then $p\colon f(3)=9$.
 
@@ -582,7 +582,7 @@
     \]
     However, the second projection is the dependent function
     \begin{equation}\label{eq:Sigma-pi-2}
-        \pi_2\colon\prod_{p\colon\sum_{(x:A)}B(x)}B(\pi_1(p))
+        \pi_2\colon\prod_{p:\sum_{(x:A)}B(x)}B(\pi_1(p))
     \end{equation}
     specified as
     \[
@@ -594,7 +594,7 @@
     \]
     to define a dependent function
     \[
-        f\colon\prod_{p\colon\sum_{x:A}B(x)}\!\!\!\!\!C(p)
+        f\colon\prod_{p:\sum_{x:A}B(x)}\!\!\!\!\!C(p)
     \]
     we must provide a function
     \[
@@ -637,7 +637,7 @@
                         \prod_{(a:A)}\prod_{(b:B(a))}
                             \!\!\!C((a,b))
                     \Big)
-                    \to\prod_{p\colon\sum_{x:A}B(x)}\!\!\!\!\!C(p)
+                    \to\prod_{p:\sum_{x:A}B(x)}\!\!\!\!\!C(p)
     \]
     where
     \[
@@ -797,9 +797,9 @@
         f(1_{\fun2}) \defeq c_1.
     \]
     Therefore, the recursor is given by
-    \[
+    \begin{equation}\label{eq:rec2}
         \fun{rec}_{\fun2}\colon\prod_{C:\univ}C\to C\to\fun2\to C,
-    \]
+    \end{equation}
     specified by
     \begin{align*}
         \fun{rec}_{\fun2}(C,c_0,c_1,0_{\fun2})&\defeq c_0,\\
@@ -899,6 +899,87 @@
             \colon\prod_{x:\fun2}
                 (x=_{\fun2}0_{\fun2})+(x=_{\fun2}1_{\fun2}).
     \]
+\end{lpar}
+
+\begin{lpar}{Coproducts as Indexed Disjoint Unions.}
+    For $A,B\colon\univ$ consider the recursor $\fun{rec}_{\fun2}$ as defined in \eqref{eq:rec2} with $C\defeq\univ$ and 
+    \begin{align*}
+        f\colon\fun2&\to\univ\\
+        0_{\fun2}&\mapsto A,\\
+        1_{\fun2}&\mapsto B.
+    \end{align*}
+    Thus,
+    \[
+        \sigma\defeq\fun{rec}_{\fun2}(\univ,A,B)\colon\fun2\to\univ,
+    \]
+    which satisfies
+    \[
+        \sigma(0_{\fun2})\equiv A
+        \quad\text{and}\quad
+        \sigma(1_{\fun2})\equiv B.
+    \]
+    We can then introduce what we aim to prove as being equivalent to $A+B$,
+    \[
+        A \oplus B \defeq \sum_{x:\fun2} \sigma(x)
+    \]
+    along with
+    \begin{align*}
+        \fun{in}_A\colon A&\to A\oplus B, &a&\mapsto(0_{\fun2},a)\\
+        \fun{in}_B\colon B&\to A\oplus B, &b&\mapsto(1_{\fun2},b).
+    \end{align*}
+    To see that these are well-defined specifications, note that for any $a\colon A$, the pair $(0_{\fun2},a)$ has type $\sum_{x:\fun2}\sigma(x)$ because the second component must have type $\sigma(0_{\fun2})$. Since $\sigma(0_{\fun2})\equiv A$, $a$ is indeed a valid second component. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
+
+    It remains to be shown that $A+B\simeq A\oplus B$. To see this first define
+    \[
+        \phi\colon A+B\to A\oplus B
+    \]
+    as the only map that satisfies
+    \[
+        \phi(\fun{inl}(a))\equiv\fun{in}_A(a)
+        \quad\text{and}\quad
+        \phi(\fun{inr}(b))\equiv\fun{in}_B(b)
+    \]
+    for $a\colon A$ and $b\colon B$. Second, to define a map in the other direction, we have to use the recursor evaluated at the coproduct $A+B$
+    \[
+        \fun{rec}_{\sum_{x:\fun2} \sigma(x)}(A+B)\colon
+            \prod_{x:\fun2}\big(\sigma(x)
+                \to A+B\big)
+                \to \Big(\sum_{x:\fun2}\sigma(x)\Big)
+                \to A+B
+    \]
+    and apply the result to a well-chosen dependent map
+    \[
+        h\colon\prod_{x:\fun2}(\sigma(x)\to A+B).
+    \]
+    Take $h$ to be the one defined by
+    \begin{align*}
+        h(0_{\fun2})&\defeq\fun{inl}\colon A\to A+B,\\
+        h(1_{\fun2})&\defeq\fun{inr}\colon B\to A+B,
+    \end{align*}
+    which is valid because $\sigma(0_{\fun2})\equiv A$ and $\sigma(1_{\fun2})\equiv B$.
+
+    Now we can define
+    \[
+        \psi\defeq\fun{rec}_{\sum_{x:\fun2}\sigma(x)}(A+B,h).
+    \]
+    Finally, we have to check the following two equalities
+    \begin{align*}
+        \phi(\psi(p))&\equiv p\quad(p\colon A\oplus B)\\
+        \psi(\phi(s))&\equiv s\quad(s\colon A+B)
+    \end{align*}
+    To verify the first equation, by the definition of $A\oplus B$, it suffices to consider the cases $p\defeq(0_{\fun2},a)$ $p\defeq(1_{\fun2},b)$, with $a\colon A$ and $b\colon B$.
+    \begin{itemize}
+        \item For $p\defeq(0_{\fun2},a)$, we have $\psi((0_{\fun2},a)) \equiv h(0_{\fun2})(a) \equiv \fun{inl}(a)$. Thus,
+        \[ \phi(\psi(p)) \equiv \phi(\fun{inl}(a)) \equiv \fun{in}_A(a) \equiv (0_{\fun2}, a) \equiv p. \]
+        \item For $p\defeq(1_{\fun2},b)$, we have $\psi((1_{\fun2},b)) \equiv h(1_{\fun2})(b) \equiv \fun{inr}(b)$. Thus,
+        \[ \phi(\psi(p)) \equiv \phi(\fun{inr}(b)) \equiv \fun{in}_B(b) \equiv (1_{\fun2}, b) \equiv p. \]
+    \end{itemize}
+    Conversely, for $s\colon A+B$, we check $\psi(\phi(s))\equiv s$ by induction on the coproduct:
+    \begin{itemize}
+        \item For $s\defeq\fun{inl}(a)$, $\psi(\phi(s)) \equiv \psi(\fun{in}_A(a)) \equiv \psi((0_{\fun2}, a)) \equiv \fun{inl}(a) \equiv s$.
+        \item For $s\defeq\fun{inr}(b)$, $\psi(\phi(s)) \equiv \psi(\fun{in}_B(b)) \equiv \psi((1_{\fun2}, b)) \equiv \fun{inr}(b) \equiv s$.
+    \end{itemize}
+    This completes the proof.
 \end{lpar}
 
 \section{Exercises}
@@ -1022,3 +1103,10 @@
     because $\pi_1((a,b))\equiv a$ and $\pi_2((a,b))\equiv b$. Since this coincides with \eqref{eq:Sigma-type-rec-evaluation}, our definition of $\fun{rec}$ recovers the definition given in \nref{lpar:Sigma-type-rec-and-ind}.
     
 \end{solution}
+
+$$
+\begin{tikzcd}
+    P\arrow[r,"a"]\arrow[d,"{(i,f)}"']&\Q\\
+    \Z\times\Z\arrow[ru,"\varphi"',dashed]&
+    \end{tikzcd}
+$$
