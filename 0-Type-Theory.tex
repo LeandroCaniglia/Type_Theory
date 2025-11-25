@@ -3,23 +3,26 @@
 \author{Leandro Caniglia}
 \date{November 2025}
 \input{preamble}
-
 \begin{document}
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\fontsize{60}{72}\selectfont Type Theory\par}
+\vspace{2cm}
+{\Large Leandro Caniglia\par}
+\vspace{0.1cm}
+{\large November 2025\par}
+\vfill
+\end{titlepage}
+\let\cleardoublepage\clearpage
 \frontmatter
-\thispagestyle{empty}
-\maketitle
-
 \phantomsection
 \pdfbookmark[0]{\contentsname}{toc}
 \tableofcontents
-\cleardoublepage
-
 \mainmatter
 \setlength{\parindent}{0pt}
 \include{1-Preliminary-concepts}
-
 \backmatter
 \bibliographystyle{natbib/plainnat}
 \bibliography{bibliography}
-
 \end{document}

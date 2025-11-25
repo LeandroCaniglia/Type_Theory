@@ -727,7 +727,7 @@
                 &&C
         \end{tikzcd}
     \]
-    This means that to specify $f$ we have to provide to maps $g_0$ and $g_1$ and define
+    This means that to specify $f$ we have to provide two maps $g_0$ and $g_1$ and define
     \[
         f(\fun{inl}(a))\defeq g_0(a)\quad\text{and}\quad
         f(\fun{inr}(b))\defeq g_1(b),
@@ -982,6 +982,188 @@
     This completes the proof.
 \end{lpar}
 
+\section{The Type of Natural Numbers}
+
+\begin{lpar}{Natural numbers.}
+    The type $\N\colon\univ$ is introduced with two constructors: the element \textsl{zero} $0\colon\N$ and a successor operator $\fun{succ}\colon\N\to\N$.
+
+    Predictably, we adopt the conventional notation $1\defeq\fun{succ}(0)$, $2\defeq\fun{succ}(1)$, etc.
+
+    The recursor
+    \begin{align*}
+        \fun{rec}_\N\colon\prod_{C:\univ}C\to(\N\to C\to C)
+            &\to\N\to C
+    \end{align*}
+    is specified by
+    \begin{align*}
+        \fun{rec}_\N(C,c_0,c_s,0)&\defeq c_0,\\
+        \fun{rec}_\N(C,c_0,c_s,\fun{succ}(n))
+            &\defeq c_s(n,\fun{rec}_\N(C,c_0,c_s,n)).
+    \end{align*}
+    Note that this definition is different from the ones we introduced so far: it allows for $\fun{rec}$ to appear in the \rhs. This is why we say that $\N$ is an \textsl{inductive} type. 
+    
+    The justification of this extension is \textit{metatheoretic}: the expression on the \rhs\ uses $n$, which is syntactically \textit{shorter} than $\fun{succ}(n)$. This implies that well-formed terms effectively halt, after a finite number of iterations. More precisely, the syntactic reduction is \textsl{well-founded}, meaning that it has no infinite descending chains $x_1>x_2>\cdots>x_n>\cdots$.
+    
+    Consequently, to define a function $f\colon\N\to C$, we provide two pieces of information:
+    \begin{equation}\label{eq:primitive-recursion}
+        \begin{aligned}
+            \text{\small a starting point } c_0&\colon C,\\
+            \text{\small the next step function } c_s&\colon\N\to C\to C
+        \end{aligned}
+    \end{equation}
+    and declare
+    \begin{align*}
+        f(0) &\defeq c_0,\\
+        f(\fun{succ}(n))
+            &\defeq c_s(n,f(n)),
+    \end{align*}
+    where the second equation corresponds to
+    \[
+        c_s(n,f(n))\equiv 
+            c_s(n,\underbrace{\fun{rec}_\N(C,c_0,c_s,n)}_{f(n)}).
+    \]
+    We say that $f$ is defined by \textsl{primitive recursion}.
+\end{lpar}
+
+\begin{lpar}{Natural doubling.}
+    A simple example of a function is $\fun{double}\colon\N\to\N$, which can be defined by
+    \begin{align*}
+        \fun{double}(0)&\defeq 0,\\
+        \fun{double}(\fun{succ}(n))&\defeq\fun{succ}(\fun{succ}(\fun{double}(n))),
+    \end{align*}
+    which corresponds to $c_0\defeq0$ and $c_s\colon\N\to\N\to\N$, $c_s(n,d)\defeq\fun{succ}(\fun{succ}(d))$. Thus, for instance,
+    \begin{align*}
+        \fun{double}(1) &\equiv \fun{double}(\fun{succ}(0))\\
+            &\equiv \fun{succ}(\fun{succ}(\fun{double}(0)))\\
+            &\equiv\fun{succ}(\fun{succ}(0))\\
+            &\equiv \fun{succ}(1)\\
+            &\equiv2.
+    \intertext{and}
+        \fun{double}(2) &\equiv \fun{double}(\fun{succ}(1))\\
+            &\equiv \fun{succ}(\fun{succ}(\fun{double}(1)))\\
+            &\equiv\fun{succ}(\fun{succ}(2))\\
+            &\equiv \fun{succ}(3)\\
+            &\equiv4.
+    \end{align*}
+    Note that even though the expression grows in length in some of the intermediate steps, it eventually succeeds in removing any circular reference to $\fun{rec}$, which is the precise meaning of ``halting''.
+\end{lpar}
+
+\begin{lpar}{Addition of natural numbers.}
+    The natural recursor allows the definition of multi-variable functions, such as addition, by letting the return type $C$ be a function type itself. We define
+    \[
+        \fun{add}\colon\N\to\N\to\N
+    \]
+    using primitive recursion with $C \defeq \N \to \N$, and specifying after \eqref{eq:primitive-recursion}
+    \begin{align*}
+        c_0\colon\N&\to\N,&c_0
+            &\defeq\lambda n.\,n\\
+        c_s\colon\N&\to(\N\to\N)\to(\N\to\N),
+            &c_s&\defeq\lambda m.\,\lambda g.\,
+                \lambda n.\,\fun{succ}(g(n)),
+    \end{align*}
+    where $g\colon\N\to\N$ acts as a placeholder for the recursive result. When the recursor computes, $g$ will be instantiated with the function $n\mapsto m+n$.
+    
+    We define $\fun{add}\defeq\fun{rec}_\N(\N\to\N,c_0,c_s)$. By the computation rules of the recursor, this definition satisfies the standard equations:
+    \begin{align*}
+        \fun{add}(0, n) &\equiv c_0(n) \equiv n,\\
+        \fun{add}(\fun{succ}(m),n)&\equiv c_s(m,\fun{add}(m))(n)\\
+        &\equiv \fun{succ}(\fun{add}(m, n)).
+    \end{align*}
+    As usual, we will denote $\fun{add}(m,n)$ by $m+n$.
+\end{lpar}
+
+\begin{lpar}{Multiplication of natural numbers.}
+    To define
+    \[
+        \fun{mult}\colon\N\to\N\to\N
+    \]
+    we apply primitive recursion with the motive $C\defeq\N\to\N$, and specify:
+    \begin{align*}
+        c_0 &\defeq \lambda n.\, 0,\\
+        c_s &\defeq \lambda m.\, \lambda g.\, \lambda n.\, \fun{add}(g(n), n).
+    \end{align*}
+    Defining $\fun{mult}\defeq\fun{rec}_\N(C,c_0,c_s)$, which verifies the following equations:
+    \begin{align*}
+        \fun{mult}(0,n) &\equiv c_0(n) \equiv 0,\\
+        \fun{mult}(\fun{succ}(m),n) &\equiv c_s(m,\fun{mult}(m))(n)\\
+        &\equiv \fun{add}(\fun{mult}(m, n),n).
+    \end{align*}
+\end{lpar}
+
+\begin{lpar}{Induction principle.}
+    Assume as given a family $C\colon\N\to\univ$, an element $c_0\colon C(0)$, and a function $c_s\colon\prod_{n\colon\N} C(n) \to C(\fun{succ}(n))$; then we can construct a dependent function $f\colon\prod_{n\colon\N} C(n)$ with the defining equations:
+    \begin{align*}
+        f(0) &:\equiv c_0,\\
+        f(\fun{succ}(n)) &:\equiv c_s(n, f(n)).
+    \end{align*}
+    We formalize this with the induction function
+    \[
+        \fun{ind}_\N:\prod_{C:\N\to\univ}
+            C(0) \to \Big(\prod_{n:\N}C(n) \to C(\fun{succ}(n))\Big)
+            \to \prod_{n:\N}C(n)
+    \]
+    plus the equations
+    \begin{align*}
+        \fun{ind}_\N(C, c_0, c_s, 0) &:\equiv c_0,\\
+        \fun{ind}_\N(C, c_0, c_s, \fun{succ}(n)) &:\equiv c_s(n, \fun{ind}_\N(C, c_0, c_s, n)).
+    \end{align*}
+\end{lpar}
+
+\begin{lpar}{Pattern matching.}
+    When we introduce a function $f\colon\N\to C$ such as
+    \begin{align*}
+        f(0) &:\equiv \Phi_0,\\
+        f(\fun{succ}(n)) &:\equiv \Phi_s,
+    \end{align*}
+    where $\Phi_0$ is an expression of type $C$, and $\Phi_s$ is an expression of type $C$ which may involve the variable $n$ and also the symbol ``$f(n)$'', we may translate it to a formal definition
+    \[
+        f\colon\equiv\fun{rec}_\N(C,\Phi_0,\lambda n.\,
+            \lambda g.\,\Phi'_s),
+    \]
+    where $\Phi'_s$ is obtained from $\Phi_s$ by replacing all occurrences of ``$f(n)$'' by the new variable $g$.
+    
+    This style of defining functions by recursion (or, more generally, dependent functions by induction) is called definition by \textsl{pattern matching}. We frequently use it for the sake of convenience.
+\end{lpar}
+
+\section{Propositions as Types}
+
+\begin{lpar}{Propositional Logic.}
+    There is an interpretation that assigns constructive logic semantics to type-theoretical types, which can be summarized as:
+    \[
+        \begin{tabular}{l|ll}
+            \hline
+            &\rule{0mm}{4mm}\textbf{Constructive proposition}
+                &\textbf{Type Theory's type}\\
+            \hline
+            \rule{0mm}{4mm}1&true & $\mathbf{1}$ \\
+            2&false & $\mathbf{0}$ \\
+            3&$A$ and $B$ & $A \times B$ \\
+            4&$A$ or $B$ & $A + B$ \\
+            5&if $A$ then $B$ & $A \to B$ \\
+            6&$A$ if and only if $B$ & $(A\to B)\times(B\to A)$\\
+            7&not $A$ & $A \to \mathbf{0}$ \\
+            \hline
+        \end{tabular}
+    \]
+    Let's review them one by one, assuming that types $A$ and $B$ represent propositions and their elements represent proofs.
+    \begin{enumerate}[$1.$]
+        \item Since $\fun\ast\colon\fun1$, we see that $\fun1$ has a proof (it is always inhabited).
+
+        \item Since $\fun0$ has no elements, there is no proof for $\fun0$ (it is false).
+
+        \item A proof $x$ of $A\times B$ consists of a proof $\pi_1(x)$ of $A$ and a proof $\pi_2(x)$ of $B$. Conversely, if $a$ is a proof of $A$ and $b$ is a proof of $B$, then the pair $(a,b)$ is a proof of $A\times B$.
+
+        \item A proof of $A+B$ is constructed either as $\fun{inl}(a)$, given a proof $a$ of $A$, or as $\fun{inr}(b)$, given a proof $b$ of $B$.
+
+        \item A proof of the implication $A \to B$ is a function $f$. This function provides a method to transform any proof $a$ of $A$ into a proof $f(a)$ of $B$.
+
+        \item This follows immediately from parts 3 and 5.
+
+        \item By definition, a proof of $\neg A$ is a function $f\colon A\to\fun0$. If such a function exists, $A$ cannot have any proof, otherwise applying $f$ to that proof would yield a proof of $\fun0$ (which is impossible, see part 2).
+    \end{enumerate}
+\end{lpar}
+
+
 \section{Exercises}
 
 \begin{exr}${}$
@@ -1104,9 +1286,4 @@
     
 \end{solution}
 
-$$
-\begin{tikzcd}
-    P\arrow[r,"a"]\arrow[d,"{(i,f)}"']&\Q\\
-    \Z\times\Z\arrow[ru,"\varphi"',dashed]&
-    \end{tikzcd}
-$$
+
