@@ -1406,16 +1406,53 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         f\colon\prod_{x,y:A}\;\prod_{p:x\eq A y}C(x,y,p)
     \]
-    such that $f(x,x,\fun{refl}_x)\defeq c(x)$. In other words, the induction principle for identity types is defined as
-    \[
+    such that $f(x,x,\fun{refl}_x)\defeq c(x)$ for $x\colon A$. In other words, the induction principle for identity types is defined as
+    \begin{equation}\label{eq:ind=A}
         \fun{ind}_{\eq A}\colon\prod_{C:\prod_{x,y:A}(x\eq A y)\to\univ}
             \;\prod_{x:A}C(x,x,\fun{refl}_x)
-                \to\prod_{x,y:A}\;\prod_{x\eq Ay}C(x,y,p)
-    \]
+                \to\prod_{x,y:A}\;\prod_{p:x\eq Ay}C(x,y,p)
+    \end{equation}
     and the equation
     \[
-        \fun{ind}_{\eq A}(C,c,x,x,\fun{refl}_x)\defeq c(x).
+        \fun{ind}_{\eq A}(C,c,a,a,\fun{refl}_a)\defeq c(a)
     \]
+    for every $a\colon A$.
+\end{lpar}
+
+\begin{lpar}{Path symmetry.}
+    The following lemma formalizes the symmetry of the relation $x\eq Ay$.
+    
+\begin{lem}
+    For every type\/ $A$ and every\/ $x,y\colon A$ there is a function
+    \[
+        (x\eq A y) \to (y\eq A x)
+    \]
+    denoted\/ $p\mapsto p^{-1}$, such that $\fun{refl}_x^{-1}\equiv\fun{refl}_x$ for each\/ $x\colon A$. 
+\end{lem}
+
+\begin{proof}
+    Given a type $A$ define
+    \begin{align*}
+        C&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+        C&\defeq\lambda x.\,\lambda y.\,\lambda p.\,(y\eq Ax)
+    \end{align*}
+    and take
+    \begin{align*}
+        c&\defeq\lambda x.\,\fun{refl}_x\colon C(x,x,\fun{refl}_x).
+    \end{align*}
+    Then,
+    \[
+        \fun{ind}_{\eq A}(C,c,x,y,p)\colon y\eq A x
+    \]
+    and we can define by general path induction $p^{-1}\defeq\fun{ind}_{\eq A}(C,c,x,y,p)$ for every $p\colon(x\eq Ay)$. In addition, we also have
+    \[
+        \fun{refl}_x^{-1}
+            \equiv\fun{ind}_{\eq A}(C,c,x,x,\fun{refl}_x)
+            \defeq c(x)
+            \equiv\fun{refl}_x.
+    \]
+\end{proof}
+    
 \end{lpar}
 
 \begin{lpar}{Based path induction.}
@@ -1430,17 +1467,157 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     This means that to define an element of the family $C$ for all $x$ and $p$, it suffices to consider the case where $x$ is $a$ and $p$ is $\fun{refl}_a$.
     
     As a function, based path induction becomes
-    \[
+    \begin{equation}\label{eq:ind'=A}
         \fun{ind}'_{\eq A}\colon\prod_{a:A}
             \;\; \prod_{C:\prod_{x:A} (a\eq A x)\to\univ}
         C(a,\fun{refl}_a)\to\prod_{x:A}\;\prod_{p:a\eq Ax}C(x,p)
-    \]
+    \end{equation}
     with the equality
     \[
         \fun{ind}'_{=_A}(a,C,c,a,\fun{refl}_a)\defeq c.
     \]
-    \textbf{Note.} The difference between both forms of path induction is that in the based one, we are free to choose and fix an element $a\colon A$ and then (1)~formulate a property $C(x,p)$ for every $p\colon a\eq Ax$, and (2)~exhibit a witness of $C(a,\fun{refl}_a)$. In general path induction, we formulate $C(x,y,p)$ for generic $p\colon x\eq Ay$, and then prove $C(x,x,\fun{refl}_x)$, also for a generic $x\colon A$. While the general approach may look natural in some special cases, the based one is often simpler, as the required generalization is much closer to the concrete base case where $a$ is fixed.
+    \textbf{Note.} The difference between both forms of path induction is that in the based one, we are free to choose and fix an element $a\colon A$ and then (1)~formulate a property $C(x,p)$ for every $p\colon a\eq Ax$, and (2)~exhibit a witness of $C(a,\fun{refl}_a)$. In general path induction, we formulate $C(x,y,p)$ for generic $p\colon x\eq Ay$, and then prove $C(x,x,\fun{refl}_x)$, also for a generic $x\colon A$. While the general approach may look natural in some special cases, the based one is often simpler, as the generalization $C(x,p)$ that it requires is closer to the concrete base case $C(a,\fun{refl}_a)$, where $a$ is fixed, than the full generalization $C(x,y,p)$ required by the $\fun{ind}$ function.
 \end{lpar}
+
+\begin{lpar}{Path induction equivalence.}
+    Here we will see that the two path induction principles are equivalent. First, observe that general path induction $\fun{ind}_{\eq A}$ can be obtained from based path induction $\fun{ind}'_{\eq A}$ by treating the starting point $x$ as the parameter for the based version. We define:
+    \[
+        \fun{ind}_{\eq A}(C,c,x,y,p)
+        \defeq
+            \fun{ind}'_{\eq A}(x,\lambda y.\,\lambda p'.\,C(x,y,p'),
+            c(x),y,p).
+    \]
+    To see that this is well defined, consider the types required by $\fun{ind}_{\eq A}$:
+    \begin{align*}
+        C &\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+        c &\colon \prod_{x:A}C(x,x,\fun{refl}_x)\\
+        x,y &\colon A\\
+        p &\colon x\eq Ay
+    \end{align*}
+    By fixing the first argument to $x$, we obtain the specific arguments required by $\fun{ind}'_{\eq A}$ with base point $x$:
+    \begin{align*}
+        C'&\defeq\lambda y.\,\lambda p'.\,C(x,y,p')\colon\prod_{y:A}(x\eq Ay)\to\univ\\
+        c' &\defeq c(x) \colon C(x,x,\fun{refl}_x)\\
+        y &\colon A\\
+        p &\colon x\eq A y
+    \end{align*}
+    Thus, the application matches the signature of $\fun{ind}'_{\eq A}$. Moreover,
+    \[
+        \fun{ind}_{\eq A}(C,c,x,x,\fun{refl}_x)
+        \equiv \fun{ind}'_{\eq A}(x, C', c', x, \fun{refl}_x)
+        \equiv c(x),
+    \]
+    For the converse, let's first consider all the type families
+    \[
+        D\colon\prod_{z:A}(x\eq Az)\to\univ,
+    \]
+    where $x\colon A$ is given. For every $y\colon A$ and $p\colon x\eq Ay$, we can define
+    \[
+        \hat D\defeq\lambda x',y\colon A.\,p\colon x'\eq Ay.\,D(y,p)
+    \]
+    \[
+        D(x,\fun{refl}_x)\to D(y,p)
+    \]
+    
+    We can express $\fun{ind}'_{\eq A}$ in terms of $\fun{ind}_{\eq A}$ as follows. Given
+    \begin{align*}
+        a&\colon A,\\
+        C&\colon\prod_{x:A}(a\eq Ax)\to\univ\\
+        c&\colon C(a,\fun{refl}_a)\\
+        x&\colon A,\\
+        p&\colon a\eq Ax,
+    \end{align*}
+    we define
+    \[
+        \fun{ind}'_{\eq A}(a,C,c,x,p)
+        \defeq\fun{ind}_{\eq A}(\hat C,\hat c,a,x,p),
+    \]
+    where
+    \begin{align*}
+        \hat C &\defeq \lambda x,y\colon A.\,\lambda p\colon x\eq Ay.\,
+    \Bigg(\prod_{D:\prod_{z:A}(x\eq Az)\to\univ}D(x,\fun{refl}_x)
+    \to D(y,p)\Bigg)
+    \colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+        \hat c &\defeq \lambda z.\, \fun{ind}_{\eq A}(\hat C,\hat c,a,z, \fun{refl}_z)\colon \prod_{z:A}\hat C(z,z,\fun{refl}_z) \equiv \prod_{z:A}C(z,\fun{refl}_z).
+    \end{align*}
+    Moreover, at the base case ($x=a$, $p=\fun{refl}_a$),
+    \[
+        \fun{ind}'_{\eq A}(a,C,c,a,\fun{refl}_a)
+          \equiv c
+    \]
+    And by definition:
+    \[
+        \fun{ind}_{\eq A}(\hat C,\hat c,a,a,\fun{refl}_a)
+          \equiv \hat c(a) \equiv c,
+    \]
+    thus the definitions coincide at the base case.
+\end{lpar}
+
+    Here is the logic for defining $\fun{ind}'$ from $\fun{ind}$.
+    \begin{enumerate}
+        \item \textbf{The Challenge.}
+        \begin{itemize}
+            \item We have: The machine $\fun{ind}$ which works for any start point $u$, end point $v$, and path $q$.
+            
+            \item We want: To solve a problem specifically for a fixed start point $a$, end point $x$, and path $p$.
+            
+            \item The Mismatch: $\fun{ind}$ demands a base case that works for all start points $u$ (the diagonal). But we only have a base case $d$ for our specific point $a$.
+        \end{itemize}
+        
+        \item \textbf{The Strategy.} \textit{Transporting Evidence}: To use the general machine, we have to trick it. We cannot just ask it to solve our specific problem for $a$. Instead, we ask it to solve a conditional problem:
+        \begin{quote}
+            \textit{For any start point $u$, if there is a path from $a$ to $u$, can we transport our evidence from $a$ to $u$?}
+        \end{quote}
+         We define a motive $C(u, v, q)$ that carries the \textit{history} of how we got to~$u$.
+         
+        \item \textbf{The Definition.} Let's define $\fun{ind}'(a,D,d,x,p)$ using $\fun{ind}$.
+        
+        \textbf{Step 1:} \textit{Define the Motive $C$}: We define $C(u, v, q)$ to be a function type:
+        \[
+            C(u, v, q) \defeq \prod_{k: a=u} D(u, k) \to D(v, k \cdot q),
+        \]
+        which says that, given a path $k$ from $a$ to $u$, and a proof that $D$ holds at the end of $k$, we obtain a proof that $D$ holds at the end of the extended path $k \cdot q$.\footnote{Note: $k \cdot q$ is path concatenation/transitivity.}
+        
+        \textbf{Step 2:} \textit{Prove the Base Case for $\fun{ind}$}: We need a witness $c(u)$ for the diagonal $C(u, u, \fun{refl}_u)$.
+        \[
+            c(u) : \prod_{k: a=u} D(u, k) \to D(u, k \cdot \fun{refl}_u).
+        \]
+        Since $k \cdot \fun{refl}_u \equiv k$, this simplifies to:
+        \[
+            D(u, k) \to D(u, k).
+        \]
+        This is just the Identity Function $\lambda z.z$. So, $\fun{ind}$ accepts this.
+        
+        \textbf{Step 3:} \textit{Run the Machine}: We apply ind to this motive and base case. It gives us a term $F$ that works for any $u, v, q$:
+        \[
+            F(u,v,q)\colon\prod_{k:a=u}D(u,k)\to D(v,k\cdot q).
+        \]
+        
+        \textbf{Step 4:} \textit{Instantiate for our Specific Problem}: Now we use $F$ to solve our specific problem $\fun{ind}'(a,D,d,x,p)$. We set:
+        \[
+            u \defeq a,\quad v \defeq x,\quad
+            q \defeq p,\quad k \defeq \fun{refl}_a.
+        \]
+        Substituting these into $F$, we get a function of type:
+        \[
+            D(a,\fun{refl}_a)\to D(x,\fun{refl}_a\cdot p).
+        \]
+        Since $\fun{refl}_a \cdot p \equiv p$, this is:
+        \[
+            D(a,\fun{refl}_a)\to D(x,p).
+        \]
+        
+        \textbf{Step 5:} \textit{Apply the Witness}: We simply apply this function to our specific witness $d$, which has type $D(a,\fun{refl}_a)$:
+        \[
+            \text{Result} \defeq F(a,x,p)(\fun{refl}_a)(d).
+        \]
+    \end{enumerate}
+
+    \textbf{Summary:} To define $\fun{ind}'$ from $\fun{ind}$, we use ind to prove a \textit{transitivity/transport} law:
+    \begin{quote}
+        \textit{If property $D$ holds for a path ending at $u$, it holds for any extension of that path.}
+    \end{quote}
+    Then we simply apply that law to the trivial path $\fun{refl}_a$ to start the chain.
 
 \section{Exercises}
 
