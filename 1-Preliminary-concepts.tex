@@ -1422,36 +1422,117 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{Path symmetry.}
     The following lemma formalizes the symmetry of the relation $x\eq Ay$.
     
-\begin{lem}
-    For every type\/ $A$ and every\/ $x,y\colon A$ there is a function
-    \[
-        (x\eq A y) \to (y\eq A x)
-    \]
-    denoted\/ $p\mapsto p^{-1}$, such that $\fun{refl}_x^{-1}\equiv\fun{refl}_x$ for each\/ $x\colon A$. 
-\end{lem}
+    \begin{lem}
+        For every type\/ $A$ and every\/ $x,y\colon A$, there is a function
+        \[
+            (x\eq A y) \to (y\eq A x),
+        \]
+        denoted\/ $p\mapsto p^{-1}$, such that\/ $\fun{refl}_x^{-1}\equiv\fun{refl}_x$ for each\/ $x\colon A$.
+    \end{lem}
+    
+    \begin{proof}
+        Given a type $A$, define the \textsl{motive}\footnote{The type family whose role is to identify the theorem we are about to prove.} family
+        \begin{align*}
+            C&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+            C(x,y,p)&\defeq(y\eq Ax).
+        \end{align*}
+        For the base case, we need a function of type $\prod_{x:A}C(x,x,\fun{refl}_x)$. Since
+        \[
+            C(x,x,\fun{refl}_x)\equiv(x\eq Ax),
+        \]
+        we can take
+        \[
+            c\defeq\lambda x.\,\fun{refl}_x.
+        \]
+        Then, by general path induction, we define
+        \[
+            p^{-1} \defeq \fun{ind}_{\eq A}(C,c,x,y,p)
+        \]
+        with
+        \[
+            \fun{refl}_x^{-1}
+                \equiv\fun{ind}_{\eq A}(C,c,x,x,\fun{refl}_x)
+                \equiv c(x)
+                \equiv\fun{refl}_x,
+        \]
+        which completes the proof.
+    \end{proof}
+\end{lpar}
 
-\begin{proof}
-    Given a type $A$ define
-    \begin{align*}
-        C&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
-        C&\defeq\lambda x.\,\lambda y.\,\lambda p.\,(y\eq Ax)
-    \end{align*}
-    and take
-    \begin{align*}
-        c&\defeq\lambda x.\,\fun{refl}_x\colon C(x,x,\fun{refl}_x).
-    \end{align*}
-    Then,
-    \[
-        \fun{ind}_{\eq A}(C,c,x,y,p)\colon y\eq A x
-    \]
-    and we can define by general path induction $p^{-1}\defeq\fun{ind}_{\eq A}(C,c,x,y,p)$ for every $p\colon(x\eq Ay)$. In addition, we also have
-    \[
-        \fun{refl}_x^{-1}
-            \equiv\fun{ind}_{\eq A}(C,c,x,x,\fun{refl}_x)
-            \defeq c(x)
-            \equiv\fun{refl}_x.
-    \]
-\end{proof}
+\needspace{2\baselineskip}
+\begin{lpar}{Path concatenation.}
+    \begin{lem}\label{lem:path-concatenation}
+        For every type\/ $A$ and every\/ $x,y,z\colon A$ there is a \textsl{concatenation} function
+        \[
+            (x\eq Ay)\to(y\eq Az)\to(x\eq Az),
+        \]
+        written
+        \[
+            p\mapsto q\mapsto p\cdot q,
+        \]
+        such that\/ $\mathsf{refl}_x\cdot q\equiv q$ for any\/ $x\colon A$ and $q\colon x\eq Az$.
+    \end{lem}
+
+    \begin{proof}
+        Let $D\colon\prod_{x,y:A}(x\eq Ay)\to\univ$ be the motive family 
+        \[
+            D(x,y,p) \defeq \prod_{z:A}\;\prod_{q:y\eq Az} (x\eq Az).
+        \]
+        Since $x\eq Az$ does not depend on the path $q\colon y\eq Az$, we can rewrite $D$ as
+        \[
+            D(x,y,p) \defeq \prod_{z:A}(y\eq Az)\to(x\eq Az).
+        \]
+        For the base case we take
+        \[
+            d(x)\colon D(x,x,\fun{refl}_x)
+                \equiv\prod_{z:A}\;(x\eq Az)\to (x\eq Az),\quad d(x)\defeq\lambda z.\,\lambda q.\,q.
+        \]
+        By path induction, we obtain
+        \[
+            c(x,y,p)\defeq\fun{ind}_=(D,d,x,y,p)\colon D(x,y,p).
+        \]
+        We can define the concatenation $p\cdot q$ by applying this function:
+        \[
+            p\cdot q\defeq c(x,y,p,z,q).
+        \]
+        The computation rule for path induction implies
+        \[
+            c(x,x,\fun{refl}_x)\equiv d(x).
+        \]
+        Therefore,
+        \[
+            \fun{refl}_x\cdot q\equiv c(x,x,\fun{refl}_x,z,q)
+                \equiv d(x)(z,q)\equiv q,
+        \]
+        which completes the proof.
+    \end{proof}
+\end{lpar}
+
+\begin{lpar}{Right unit law.}
+    \begin{lem}
+        For every type\/ $A$, every\/ $x,y:A$ and every path\/ $p:x\eq Ay$, we have a path
+        \[
+            \fun{unit}_r(p)\colon p \cdot \fun{refl}_y = p.
+        \]
+    \end{lem}
+    
+    \begin{proof}
+        We perform path induction on $p$. Let $C(x,y,p)$ be the motive family
+        \begin{align*}
+            C&\defeq\prod_{x,y:A}\;\prod_{p:x\eq Ay}
+                (p\cdot\fun{refl}_y\eq{x\eq Ay}p).
+        \end{align*}
+        For the base case, we assume $y \equiv x$ and $p \equiv \fun{refl}_x$. We must construct a term of type
+        \[
+            \fun{refl}_x\cdot\fun{refl}_x\eq{x\eq Ax}\fun{refl}_x.
+        \]
+        By Lemma~\ref{lem:path-concatenation}, we have the definitional equality $\fun{refl}_x \cdot \fun{refl}_x \equiv \fun{refl}_x$. Thus, the goal simplifies to $\fun{refl}_x\eq{x\eq Ax}\fun{refl}_x$, which is inhabited by $c(x)\defeq\fun{refl}_{\fun{refl}_x}$.
+    
+        Applying path induction, we obtain the desired term
+        \[
+            \fun{unit}_r(p) \defeq \fun{ind}_=(C,c,x,y,p).
+        \]
+    \end{proof}
     
 \end{lpar}
 
