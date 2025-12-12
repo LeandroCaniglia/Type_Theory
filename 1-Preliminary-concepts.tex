@@ -1591,32 +1591,32 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
 
     For the converse, we will need the following:
-
+    
     \begin{quote}\small
-        Let $P\colon A \to \univ$ be a family of types. For any path $e\colon x \eq A y$, there is a function
+        Let  $P\colon A \to \univ$ be a family of types. For any path  $e\colon x \eq A y$, there is a function
         \[
             \fun{subst}(e)\colon P(x)\to P(y),
         \]
-        defined by path induction on $e$. For the base case $e\equiv\fun{refl}_x$, we take the identity function $\lambda z.\,z$.
+        defined by path induction on  $e$. For the base case  $e\equiv\fun{refl}_x$, we take the identity function  $\lambda z.\,z$.
     \end{quote}
-
+    
     \medskip
-      
-    Fix $a\colon A$ and suppose we are given
+    
+    Fix  $a\colon A$ and suppose we are given
     \[
         D\colon\prod_{x:A}(a\eq Ax)\to\univ, \quad \text{and} \quad d\colon D(a,\fun{refl}_a).
     \]
-    In order to derive $D$ using $\fun{ind}$ we define the motive $C$ as
+    In order to derive  $D$ using  $\fun{ind}$ we define the motive  $C$ as
     \begin{equation}\label{eq:ind-domain-function}
         C(u,v,q)\defeq\prod_{s:a\eq Au}D(u,s)\to D(v,s\cdot q).
     \end{equation}
-    For the base case $c(u)$ we need a term of type
+    For the base case  $c(u)$ we need a term of type
     \[
         \prod_{s:a\eq Au}D(u,s)\to D(u,s\cdot\fun{refl}_u).
     \]
-    By \nref{lpar:right-unit-law}, there is a path $\fun{unit}_r(s)\colon s \cdot \fun{refl}_u\eq As$. Then, its inverse path satisfies $\fun{unit}_r(s)^{-1}\colon s\eq As\cdot\fun{refl}_u$.
+    By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s \cdot \fun{refl}_u\eq As$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq As\cdot\fun{refl}_u$.
     
-    Since we need to turn a $D(u,s)$ into a $D(u,s\cdot\fun{refl}_u)$, we use the helper function $\fun{subst}$ on the family $\lambda t.\,D(u,t)$
+    Since we need to turn a  $D(u,s)$ into a  $D(u,s\cdot\fun{refl}_u)$, we use the helper function  $\fun{subst}$ on the family  $\lambda t.\,D(u,t)$
     \begin{equation}\label{eq:ind-base-case-subst}
         c(u)\defeq\lambda s.\,\fun{subst}(\fun{unit}_r(s)^{-1}).
     \end{equation}
@@ -1626,15 +1626,21 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     This gives us a witness for the based induction:
     \[
-        f(x, p)\defeq E(a,x,p).
+        f(x,p)\defeq E(a,x,p)(\fun{refl}_a)(d).
     \]
-    This is well-typed because, according with \eqref{eq:ind-domain-function}, $E(a,x,p)$ provides a map $D(a,\fun{refl}_a)\to D(x,\fun{refl}_a\cdot p)$, and since $\fun{refl}_a\cdot p\equiv p$, the codomain is precisely $D(x,p)$.
+    This is well-typed because, according to \eqref{eq:ind-domain-function},  $E(a,x,p)(\fun{refl}_a)$ provides a map  $D(a,\fun{refl}_a)\to D(x,\fun{refl}_a\cdot p)$, and since  $\fun{refl}_a\cdot p\equiv p$, the codomain is precisely  $D(x,p)$. Finally, we apply this map to $d\colon D(a,\fun{refl}_a)$ to get an element of $D(x,p)$.
     
     To verify the computation rule, we have to prove that
     \[
         f(a,\fun{refl}_a)\equiv d.
     \]
-    But $f(a,\fun{refl}_a)\equiv c(a)(\fun{refl}_a)(d)$ and
+    Expanding the definition,
+    \begin{align*}
+        f(a,\fun{refl}_a)
+            &\equiv\fun{ind}_{\eq A}(C,c,a,a,\fun{refl}_a)(\fun{refl}_a)(d)\\
+            &\equiv c(a)(\fun{refl}_a)(d).
+    \end{align*}
+    We reduce the term  $c(a)(\fun{refl}_a)$:
     \begin{align*}
         c(a)(\fun{refl}_a)
             &\equiv\fun{subst}(\fun{unit}_r(\fun{refl}_a)^{-1})
@@ -1643,11 +1649,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 &&;\ \fun{unit}_r(\fun{refl}_a)\equiv\fun{refl}_a\\
             &\equiv\fun{subst}(\fun{refl}_a)
                 &&;\ \fun{refl}_a^{-1}\equiv\fun{refl}_a\\
-            &\equiv\fun{refl_a}.
+            &\equiv\lambda z.\,z.
     \end{align*}
     Hence,
     \[
-        f(a,\fun{refl}_a)\equiv d.
+        f(a,\fun{refl}_a)\equiv (\lambda z.\,z)(d) \equiv d,
     \]
     as desired.
 \end{lpar}
