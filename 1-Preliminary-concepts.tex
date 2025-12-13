@@ -1389,14 +1389,6 @@ The witnesses of this type are regarded as \textit{paths in the space $A$ from t
 \]
 In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
-\begin{lpar}{Indiscernibility of identicals.}
-    This principle establishes that for every family $C\colon A\to\univ$, there is a function
-    \[
-        f\colon\prod_{x,y:A}\;\prod_{p:x\eq Ay}C(x)\to C(y)
-    \]
-    satisfying $f(x,x,\fun{refl}_x)\defeq\id_{C(x)}\colon C(x)\to C(x)$. The interpretation is that a proof of $C(y)$ can be derive from a proof of $C(x)$, provided that $x\eq Ay$.
-\end{lpar}
-
 \begin{lpar}{General path induction.}
     In the case of identity types, the induction principle, a.k.a.~\textsl{path induction}, establishes that given a family 
     \[
@@ -1420,7 +1412,10 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{lpar}
 
 \begin{lpar}{Path symmetry.}
-    The following lemma formalizes the symmetry of the relation $x\eq Ay$.
+    The following lemma formalizes the symmetry of the \textsl{equality relation} between elements of the same type $A$
+    \begin{equation}\label{eq:path-relation}
+        x\sim_A y\iff x\eq Ay \textsl{ is inhabited.}
+    \end{equation}
     
     \begin{lem}
         For every type\/ $A$ and every\/ $x,y\colon A$, there is a function
@@ -1459,8 +1454,8 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{proof}
 \end{lpar}
 
-\needspace{2\baselineskip}
 \begin{lpar}{Path concatenation.}
+    The following lemma shows that the equality relation is transitive.
     \begin{lem}\label{lem:path-concatenation}
         For every type\/ $A$ and every\/ $x,y,z\colon A$ there is a \textsl{concatenation} function
         \[
@@ -1534,7 +1529,30 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \fun{unit}_r(p) \defeq \fun{ind}_=(C,c,x,y,p).
         \]
     \end{proof}
-    
+\end{lpar}
+
+\begin{lpar}{Substitution.}\label{lpar:substitution}
+    The principle of \textsl{indiscernibility of identicals} establishes that the equality relation is compatible with type substitution. 
+        
+\begin{lem}
+    Let\/ $P\colon A\to\univ$ be a family of types. For any path\/  $e\colon x\eq A y$, there is a function
+    \[
+        \fun{subst}_P(e)\colon P(x)\to P(y).
+    \]
+    Moreover, $\fun{subst}_P(\fun{refl}_x)\equiv \lambda z.\,z$.
+\end{lem}
+
+\begin{proof}
+    Consider the motive $C\colon\prod_{x,y:A}(x\eq Ay)\to\univ$
+    \[
+        C(x,y) \defeq \prod_{e:x\eq Ay}P(x)\to P(y).
+    \]
+    For the base case $c\colon C(x,x,\fun{refl}_x)\equiv P(x)\to P(x)$ take the identity function $c\defeq\lambda z.\,z$. Then define
+    \[
+        \fun{subst}_P(x,y,e)\defeq\fun{ind}_{\eq A}(C,c,x,y,e).
+    \]
+\end{proof}    
+
 \end{lpar}
 
 \begin{lpar}{Based path induction.}
@@ -1590,19 +1608,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \equiv d\equiv c(x),
     \]
 
-    For the converse, we will need the following:
-    
-    \begin{quote}\small
-        Let  $P\colon A \to \univ$ be a family of types. For any path  $e\colon x \eq A y$, there is a function
-        \[
-            \fun{subst}(e)\colon P(x)\to P(y),
-        \]
-        defined by path induction on  $e$. For the base case  $e\equiv\fun{refl}_x$, we take the identity function  $\lambda z.\,z$.
-    \end{quote}
-    
-    \medskip
-    
-    Fix  $a\colon A$ and suppose we are given
+    For the converse, fix  $a\colon A$ and suppose we are given
     \[
         D\colon\prod_{x:A}(a\eq Ax)\to\univ, \quad \text{and} \quad d\colon D(a,\fun{refl}_a).
     \]
@@ -1777,7 +1783,19 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             &\equiv g(a)(b),
     \end{align*}
     because $\pi_1((a,b))\equiv a$ and $\pi_2((a,b))\equiv b$. Since this coincides with \eqref{eq:Sigma-type-rec-evaluation}, our definition of $\fun{rec}$ recovers the definition given in \nref{lpar:Sigma-type-rec-and-ind}.
-    
 \end{solution}
+
+\begin{exr}
+    Assuming as given only the iterator for natural numbers
+    \[
+        \fun{iter} \colon \prod_{C:\univ} C \to (C \to C) \to \N \to C
+    \]
+    with the defining equations
+    \begin{align*}
+        \fun{iter}(C, c_0, c_s, 0) &:\equiv c_0,\\
+        \fun{iter}(C, c_0, c_s, \fun{succ}(n)) &:\equiv c_s(\fun{iter}(C, c_0, c_s, n)),
+    \end{align*}
+    derive a function having the type of the recursor\/ $\fun{rec}_\N$. Show that the defining equations of the recursor hold propositionally for this function, using the induction principle for\/ $\N$.
+\end{exr}
 
 
