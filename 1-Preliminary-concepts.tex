@@ -63,16 +63,16 @@
     Judgments may depend on \textsl{assumptions} of the form $x\colon A$. The collection of assumptions is a \textsl{context}, which must be specified by an ordered list because any assumption might depend on a previous assumption in the list. For example $x,y\colon A$ and $p\colon x\eq{A} y$ might form the context for $p^{-1}\colon y\eq{A} x$. When the type involved represents a proposition, assumptions play the role of \textit{hypotheses}.
 \end{lpar}
 
-\begin{lpar}{Substitution.}\label{lpar:substitution}
-    Given that $x\equiv y$ is not a type, we cannot have it as an assumption. What we can do instead is to \textsl{substitute $a\colon A$ for $x$} and obtain a more specific type or element. Even though not technically an assumption, the language ``assume $x\equiv a$'' will be used to refer to this process of substitution.
+\begin{lpar}{Definitional substitution.}\label{lpar:definitional-substitution}
+    Given that $x\equiv a$ is not a type, we cannot have it as an assumption. What we can do instead is to \textsl{substitute $a\colon A$ for $x$} and obtain a more specific type or element. Even though not technically an assumption, the language ``assume $x\equiv a$'' will be used to refer to this process of substitution.
 \end{lpar}
 
 \begin{lpar}{Principles.}
-    Some statements (whether a judgment, axiom, or theorem) that possesses high generality and acts as a fundamental building block for reasoning within the theory are called \textsl{principles}. This is not a formal notion, but a pedagogical or communicational one aimed at underlying its importance in the deductive system.
+    Some statements (whether a judgment, axiom, or theorem) that possess high generality and acts as fundamental building blocks for reasoning within the theory are called \textsl{principles}. This is not a formal notion, but a pedagogical or communicational one aimed at underlying its importance in the deductive system.
 
     Substitution (see above), for instance, is usually referred to as the \textit{Principle of substitution}. Note that this is a judgmental principle.
 
-    Other statements that corresponds to rules, axioms or theorems are broadly called principles.
+    Other statements that correspond to rules, axioms or theorems are broadly called principles.
 \end{lpar}
 
 \section{Function Types}
@@ -86,7 +86,10 @@
 \end{lpar}
 
 \begin{lpar}{Binders.}\label{lpar:binders}
-    A \textsl{binder} (a.k.a.~\textsl{variable binder}) is an \textit{operator}~$B$ that can be applied to a variable $x$ of type $A$, and an expression $E$ using the syntax $Bx\colon A.\, E$.
+    A \textsl{binder} (a.k.a.~\textsl{variable binder}) is an \textit{operator}~$\Omega$ that can be applied to a variable $x$ of type $A$, and an expression $E$ using the syntax
+    \[
+        \Omega x\colon A.\, E.
+    \]
 \end{lpar}
 
 \begin{lpar}{Function abstraction.}
@@ -108,7 +111,7 @@
 \begin{lpar}{Implicit notation.}
     Whenever the type $A\to B$ is clear from the context, the $\lambda$-notation can be relaxed to $\lambda x.\,\Phi$. Another way to express the same is $(x\mapsto\Phi)\colon A\to B$.
 
-    In particular, if $f\colon A\to B\to C$ and $x\colon A$, then $f(x)$ is the function $B\to C$.
+    In particular, if $f\colon A\to B\to C$ and $x\colon A$, then $f(x)$ is a function of type $B\to C$.
 \end{lpar}
 
 \begin{lpar}{Computation rule.}
@@ -116,7 +119,7 @@
     \[
         (\lambda x.\,\Phi)(a)\equiv\Phi',
     \]
-    where $\Phi'$ is obtained from $\Phi$ by substitution of $a$ for $x$ (see \nref{lpar:substitution}). This rule is also known as \textsl{$\beta$-conversion} or \textsl{$\beta$-reduction}.
+    where $\Phi'$ is obtained from $\Phi$ by substitution of $a$ for $x$ (see \nref{lpar:definitional-substitution}). This rule is also known as \textsl{$\beta$-conversion} or \textsl{$\beta$-reduction}.
 \end{lpar}
 
 \begin{lpar}{Uniqueness principle for function types.}\label{lpar:eta-expansion}
@@ -156,7 +159,7 @@
     \[
         f \defeq\lambda x.\,\lambda y.\,\Phi.
     \]
-    From the viewpoint of Logic, currying is the transformation of
+    From the viewpoint of Logic, Currying is the transformation of
     \[
         A\wedge B\implies C
     \]
@@ -239,12 +242,12 @@
     \]
     of functions with two arguments.
     
-    In the case where $B$ is constant and equal to $A$, we may condense the notation and write $\prod_{x,y\colon A}C(x,y)$.
+    In the case where $B$ is constant and equal to $A$, we may condense the notation and write $\prod_{x,y:A}C(x,y)$.
 
     Consider, for instance, the function
     \[
         \fun{swap}\colon
-            \prod_{A,B,C\colon U}(A\to B\to C)\to(B\to A\to C)
+            \prod_{A,B,C:U}(A\to B\to C)\to(B\to A\to C)
     \]
     defined as
     \[
@@ -254,7 +257,7 @@
     \[
         \fun{swap}_{A,B,C}(f)(b,a)=f(a,b).
     \]
-    Note that given $f\colon\prod_{(x:A)}\prod_{(y\colon B(x))}C(x,y)$, we have $f(a,b)\colon C(a,b)$, assuming $a\colon A$ and $b\colon B$.
+    Note that given $f\colon\prod_{(x:A)}\prod_{(y:B(x))}C(x,y)$, we have $f(a,b)\colon C(a,b)$, assuming $a\colon A$ and $b\colon B(a)$.
 \end{lpar}
 
 \section{Product Types}
@@ -308,7 +311,7 @@
         \]
         where $a\colon A$ and $b\colon B$.\footnote{This does not assume that all elements with type $A\times B$ are necessarily pairs. It only specifies that function evaluation is defined by how it works on pairs.} Note how this rule \textit{deconstructs} the pair $(a,b)$ into its coordinates, operating in the reverse direction of the constructor.
 
-        \item \textit{Computation rule.} Let's first recall that the universal property of the product is summarized in the following commutative diagram
+        \item \textit{Computation rule.} Let us first recall that the universal property of the product is summarized in the following commutative diagram
         \begin{equation}\label{dgm:product}
             \begin{tikzcd}
             C
@@ -327,19 +330,45 @@
             \prod_{C:\univ}A\to B\to C.
         \]
         It represents the type of all functions $f$ satisfying $\dom(f)\equiv A\times B$, of which $\pi_1$ and $\pi_2$ are instances. So, we can define the \textsl{recursor} function
-        \[
+        \begin{equation}\label{eq:rec-A-times-B}
             \fun{rec}_{A\times B}\colon
                 \prod_{C:\univ}(A\to B\to C)
                 \to
                 A\times B\to C
-        \]
+        \end{equation}
         specified as
-        \[
+        \begin{equation}\label{eq:rec-A-times-B-spec}
             \fun{rec}_{A\times B}(C,g)((a,b)) \defeq g(a)(b),
+        \end{equation}
+        where we are using the uniqueness principle that establishes that, to specify a function $f\colon A\times B\to C$, it is enough to specify it on the pairs $(a,b)$ (see \nref{lpar:type-spec}~\textsc{v}).
+
+        In a diagram\footnote{Strictly speaking, the domain of the Curried function\/ $g\colon A\to B\to C$ is not a single object in the diagram, so we represent the input context explicitly.}
+        \[
+            \begin{tikzcd}[row sep=large,column sep=huge]
+                a\colon A,\;b\colon B
+                    \arrow[r,"\fun{pair}"]
+                    \arrow[dr,"g"']
+                & A\times B
+                    \arrow[d,"\fun{rec}(g)"]\\
+                & C
+            \end{tikzcd}
         \]
-        where we are using the uniqueness principle that establishes that, to specify a function $f\colon A\times B\to C$, it is enough to specify it on the pairs $(a,b)$ (see \nref{lpar:type-spec}~\textsc{v})
+        where\/ $\fun{rec}$ stands for\/ $\fun{rec}_{A\times B}(C)$.
         
-        As a consequence, we can derive the projections as
+        If we introduce the context\/ $\Gamma\defeq (a\colon A,\;b\colon B)$, the diagram becomes
+        \[
+            \begin{tikzcd}[row sep=large,column sep=huge]
+                \Gamma
+                    \arrow[r,"{\langle a,b\rangle}"]
+                    \arrow[dr,"g"']
+                & A\times B
+                    \arrow[d, "\fun{rec}(g)"]\\
+                & C
+            \end{tikzcd}
+        \]
+        The first diagram is \textit{functional}: it depicts the constructor\/ $\fun{pair}$ combining inputs to form the product, and how\/ $\fun{rec}$ factors the Curried function\/ $g$. The second is \textit{categorical}: it treats the inputs as a context object\/ $\Gamma$, where the arrow\/ $\langle a,b\rangle$ represents the specific term (substitution) in that context mapping to the product..
+        
+        We can derive the projections as
         \begin{align*}
             \pi_1 &\defeq \fun{rec}_{A\times B}
                 (A.\,\lambda a.\,\lambda b.\,a)\\
@@ -367,8 +396,7 @@
         \]
         specified as
         \[
-            \fun{rec}_{\fun1}(C,g)(\fun\star)
-                \defeq\lambda\fun\star.\,g(\fun\star)
+            \fun{rec}_{\fun1}(C,g)\defeq\lambda\fun s.\,g(\fun\star)
         \]
         and since every $g\colon\fun1\to C$ is equivalent to choosing one element $c\colon C$, we have
         \[
@@ -384,7 +412,14 @@
 
     In Object-Oriented Programming, recursion is mediated by encapsulation: an object exposes methods that recursively delegate work to the methods of its constituent parts. In Structured Programming, by contrast, processing operates directly on the data stored in record fields rather than through behavior exported by the data itself.
 
-    Note also that $\fun{rec}$ implements \textsl{Uncurrying}. In Logic, this corresponds to the transformation from $A\Rightarrow (B\Rightarrow C)$ to $A \wedge B\Rightarrow C$ (cf.~\nref{lpar:currying}).
+    Note also that $\fun{rec}$ implements \textsl{Uncurrying}, namely $\Hom(A,B\to C)\to\\Hom(A\times B,C)$. In Logic, this corresponds to the transformation from $A\Rightarrow (B\Rightarrow C)$ to $A \wedge B\Rightarrow C$ (cf.~\nref{lpar:currying}).
+
+    \textbf{Note.} More formally, the definition of every new type $T\colon\univ$ includes a \textit{recursion map}, usually denoted by $\fun{rec}_T$. This map generates functions of type $T\to C$ for any result type $C\colon\univ$, based on values specified for the canonical elements of~$T$.
+    
+    For example, $\fun{rec}_{A\times B}$ assigns to every type $C\colon\univ$ a function $A\times B\to C$ for each curried function $g\colon A\to B\to C$, as indicated in~\eqref{eq:rec-A-times-B}, which satisfies the computation rule~\eqref{eq:rec-A-times-B-spec}.
+    
+    As we shall see [cf.~\nref{lpar:induction}], an analogous mechanism must be provided for dependent functions with domain $T$; this is the role of the \textit{induction map}.
+
 \end{lpar}
 
 \begin{lpar}{Identity types.}
@@ -398,7 +433,7 @@
 \end{lpar}
 
 \begin{lpar}{Dependent functions over product.}\label{lpar:Pi-types-over-product}
-    According to the specification of $\Pi$-types (see \nref{lpar:Pi-types}), given $A,B\colon\univ$ and a type family $C\colon A\times B\to\univ$, a dependent function
+    According to the specification of $\Pi$-types (see \nref{lpar:Pi-types} and \nref{lpar:products-revisited}), given $A,B\colon\univ$ and a type family $C\colon A\times B\to\univ$, a dependent function
     \[
         f\colon\prod_{z:A\times B}C(z)
     \]
@@ -410,7 +445,7 @@
     \[
         f((x,y)) \defeq g(x)(y).
     \]
-    This means that $f$ is well defined on (any element of) $A\times B$ as soon as its values are specified in the \textsl{canonical} elements of the product, i.e., the pairs.
+    Thus, $f$ is well defined on (any element of) $A\times B$ as soon as its values are specified in the \textsl{canonical} elements of the product, i.e., the pairs.
     
     Since, given $(a,b)\colon A\times B$, we have (see \nref{lpar:products-revisited})
     \[
@@ -632,7 +667,19 @@
     \begin{equation}\label{eq:Sigma-type-rec-evaluation}
         \fun{rec}_{\sum_{x:A}B(x)}(C,g,(a,b))\defeq g(a)(b),
     \end{equation}
-    and the induction
+    This can be represented by a collection of diagrams that commute for all $a\colon A$ 
+    \[
+    \begin{tikzcd}
+        B(a)
+                \arrow[r,"\iota_a"]
+                \arrow[dr,"g(a)"']
+            &{\sum_{x:A}B(x)}
+                \arrow[d,dashed,"{\exists!\,\fun{rec}_{\sum_xB(x)}(C,g,a)}"]\\
+            &C
+    \end{tikzcd}
+    \]
+    
+    For the induction principle
     \[
         \fun{ind}_{\sum_{x:A}B(x)}:
             \prod_{C:\big(\sum_{x:A}B(x)\big)
@@ -759,9 +806,25 @@
         \fun{rec}_{\fun0}\colon\prod_{C:\univ}\fun0\to C
     \]
     constructs the unique function $\fun0\to C$ for every $C\colon\univ$.
+
+    We can also express this recursion with the definitionally commutative diagram
+    \[
+        \begin{tikzcd}[row sep=large, column sep=large]
+            A
+                    \arrow[r,"\fun{inl}"]
+                    \arrow[dr,"g_0"']
+                &A+B
+                    \arrow[d,"\fun{rec}" description]
+                &B
+                    \arrow[l,"\fun{inr}"']
+                    \arrow[dl, "g_1"] \\
+                & C &
+        \end{tikzcd}
+    \]
+    where $\fun{rec}\defeq\fun{rec}_{A+B}(C,g_0,g_1)$.
 \end{lpar}
 
-\begin{lpar}{Coproduct induction.}
+\begin{lpar}{Coproduct induction.}\label{lpar:coproduct-induction}
     Given a type family $C\colon(A+B)\to\univ$, to define a dependent function
     \[
         f\colon\prod_{s:A+B}C(s)
@@ -811,7 +874,21 @@
         \fun{rec}_{\fun2}(C,c_0,c_1,0_{\fun2})&\defeq c_0,\\
         \fun{rec}_{\fun2}(C,c_0,c_1,1_{\fun2})&\defeq c_1,
     \end{align*}
-    which express the fact that $f\colon\fun2\to C$ is given by a pair of elements of type $C$.
+    which express the fact that $f\colon\fun2\to C$ is given by a pair of elements of type $C$. We can capture this in a definitionally commutative diagram
+    \[
+        \begin{tikzcd}[row sep=0.8cm,column sep=2.0cm]
+            \fun1
+                    \arrow[dr,"c_0"]
+                    \arrow[d,"\iota_{0_{\fun2}}"']\\
+            \fun2
+                    \arrow[r,"\fun{rec}\quad"]
+                &C\\
+            \fun1
+                    \arrow[ur,"c_1"']
+                    \arrow[u,"\iota_{1_{\fun2}}"]
+        \end{tikzcd}
+    \]
+    where $\fun{rec}\defeq\fun{rec}_{\fun2}(C,c_0,c_1)$.
 
     In the case of dependent functions, given a type family $C\colon\fun2\to\univ$, we define
     \[
@@ -1006,6 +1083,25 @@
         \fun{rec}_\N(C,c_0,c_s,\fun{succ}(n))
             &\defeq c_s(n,\fun{rec}_\N(C,c_0,c_s,n)).
     \end{align*}
+    We can represent this in a definitional commutative diagram
+    \[
+    \begin{tikzcd}[row sep=large, column sep=large]
+        \fun1
+                \arrow[r, "0"] \arrow[d, "id"']
+            &\N
+                \arrow[r,"\fun{succ}"]
+                \arrow[d,"\fun{rec}" description]
+            &\N
+                \arrow[d,"\fun{rec}"] \\
+        \fun1
+                \arrow[r,"c_0"']
+            &C
+                \arrow[r,"c_s"']
+            &C
+    \end{tikzcd}
+    \]
+    where $\fun{rec}$ stands for $\fun{rec}_\N(C,c_0,c_s)$.
+    
     Note that this definition is different from the ones we introduced so far: it allows for $\fun{rec}$ to appear in the \rhs. This is why we say that $\N$ is an \textsl{inductive} type. 
     
     The justification of this extension is \textit{metatheoretic}: the expression on the \rhs\ uses $n$, which is syntactically \textit{shorter} than $\fun{succ}(n)$. This implies that well-formed terms effectively halt, after a finite number of iterations. More precisely, the syntactic reduction is \textsl{well-founded}, meaning that it has no infinite descending chains $x_1>x_2>\cdots>x_n>\cdots$.
@@ -1148,11 +1244,7 @@
             &\equiv \fun{succ}(0+n)\\
             &\equiv \fun{succ}(n).
     \end{align*}
-    However, the equation
-    \[
-        n =_\N n+0
-    \]
-    does not hold definitionally for an arbitrary variable $n$. It is a proposition that must be proven as a theorem.
+    However, the equation $n =_\N n+0$ does not hold definitionally for an arbitrary variable $n$. It is a proposition that must be proven as a theorem.
 
     The reason is found in the operational semantics: a \textit{machine} evaluating the expression $\Phi+0$ proceeds by pattern matching on $\Phi$ (the first argument). It checks if the \textit{head}\footnote{The word 'head' refers to the root of the Abstract Syntactic Tree (AST) of the expression.} of $\Phi$ matches the constructor $0$, or if it matches the constructor $\fun{succ}$.
 
@@ -1188,7 +1280,7 @@
             \hline
         \end{tabular}
     \]
-    Let's review them one by one, assuming that types $A$ and $B$ represent propositions and their elements represent proofs.
+    Let us review them one by one, assuming that types $A$ and $B$ represent propositions and their elements represent proofs.
     \begin{enumerate}[$1.$]
         \item Since $\fun\ast\colon\fun1$, we see that $\fun1$ has a proof (it is always inhabited).
 
@@ -1249,7 +1341,7 @@
 \end{lpar}
 
 \begin{lpar}{Predicate logic.}\label{lpar:predicate-logic}
-    The following table extends the way we interpret propositions as types (see \nref{lpar:propositional-logic}) to quantifiers
+    The following table extends the propositions as types interpretation (see \nref{lpar:propositional-logic}) to quantifiers
     \[
         \begin{tabular}{l|ll}
             \hline
@@ -1484,7 +1576,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \]
         By path induction, we obtain
         \[
-            c(x,y,p)\defeq\fun{ind}_=(D,d,x,y,p)\colon D(x,y,p).
+            c(x,y,p)\defeq\fun{ind}_{\eq A}(D,d,x,y,p)\colon D(x,y,p).
         \]
         We can define the concatenation $p\cdot q$ by applying this function:
         \[
@@ -1508,7 +1600,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{lem}
         For every type\/ $A$, every\/ $x,y:A$ and every path\/ $p:x\eq Ay$, we have a path
         \[
-            \fun{unit}_r(p)\colon p\cdot\fun{refl}_y\eq Ap.
+            \fun{unit}_r(p)\colon p\cdot\fun{refl}_y\eq{x\eq Ay}p.
         \]
     \end{lem}
     
@@ -1526,7 +1618,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
         Applying path induction, we obtain the desired term
         \[
-            \fun{unit}_r(p) \defeq \fun{ind}_=(C,c,x,y,p).
+            \fun{unit}_r(p) \defeq \fun{ind}_{\eq A}(C,c,x,y,p).
         \]
     \end{proof}
 \end{lpar}
@@ -1767,7 +1859,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \defeq\lambda C.\,\lambda g.\,
                 \lambda p.\,g(\pi_1(p))(\pi_2(p)).
     \]
-    To see that this is well defined, let's first observe that $g$ can be applied to $\pi_1(p)$. We have
+    To see that this is well defined, let us first observe that $g$ can be applied to $\pi_1(p)$. We have
     \[
         g\colon\prod_{x:A}\big(B(x)\to C\big).
     \]
@@ -1775,7 +1867,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     Second, since the signature of $\pi_2$ guarantees that $\pi_2(p)\colon B(\pi_1(p))$, we also see that $g(\pi_1(p))$ can be applied to $\pi_2(p)$ to get an element of $C$.
 
-    It remains to be seen that the recursion works as expected. To verify this we have to evaluate the function at canonical elements. In this case it suffices to compute the $\lambda$-expression when $p=(a,b)$ with $b\colon B(a)$. Here we have
+    It remains to be seen that the recursion works as expected. To verify this we have to evaluate the function at canonical elements. In this case it suffices to compute the $\lambda$-expression when $p\equiv(a,b)$ with $b\colon B(a)$. Here we have
     \begin{align*}
         \fun{rec}_{\sum_{x:A}B(x)}(C,g)((a,b))
             &\equiv\big(\lambda p.\,g(\pi_1(p))(\pi_2(p))\big)((a,b))\\
@@ -1797,5 +1889,55 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{align*}
     derive a function having the type of the recursor\/ $\fun{rec}_\N$. Show that the defining equations of the recursor hold propositionally for this function, using the induction principle for\/ $\N$.
 \end{exr}
+
+\begin{solution}
+    Fix $C\colon\univ$. We have to define
+    \[
+        \fun{rec}\colon\prod_{C:\univ}C\to(\N\to C\to C)\to\N\to C
+    \]
+    using $\fun{iter}$. Suppose we are given $c_0\colon C$ and $c_s\colon\N\to C\to C$. We have to produce a function $\fun{rec}(C,c_0,c_s)\colon\N\to C$ such that
+    \begin{align*}
+        \fun{rec}(C,c_0,c_s,0)&\defeq c_0,\\
+        \fun{rec}(C,c_0,c_s,\fun{succ}(n))
+            &\defeq c_s(n,\fun{rec}(C,c_0,c_s,n)).
+    \end{align*}
+
+    To do this, we will apply $\fun{iter}$ to $\hat C\defeq\N\to C$. For  $\hat c_0$ take the constant function $\lambda n.\,c_0$. For $\hat c_s$ we take
+    \begin{align*}
+        \hat c_s&\colon(\N\to C) \to (\N\to C)\\
+        \hat c_s(\theta)&\defeq\lambda n.\,c_s(n)(\theta(\fun{pred}(n))).
+    \end{align*}
+    This is well defined: given $n\colon\N$, we have $c_s(n)\colon C\to C$ and $\theta(\fun{pred}(n))\colon C$, and so $c_s(n)(\theta(\fun{pred}(n)))\colon C$.
+
+    Now we can define
+    \begin{align*}
+        \fun{rec}(C,c_0,c_s,n)
+            &\defeq \fun{iter}(\hat C,\hat c_0,\hat c_s,n)(\fun{pred}(n)),
+    \end{align*}
+    which satisfies
+    \begin{align*}
+        \fun{rec}(C,c_0,c_s,0) &\equiv\hat c_0(0)\\
+            &\equiv(\lambda n.\,c_0)(0)\\
+            &\equiv c_0.
+    \intertext{and}
+        \fun{rec}(C,c_0,c_s,\fun{succ}(n))
+            &\equiv \fun{iter}(\hat C,\hat c_0,\hat c_s,\fun{succ}(n))(n)\\
+            &\equiv \hat c_s(\fun{iter}(\hat C,\hat c_0,\hat c_s,n))(n)\\
+            &\equiv c_s(n)(\fun{iter}(\hat C,\hat c_0,\hat c_s,n)
+                (\fun{pred}(n)))\\
+            &\equiv c_s(n)(\fun{rec}(C,c_0,c_s,n))\\
+            &\equiv c_s(n,\fun{rec}(C,c_0,c_s,n)),
+    \end{align*}
+    as required.
+\end{solution}
+
+
+\begin{exr}
+    Show that if we define\/ $A+B\defeq\sum_{x:\fun2}\fun{rec}_{\fun2}(\univ,A,B,x)$, then we can give a definition of\/ $\fun{ind}_{A+B}$ for which the definitional equalities stated in {\upshape\nref{lpar:coproduct-induction}} hold.
+\end{exr}
+
+\begin{solution}
+    
+\end{solution}
 
 
