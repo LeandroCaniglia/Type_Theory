@@ -210,7 +210,7 @@
     \[
         \prod_{x:A}B\equiv A\to B.
     \]
-    As before, we can apply a dependent function $f\colon\prod_{x:A}B(x)$ to an argument $a\colon A$ and obtain an element $f(a)\colon B(a)$. In particular, we have the following computation rule: if $a\colon A$ and $f(x)\defeq\Phi$, then $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$, where $\Phi'$ is obtained by replacing all free occurrences of $x$ in $\Phi$ by $a$, i.e., avoiding dummy variable captures (see \nref{lpar:bound-variables}).
+    As before, we can apply a dependent function $f\colon\prod_{x:A}B(x)$ to an argument $a\colon A$ and obtain an element $f(a)\colon B(a)$. In particular, we have the following computation rule: if $a\colon A$ and $f(x)\defeq\Phi$, then $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$, where $\Phi'$ is obtained by replacing all occurrences of $x$ in $\Phi$ by $a$, i.e., avoiding dummy variable captures (see \nref{lpar:bound-variables}).
 
     An example that will become useful later is the dependent function
     \[
@@ -678,6 +678,7 @@
             &C
     \end{tikzcd}
     \]
+    where $\iota_a\defeq\lambda y\colon B(a).\,(a,y)$.
     
     For the induction principle
     \[
@@ -735,7 +736,7 @@
     Finally, we specify
     \begin{align*}
         \fun{ac}&\defeq\lambda g.\,(f,\omega)\\
-            &\phantom:\equiv\lambda g.\,
+            &\phantom\defeq\lambda g.\,
                 \big(
                 \lambda x.\,\pi_1(g(x)),\,\lambda x.\,\pi_2(g(x))
                 \big).
@@ -798,8 +799,8 @@
     \]
     with specification
     \begin{align*}
-        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inl}(a)) &:\equiv g_0(a),\\
-        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inr}(b)) &:\equiv g_1(b).
+        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inl}(a)) &\defeq g_0(a),\\
+        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inr}(b)) &\defeq g_1(b).
     \end{align*}
     Additionally,
     \[
@@ -858,7 +859,7 @@
 
 \section{Boolean Type}
 
-\begin{lpar}{The type of booleans.}
+\begin{lpar}{The type of booleans.}\label{lpar:boolean-type}
     The \textsl{boolean type} is denoted $\fun2\colon\univ$. Its constructors yield $0_{\fun2}$ and $1_{\fun2}$. To derive a function $f\colon\fun2\to C$ we have to specify two elements $c_0,c_1\colon C$ and declare
     \[
         f(0_{\fun2}) \defeq c_0
@@ -926,39 +927,6 @@
         C\colon\fun2\to\univ,\quad
             C\defeq\lambda x.\,(x\eq{\fun2}0_{\fun2})+(x\eq{\fun2}1_{\fun2}).
     \]
-    Now,
-    \begin{align*}
-        C(0_{\fun2})&\equiv
-            (0_{\fun2}\eq{\fun2}0_{\fun2})
-                +(0_{\fun2}\eq{\fun2}1_{\fun2}),\\
-        C(1_{\fun2})&\equiv
-            (1_{\fun2}\eq{\fun2}0_{\fun2})
-                +(1_{\fun2}\eq{\fun2}1_{\fun2}).
-    \end{align*}
-    Therefore,
-    \[
-        \fun{inl}(\fun{refl}_{0_{\fun2}})\colon C(0_{\fun2})
-        \quad\text{and}\quad
-        \fun{inr}(\fun{refl}_{1_{\fun2}})\colon C(1_{\fun2})
-    \]
-    and so we obtain
-    \[
-        \fun{ind}_{\fun2}\big(C,
-            \fun{inl}(\fun{refl}_{0_{\fun2}}),
-            \fun{inr}(\fun{refl}_{1_{\fun2}})\big)
-            \colon\prod_{x:\fun2}
-                (x\eq{\fun2}0_{\fun2})+(x\eq{\fun2}1_{\fun2}).
-    \]
-\end{lpar}
-
-\begin{lpar}{Exactly two booleans.}
-    Here we will use $\fun{ind}_{\fun2}$ to prove that the boolean type $\fun2$ has exactly two elements, namely, $0_{\fun2}$ and $1_{\fun2}$.
-
-    To see this we use the type family
-    \[
-        C\colon\fun2\to\univ,\quad
-            C\defeq\lambda x.\,(x\eq{\fun2}0_{\fun2})+(x\eq{\fun2}1_{\fun2}).
-    \]
     Now, evaluation at the constructors yields
     \begin{align*}
         C(0_{\fun2})&\equiv
@@ -984,7 +952,7 @@
     \]
 \end{lpar}
 
-\begin{lpar}{Coproducts as Indexed Disjoint Unions.}
+\begin{lpar}{Coproducts as Indexed Disjoint Unions.}\label{lpar:coproduct-as-disjoint-union}
     For $A,B\colon\univ$ consider the recursor $\fun{rec}_{\fun2}$ as defined in \eqref{eq:rec2} with $C\defeq\univ$ and 
     \begin{align*}
         f\colon\fun2&\to\univ\\
@@ -1006,16 +974,18 @@
         A \oplus B \defeq \sum_{x:\fun2} \sigma(x)
     \]
     along with
-    \begin{align*}
-        \fun{in}_A\colon A&\to A\oplus B, &a&\mapsto(0_{\fun2},a)\\
-        \fun{in}_B\colon B&\to A\oplus B, &b&\mapsto(1_{\fun2},b).
-    \end{align*}
+    \begin{equation}\label{eq:inA-inB}
+        \begin{aligned}
+            \fun{in}_A\colon A&\to A\oplus B, &a&\mapsto(0_{\fun2},a)\\
+            \fun{in}_B\colon B&\to A\oplus B, &b&\mapsto(1_{\fun2},b).
+        \end{aligned}
+    \end{equation}
     To see that these are well-defined specifications, note that for any $a\colon A$, the pair $(0_{\fun2},a)$ has type $\sum_{x:\fun2}\sigma(x)$ because the second component must have type $\sigma(0_{\fun2})$. Since $\sigma(0_{\fun2})\equiv A$, $a$ is indeed a valid second component. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
 
     It remains to be shown that $A+B\simeq A\oplus B$. To see this first define
-    \[
+    \begin{equation}\label{eq:phi-coproduct-to-sigma}
         \phi\colon A+B\to A\oplus B
-    \]
+    \end{equation}
     as the only map that satisfies
     \[
         \phi(\fun{inl}(a))\equiv\fun{in}_A(a)
@@ -1042,9 +1012,9 @@
     which is valid because $\sigma(0_{\fun2})\equiv A$ and $\sigma(1_{\fun2})\equiv B$.
 
     Now we can define
-    \[
+    \begin{equation}\label{eq:psi-sigma-to-coproduct}
         \psi\defeq\fun{rec}_{\sum_{x:\fun2}\sigma(x)}(A+B,h).
-    \]
+    \end{equation}
     Finally, we have to check the following two equalities
     \begin{align*}
         \phi(\psi(p))&\equiv p\quad(p\colon A\oplus B)\\
@@ -1195,8 +1165,8 @@
 \begin{lpar}{Pattern matching.}
     When we introduce a function $f\colon\N\to C$ such as
     \begin{align*}
-        f(0) &:\equiv \Phi_0,\\
-        f(\fun{succ}(n)) &:\equiv \Phi_s,
+        f(0) &\defeq \Phi_0,\\
+        f(\fun{succ}(n)) &\defeq \Phi_s,
     \end{align*}
     where $\Phi_0$ is an expression of type $C$, and $\Phi_s$ is an expression of type $C$ which may involve the variable $n$ and also the symbol ``$f(n)$'', we may translate it to a formal definition
     \[
@@ -1211,8 +1181,8 @@
 \begin{lpar}{Induction principle.}\label{lpar:induction-principle}
     Assume as given a family $C\colon\N\to\univ$, an element $c_0\colon C(0)$, and a function $c_s\colon\prod_{n:\N} C(n) \to C(\fun{succ}(n))$; then we can construct a dependent function $f\colon\prod_{n:\N} C(n)$ with the defining equations:
     \begin{align*}
-        f(0) &:\equiv c_0,\\
-        f(\fun{succ}(n)) &:\equiv c_s(n, f(n)).
+        f(0) &\defeq c_0,\\
+        f(\fun{succ}(n)) &\defeq c_s(n, f(n)).
     \end{align*}
     We formalize this with the induction function
     \[
@@ -1222,8 +1192,8 @@
     \]
     plus the equations
     \begin{align*}
-        \fun{ind}_\N(C, c_0, c_s, 0) &:\equiv c_0,\\
-        \fun{ind}_\N(C, c_0, c_s, \fun{succ}(n)) &:\equiv c_s(n, \fun{ind}_\N(C, c_0, c_s, n)).
+        \fun{ind}_\N(C, c_0, c_s, 0) &\defeq c_0,\\
+        \fun{ind}_\N(C, c_0, c_s, \fun{succ}(n)) &\defeq c_s(n, \fun{ind}_\N(C, c_0, c_s, n)).
     \end{align*}
     As usual, we will refer to $C$ as the \textsl{theorem}, to $c_0$ as the \textsl{base case}, and to $c_s$ as the \textsl{inductive step}. More precisely,
     \[
@@ -1480,6 +1450,18 @@ The witnesses of this type are regarded as \textit{paths in the space $A$ from t
     \fun{refl}\colon\prod_{a:A}a\eq Aa.
 \]
 In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
+
+\begin{lpar}{Path recursion}
+    Consider the type
+    \[
+        E \defeq\sum_{x,y:A}x\eq Ay.
+    \]
+    We can define the trivial map
+    \begin{align*}
+        r\colon A&\to E\\
+        x&\mapsto(x,x,\fun{refl}_x).
+    \end{align*}
+\end{lpar}
 
 \begin{lpar}{General path induction.}
     In the case of identity types, the induction principle, a.k.a.~\textsl{path induction}, establishes that given a family 
@@ -1801,16 +1783,16 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \begin{align*}
             h\circ_{ACD}(g\circ_{ABC}f)
                 &\defeq \lambda x.\,h((g\circ f)(x))\\
-                &\phantom:\equiv
+                &\phantom\defeq
                     \lambda x.\,h((\lambda y.\,g(f(y)))(x))\\
-                &\phantom:\equiv\lambda x.\,h(g(f(x))
+                &\phantom\defeq\lambda x.\,h(g(f(x))
                     &&\text{; by part a)}\\
         \intertext{and}
             (h\circ_{BCD}g)\circ_{ABD}f
                 &\defeq\lambda x.\,(h\circ g)(f(x))\\
-                &\phantom:\equiv
+                &\phantom\defeq
                     \lambda x.\,(\lambda y.\,h(g(y)))(f(x))\\
-                &\phantom:\equiv\lambda x.\,h(g(f(x))
+                &\phantom\defeq\lambda x.\,h(g(f(x))
                     &&\text{; $h\circ g \defeq\lambda y.\,h(g(y))$}
         \end{align*}
         show that $h\circ_{ACD}(g\circ_{ABC}f)\equiv(h\circ_{BCD}g)\circ_{ABD}f$.
@@ -1884,8 +1866,8 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     with the defining equations
     \begin{align*}
-        \fun{iter}(C, c_0, c_s, 0) &:\equiv c_0,\\
-        \fun{iter}(C, c_0, c_s, \fun{succ}(n)) &:\equiv c_s(\fun{iter}(C, c_0, c_s, n)),
+        \fun{iter}(C, c_0, c_s, 0) &\defeq c_0,\\
+        \fun{iter}(C, c_0, c_s, \fun{succ}(n)) &\defeq c_s(\fun{iter}(C, c_0, c_s, n)),
     \end{align*}
     derive a function having the type of the recursor\/ $\fun{rec}_\N$. Show that the defining equations of the recursor hold propositionally for this function, using the induction principle for\/ $\N$.
 \end{exr}
@@ -1901,18 +1883,36 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \fun{rec}(C,c_0,c_s,\fun{succ}(n))
             &\defeq c_s(n,\fun{rec}(C,c_0,c_s,n)).
     \end{align*}
-
-    To do this, we will apply $\fun{iter}$ to $\hat C\defeq\N\to C$. For  $\hat c_0$ take the constant function $\lambda n.\,c_0$. For $\hat c_s$ we take
+    Let us first try to derive the function $\fun{pred}\colon\N\to\N$ from $0\colon\N$, $\fun{succ}\colon\N\to\N$ and $\fun{iter}$. For consider the case where $C$ is $\N\times\N$. We have to define a function
+    \[
+        p_s\colon(\N\times\N)\to(\N\times\N)
+    \]
+    and an element $p_0\colon\N\times\N$. Invoking $\fun{iter}$, with these two pieces of data we obtain a function $\fun q\colon\N\to(\N\times\N)$, given by $\defeq\lambda n.\,\fun{iter}(\N\times\N,p_0,p_s,n)$ which satisfies
+    \begin{align*}
+        \fun q(0)&\defeq p_0\\
+        \fun q(\fun{succ}(n)) &\defeq p_s(\fun q(n)).
+    \end{align*}
+    Let $p_0\defeq(0,0)$ and $p_s(n,m)\defeq(\fun{succ}(n),n)$. Using the projections can write $\fun q(n)\equiv(q_1(n),q_2(n))$, where $q_1,q_2\colon\N\to\N$. Therefore,
+    \begin{align*}
+        q_1(0)&\equiv 0\\
+        q_2(0)&\equiv 0\\
+        q_1(\fun{succ}(n))&\equiv \fun{succ}(q_1(n))\\
+        q_2(\fun{succ}(n))&\equiv q_1(n).
+    \end{align*}
+    These equations suggest that $q_1$ is the identity and $q_2$ is $\fun{pred}$. However, as we will see below, such equalities are propositional.
+    
+    To define $\fun{rec}$, we will apply $\fun{iter}$ to $\hat C\defeq\N\to C$. For $\hat c_0$ we take the constant function $\lambda n.\,c_0$. For $\hat c_s$
     \begin{align*}
         \hat c_s&\colon(\N\to C) \to (\N\to C)\\
-        \hat c_s(\theta)&\defeq\lambda n.\,c_s(n)(\theta(\fun{pred}(n))).
+        \hat c_s(\theta)&\defeq\lambda n.\,c_s(n)(\theta(q_2(n))).
     \end{align*}
-    This is well defined: given $n\colon\N$, we have $c_s(n)\colon C\to C$ and $\theta(\fun{pred}(n))\colon C$, and so $c_s(n)(\theta(\fun{pred}(n)))\colon C$.
+    This is well defined: given $n\colon\N$, we have $c_s(n)\colon C\to C$ and $\theta(q_2(n))\colon C$, and so $c_s(n)(\theta(q_2(n)))\colon C$.
 
     Now we can define
     \begin{align*}
         \fun{rec}(C,c_0,c_s,n)
-            &\defeq \fun{iter}(\hat C,\hat c_0,\hat c_s,n)(\fun{pred}(n)),
+            &\defeq \fun{iter}(\hat C,\hat c_0,\hat c_s,q_1(n))
+                (q_2(q_1(n))),
     \end{align*}
     which satisfies
     \begin{align*}
@@ -1921,14 +1921,40 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             &\equiv c_0.
     \intertext{and}
         \fun{rec}(C,c_0,c_s,\fun{succ}(n))
-            &\equiv \fun{iter}(\hat C,\hat c_0,\hat c_s,\fun{succ}(n))(n)\\
-            &\equiv \hat c_s(\fun{iter}(\hat C,\hat c_0,\hat c_s,n))(n)\\
-            &\equiv c_s(n)(\fun{iter}(\hat C,\hat c_0,\hat c_s,n)
-                (\fun{pred}(n)))\\
-            &\equiv c_s(n)(\fun{rec}(C,c_0,c_s,n))\\
-            &\equiv c_s(n,\fun{rec}(C,c_0,c_s,n)),
+            &\equiv \fun{iter}(\hat C,\hat c_0,\hat c_s,
+                q_1(\fun{succ}(n)))(q_2(q_1(\fun{succ}(n)))\\
+            &\equiv \fun{iter}\big(\hat C,\hat c_0,\hat c_s,
+                \fun{succ}(q_1(n))\big)(q_1(q_1(n)))\\
+            &\equiv\hat c_s\big(\fun{iter}(\hat C,\hat c_0,\hat c_s,q_1(n))\big)
+                (q_1(q_1(n)))\\
+            &\equiv c_s\big(q_1(n)\big)\big(\fun{iter}(\hat C,\hat c_0,\hat c_s,q_1(n))\big)
+                (q_2(q_1(q_1(n))))\\
+            &\equiv c_s\big(q_1(n)\big)
+                \big(\fun{rec}(C,c_0,c_s,q_1(n))\big)\\
+            &\equiv c_s\big(q_1(n),\fun{rec}(C,c_0,c_s,q_1(n))\big).
     \end{align*}
-    as required.
+    Thus, by \nref{lpar:substitution}, the question of proving that $\fun{rec}$ is propositionally equal to the recursion principle $\fun{rec}_\N$ for $\N$, would follow from the fact that a function $f\colon\N\to\N$ that satisfies $f(0)\equiv0$ and $f(\fun{succ}(n))\equiv\fun{succ}(n)$ is propositionally equal to the identity, i.e., $f=_{\N\to\N}\id_\N$.
+
+    However, strictly speaking, that would be too much for our needs, since the equality $q_1(n)=n$ for $n\colon\N$ would imply by substitution that $\fun{rec}$ satisfies the recursion principle equations propositionally, which is what we want.
+
+    In other words, we need a witness of
+    \[
+        \prod_{n:\N} q_1(n) =_\N n.
+    \]
+    To construct it, we use the induction principle \nref{lpar:induction} for the type family
+    \[
+        C:\N \to \univ, \quad C(n) \defeq q_1(n) =_\N n,
+    \]
+    which requires a constant $c_0\colon C(0)$ and a step function 
+    \[
+        c_s\colon\prod_{n:\N}C(n)\to C(\fun{succ}(n)).
+    \]
+    The induction principle yields
+    \[
+        \fun{ind}_\N(C,c_0,c_s)\colon\prod_{n:\N}C(n).
+    \]
+    For $c_0$, we define it as $\fun{refl}_0$ because $q_1(0) \equiv 0$. For the inductive step, given $n:\N$ and a hypothesis $h:C(n)$ (i.e., $h\colon q_1(n) =_\N n$), we define $c_s(n, h)$ by applying $\fun{succ}$ to $h$ via substitution (see \nref{lpar:substitution}). This provides a witness for $q_1(\fun{succ}(n))=_\N\fun{succ}(n)$, since $q_1(\fun{succ}(n))\equiv\fun{succ}(q_1(n))$.
+    
 \end{solution}
 
 
@@ -1937,6 +1963,53 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{exr}
 
 \begin{solution}
+    This is a continuation of \nref{lpar:coproduct-as-disjoint-union}, where the notation for the coproduct is $A\oplus B$. The induction function we have to define is
+    \[
+        \fun{ind}_{A\oplus B}\colon\prod_{C:A\oplus B\to\univ}\;
+            \prod_{x:A}C(\fun{in}_A(x))
+            \to
+            \prod_{y:B}C(\fun{in}_B(y))
+            \to
+            \prod_{s:A\oplus B}C(s).
+    \]
+    Fix $C\colon A\oplus B\to\univ$. Given two dependent functions
+    \[
+        g_0\colon\prod_{x:A}C(\fun{in}_A(x))
+        \quad\text{and}\quad
+        g_1\colon\prod_{y:B}C(\fun{in}_B(y)),
+    \]
+    we have to define a function with signature
+    \[
+        f\colon\prod_{s:A\oplus B} C(s).
+    \]
+    To do this we must use the induction principle of the $\Sigma$-type, which requires (see \nref{lpar:Sigma-type-rec-and-ind}) building a function $g$ with the following signature 
+    \[
+        g\colon
+            \prod_{t:\fun2\vphantom{\univ y}}\;
+            \prod_{z:\fun{rec}_{\fun2}(\univ,A,B,t)}
+            C((t,z)).
+    \]
+    As a result, we will obtain
+    \[
+        f \defeq\fun{ind}_{\sum_{t:\fun2}\fun{rec}_{\fun2}(\univ,A,B,t)}
+            (C,g).
+    \]
+    Now, by \nref{lpar:boolean-type}, we have
+    \begin{align*}
+        \fun{rec}_{\fun2}(\univ,A,B)\colon\fun2&\to\univ\\
+        0_{\fun2}&\mapsto A\\
+        1_{\fun2}&\mapsto B.
+    \end{align*}
+    Therefore, by \nref{lpar:boolean-type}, we can define $g$ as
+    \[
+        g\defeq\lambda t\colon\fun2.\,\fun{ind}_{\fun2}(D,g_0,g_1,t).
+    \]
+    where $D\colon\fun2\to\univ$ is given by
+    \[
+        D(t)\defeq\prod_{z:\fun{rec}_{\fun2}(\univ,A,B,t)}C((t,z)),
+    \]
+    which, according with \eqref{eq:inA-inB}, satisfies $g_0\colon D(0_{\fun2})$ and $g_1\colon D(1_{\fun2})$.
+    %
     
 \end{solution}
 
