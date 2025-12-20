@@ -1054,22 +1054,23 @@
             &\defeq c_s(n,\fun{rec}_\N(C,c_0,c_s,n)).
     \end{align*}
     We can represent this in a definitional commutative diagram
-    \[
-    \begin{tikzcd}[row sep=large, column sep=large]
-        \fun1
-                \arrow[r, "0"] \arrow[d, "id"']
-            &\N
-                \arrow[r,"\fun{succ}"]
-                \arrow[d,"\fun{rec}" description]
-            &\N
-                \arrow[d,"\fun{rec}"] \\
-        \fun1
-                \arrow[r,"c_0"']
-            &C
-                \arrow[r,"c_s"']
-            &C
-    \end{tikzcd}
-    \]
+    \begin{equation}\label{tik:natural-rec}
+        \begin{tikzcd}[row sep=large, column sep=huge]
+            \fun1
+                    \arrow[r,"0"]
+                    \arrow[d,"{(0,c_0)}"']
+                &\N
+                    \arrow[r,"\fun{succ}"]
+                    \arrow[d,"{(\fun{id},\fun{rec})}" description]
+                &\N
+                    \arrow[d,"{(\fun{id},\fun{rec})}"]\\
+            \fun1\times C
+                    \arrow[r,"0\times c_0"']
+                &\N\times C
+                    \arrow[r,"{(\fun{succ}\circ\pi_1, c_s)}"']
+                &\N\times C
+        \end{tikzcd}
+    \end{equation}
     where $\fun{rec}$ stands for $\fun{rec}_\N(C,c_0,c_s)$.
     
     Note that this definition is different from the ones we introduced so far: it allows for $\fun{rec}$ to appear in the \rhs. This is why we say that $\N$ is an \textsl{inductive} type. 
@@ -1144,22 +1145,22 @@
     which specify $\fun{add}$ by recursion on the first variable.
 \end{lpar}
 
-\begin{lpar}{Multiplication of natural numbers.}
+\begin{lpar}{Multiplication of natural numbers.}\label{lpar:natural-multiplication}
     To define
     \[
         \fun{mult}\colon\N\to\N\to\N
     \]
-    we apply primitive recursion with $C\defeq\N\to\N$, and specify:
+    we apply the recursion principle for $\N$ with $C\defeq\N\to\N$ and
     \begin{align*}
         c_0 &\defeq \lambda n.\, 0,\\
         c_s &\defeq \lambda m.\, \lambda g.\, \lambda n.\, \fun{add}(g(n), n).
     \end{align*}
-    Defining $\fun{mult}\defeq\fun{rec}_\N(C,c_0,c_s)$, which verifies the following equations:
+    As a result, $\fun{mult}\defeq\fun{rec}_\N(C,c_0,c_s)$ satisfies the following equations:
     \begin{align*}
         \fun{mult}(0,n) &\equiv c_0(n) \equiv 0,\\
         \fun{mult}(\fun{succ}(m),n) &\equiv c_s(m,\fun{mult}(m))(n)\\
         &\equiv \fun{add}(\fun{mult}(m, n),n).
-    \end{align*}
+    \end{align*}    
 \end{lpar}
 
 \begin{lpar}{Pattern matching.}
@@ -1963,7 +1964,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{exr}
 
 \begin{solution}
-    This is a continuation of \nref{lpar:coproduct-as-disjoint-union}, where the notation for the coproduct is $A\oplus B$. The induction function we have to define is
+    This is a complement to \nref{lpar:coproduct-as-disjoint-union}, where the notation for the coproduct is $A\oplus B$. The induction function we have to define is
     \[
         \fun{ind}_{A\oplus B}\colon\prod_{C:A\oplus B\to\univ}\;
             \prod_{x:A}C(\fun{in}_A(x))
@@ -2008,8 +2009,52 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         D(t)\defeq\prod_{z:\fun{rec}_{\fun2}(\univ,A,B,t)}C((t,z)),
     \]
-    which, according with \eqref{eq:inA-inB}, satisfies $g_0\colon D(0_{\fun2})$ and $g_1\colon D(1_{\fun2})$.
+    which, according to \eqref{eq:inA-inB}, confirms the required typing judgments $g_0\colon D(0_{\fun2})$ and $g_1\colon D(1_{\fun2})$.
     %
+    
+\end{solution}
+
+\begin{exr}${}$
+    \begin{enumerate}[a),font=\upshape]
+        \item Define multiplication and exponentiation using\/ $\fun{rec}_\N$.
+        \item Verify that\/ $(\N,+,0,{}\cdot{},1)$ is a semiring using only\/ $\fun{ind}_\N$.
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}
+    \begin{enumerate}[a)]
+        \item Multiplication was defined in \nref{lpar:natural-multiplication}.
+
+        For exponentiation, we take\/ $C\defeq\N\to\N$ and define
+        \begin{align*}
+            c_0 &\colon \N\to\N \\
+            c_0 &\defeq \lambda m.\,1,\\
+            c_s &\colon \N\to(\N\to\N)\to(\N\to\N) \\
+            c_s &\defeq \lambda n.\,\lambda g\colon\N\to\N.\,\lambda m.\,g(m)\cdot m.
+        \end{align*}
+        From \eqref{tik:natural-rec}, we obtain
+        \[
+            \fun{rec}_\N(C,c_0,c_s)\colon\N\to(\N\to\N).
+        \]
+        We define exponentiation as
+        \[
+            \fun{exp}\defeq\lambda n.\,\fun{rec}_\N(C,c_0,c_s,n).
+        \]
+        This definition satisfies
+        \begin{align*}
+            \fun{exp}(0,m)
+                &\equiv \fun{rec}_\N(C,c_0,c_s,0)(m) \\
+                &\equiv c_0(m)\\
+                &\equiv 1, \\[1ex]
+            \fun{exp}(\fun{succ}(n),m)
+                &\equiv \fun{rec}_\N(C,c_0,c_s,\fun{succ}(n))(m)\\
+                &\equiv c_s(n,\fun{rec}_\N(C,c_0,c_s,n))(m)\\
+                &\equiv \fun{rec}_\N(C,c_0,c_s,n)(m)\cdot m\\
+                &\equiv \fun{exp}(n,m)\cdot m.
+        \end{align*}
+
+        \item 
+    \end{enumerate}
     
 \end{solution}
 
