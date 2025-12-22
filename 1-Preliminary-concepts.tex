@@ -1205,10 +1205,12 @@
 
 \begin{lpar}{Blocked computation.}\label{lpar:blocked-computation}
     As usual, we will denote $\fun{add}(m,n)$ by $m+n$ and $\fun{mult}(m,n)$ by $m\cdot n$. In the first case, computation on the first argument implies the definitional equalities:
-    \begin{align*}
-        0+n &\equiv n,\\
-        \fun{succ}(m)+n &\equiv \fun{succ}(m+n).
-    \end{align*}
+    \begin{equation}\label{eq:0+n-equiv-n}
+        \begin{aligned}
+            0+n &\equiv n,\\
+            \fun{succ}(m)+n &\equiv \fun{succ}(m+n).
+        \end{aligned}
+    \end{equation}
     In particular, we can derive:
     \begin{align*}
         1+n &\equiv \fun{succ}(0)+n\\
@@ -1228,7 +1230,7 @@
         By the computation rules, the \rhs\ reduces: $\fun{succ}(n)+0 \equiv \fun{succ}(n+0)$.
         Thus, the goal becomes $\fun{succ}(n) =_\N \fun{succ}(n+0)$.
     \end{itemize}
-    To complete the proof, we need to apply the function $\fun{succ}$ to both sides of the hypothesis $h$. This relies on the \textit{principle of congruence} that states that functions respect equality, a lemma that we will formally introduce in the next chapter.
+    To complete the proof, we need to apply the function $\fun{succ}$ to both sides of the hypothesis $h$. This relies on the \textit{principle of congruence} that states that functions respect equality, a lemma that we will formally introduce in the next chapter (see also \nref{lpar:substitution}).
 \end{lpar}
 
 \section{Propositions as Types}
@@ -1529,7 +1531,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{proof}
 \end{lpar}
 
-\begin{lpar}{Path concatenation.}
+\begin{lpar}{Path concatenation.}\label{lpar:path-concatenation}
     The following lemma shows that the equality relation is transitive.
     \begin{lem}\label{lem:path-concatenation}
         For every type\/ $A$ and every\/ $x,y,z\colon A$ there is a \textsl{concatenation} function
@@ -1607,7 +1609,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{lpar}
 
 \begin{lpar}{Substitution.}\label{lpar:substitution}
-    The principle of \textsl{indiscernibility of identicals} establishes that the equality relation is compatible with type substitution. 
+    The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with type substitution. 
         
 \begin{lem}
     Let\/ $P\colon A\to\univ$ be a family of types. For any path\/  $e\colon x\eq A y$, there is a function
@@ -1983,7 +1985,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         f\colon\prod_{s:A\oplus B} C(s).
     \]
-    To do this we must use the induction principle of the $\Sigma$-type, which requires (see \nref{lpar:Sigma-type-rec-and-ind}) building a function $g$ with the following signature 
+    To do this we must use the induction principle of the $\Sigma$-type, which requires (see \nref{lpar:Sigma-type-rec-and-ind}) constructing a function $g$ with the following signature 
     \[
         g\colon
             \prod_{t:\fun2\vphantom{\univ y}}\;
@@ -2017,7 +2019,10 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{exr}${}$
     \begin{enumerate}[a),font=\upshape]
         \item Define multiplication and exponentiation using\/ $\fun{rec}_\N$.
+
         \item Verify that\/ $(\N,+,0,{}\cdot{},1)$ is a semiring using only\/ $\fun{ind}_\N$.
+
+        \item Verify that $m^{n+n'}=_\N m^n\cdot m^{n'}$.
     \end{enumerate}
 \end{exr}
 
@@ -2053,9 +2058,132 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 &\equiv \fun{exp}(n,m)\cdot m.
         \end{align*}
 
-        \item 
+        \item From \nref{lpar:blocked-computation} and [\nref{lpar:associativity-of-addition}], we know that $0$ is additive identity of $\N$ and that addition is associative. Therefore, we have to prove the following propositions
+        \begin{enumerate}[1.]
+            \item \textit{Annihilation.} Since $0\cdot n\equiv n$, it suffices to show that $n\cdot0\eq\N n$ by induction on $n\colon\N$.
+
+            The base case is trivial because $0\cdot0\equiv0$ by definition.
+            
+            For the inductive step, take $p\colon n\cdot0\eq\N0$. We have to see that $\fun{succ}(n)\cdot0\eq\N0$ is inhabited. Since $\fun{succ}(n)\cdot0\equiv n\cdot0+0$, the conclusion follows from path concatenation: take $q\colon n\cdot0+0\eq\N n\cdot0$ and obtain $q\cdot p\colon\fun{succ}(n)\cdot0\eq\N0$.
+
+            \item \textit{Left distributivity.} Define the motive $C\colon\N\to\univ$ by
+            \[
+                D(i)\defeq\prod_{j,k:\N}i\cdot(j+k)\eq\N i\cdot j+i\cdot k.
+            \]
+            Then
+            \[
+                D(0)\equiv\prod_{j,k:\N}0\cdot(i+j)\eq\N0\cdot i+0\cdot j,
+            \]
+            which is judgmentally equal to $\prod_{i,j:\N}0\eq\N0$ because $0\equiv0+0$. Thus, the constant map $d_0\colon\N\times\N\to\fun{reflx}_0$ is a witness.
+
+            For the inductive step take $p\colon D(i)$ and observe that
+            \begin{align*}
+                \fun{suc}(i)\cdot(j+k) &\equiv i\cdot(j+k)+(j+k)\\
+                    &\eq\N (i\cdot j+i\cdot k)+(j+k)
+                        &&\text{; by }p\\
+                    &\eq\N (i\cdot j+j)+(i\cdot k+k)
+                        &&\text{; +assoc \& +comm}\\
+                    &\eq\N \fun{succ}(i)\cdot j+\fun{succ}(i)\cdot k,
+            \end{align*}
+            where we have used \nref{lpar:substitution} in obvious ways. Te conclusion follows from \nref{lpar:path-concatenation}.
+
+            \item \textit{Multiplicative identity.} First observe that
+            \[
+                1\cdot n\equiv\fun{succ}(0)\cdot n\equiv 0\cdot n+n
+                    \equiv 0+n\equiv n.
+            \]
+            To prove $n\cdot1\eq\N n$, we proceed by induction on $n$. The case $n\equiv0$ is trivial: $n\cdot1\equiv0\cdot1\equiv 0\equiv n$.
+            Suppose $p\colon n\cdot1\eq\N n$. Then
+            \begin{align*}
+                \fun{succ}(n)\cdot1&\equiv n\cdot1+1\\
+                    &\eq\N n+1
+                        &&\text{; $p$ + substitution}\\
+                    &\eq\N 1+n
+                        &&\text{; commutativity}\\
+                    &\equiv\fun{succ}(n).
+            \end{align*}
+
+            \item \textit{Multiplication commutativity.} Define the motive $C\colon\N\to\univ$ by
+            \[
+                C(i)\defeq\prod_{j:\N}i\cdot j\eq\N j\cdot i.
+            \]
+            The base case, where $i\defeq0$, follows from annihilation (part 1). 
+
+            For the inductive step, take $p\colon i\cdot j\eq\N j\cdot i$. We have to show that $\fun{succ}(i)\cdot j\eq\N j\cdot\fun{succ}(i)$. Using $\fun{succ}(i)\cdot j\equiv i\cdot j+j$ and left distributivity (part 2), we obtain
+            \begin{align*}
+                i\cdot j+j &\eq\N j\cdot i+j
+                        &&\text{; by }p\\
+                    &\eq\N j\cdot1+j\cdot i
+                        &&\text{; +commutativity \& mult.~identity}\\
+                    &\eq\N j\cdot(1+i)
+                        &&\text{; left distributivity}\\
+                    &\equiv j\cdot\fun{succ}(i),
+            \end{align*}
+            and the conclusion follows from path concatenation.
+            
+            \item \text{Right distributivity.} Directly follows from commutativity (part~4) and left distributivity (part~2).
+            
+            \item \textit{Multiplication associativity.} Define the motive $A\colon\N\to\univ$ given by
+            \[
+                A(i)\defeq\prod_{j,k:\N}(i\cdot j)\cdot k \eq\N i\cdot(j\cdot k).
+            \]
+            The base case is
+            \[
+                A(0)\equiv\prod_{j,k:\N}
+                    (0\cdot j)\cdot k\eq\N 0\cdot(j\cdot k),
+            \]
+            which is trivial because, by definition, $0\cdot n\equiv n$ for $n\colon\N$.
+
+            In the inductive step we assume $p\colon A(i)$ and must exhibit a witness of 
+            \[
+                (\fun{succ}(i)\cdot j)\cdot k
+                    \eq\N\fun{succ}(i)\cdot(j\cdot k).
+            \]
+            For
+            \begin{align*}
+                (\fun{succ}(i)\cdot j)\cdot k
+                    &\equiv (i\cdot j+j)\cdot k\\
+                    &\eq\N (i\cdot j)\cdot k+j\cdot k
+                        &&\text{; right distributivity}\\
+                    &\eq\N i\cdot(j\cdot k)+j\cdot k
+                        &&\text{; by }p\\
+                    &\equiv\fun{succ}(i)\cdot(j\cdot k).
+            \end{align*}
+        \end{enumerate}
+
+        \item We have to construct a function
+        \[
+            \fun{expAdd}\colon\prod_{m,n,n':\N}m^{n+n'}\eq\N m^n\cdot m^{n'}.
+        \]
+        To derive $\fun{expAdd}$ from the induction principle, we introduce the motive $E\colon\N\to\univ$ given by
+        \[
+            E(n)\defeq\prod_{m,n':\N}m^{n+n'}\eq\N m^n\cdot m^{n'}.
+        \]
+        For the base case, we have
+        \begin{align*}
+            m^{0+n'}&\equiv m^{n'} &&;\ \eqref{eq:0+n-equiv-n}\\
+                &\equiv1\cdot m^{n'}\\
+                &\equiv m^0\cdot m^{n'} &&;\ \text{part a)}
+        \end{align*}
+        Suppose that $p\colon E(n)$. Fix $m,n'\colon\N$ and put
+        \[
+            q\defeq p(m,n')\colon m^{n+n'}\eq\N m^n\cdot m^{n'}.
+        \]
+        We have to construct a path for
+        \[
+            m^{\fun{succ}(n)+n'}\eq\N n^{\fun{succ}(n)}\cdot m^{n'}.
+        \]
+        Now
+        \begin{align*}
+            m^{\fun{succ}(n)+n'} &\equiv m^{\fun{succ}(n+n')}\\
+                &\equiv m^{n+n'}\cdot m\\
+                &\eq\N(m^n\cdot m^{n'})\cdot m
+                    &&\text{; by $q$ + substitution}\\
+                &\eq\N(m^n\cdot m)\cdot m^{n'}
+                    &&\text{; associativity \& commutativity}\\
+                &\eq\N m^{\fun{succ}(n)}\cdot m^{n'}.
+        \end{align*}
     \end{enumerate}
-    
 \end{solution}
 
 
