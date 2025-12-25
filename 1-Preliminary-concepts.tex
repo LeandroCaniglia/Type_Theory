@@ -78,7 +78,7 @@
 \section{Function Types}
 
 \begin{lpar}{Functions.}
-    Given types $A$ and $B$, we can construct the type $A\to B$ of \textsl{functions with domain $A$ and codomain $B$}. We also sometimes refer to functions as \textsl{maps}. Unlike in set theory, functions are not defined as functional relations; rather they are a primitive concept in Type Theory. We explain the function type by prescribing what we can do with functions, how to construct them and what equalities they induce. Note also that $f\colon A\to B$ stands for both, the traditional notation and the type judgment. In both cases the expression is known as the \textsl{signature} of~$f$.
+    Given types $A$ and $B$, we can construct the type $A\to B$ of \textsl{functions with domain $A$ and codomain $B$}. We also sometimes refer to functions as \textsl{maps}. Unlike in set theory, functions are not defined as functional relations; rather they are a primitive concept in Type Theory. We explain the function type by prescribing what we can do with functions, how to construct them and what equalities they induce. Note also that $f\colon A\to B$ stands for both the traditional notation and the type judgment. In both cases the expression is known as the \textsl{signature} of~$f$.
 
     Given a function $f\colon A\to B$ and an element of the domain $a\colon A$, we can \textsl{apply} the function to obtain an element of the codomain $B$, denoted $f(a)$ and called the \textsl{value of\/ $f$ at\/ $a$}. It is common in Type Theory to omit the parentheses and denote $f(a)$ simply by $f\,a$.
 
@@ -214,7 +214,7 @@
 
     An example that will become useful later is the dependent function
     \[
-        \fun{fmax}\colon\prod_{n:\N}\fun{Fin}(n+1)
+        \fun{fmax}\colon\prod_{n:\N}\fun{Fin}(\fun{succ}(n))
     \]
     that selects the last element of each nonempty finite type (see \nref{lpar:type-families})
     \[
@@ -366,7 +366,7 @@
                 & C
             \end{tikzcd}
         \]
-        The first diagram is \textit{functional}: it depicts the constructor\/ $\fun{pair}$ combining inputs to form the product, and how\/ $\fun{rec}$ factors the Curried function\/ $g$. The second is \textit{categorical}: it treats the inputs as a context object\/ $\Gamma$, where the arrow\/ $\langle a,b\rangle$ represents the specific term (substitution) in that context mapping to the product..
+        The first diagram is \textit{functional}: it depicts the constructor\/ $\fun{pair}$ combining inputs to form the product, and how\/ $\fun{rec}$ factors the Curried function\/ $g$. The second is \textit{categorical}: it treats the inputs as a context object\/ $\Gamma$, where the arrow\/ $\langle a,b\rangle$ represents the specific term (substitution) in that context mapping to the product.
         
         We can derive the projections as
         \begin{align*}
@@ -1053,7 +1053,7 @@
         \fun{rec}_\N(C,c_0,c_s,\fun{succ}(n))
             &\defeq c_s(n,\fun{rec}_\N(C,c_0,c_s,n)).
     \end{align*}
-    We can represent this in a definitional commutative diagram
+    We can represent this in a definitionally commutative diagram
     \begin{equation}\label{tik:natural-rec}
         \begin{tikzcd}[row sep=large, column sep=huge]
             \fun1
@@ -1085,11 +1085,13 @@
         \end{aligned}
     \end{equation}
     and declare
-    \begin{align*}
-        f(0) &\defeq c_0,\\
-        f(\fun{succ}(n))
-            &\defeq c_s(n,f(n)),
-    \end{align*}
+    \begin{equation}\label{eq:recursion-semantics}
+        \begin{aligned}
+            f(0) &\defeq c_0,\\
+            f(\fun{succ}(n))
+                &\defeq c_s(n,f(n)),
+        \end{aligned}
+    \end{equation}
     where the second equation corresponds to
     \[
         c_s(n,f(n))\equiv 
@@ -1310,7 +1312,7 @@
     \[
         ((A\times B)\to\fun0)\to(A\to\fun0)+(B\to\fun0)
     \]
-    is not generally valid because there is to method to decide which of the two propositions, $A$ or $B$, is false from a proof of $\neg(A\times B)$. However, to exhibit an element of $(A\to\fun0)+(B\to\fun0)$, we must decide whether it will be a value of $\fun{inl}$ o of $\fun{inr}$. For instance, consider the case where $B\defeq\neg A$. We do know that $A\wedge\neg A$ is false\footnote{A witness of this proposition is a pair $(a,b)$ with $a\colon A$ and $b\colon A\to\fun0$. It cannot exist since otherwise $b(a)\colon\fun0$.} but not if this is because $A$ is false or $\neg A$ is false (as it happens with unsolved conjectures).
+    is not generally valid because there is to method to decide which of the two propositions, $A$ or $B$, is false from a proof of $\neg(A\times B)$. However, to exhibit an element of $(A\to\fun0)+(B\to\fun0)$, we must decide whether it will be a value of $\fun{inl}$ or of $\fun{inr}$. For instance, consider the case where $B\defeq\neg A$. We do know that $A\wedge\neg A$ is false\footnote{A witness of this proposition is a pair $(a,b)$ with $a\colon A$ and $b\colon A\to\fun0$. It cannot exist since otherwise $b(a)\colon\fun0$.} but not if this is because $A$ is false or $\neg A$ is false (as it happens with unsolved conjectures).
 \end{lpar}
 
 \begin{lpar}{Predicate logic.}\label{lpar:predicate-logic}
@@ -1382,7 +1384,7 @@
     \[
         c_s \defeq \lambda i.\, \lambda h.\, \lambda j.\, \lambda k.\, \dots
     \]
-    were $h(i,j)\colon i+(j+k)\eq\N(i+j)+k$.
+    where $h(i,j)\colon i+(j+k)\eq\N(i+j)+k$.
     
     Computing the goal, we obtain
     \begin{align*}
@@ -1890,7 +1892,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         p_s\colon(\N\times\N)\to(\N\times\N)
     \]
-    and an element $p_0\colon\N\times\N$. Invoking $\fun{iter}$, with these two pieces of data we obtain a function $\fun q\colon\N\to(\N\times\N)$, given by $\defeq\lambda n.\,\fun{iter}(\N\times\N,p_0,p_s,n)$ which satisfies
+    and an element $p_0\colon\N\times\N$. Invoking $\fun{iter}$, with these two pieces of data we obtain a function $\fun q\colon\N\to(\N\times\N)$, given by $\lambda n.\,\fun{iter}(\N\times\N,p_0,p_s,n)$ which satisfies
     \begin{align*}
         \fun q(0)&\defeq p_0\\
         \fun q(\fun{succ}(n)) &\defeq p_s(\fun q(n)).
@@ -2074,18 +2076,18 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \[
                 D(0)\equiv\prod_{j,k:\N}0\cdot(i+j)\eq\N0\cdot i+0\cdot j,
             \]
-            which is judgmentally equal to $\prod_{i,j:\N}0\eq\N0$ because $0\equiv0+0$. Thus, the constant map $d_0\colon\N\times\N\to\fun{reflx}_0$ is a witness.
+            which is judgmentally equal to $\prod_{i,j:\N}0\eq\N0$ because $0\equiv0+0$. Thus, the constant map $d_0\colon\N\times\N\to\fun{refl}_0$ is a witness.
 
             For the inductive step take $p\colon D(i)$ and observe that
             \begin{align*}
-                \fun{suc}(i)\cdot(j+k) &\equiv i\cdot(j+k)+(j+k)\\
+                \fun{succ}(i)\cdot(j+k) &\equiv i\cdot(j+k)+(j+k)\\
                     &\eq\N (i\cdot j+i\cdot k)+(j+k)
                         &&\text{; by }p\\
                     &\eq\N (i\cdot j+j)+(i\cdot k+k)
                         &&\text{; +assoc \& +comm}\\
                     &\eq\N \fun{succ}(i)\cdot j+\fun{succ}(i)\cdot k,
             \end{align*}
-            where we have used \nref{lpar:substitution} in obvious ways. Te conclusion follows from \nref{lpar:path-concatenation}.
+            where we have used \nref{lpar:substitution} in obvious ways. The conclusion follows from \nref{lpar:path-concatenation}.
 
             \item \textit{Multiplicative identity.} First observe that
             \[
@@ -2151,27 +2153,24 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \end{align*}
         \end{enumerate}
 
-        \item We have to construct a function
+        \item Consider the motive $E\colon\N\to\univ$ given by
         \[
-            \fun{expAdd}\colon\prod_{m,n,n':\N}m^{n+n'}\eq\N m^n\cdot m^{n'}.
+            E\defeq\prod_{n,m,n':\N}m^{n+n'}\eq\N m^n\cdot m^{n'}.
         \]
-        To derive $\fun{expAdd}$ from the induction principle, we introduce the motive $E\colon\N\to\univ$ given by
-        \[
-            E(n)\defeq\prod_{m,n':\N}m^{n+n'}\eq\N m^n\cdot m^{n'}.
-        \]
+        Fix $m$ and $n'$. To construct a witness of $E(m,n')$ we proceed by induction on $n$.
         For the base case, we have
         \begin{align*}
             m^{0+n'}&\equiv m^{n'} &&;\ \eqref{eq:0+n-equiv-n}\\
                 &\equiv1\cdot m^{n'}\\
                 &\equiv m^0\cdot m^{n'} &&;\ \text{part a)}
         \end{align*}
-        Suppose that $p\colon E(n)$. Fix $m,n'\colon\N$ and put
+        Suppose that $p\colon E(m,n')(n)$. Fix $m,n'\colon\N$ and put
         \[
             q\defeq p(m,n')\colon m^{n+n'}\eq\N m^n\cdot m^{n'}.
         \]
         We have to construct a path for
         \[
-            m^{\fun{succ}(n)+n'}\eq\N n^{\fun{succ}(n)}\cdot m^{n'}.
+            m^{\fun{succ}(n)+n'}\eq\N m^{\fun{succ}(n)}\cdot m^{n'}.
         \]
         Now
         \begin{align*}
@@ -2186,4 +2185,135 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{enumerate}
 \end{solution}
 
+\begin{exr}
+    Define the type family\/ $\fun{Fin}\colon\N\to\mathcal{U}$ mentioned at the end of {\upshape\nref{lpar:type-families}}, and the dependent function\/ $\fun{fmax}\colon\prod_{n:\N}\fun{Fin}(\fun{succ}(n))$ mentioned in {\upshape\nref{lpar:Pi-types}}.
+\end{exr}
 
+\begin{solution}
+    The $\fun{Fin}$ type family requires a motive~$C$ such that $\fun{Fin}(n)\colon C(n)$. Since $\fun{Fin}(n)$ is a type, $C$ must be $\univ$.
+
+    To define $\fun{Fin}$ using the recursion principle, we specify $c_0\colon\univ$ and $c_s\colon\N\to\univ\to\univ$ as follows
+    \begin{align*}
+        c_0&\defeq\fun0,
+                &&\text{; empty coproduct}\\
+        c_s&\defeq\lambda n.\,\lambda A.\,A+\fun1.
+                &&\text{; $A$ + empty product}
+    \end{align*}
+    As a result, we can define $\fun{Fin}\defeq\fun{rec}_\N(\univ,c_0,c_s)\colon\N\to\univ$, which satisfies
+    \[
+        \fun{Fin}(0)\defeq\fun0
+        \quad\text{and}\quad
+        \fun{Fin}(\fun{succ}(n))\equiv\fun{Fin}(n)+\fun1.
+    \]
+     To define $\fun{fmax}$ we simply declare
+    \begin{align*}
+        \fun{fmax}\colon\N&\to\fun{Fin}(n)+\fun1\\
+        n&\mapsto\fun{inr}_n(\fun\star),
+    \end{align*}
+    where $\fun{inr}_n$ denotes the $n$th right inclusion of $\fun1$ into $\fun{Fin}(n)+\fun1$. This completes the proof because $\fun{Fin}(n)+\fun1\equiv\fun{Fin}(\fun{succ}(n))$.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that the \textsl{Ackermann} function\/ $\fun{ack}\colon\N\to\N\to\N$ is definable using only\/ $\fun{rec}_\N$ satisfying the following equations:
+    \begin{align*}
+        \fun{ack}(0,n)&\equiv\fun{succ}(n),\\
+        \fun{ack}(\fun{succ}(m),0)
+            &\equiv\fun{ack}(m,1),\\
+        \fun{ack}(\fun{succ}(m),\fun{succ}(n))
+            &\equiv\fun{ack}(m,\fun{ack}(\fun{succ}(m),n)).
+    \end{align*}
+\end{exr}
+
+\begin{solution}
+    Take the motive $C\defeq\N\to\N$. To use the $\fun{rec}_\N$ function we need to define
+    \begin{align*}
+        c_0\colon\N\to\N,
+        \quad\text{and}\quad
+        c_s\colon\N\to(\N\to\N)\to(\N\to\N).
+    \end{align*}
+    According with equations \eqref{eq:recursion-semantics} for the case where $f$ is $\fun{ack}$, by defining
+    \[
+        \fun{ack}(m,{}\cdot{})\defeq\fun{rec}_\N(C,c_0,c_s,m)
+    \]
+    we obtain
+    \begin{align*}
+        \fun{ack}(0,n)&\equiv c_0(n)\\
+        \fun{ack}(\fun{succ}(m),{}\cdot{})
+            &\equiv c_s(m,\fun{ack}(m,{}\cdot{}))
+    \end{align*}
+    The equation $\fun{ack}(0,n)\equiv\fun{succ}(n)$, that we must honor, makes the definition of~$c_0$ straightforward: $c_0\defeq\fun{succ}$. 
+    
+    To define $c_s(m,g)\colon\N\to\N$, we fix $m\colon\N$ and $g\colon\N\to\N$, with $g$ playing the role of $\fun{ack}(m,{}\cdot{})$, and proceed by recursion on $n$. We need to provide two pieces of information
+    \begin{align*}
+        d_0&\colon\N\\
+        d_s&\colon\N\to\N\to\N,
+    \end{align*}
+    where $d_0\equiv c_s(m,g)(0)$. Since $c_s$ is the step function on $m$ for $\fun{ack}(m,{}\cdot{})$, we deduce that
+    \[
+        d_0 \equiv \fun{ack}(\fun{succ}(m),0)\equiv\fun{ack}(m,1).
+    \]
+    Therefore, we must specify $d_0\defeq g(1)$.
+
+    Since $c_s(m,g)$ represents $\fun{ack}(\fun{succ}(m),{}\cdot{})$, and
+    \[
+        d_s(n,c_s(m,g)(n))\equiv c_s(m,g)(\fun{succ}(n)),
+    \]
+    we deduce that $d_s(n,c_s(m,g)(n))$ must be a representative of
+    \[
+        \fun{ack}(\fun{succ}(m),\fun{succ}(n))
+            \equiv\fun{ack}(m,\fun{ack}(\fun{succ}(m),n)).
+    \]
+    Therefore, if we define
+    \begin{equation}\label{eq:ds-definition}
+        d_s\defeq\lambda n,r.\, g(r),
+    \end{equation}
+    we obtain
+    \begin{equation}\label{eq:cs-from-ds}
+        c_s \defeq \lambda m,g.\, \fun{rec}_\N(\N, g(1), d_s).
+    \end{equation}
+    Now we can define the full function $\fun{ack}$ using the outer recursion on $m$:
+    \[
+        \fun{ack} \defeq \fun{rec}_\N(\N\to\N, \fun{succ}, c_s).
+    \]
+    Let us verify the three properties of the Ackermann function.
+    \begin{enumerate}[$\mbf\to$]
+        \item $\fun{ack}(0, n) \equiv \fun{succ}(n)$
+        \begin{align*}
+            \fun{ack}(0, n)
+                &\equiv \fun{rec}_\N(\N\to\N, c_0, c_s, 0)(n) \\
+                &\equiv c_0(n) \\
+                &\equiv \fun{succ}(n).
+        \end{align*}
+
+    \item $\fun{ack}(\fun{succ}(m), 0) \equiv \fun{ack}(m, 1)$
+    \begin{align*}
+        \fun{ack}(\fun{succ}(m), 0)
+            &\equiv \fun{rec}_\N(\N\to\N, c_0, c_s, \fun{succ}(m))(0) \\
+            &\equiv c_s(m, \fun{ack}(m))(0) \\
+            &\equiv \big(\lambda g.\,\fun{rec}_\N(\N, g(1),d_s)\big)(\fun{ack}(m))(0)
+                &&\text{; \eqref{eq:cs-from-ds}}\\
+            &\equiv \fun{rec}_\N(\N, \fun{ack}(m)(1), d_s, 0) \\
+            &\equiv \fun{ack}(m)(1) \\
+            &\equiv \fun{ack}(m, 1).
+    \end{align*}
+
+    \item $\fun{ack}(\fun{succ}(m),\fun{succ}(n))\equiv\fun{ack}(m,\fun{ack}(\fun{succ}(m),n))$
+    \begin{align*}
+        \fun{ack}(\fun{succ}(m),\fun{succ}(n))
+            &\equiv c_s(m,\fun{ack}(m))(\fun{succ}(n))\\
+            &\equiv\fun{rec}_\N(\N,\fun{ack}(m)(1),d_s,\fun{succ}(n))\\
+            &\equiv d_s\big(n,\fun{rec}_\N(\N,\fun{ack}(m)(1),d_s,n)\big)\\
+            &\equiv d_s\big(n,c_s(m,\fun{ack}(m))(n)\big)
+                &&\text{; \eqref{eq:cs-from-ds}}
+    \intertext{at this point the variable $g$ of \eqref{eq:ds-definition} is bound to $\fun{ack}(m)$; consequently,}
+            &\equiv d_s\big(n,\fun{ack}(\fun{succ}(m),n)\big)
+                &&\text{; recursion}\\
+            &\equiv\fun{ack}(m)\big(\fun{ack}(\fun{succ}(m),n)\big)
+                &&\text{; \eqref{eq:ds-definition}}\\
+            &\equiv \fun{ack}(m, \fun{ack}(\fun{succ}(m), n)).
+    \end{align*}
+        \end{enumerate}
+
+\end{solution}
