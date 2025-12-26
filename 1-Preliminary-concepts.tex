@@ -2429,33 +2429,6 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{exr}
 
 \begin{solution}
-    We have to exhibit a witness of
-    \[
-        \prod_{i,j:\N}i+j=_\N j+i.
-    \]
-    Define the motive $C\colon\N\to\univ$ by
-    \[
-        C(i) \defeq\prod_{j:\N}i+j=_\N j+i
-    \]
-    By the induction principle on $\N$, to show a witness of $\prod_{i:\N}C(i)$, we have to provide two terms
-    \[
-        c_0\colon C(0)
-        \quad\text{and}\quad
-        c_s\colon\prod_{i:\N}C(i)\to C(\fun{succ}(i)).
-    \]
-    We already know that $0+j\equiv j$ and $j+0=_\N j$ for $j\colon\N$ (see \nref{lpar:blocked-computation}). Thus, the equation $0+j=_\N j+0$ is judgmentally equal to $j=_\N j+0$ and so we have a witness of $C(0)$.
-
-    For the inductive step, if $h\colon i+j=_\N j+i$, we can apply $\fun{succ}$ by substitution and proceed by concatenation as follows
-    \begin{align*}
-        \fun{succ}(i)+j &\equiv \fun{succ}(i+j)\\
-            &=_\N\fun{succ}(j+i) &&\text{; $h$ + subst.}\\
-            &=_\N(j+i)+1\\
-            &=_\N j+(i+1)  &&\text{; assoc.}\\
-            &=_\N j+\fun{succ}(i) &&\text{; subst.}
-    \end{align*}
-\end{solution}
-
-\begin{solution}
     We must exhibit a witness for the type
     \[
         \prod_{i,j:\N} i+j =_\N j+i.
