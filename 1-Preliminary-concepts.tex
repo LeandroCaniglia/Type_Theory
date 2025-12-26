@@ -172,7 +172,8 @@
 \section{Dependent Function Types}
 
 \begin{lpar}{Universes.}\label{lpar:universes}
-    Given that every term must have a type, types must have a type as well. To avoid paradoxical situations derived from the global universe, there is a family of universes $\univ_0$, $\univ_1$, $\univ_2,\dots$, such that $\univ_i\colon\univ_{i+1}$ for all $i\ge0$. Thus, $\univ_0$ is the universe of \textsl{small} types, such as $\N$, etc., while $\univ_{i+1}$ is the universe of types in the universe $\univ_i$.
+    As every term must have a type, types must have a type as well. To avoid paradoxical situations derived from the global universe, there is a family of universes $\univ_0$, $\univ_1$, $\univ_2,\dots$, such that $\univ_i\colon\univ_{i+1}$ for all $i\ge0$. Thus, $\univ_0$ is the universe of \textsl{small} types, such as $\N$, etc., while $\univ_{i+1}$ is the universe of types in the universe $\univ_i$.\footnote{The indexing here is distinct from the formal type of natural numbers. It is a meta-linguistic device; any finite alphabet containing symbols like `$\univ$' and a successor mark such as `$'$' would suffice, allowing us to write sequences like $\univ : \univ' : \univ''$ of arbitrary depth.}
+
 
     In addition, this family of universes is \textsl{cumulative}, meaning that $A\colon U_{i+1}$ assuming that $A\colon U_i$.
 
@@ -1456,7 +1457,7 @@ The witnesses of this type are regarded as \textit{paths in the space $A$ from t
 \]
 In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
-\begin{lpar}{Path recursion}
+\begin{lpar}{Path recursion.}
     Consider the type
     \[
         E \defeq\sum_{x,y:A}x\eq Ay.
@@ -2060,7 +2061,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 &\equiv \fun{exp}(n,m)\cdot m.
         \end{align*}
 
-        \item From \nref{lpar:blocked-computation} and [\nref{lpar:associativity-of-addition}], we know that $0$ is additive identity of $\N$ and that addition is associative. Therefore, we have to prove the following propositions
+        \item From \nref{lpar:blocked-computation} and [\nref{lpar:associativity-of-addition}], we know that $0$ is additive identity of $\N$ and that addition is associative. Therefore, we have to prove the following propositions\footnote{For commutativity of addition see Exercise~\ref{exr:+comm}.}
         \begin{enumerate}[1.]
             \item \textit{Annihilation.} Since $0\cdot n\equiv n$, it suffices to show that $n\cdot0\eq\N n$ by induction on $n\colon\N$.
 
@@ -2307,7 +2308,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             &\equiv d_s\big(n,\fun{rec}_\N(\N,\fun{ack}(m)(1),d_s,n)\big)\\
             &\equiv d_s\big(n,c_s(m,\fun{ack}(m))(n)\big)
                 &&\text{; \eqref{eq:cs-from-ds}}
-    \intertext{at this point the variable $g$ of \eqref{eq:ds-definition} is bound to $\fun{ack}(m)$; consequently,}
+    \intertext{\small(at this point the variable $g$ of \eqref{eq:ds-definition} is bound to $\fun{ack}(m)$; consequently)}
             &\equiv d_s\big(n,\fun{ack}(\fun{succ}(m),n)\big)
                 &&\text{; recursion}\\
             &\equiv\fun{ack}(m)\big(\fun{ack}(\fun{succ}(m),n)\big)
@@ -2316,4 +2317,171 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{align*}
         \end{enumerate}
 
+\end{solution}
+
+
+\begin{exr}
+    Show that for any type\/ $A$, we have\/ $\neg\neg\neg A \to \neg A$.
+\end{exr}
+
+\begin{solution}
+    Recall that $\neg A\defeq A\to\fun0$. So, we have to find a function
+    \[
+        f\colon (((A\to\fun0)\to\fun0)\to\fun0)\to(A\to\fun0).
+    \]
+    Fix $Z\colon\univ$ and $a\colon A$ and consider the evaluation maps
+    \begin{align*}
+        \ev a\colon(A\to Z)&\to Z\\
+        x&\mapsto x(a).
+    \intertext{and}
+        \ev{\ev a}\colon((A\to Z)\to Z)&\to Z\\
+        y&\mapsto y(\ev a).
+    \end{align*}
+    Then define
+    \begin{align*}
+        \ev{\ev{\ev a}}\colon(((A\to Z)\to Z)\to Z)\to A&\to Z\\
+            (z,a)&\mapsto z(\ev{\ev a}).
+    \end{align*}
+    To conclude the proof, take $Z\defeq\fun0$.
+\end{solution}
+
+\begin{exr}
+    Using the propositions as types interpretation, derive the following tautologies.
+    \begin{enumerate}[a), font=\upshape]
+        \item If\/ $A$, then (if\/ $B$ then\/ $A$).
+        \item If\/ $A$, then not (not\/ $A$).
+        \item If (not\/ $A$ or not\/ $B$), then not ($A$ and\/ $B$).
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}
+    \begin{enumerate}[a)]
+        \item This translates into the type $A\to(B\to A)$. An obvious inhabitant is $a\mapsto(b\mapsto a)$.
+
+        \item This corresponds to $A\to((A\to\fun0)\to\fun0)$. A function of this type is a particular case of
+        \begin{align*}
+            \ev a\colon A&\to((A\to Z)\to Z)\\
+            a&\mapsto(g\mapsto g(a)).
+        \end{align*}
+        when $Z\defeq\fun0$.
+
+        \item Here the interpretation is $\neg A+\neg B\to\neg (A\times B)$.
+        \begin{align*}
+            (A\to\fun0)+(B\to\fun0)&\to(A\times B)\to\fun0.
+        \end{align*}
+        Therefore, it suffices to define
+        \begin{align*}
+            g_0\colon(A\to\fun0)&\to(A\times B\to\fun0)\\
+            g_1\colon(B\to\fun0)&\to(A\times B\to\fun0)
+        \end{align*}
+        which can be done respectively as
+        \begin{align*}
+            x&\mapsto((a,b)\mapsto x(a))\\
+            y&\mapsto((a,b)\mapsto y(b))
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+\begin{exr}
+    Using propositions-as-types, derive the double negation of the principle of excluded middle, i.e.\/ prove\/ $\neg\neg(P\lor\neg P)$.    
+\end{exr}
+
+\begin{solution}
+    We have to define a function
+    \[
+        \big(P+(P\to\fun0)\to\fun0\big)\to\fun0.
+    \]
+    More generally, let us define a function
+    \[
+        f\colon\big(P+(P\to Z)\to Z\big)\to Z.
+    \]
+    Fix a function $g\colon P+(P\to Z)\to Z$. It defines two functions
+    \begin{align*}
+        g_0 &\colon P \to Z & g_1 &\colon (P \to Z) \to Z \\
+        g_0 &\defeq \lambda p.\, g(\fun{inl}(p)) & g_1 &\defeq \lambda h.\, g(\fun{inr}(h)).
+    \end{align*}
+    Then define
+    \[
+        f \defeq \lambda g.\, g_1(g_0).
+    \]
+\end{solution}
+
+
+\begin{exr}
+    Explain why the induction principles for identity types do not allow us to construct a function
+    \[
+        f\colon\prod_{x:A}\;\prod_{p:x=x} (p=\fun{refl}_x)
+    \]
+    with the defining equation
+    \[
+        f(x,\fun{refl}_x)\defeq\fun{refl}_{\fun{refl}_x}.
+    \]
+\end{exr}
+
+\begin{solution}
+    The construction is invalid because the expression does not fit the type signature required by the induction principle for identity types in either formulation \eqref{eq:ind=A} or \eqref{eq:ind'=A}.
+
+    The given expression only considers paths of the form $p: x=x$, between $x$ and itself, while the induction principle requires paths between two variables.
+\end{solution}
+
+\begin{exr}\label{exr:+comm}
+    Show that addition of natural numbers is commutative.
+\end{exr}
+
+\begin{solution}
+    We have to exhibit a witness of
+    \[
+        \prod_{i,j:\N}i+j=_\N j+i.
+    \]
+    Define the motive $C\colon\N\to\univ$ by
+    \[
+        C(i) \defeq\prod_{j:\N}i+j=_\N j+i
+    \]
+    By the induction principle on $\N$, to show a witness of $\prod_{i:\N}C(i)$, we have to provide two terms
+    \[
+        c_0\colon C(0)
+        \quad\text{and}\quad
+        c_s\colon\prod_{i:\N}C(i)\to C(\fun{succ}(i)).
+    \]
+    We already know that $0+j\equiv j$ and $j+0=_\N j$ for $j\colon\N$ (see \nref{lpar:blocked-computation}). Thus, the equation $0+j=_\N j+0$ is judgmentally equal to $j=_\N j+0$ and so we have a witness of $C(0)$.
+
+    For the inductive step, if $h\colon i+j=_\N j+i$, we can apply $\fun{succ}$ by substitution and proceed by concatenation as follows
+    \begin{align*}
+        \fun{succ}(i)+j &\equiv \fun{succ}(i+j)\\
+            &=_\N\fun{succ}(j+i) &&\text{; $h$ + subst.}\\
+            &=_\N(j+i)+1\\
+            &=_\N j+(i+1)  &&\text{; assoc.}\\
+            &=_\N j+\fun{succ}(i) &&\text{; subst.}
+    \end{align*}
+\end{solution}
+
+\begin{solution}
+    We must exhibit a witness for the type
+    \[
+        \prod_{i,j:\N} i+j =_\N j+i.
+    \]
+    We proceed by induction on $i$. Define the motive $C \colon \N \to \univ$ by
+    \[
+        C(i) \defeq \prod_{j:\N} i+j =_\N j+i.
+    \]
+    
+    \textbf{Base case ($i \equiv 0$):} We must provide a term $c_0 \colon \prod_{j:\N} 0+j =_\N j+0$.
+    By definition of addition, $0+j \equiv j$. Thus, the goal reduces to showing $j =_\N j+0$. We have already constructed a witness for this in \nref{lpar:blocked-computation}.
+
+    \textbf{Inductive step:} Let $i:\N$ and assume the inductive hypothesis
+    \[
+        h \colon \prod_{j:\N} i+j =_\N j+i.
+    \]
+    We must show that for any $j$, $\fun{succ}(i)+j =_\N j+\fun{succ}(i)$.
+    \begin{align*}
+        \fun{succ}(i)+j &\equiv \fun{succ}(i+j) \\
+            &=_\N \fun{succ}(j+i) 
+                &&\text{; $h(j)$ and substitution}\\
+            &=_\N (j+i)+1 
+                &&\text{; } \fun{succ}(n) =_\N n+1\\
+            &=_\N j+(i+1) 
+                &&\text{; associativity}\\
+            &=_\N j+\fun{succ}(i) 
+                &&\text{; } n+1 =_\N \fun{succ}(n).
+    \end{align*}
 \end{solution}
