@@ -2,6 +2,27 @@
 
 \section{Introduction} This section aims to describe certain basic concepts in order to create an intuitive background that will be useful when providing formal definitions.
 
+\begin{lpar}{The syntactic nature of Type Theory.}
+    For a mathematician trained in classical theories (like Group Theory or Geometry), the definition of Homotopy Type Theory can seem unusual. Typically, we define a mathematical structure \emph{axiomatically} or \emph{descriptively}: we assume a background universe (usually ZFC Set Theory) and specify a list of properties that a collection of objects must satisfy (e.g., ``A Projective Plane is a set $P$ of points and lines such that...'').
+
+    However, Type Theory is not a structure \emph{within} mathematics; it is a \emph{foundation for} mathematics. As such, it cannot rely on a pre-existing universe of sets. Instead, it must be defined \textsl{syntactically} or \textsl{generatively}, much like a programming language.
+
+    This approach rests on three components:
+    \begin{enumerate}
+        \item \textbf{The Alphabet:} A finite set of primitive symbols (e.g., variables $x, y$, separators `$:\,,\,(\,)$', and keywords like $\lambda, \Pi$).
+        \item \textbf{The Grammar (Syntax):} A set of structural rules that determine which strings of symbols are ``well-formed'' expressions.
+        \item \textbf{The Inference Rules (Logic):} A deductive system that defines how valid judgments can be derived from previous ones. For example, the rule for function application allows us to transition from having ``a function $f$'' and ``an input $a$'' to having ``a term $f(a)$''.
+    \end{enumerate}
+
+    In this view, mathematical objects are not pre-existing entities that we capture with axioms; they are \textsl{constructions} that we build using the rules. A ``proof'' is not an abstract truth value, but a valid derivation tree within this grammar.
+
+    Therefore, when we ask \textit{What is a Type in} HoTT?, the answer is not given by describing its properties in Set Theory, but by specifying the \emph{inference rules} that govern how to construct it, how to construct its elements (introduction), and how to use them (elimination).
+
+    To set this generative process in motion, the theory requires a set of \textsl{primitive objects} (or base types) to serve as the \textit{seeds} of the universe. Just as a grammar needs terminal symbols to form sentences, Type Theory postulates specific starting points—such as the Empty type ($\fun{0}$), the Unit type ($\fun{1}$), and the Natural Numbers ($\N$).
+    
+    These primitives are not constructed from simpler pieces; they are introduced by \emph{fiat} through their own specific rules (Formation, Introduction, Elimination, Computation). They act as the \textit{base cases} of the mathematical induction that builds the universe: once these primitives exist, the generative machinery (like $\Sigma$ and $\Pi$ types) can combine them to construct arbitrarily complex structures.
+\end{lpar}
+
 \begin{paragraph}{The Problem: Runtime Errors vs.~Mathematical Certainty.}
     Conventional programming languages permit runtime errors that are inconceivable in mathematical practice. A classic example is the ``out-of-bounds'' condition: an instruction like $\fun{v[i]}$ can fail because the type of $\fun i$ (e.g., $\fun{integer}$) is too general to guarantee its value is within the valid domain of the array.
 
@@ -709,7 +730,7 @@
     \]
     represents the fiber at $a$ of the relation $R$. Its elements are pairs $(b,\omega)$ where $b\colon B$ and $\omega\colon R(a,b)$ is a witness that $b$ is related to $a$.
 
-    For instance, let $R(2,n)$ stand for the type representing the relation ``$2\mid n$'', where $n\colon\N$. The elements of the type $\sum_{n:\N}R(2,n)$ represent the even numbers paired with the evidence of their evenness. Thus, if $\omega$ is a witness that $2\cdot 3=_\N6$, we have
+    For instance, let $R(2,n)$ stand for the type representing the relation ``$2\mid n$'', where $n\colon\N$. The elements of the type $\sum_{n:\N}R(2,n)$ represent the even numbers paired with the evidence of their evenness. Thus, if $\omega$ is a witness that $2\cdot3=_\N6$, we have
     \[
         (6,\omega)\colon\sum_{n:\N}R(2,n).
     \]
@@ -1224,16 +1245,7 @@
 
     The reason is found in the operational semantics: a \textit{machine} evaluating the expression $\Phi+0$ proceeds by pattern matching on $\Phi$ (the first argument). It checks if the \textit{head}\footnote{The word 'head' refers to the root of the Abstract Syntactic Tree (AST) of the expression.} of $\Phi$ matches the constructor $0$, or if it matches the constructor $\fun{succ}$.
 
-    In our case, $\Phi\defeq n$. Since $n$ is a variable and not a constructor, neither reduction rule applies. The machine cannot simplify the expression further, and the computation \textit{blocks}. Thus, we cannot rely on automatic reduction; we must construct an explicit proof term (deduction).
-
-    The proof proceeds by induction on $n$.
-    \begin{itemize}
-        \item \textbf{Base case ($n\defeq0$):} We must show $0 =_\N 0 + 0$. Since $0+0\equiv0$, this holds by reflexivity.
-        \item \textbf{Inductive step:} We assume the hypothesis $h\colon n =_\N n+0$ and must show $\fun{succ}(n) =_\N \fun{succ}(n)+0$.
-        By the computation rules, the \rhs\ reduces: $\fun{succ}(n)+0 \equiv \fun{succ}(n+0)$.
-        Thus, the goal becomes $\fun{succ}(n) =_\N \fun{succ}(n+0)$.
-    \end{itemize}
-    To complete the proof, we need to apply the function $\fun{succ}$ to both sides of the hypothesis $h$. This relies on the \textit{principle of congruence} that states that functions respect equality, a lemma that we will formally introduce in the next chapter (see also \nref{lpar:substitution}).
+    In our case, $\Phi\defeq n$. Since $n$ is a variable and not a constructor, neither reduction rule applies. The machine cannot simplify the expression further, and the computation \textit{blocks}. Thus, we cannot rely on automatic reduction. In \nref{lpar:additive-identity} we construct an explicit proof term.
 \end{lpar}
 
 \section{Propositions as Types}
@@ -1362,89 +1374,6 @@
     \]
 \end{lpar}
 
-\begin{lpar}{Associativity of addition.}\label{lpar:associativity-of-addition}
-    Proving the associativity of the addition of natural numbers entails defining a function
-    \[
-        \fun{assoc}\colon\prod_{i,j,k:\N}i+(j+k)\eq\N(i+j)+k.
-    \]
-    We proceed by induction on $i$. The type family $C\colon\N\to\univ$ is given by:
-    \[
-        C(i) \defeq \prod_{j,k:\N} i+(j+k)\eq\N(i+j)+k.
-    \]
-    To define the function $\fun{assoc} \defeq \fun{ind}_\N(C, c_0, c_s)$, we specify:
-    \begin{align*}
-        c_0 &\colon C(0),\\
-        c_s &\colon \prod_{i:\N} C(i) \to C(\fun{succ}(i)).
-    \end{align*}
-    For the base case $c_0$, we need a witness of $0+(j+k)\eq\N(0+j)+k$. From the definition of addition we know that $0+n \equiv n$. Therefore, the equality reduces to $j+k = j+k$, and we can define the witness by reflexivity:
-    \[
-        c_0 \defeq \lambda j.\, \lambda k.\, \fun{refl}_{j+k}.
-    \]
-    
-    For the inductive step $c_s$, we assume $i\colon\N$ and the inductive hypothesis $h\colon C(i)$. We must construct a proof for $\fun{succ}(i)$.
-    \[
-        c_s \defeq \lambda i.\, \lambda h.\, \lambda j.\, \lambda k.\, \dots
-    \]
-    where $h(i,j)\colon i+(j+k)\eq\N(i+j)+k$.
-    
-    Computing the goal, we obtain
-    \begin{align*}
-        \fun{succ}(i)+(j+k) &\equiv \fun{succ}(i+(j+k))\\
-            &\eq\N \fun{succ}((i+j)+k) && \text{; by } h(j,k)\\
-            &\equiv \fun{succ}(i+j)+k\\
-            &\equiv (\fun{succ}(i)+j)+k.
-    \end{align*}
-    The equality in the second line is justified by applying the function $\fun{succ}$ to the path provided by the hypothesis $h(j,k)$. This relies on the \textit{principle of congruence} ($\fun{ap}$), which we will prove in Chapter~2. As we will see, the expression to fill the ellipsis above is $\fun{ap}_{\fun{succ}}(h(j,k))$.
-\end{lpar}
-
-\begin{lpar}{The order relation on $\N$.}
-    The translation table (see \nref{lpar:predicate-logic}) implies that the relation $n\le m$, where $n,m\colon\N$, can be defined as
-    \[
-        n\le m \defeq \sum_{k:\N} (n+k=_\N m).
-    \]
-    The following properties hold:
-    \begin{enumerate}[i)]
-        \item $0\le n$
-        \item $n\le\fun{succ}(n)$
-        \item $n\le n$
-        \item $n\le m$ and $m\le n$ imply $n=m$
-        \item $n\le m$ and $m\le r$ imply $n\le r$
-    \end{enumerate}
-    \begin{proof}${}$
-        \begin{enumerate}[i)]
-            \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n =_\N n$. The proof term is $(n,\fun{refl}_n)$.
-
-            \item This relies on the equality $\fun{succ}(n)=n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:blocked-computation} for proving $n+0=n$ .
-
-            \item This is because $n+0=n$.
-
-            \item The standard mathematical argument goes like this: Take $k$ and $h$ satisfying $n+k\eq\N m$ and $m+h\eq\N n$. Then $n+(k+h)\eq\N n$ and in order to derive $h\eq\N0$ and $k\eq\N0$, we need two theorems
-            \begin{align*}
-                n+s\eq\N n&\to s\eq\N0\quad\text{and}\\
-                k+h\eq\N0&\to(k\eq\N0)\times(h\eq\N0).
-            \end{align*}
-            All of this can be easily expressed and proved formally. For instance, the first theorem follows by induction on $n$. The base case is trivial since $0+s=s$. The inductive step consists in showing a witness of
-            \[
-                \fun{succ}(n)+s\eq\N\fun{succ(n)}
-                    \to\fun{succ}(n+s)\eq\N\fun{succ}(n),
-            \]
-            which follows from $\fun{succ}(n)\eq\N\fun{succ}(m)\to n\eq\N m$.
-
-            To prove this last theorem, we need to define the predecessor function $\fun{pred}\colon\N\to\N$, which we can easily do by specifying
-            \begin{align*}
-                \fun{pred}(0)&\defeq0,\\
-                \fun{pred}(\fun{succ}(n))&\defeq n.
-            \end{align*}
-
-            \item Take $k$ and $h$ so that $n+k\eq\N m$ and $m+h\eq\N r$. Then,
-            \[
-                (n+k+h\eq\N m+h)\times(m+h\eq\N r)
-            \]
-            is inhabited, and the result is a consequence of the transitivity of the equality, a theorem that we will prove in section \ref{sec:identity-types}~\nameref{sec:identity-types}.
-        \end{enumerate}
-    \end{proof}
-\end{lpar}
-
 \section{Identity Types}\label{sec:identity-types}
 
 In this section we go in further detail about identity family types. Concretely, if $A\colon\univ$, the $\Id_A\colon A\to A\to\univ$ is the type family dependent on two copies of $A$, whose notation is 
@@ -1458,15 +1387,57 @@ The witnesses of this type are regarded as \textit{paths in the space $A$ from t
 In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{lpar}{Path recursion.}
-    Consider the type
+    Consider the type of \textsl{free} paths
     \[
-        E \defeq\sum_{x,y:A}x\eq Ay.
+        A^I \defeq \sum_{x,y:A} x=_A y.
     \]
-    We can define the trivial map
+    While this represents the space of all paths in $A$, the fundamental recursion principle is stated for paths starting at a fixed element $x\colon A$.
+
+    Given a type $B$, the recursion principle for the \textsl{based} path space at $x$ defines functions that effectively ignore the path. It has the signature:
+    \[
+        \fun{rec}_{\eq A}\colon\prod_{B:\univ}B
+            \to\prod_{y:A}(x\eq Ay)\to B.
+    \]
+    It satisfies the computation rule:
+    \[
+        \fun{rec}_{=_A}(B,c_{\fun{refl}},x,\fun{refl}_x)\equiv c_{\fun{refl}},
+    \]
+    where $c_{\fun{refl}}\colon B$ is the value assigned to the reflexivity path.
+
+    Since $x$ is fixed in the context, the value $b$ may depend on it. For example, taking $B \defeq A$ and $b \defeq x$, we obtain the function
     \begin{align*}
-        r\colon A&\to E\\
-        x&\mapsto(x,x,\fun{refl}_x).
+        f &\colon \prod_{y:A} (x=_A y) \to A \\
+        f &\defeq \lambda y.\,\lambda p.\,x,
     \end{align*}
+    which is formally defined as $f\defeq\fun{rec}_{=_A}(A, x)$, and satisfies $f(x,p)\eq Ax$ for any path $p$ with origin in $x$.\footnote{Compare this with the function $g\defeq\lambda x.\,\lambda p.\,x$ which satisfies $g(x)\equiv x$ for $x\colon A$.}
+\end{lpar}
+
+\begin{lpar}{Comparison with natural recursion.}
+    The following table compares based path with natural recursion:
+    \small
+    \[
+        \begin{tabular}{l|l|l}
+                & $\N$
+                & $\displaystyle\sum_{y:A} x=y$ \\ [4mm]
+            \hline\rule{0mm}{5mm}
+            Constructors
+                & - $0 \colon \N$
+                & - $\fun{refl}_x \colon x=_A x$ \\
+                & - $\fun{succ} \colon \N \to \N$
+                & \\ [1mm]
+            \hline\rule{0mm}{4mm}
+            Input Data
+                & - Base value $c_0 \colon B$
+                & - Base value $c_{\fun{refl}} \colon B$ \\
+                & - Step $c_s \colon B \to B$
+                & \\ [1mm]
+            \hline\rule{0mm}{4mm}
+            Equations
+                & - $f(0) \equiv c_0$
+                & - $f(x, \fun{refl}_x) \equiv c_{\fun{refl}}$ \\
+                & - $f(\fun{succ}(n)) \equiv c_s(f(n))$
+        \end{tabular}
+    \]
 \end{lpar}
 
 \begin{lpar}{General path induction.}
@@ -1543,9 +1514,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \]
         written
         \[
-            p\mapsto q\mapsto p\cdot q,
+            p\mapsto q\mapsto p\ct q,
         \]
-        such that\/ $\mathsf{refl}_x\cdot q\equiv q$ for any\/ $x\colon A$ and $q\colon x\eq Az$.
+        such that\/ $\mathsf{refl}_x\ct q\equiv q$ for any\/ $x\colon A$ and $q\colon x\eq Az$.
     \end{lem}
 
     \begin{proof}
@@ -1566,9 +1537,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \[
             c(x,y,p)\defeq\fun{ind}_{\eq A}(D,d,x,y,p)\colon D(x,y,p).
         \]
-        We can define the concatenation $p\cdot q$ by applying this function:
+        We can define the concatenation $p\ct q$ by applying this function:
         \[
-            p\cdot q\defeq c(x,y,p,z,q).
+            p\ct q\defeq c(x,y,p,z,q).
         \]
         The computation rule for path induction implies
         \[
@@ -1576,7 +1547,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \]
         Therefore,
         \[
-            \fun{refl}_x\cdot q\equiv c(x,x,\fun{refl}_x,z,q)
+            \fun{refl}_x\ct q\equiv c(x,x,\fun{refl}_x,z,q)
                 \equiv d(x)(z,q)\equiv q,
         \]
         which completes the proof.
@@ -1588,7 +1559,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{lem}
         For every type\/ $A$, every\/ $x,y:A$ and every path\/ $p:x\eq Ay$, we have a path
         \[
-            \fun{unit}_r(p)\colon p\cdot\fun{refl}_y\eq{x\eq Ay}p.
+            \fun{unit}_r(p)\colon p\ct\fun{refl}_y\eq{x\eq Ay}p.
         \]
     \end{lem}
     
@@ -1596,13 +1567,13 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         We perform path induction on $p$. Let $C(x,y,p)$ be the motive family
         \begin{align*}
             C&\defeq\prod_{x,y:A}\;\prod_{p:x\eq Ay}
-                (p\cdot\fun{refl}_y\eq{x\eq Ay}p).
+                (p\ct\fun{refl}_y\eq{x\eq Ay}p).
         \end{align*}
         For the base case, we assume $y \equiv x$ and $p \equiv \fun{refl}_x$. We must construct a term of type
         \[
-            \fun{refl}_x\cdot\fun{refl}_x\eq{x\eq Ax}\fun{refl}_x.
+            \fun{refl}_x\ct\fun{refl}_x\eq{x\eq Ax}\fun{refl}_x.
         \]
-        By Lemma~\ref{lem:path-concatenation}, we have the definitional equality $\fun{refl}_x \cdot \fun{refl}_x \equiv \fun{refl}_x$. Thus, the goal simplifies to $\fun{refl}_x\eq{x\eq Ax}\fun{refl}_x$, which is inhabited by $c(x)\defeq\fun{refl}_{\fun{refl}_x}$.
+        By Lemma~\ref{lem:path-concatenation}, we have the definitional equality $\fun{refl}_x\ct\fun{refl}_x\equiv\fun{refl}_x$. Thus, the goal simplifies to $\fun{refl}_x\eq{x\eq Ax}\fun{refl}_x$, which is inhabited by $c(x)\defeq\fun{refl}_{\fun{refl}_x}$.
     
         Applying path induction, we obtain the desired term
         \[
@@ -1612,14 +1583,14 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{lpar}
 
 \begin{lpar}{Substitution.}\label{lpar:substitution}
-    The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with type substitution. 
+    The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with type substitution.\footnote{See also Exercise~\ref{exr:ap-application}.}
         
 \begin{lem}
     Let\/ $P\colon A\to\univ$ be a family of types. For any path\/  $e\colon x\eq A y$, there is a function
     \[
         \fun{subst}_P(e)\colon P(x)\to P(y).
     \]
-    Moreover, $\fun{subst}_P(\fun{refl}_x)\equiv \lambda z.\,z$.
+    Moreover, $\fun{subst}_P(\fun{refl}_x)\equiv\lambda z.\,z$.
 \end{lem}
 
 \begin{proof}
@@ -1694,15 +1665,15 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     In order to derive  $D$ using  $\fun{ind}$ we define the motive  $C$ as
     \begin{equation}\label{eq:ind-domain-function}
-        C(u,v,q)\defeq\prod_{s:a\eq Au}D(u,s)\to D(v,s\cdot q).
+        C(u,v,q)\defeq\prod_{s:a\eq Au}D(u,s)\to D(v,s\ct q).
     \end{equation}
     For the base case  $c(u)$ we need a term of type
     \[
-        \prod_{s:a\eq Au}D(u,s)\to D(u,s\cdot\fun{refl}_u).
+        \prod_{s:a\eq Au}D(u,s)\to D(u,s\ct\fun{refl}_u).
     \]
-    By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s \cdot \fun{refl}_u\eq As$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq As\cdot\fun{refl}_u$.
+    By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s\ct\fun{refl}_u\eq As$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq As\ct\fun{refl}_u$.
     
-    Since we need to turn a  $D(u,s)$ into a  $D(u,s\cdot\fun{refl}_u)$, we use the helper function  $\fun{subst}$ on the family  $\lambda t.\,D(u,t)$
+    Since we need to turn a  $D(u,s)$ into a  $D(u,s\ct\fun{refl}_u)$, we use the helper function  $\fun{subst}$ on the family  $\lambda t.\,D(u,t)$
     \begin{equation}\label{eq:ind-base-case-subst}
         c(u)\defeq\lambda s.\,\fun{subst}(\fun{unit}_r(s)^{-1}).
     \end{equation}
@@ -1714,7 +1685,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         f(x,p)\defeq E(a,x,p)(\fun{refl}_a)(d).
     \]
-    This is well-typed because, according to \eqref{eq:ind-domain-function},  $E(a,x,p)(\fun{refl}_a)$ provides a map  $D(a,\fun{refl}_a)\to D(x,\fun{refl}_a\cdot p)$, and since  $\fun{refl}_a\cdot p\equiv p$, the codomain is precisely  $D(x,p)$. Finally, we apply this map to $d\colon D(a,\fun{refl}_a)$ to get an element of $D(x,p)$.
+    This is well-typed because, according to \eqref{eq:ind-domain-function},  $E(a,x,p)(\fun{refl}_a)$ provides a map  $D(a,\fun{refl}_a)\to D(x,\fun{refl}_a\ct p)$, and since  $\fun{refl}_a\ct p\equiv p$, the codomain is precisely  $D(x,p)$. Finally, we apply this map to $d\colon D(a,\fun{refl}_a)$ to get an element of $D(x,p)$.
     
     To verify the computation rule, we have to prove that
     \[
@@ -1742,6 +1713,120 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         f(a,\fun{refl}_a)\equiv (\lambda z.\,z)(d) \equiv d,
     \]
     as desired.
+\end{lpar}
+
+\section{Arithmetic of Natural Numbers}
+
+\begin{lpar}{Additive identity.}\label{lpar:additive-identity}
+    Since our definition of addition in $\N$ is by induction in the fist operand, we know that $0+n\equiv n$ for $n\colon\N$. What remains to be seen is the following
+    
+    \begin{lem}
+        For every $n\colon\N$ the type $n+0\eq\N n$ is inhabited.
+    \end{lem}
+
+    \begin{proof} We proceed by induction on $n$.
+    \begin{itemize}
+        \item \textbf{Base case ($n\defeq0$):} We must show $0 =_\N 0 + 0$. Since $0+0\equiv0$, this holds by reflexivity.
+        \item \textbf{Inductive step:} We assume the hypothesis $h\colon n =_\N n+0$ and must show $\fun{succ}(n) =_\N \fun{succ}(n)+0$.
+        By the computation rules, the \rhs\ reduces: $\fun{succ}(n)+0 \equiv \fun{succ}(n+0)$.
+        Thus, the goal becomes $\fun{succ}(n) =_\N \fun{succ}(n+0)$.
+
+        To complete the proof, we need to apply the function $\fun{succ}$ to both sides of the hypothesis $h$. This relies on the \textit{principle of congruence} that states that functions respect equality.\footnote{Exercise~\ref{exr:ap-application}.}
+        
+        However, we can also use \nref{lpar:substitution} as follows. Consider the type family $P\colon\N\to\univ$ defined by
+        \[
+            P\defeq\lambda k.\,\fun{succ}(n)\eq\N\fun{succ}(k).
+        \]
+        Since $\fun{refl}_{\fun{succ}(n)}\colon P(n)$, we can evaluate 
+        \[
+            \fun{subst}_P(h)\colon P(n)\to P(n+0)
+        \]
+        at $\fun{refl}_{\fun{succ}(n)}$ to construct an inhabitant of $\fun{succ}(n)\eq\N\fun{succ}(n+0)$, as desired. 
+    \end{itemize}        
+    \end{proof}
+\end{lpar}
+
+\begin{lpar}{Associativity of addition.}\label{lpar:associativity-of-addition}
+    Proving the associativity of the addition of natural numbers entails defining a function
+    \[
+        \fun{assoc}\colon\prod_{i,j,k:\N}i+(j+k)\eq\N(i+j)+k.
+    \]
+    We proceed by induction on $i$. The type family $C\colon\N\to\univ$ is given by:
+    \[
+        C(i) \defeq \prod_{j,k:\N} i+(j+k)\eq\N(i+j)+k.
+    \]
+    To define the function $\fun{assoc} \defeq \fun{ind}_\N(C, c_0, c_s)$, we specify:
+    \begin{align*}
+        c_0 &\colon C(0),\\
+        c_s &\colon \prod_{i:\N} C(i) \to C(\fun{succ}(i)).
+    \end{align*}
+    For the base case $c_0$, we need a witness of $0+(j+k)\eq\N(0+j)+k$. From the definition of addition we know that $0+n \equiv n$. Therefore, the equality reduces to $j+k = j+k$, and we can define the witness by reflexivity:
+    \[
+        c_0 \defeq \lambda j.\, \lambda k.\, \fun{refl}_{j+k}.
+    \]
+    
+    For the inductive step $c_s$, we assume $i\colon\N$ and the inductive hypothesis $h\colon C(i)$. We must construct a proof for $\fun{succ}(i)$.
+    \[
+        c_s \defeq \lambda i.\, \lambda h.\, \lambda j.\, \lambda k.\, \dots
+    \]
+    where $h(i,j)\colon i+(j+k)\eq\N(i+j)+k$.
+    
+    Computing the goal, we obtain
+    \begin{align*}
+        \fun{succ}(i)+(j+k) &\equiv \fun{succ}(i+(j+k))\\
+            &\eq\N \fun{succ}((i+j)+k) && \text{; by $h(j,k)$ + congruence}\\
+            &\equiv \fun{succ}(i+j)+k\\
+            &\equiv (\fun{succ}(i)+j)+k.
+    \end{align*}
+    The equality in the second line is justified by applying the function $\fun{succ}$ to the path provided by the hypothesis $h(j,k)$. This relies on the \textit{principle of congruence} ($\fun{ap}$), which we prove in Exercise~\ref{exr:ap-application}.
+\end{lpar}
+
+\begin{lpar}{The order relation on $\N$.}
+    The translation table (see \nref{lpar:predicate-logic}) implies that the relation $n\le m$, where $n,m\colon\N$, can be defined as
+    \[
+        n\le m \defeq \sum_{k:\N} (n+k=_\N m).
+    \]
+    The following properties hold:
+    \begin{enumerate}[i)]
+        \item $0\le n$
+        \item $n\le\fun{succ}(n)$
+        \item $n\le n$
+        \item $n\le m$ and $m\le n$ imply $n=m$
+        \item $n\le m$ and $m\le r$ imply $n\le r$
+    \end{enumerate}
+    \begin{proof}${}$
+        \begin{enumerate}[i)]
+            \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n =_\N n$. The proof term is $(n,\fun{refl}_n)$.
+
+            \item This relies on the equality $\fun{succ}(n)=n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:blocked-computation} for proving $n+0=n$ .
+
+            \item This is because $n+0=n$.
+
+            \item The standard mathematical argument goes like this: Take $k$ and $h$ satisfying $n+k\eq\N m$ and $m+h\eq\N n$. Then $n+(k+h)\eq\N n$ and in order to derive $h\eq\N0$ and $k\eq\N0$, we need two theorems
+            \begin{align*}
+                n+s\eq\N n&\to s\eq\N0\quad\text{and}\\
+                k+h\eq\N0&\to(k\eq\N0)\times(h\eq\N0).
+            \end{align*}
+            All of this can be easily expressed and proved formally. For instance, the first theorem follows by induction on $n$. The base case is trivial since $0+s=s$. The inductive step consists in showing a witness of
+            \[
+                \fun{succ}(n)+s\eq\N\fun{succ(n)}
+                    \to\fun{succ}(n+s)\eq\N\fun{succ}(n),
+            \]
+            which follows from $\fun{succ}(n)\eq\N\fun{succ}(m)\to n\eq\N m$.
+
+            To prove this last theorem, we need to define the predecessor function $\fun{pred}\colon\N\to\N$, which we can easily do by specifying
+            \begin{align*}
+                \fun{pred}(0)&\defeq0,\\
+                \fun{pred}(\fun{succ}(n))&\defeq n.
+            \end{align*}
+
+            \item Take $k$ and $h$ so that $n+k\eq\N m$ and $m+h\eq\N r$. Then,
+            \[
+                (n+k+h\eq\N m+h)\times(m+h\eq\N r)
+            \]
+            is inhabited, and the result is a consequence of the transitivity of the equality, a theorem that we will prove in section \ref{sec:identity-types}~\nameref{sec:identity-types}.
+        \end{enumerate}
+    \end{proof}
 \end{lpar}
 
 \section{Exercises}
@@ -1939,9 +2024,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 \big(\fun{rec}(C,c_0,c_s,q_1(n))\big)\\
             &\equiv c_s\big(q_1(n),\fun{rec}(C,c_0,c_s,q_1(n))\big).
     \end{align*}
-    Thus, by \nref{lpar:substitution}, the question of proving that $\fun{rec}$ is propositionally equal to the recursion principle $\fun{rec}_\N$ for $\N$, would follow from the fact that a function $f\colon\N\to\N$ that satisfies $f(0)\equiv0$ and $f(\fun{succ}(n))\equiv\fun{succ}(n)$ is propositionally equal to the identity, i.e., $f=_{\N\to\N}\id_\N$.
+    Thus, the question of proving that $\fun{rec}$ is propositionally equal to the recursion principle $\fun{rec}_\N$ for $\N$, would follow from the fact that a function $f\colon\N\to\N$ that satisfies $f(0)\equiv0$ and $f(\fun{succ}(n))\equiv\fun{succ}(n)$ is propositionally equal to the identity, i.e., $f=_{\N\to\N}\id_\N$.
 
-    However, strictly speaking, that would be too much for our needs, since the equality $q_1(n)=n$ for $n\colon\N$ would imply by substitution that $\fun{rec}$ satisfies the recursion principle equations propositionally, which is what we want.
+    However, strictly speaking, that would be too much for our needs, since the equality $q_1(n)=n$ for $n\colon\N$ would imply by congruence\footnote{See Exercise~\ref{exr:ap-application}.} that $\fun{rec}$ satisfies the recursion principle equations propositionally, which is what we want.
 
     In other words, we need a witness of
     \[
@@ -1959,7 +2044,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         \fun{ind}_\N(C,c_0,c_s)\colon\prod_{n:\N}C(n).
     \]
-    For $c_0$, we define it as $\fun{refl}_0$ because $q_1(0) \equiv 0$. For the inductive step, given $n:\N$ and a hypothesis $h:C(n)$ (i.e., $h\colon q_1(n) =_\N n$), we define $c_s(n, h)$ by applying $\fun{succ}$ to $h$ via substitution (see \nref{lpar:substitution}). This provides a witness for $q_1(\fun{succ}(n))=_\N\fun{succ}(n)$, since $q_1(\fun{succ}(n))\equiv\fun{succ}(q_1(n))$.
+    For $c_0$, we define it as $\fun{refl}_0$ because $q_1(0) \equiv 0$. For the inductive step, given $n:\N$ and a hypothesis $h:C(n)$ (i.e., $h\colon q_1(n) =_\N n$), we define $c_s(n, h)$ by applying $\fun{succ}$ to $h$ via congruence. This provides a witness for $q_1(\fun{succ}(n))=_\N\fun{succ}(n)$, since $q_1(\fun{succ}(n))\equiv\fun{succ}(q_1(n))$.
     
 \end{solution}
 
@@ -2067,7 +2152,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
             The base case is trivial because $0\cdot0\equiv0$ by definition.
             
-            For the inductive step, take $p\colon n\cdot0\eq\N0$. We have to see that $\fun{succ}(n)\cdot0\eq\N0$ is inhabited. Since $\fun{succ}(n)\cdot0\equiv n\cdot0+0$, the conclusion follows from path concatenation: take $q\colon n\cdot0+0\eq\N n\cdot0$ and obtain $q\cdot p\colon\fun{succ}(n)\cdot0\eq\N0$.
+            For the inductive step, take $p\colon n\cdot0\eq\N0$. We have to see that $\fun{succ}(n)\cdot0\eq\N0$ is inhabited. Since $\fun{succ}(n)\cdot0\equiv n\cdot0+0$, the conclusion follows from path concatenation: take $q\colon n\cdot0+0\eq\N n\cdot0$ and obtain $q\ct p\colon\fun{succ}(n)\cdot0\eq\N0$.
 
             \item \textit{Left distributivity.} Define the motive $C\colon\N\to\univ$ by
             \[
@@ -2088,7 +2173,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                         &&\text{; +assoc \& +comm}\\
                     &\eq\N \fun{succ}(i)\cdot j+\fun{succ}(i)\cdot k,
             \end{align*}
-            where we have used \nref{lpar:substitution} in obvious ways. The conclusion follows from \nref{lpar:path-concatenation}.
+            where we have used congruence\footnote{Exercise~\ref{exr:ap-application}.} in obvious ways. The conclusion follows from \nref{lpar:path-concatenation}.
 
             \item \textit{Multiplicative identity.} First observe that
             \[
@@ -2100,7 +2185,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \begin{align*}
                 \fun{succ}(n)\cdot1&\equiv n\cdot1+1\\
                     &\eq\N n+1
-                        &&\text{; $p$ + substitution}\\
+                        &&\text{; $p$ + congruence}\\
                     &\eq\N 1+n
                         &&\text{; commutativity}\\
                     &\equiv\fun{succ}(n).
@@ -2178,7 +2263,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             m^{\fun{succ}(n)+n'} &\equiv m^{\fun{succ}(n+n')}\\
                 &\equiv m^{n+n'}\cdot m\\
                 &\eq\N(m^n\cdot m^{n'})\cdot m
-                    &&\text{; by $q$ + substitution}\\
+                    &&\text{; by $q$ + congruence}\\
                 &\eq\N(m^n\cdot m)\cdot m^{n'}
                     &&\text{; associativity \& commutativity}\\
                 &\eq\N m^{\fun{succ}(n)}\cdot m^{n'}.
@@ -2438,7 +2523,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         C(i) \defeq \prod_{j:\N} i+j =_\N j+i.
     \]
     
-    \textbf{Base case ($i \equiv 0$):} We must provide a term $c_0 \colon \prod_{j:\N} 0+j =_\N j+0$.
+    \textbf{Base case:} We must provide a term $c_0 \colon \prod_{j:\N} 0+j =_\N j+0$.
     By definition of addition, $0+j \equiv j$. Thus, the goal reduces to showing $j =_\N j+0$. We have already constructed a witness for this in \nref{lpar:blocked-computation}.
 
     \textbf{Inductive step:} Let $i:\N$ and assume the inductive hypothesis
@@ -2449,7 +2534,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{align*}
         \fun{succ}(i)+j &\equiv \fun{succ}(i+j) \\
             &=_\N \fun{succ}(j+i) 
-                &&\text{; $h(j)$ and substitution}\\
+                &&\text{; $h(j)$ and congruence}\\
             &=_\N (j+i)+1 
                 &&\text{; } \fun{succ}(n) =_\N n+1\\
             &=_\N j+(i+1) 
@@ -2458,3 +2543,134 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 &&\text{; } n+1 =_\N \fun{succ}(n).
     \end{align*}
 \end{solution}
+
+\section{Additional Exercises}
+
+\begin{exr}\label{exr:ap-application}
+    In {\upshape\nref{lpar:associativity-of-addition}}, we relied on the \textsl{principle of congruence} (applying a function to both sides of an equality).
+    \begin{enumerate}[a), font=\upshape]
+        \item Define the \textsl{action on paths}, a.k.a.~\textsl{application}, function\/ $\fun{ap}_f$, which takes a function\/ $f\colon A\to B$ and a path\/ $p\colon x\eq Ay$ and produces a path\/ $f(x)\eq Bf(y)$.
+        
+        \item Show that\/ $\fun{ap}_f$ distributes over path concatenation, i.e.,
+        \[
+            \fun{ap}_f(p\ct q)\eq {f(x)\eq Bf(z)}\fun{ap}_f(p)\ct \fun{ap}_f(q),
+        \]
+        for $x,y,z\colon A$, $p\colon x\eq Ay$ and $q\colon y\eq Az$.
+    \end{enumerate}
+\end{exr}
+
+\needspace{2\baselineskip}
+\begin{solution}
+    \begin{enumerate}[a)]
+        \item Fix the types $A$ and $B$, and a function $f\colon A\to B$. Consider the motive family
+        \begin{align*}
+            C_f&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+            C_f&\defeq\lambda x.\,\lambda y.\,\lambda p.\,f(x)\eq Bf(y).
+        \end{align*}
+        To apply the induction principle, we need a base case function $c_f$ of type
+        \[
+             \prod_{x:A} C_f(x,x,\fun{refl}_x).
+        \]
+        Since $C_f(x,x,\fun{refl}_x) \equiv f(x)\eq B f(x)$, we can define this function as
+        \[
+            c_f \defeq \lambda x.\,\fun{refl}_{f(x)}.
+        \]
+        Then, applying the induction principle $\fun{ind}_{\eq A}$  to $C_f$ and $c_f$, as specified in \eqref{eq:ind=A} yields a function
+        \begin{align*}
+            \fun{ind}_{\eq A}(C_f,c_f)\colon
+                \prod_{x,y:A}\;\prod_{p:x\eq Ay}f(x)\eq Bf(y),
+        \end{align*}
+        which satisfies
+        \[
+            \fun{ind}_{\eq A}(C_f,c_f,x,x,\fun{refl}_x)
+            \equiv c_f(x)
+            \equiv \fun{refl}_{f(x)}.
+        \]
+        Hence, we can introduce the \textsl{action of paths} function as
+        \[
+            \fun{ap}_f\defeq\fun{ind}_{\eq A}(C_f,c_f).
+        \]
+        The complete notation $\fun{ap}_f(x,y,p)$ is usually simplified to $\fun{ap}_f(p)$, or even to~$\tilde f(p)$. In particular, 
+        \[
+            \tilde f(\fun{refl}_x)\equiv \fun{refl}_{f(x)}.
+        \]
+    
+        \item Fix $f\colon A\to B$ and consider the motive
+        \begin{align*}
+            D_f&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+                D_f(x,y,p)&\defeq\prod_{z:A}\;\prod_{q:y\eq Az}
+                \tilde f(p\ct q)\eq {f(x)\eq Bf(z)}
+                    \tilde f(p)\ct\tilde f(q).
+        \end{align*}
+        Using pat a) and the fact that $\fun{refl}$ is the  definitionally left concatenation unit, we deduce
+        \begin{align*}
+            D_f(x,x,\fun{refl}_x)
+                &\equiv\prod_{z:A}\;\prod_{q:x\eq Az}
+                    \tilde f(\fun{refl}_x\ct q)\eq{f(x)\eq Bf(x)}
+                        \tilde f(\fun{refl}_x)\ct\tilde f(q)\\
+                &\equiv \prod_{z:A}\;\prod_{q:x\eq Az}
+                    \tilde f(q)\eq{f(x)\eq Bf(x)}\tilde f(q).
+        \end{align*}
+        Consequently, we can take
+        \[
+            d_f(x)\defeq\lambda z.\,\lambda q.\,\fun{refl}_{\tilde f(q)},
+        \]
+        and apply the induction principle to obtain
+        \[
+            \fun{ind}_{\eq A}(D_f,d_f,x,y,p)\colon D_f(x,y,p).
+        \]
+    \end{enumerate}
+\end{solution}
+
+\begin{exr}
+    Consider the boolean type\/ $\fun{2}$.
+    \begin{enumerate}[a), font=\upshape]
+        \item Define the negation function\/ $\fun{not} : \fun{2} \to \fun{2}$.
+        \item Prove that negation is an involution, i.e., construct a witness for
+        \[
+            \prod_{b:\fun2}\fun{not}(\fun{not}(b))\eq {\fun2} b.
+        \]
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}
+    \begin{enumerate}[a)]
+        \item It is enough to use the recursion principle \eqref{eq:rec2} for the motive $C\defeq\fun2$. For the constants $c_0,c_1\colon\fun2$, we take
+        \[
+            c_0\defeq1_{\fun2}
+            \quad\textsl{and}\quad
+            c_1\defeq0_{\fun2}.
+        \]
+        Then we can define
+        \[
+            \fun{not}\colon\fun2\to\fun2,
+            \quad
+            \fun{not}\defeq\lambda b.\,\fun{rec}_{\fun2}(\fun2,c_0,c_1,b),
+        \]
+        which satisfies $\fun{not}(0_{\fun2})\equiv1_{\fun2}$ and $\fun{not}(1_{\fun2})\equiv0_{\fun2}$.
+
+        \item Consider the motive $C\colon\fun2\to\univ$ given by
+        \[
+            C\defeq\prod_{b:\fun2}\fun{not}(\fun{not}(b))\eq{\fun2}b.
+        \]
+        Using the induction principle for $\fun2$, we need to specify two paths $c_0\colon C(0_{\fun2})$ and $c_1\colon C(1_{\fun2})$, which we choose as $\fun{refl}_{0_{\fun2}}$ and $\fun{refl}_{1_{\fun2}}$. These are well defined because 
+        \[
+            \fun{not}(\fun{not}(0_{\fun2}))
+                \equiv\fun{not}(1_{\fun2})
+                \equiv0_{\fun2},
+        \]
+        and similarly for $1_{\fun2}$. As a result, we can define
+        \[
+            \lambda b.\,\fun{ind}_{\fun2}(C,c_0,c_1,b).
+        \]
+    \end{enumerate}
+\end{solution}
+
+\begin{exr}
+    Prove that substitution over a constant type family is the identity function. That is, given a type\/ $B$ and the constant family\/ $P(x)\defeq B$, construct a witness for
+    \[
+        \prod_{x,y:A}\;
+            \prod_{p:x\eq Ay}\;
+            \prod_{b:B}\fun{subst}_P(p,b)\eq Bb.
+    \]
+\end{exr}
