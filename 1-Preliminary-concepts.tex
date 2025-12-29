@@ -109,7 +109,7 @@
 \begin{lpar}{Binders.}\label{lpar:binders}
     A \textsl{binder} (a.k.a.~\textsl{variable binder}) is an \textit{operator}~$\Omega$ that can be applied to a variable $x$ of type $A$, and an expression $E$ using the syntax
     \[
-        \Omega x\colon A.\, E.
+        \nabla x\colon A.\,E.
     \]
 \end{lpar}
 
@@ -221,12 +221,12 @@
     whose second argument is guaranteed to be in the range $\nset[0]{n-1}$.
 \end{lpar}
 
-\begin{lpar}{Dependent functions}\hspace{-1em} (a.k.a.~$\Pi$-types). \label{lpar:Pi-types}
+\begin{lpar}{Dependent functions}\hspace{-0.5em} (a.k.a.~$\Pi$-types). \label{lpar:Pi-types}
     Given a type $A\colon\univ$ and a family $B\colon A\to\univ$, we may construct the type of \textsl{dependent functions}
     \[
         \prod_{x:A}B(x)\colon\univ,
     \]
-    by means of the binder $\Pi x\colon A.\,B(x)\colon\univ$ (see \nref{lpar:binders}).
+    by means of the binder $\Pi x.\,B(x)$ (see \nref{lpar:binders}).
     
     This type is a generalization of the function type $A\to B$, which can be recovered by taking the constant family $\lambda x\colon A.\,B$, to produce
     \[
@@ -246,6 +246,26 @@
     \[
         \prod_{x:A}A\to A\text{ stands for }\prod_{x:A}(A\to A).
     \]
+\end{lpar}
+
+\begin{lpar}{Generalized Currying.}\label{lpar:generalized-currying}
+    Recall from  \nref{lpar:currying} that standard Currying establishes an equivalence
+    \[
+        (A\times B)\to C \iff A\to B\to C.
+    \]
+    In the context of dependent types, the  $\Sigma$-type acts as the generalization of the Cartesian product (see  \nref{lpar:Sigma-types}).
+    
+    Consequently, the Currying principle extends naturally to this setting: mapping out of a dependent sum is equivalent to mapping out of the components sequentially.
+    
+    Specifically, a function
+    \[
+        f\colon\Big(\sum_{x:A}B(x)\Big)\to C
+    \]
+    is equivalent to a dependent function
+    \[
+        \hat f\colon\prod_{x:A}B(x)\to C,
+    \]
+    where the scope of the binder $\Pi$ includes $C$.
 \end{lpar}
 
 \begin{lpar}{Polymorphic functions.}
@@ -1441,25 +1461,31 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{lpar}
 
 \begin{lpar}{General path induction.}
-    In the case of identity types, the induction principle, a.k.a.~\textsl{path induction}, establishes that given a family 
+    In the case of identity types, the induction principle (a.k.a.~\textsl{path induction}) conceptually requires a motive defined on the total space of paths:
     \[
-        C\colon\prod_{x,y:A}(x\eq A y)\to\univ
+        \Big(\sum_{x,y:A}x=_A y\Big)\to\univ.
     \]
-    and a function $c\colon\prod_{x:A}C(x,x,\fun{refl}_x)$, there is a function
+    In Type Theory, however, we specify this map using its Curried\footnote{See \nref{lpar:generalized-currying}.} form:
+    \[
+        C\colon\prod_{x,y:A}(x\eq A y)\to\univ.
+    \]
+    This distinction explains why we write \/ $C(x,y,p)$ rather than \/ $C((x,y,p))$.
+
+    Given such a motive \/ $C$ and a base case function \/ $c\colon\prod_{x:A}C(x,x,\fun{refl}_x)$, the principle establishes the existence of a dependent function
     \[
         f\colon\prod_{x,y:A}\;\prod_{p:x\eq A y}C(x,y,p)
     \]
-    such that $f(x,x,\fun{refl}_x)\defeq c(x)$ for $x\colon A$. In other words, the induction principle for identity types is defined as
+    such that \/ $f(x,x,\fun{refl}_x)\defeq c(x)$ for \/ $x\colon A$. In other words, the induction principle for identity types is defined as
     \begin{equation}\label{eq:ind=A}
         \fun{ind}_{\eq A}\colon\prod_{C:\prod_{x,y:A}(x\eq A y)\to\univ}
             \;\prod_{x:A}C(x,x,\fun{refl}_x)
                 \to\prod_{x,y:A}\;\prod_{p:x\eq Ay}C(x,y,p)
     \end{equation}
-    and the equation
+    satisfying the computation rule
     \[
         \fun{ind}_{\eq A}(C,c,a,a,\fun{refl}_a)\defeq c(a)
     \]
-    for every $a\colon A$.
+    for every \/ $a\colon A$.
 \end{lpar}
 
 \begin{lpar}{Path symmetry.}
@@ -1596,7 +1622,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{proof}
     Consider the motive $C\colon\prod_{x,y:A}(x\eq Ay)\to\univ$
     \[
-        C(x,y) \defeq \prod_{e:x\eq Ay}P(x)\to P(y).
+        C(x,y,e)\defeq P(x)\to P(y).
     \]
     For the base case $c\colon C(x,x,\fun{refl}_x)\equiv P(x)\to P(x)$ take the identity function $c\defeq\lambda z.\,z$. Then define
     \[
@@ -1794,11 +1820,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \item $n\le m$ and $m\le n$ imply $n=m$
         \item $n\le m$ and $m\le r$ imply $n\le r$
     \end{enumerate}
-    \begin{proof}${}$
+    \begin{proof}[Proof sketch]${}$
         \begin{enumerate}[i)]
             \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n =_\N n$. The proof term is $(n,\fun{refl}_n)$.
 
-            \item This relies on the equality $\fun{succ}(n)=n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:blocked-computation} for proving $n+0=n$ .
+            \item This relies on the equality $\fun{succ}(n)=n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:additive-identity} for proving $n+0=n$ .
 
             \item This is because $n+0=n$.
 
@@ -2146,7 +2172,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 &\equiv \fun{exp}(n,m)\cdot m.
         \end{align*}
 
-        \item From \nref{lpar:blocked-computation} and [\nref{lpar:associativity-of-addition}], we know that $0$ is additive identity of $\N$ and that addition is associative. Therefore, we have to prove the following propositions\footnote{For commutativity of addition see Exercise~\ref{exr:+comm}.}
+        \item From \nref{lpar:additive-identity} and \nref{lpar:associativity-of-addition}, we know that $0$ is additive identity of $\N$ and that addition is associative. Therefore, we have to prove the following propositions\footnote{For commutativity of addition see Exercise~\ref{exr:+comm}.}
         \begin{enumerate}[1.]
             \item \textit{Annihilation.} Since $0\cdot n\equiv n$, it suffices to show that $n\cdot0\eq\N n$ by induction on $n\colon\N$.
 
@@ -2524,7 +2550,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     
     \textbf{Base case:} We must provide a term $c_0 \colon \prod_{j:\N} 0+j =_\N j+0$.
-    By definition of addition, $0+j \equiv j$. Thus, the goal reduces to showing $j =_\N j+0$. We have already constructed a witness for this in \nref{lpar:blocked-computation}.
+    By definition of addition, $0+j \equiv j$. Thus, the goal reduces to showing $j =_\N j+0$. We have already constructed a witness for this in \nref{lpar:additive-identity}.
 
     \textbf{Inductive step:} Let $i:\N$ and assume the inductive hypothesis
     \[
@@ -2549,7 +2575,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{exr}\label{exr:ap-application}
     In {\upshape\nref{lpar:associativity-of-addition}}, we relied on the \textsl{principle of congruence} (applying a function to both sides of an equality).
     \begin{enumerate}[a), font=\upshape]
-        \item Define the \textsl{action on paths}, a.k.a.~\textsl{application}, function\/ $\fun{ap}_f$, which takes a function\/ $f\colon A\to B$ and a path\/ $p\colon x\eq Ay$ and produces a path\/ $f(x)\eq Bf(y)$.
+        \item Define the \textsl{application}\footnote{ A.k.a.~\textsl{action on paths}.} function\/ $\fun{ap}_f$, which takes a function\/ $f\colon A\to B$ and a path\/ $p\colon x\eq Ay$ and produces a path\/ $f(x)\eq Bf(y)$.
         
         \item Show that\/ $\fun{ap}_f$ distributes over path concatenation, i.e.,
         \[
@@ -2674,3 +2700,56 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \prod_{b:B}\fun{subst}_P(p,b)\eq Bb.
     \]
 \end{exr}
+
+\begin{solution}
+    The motive $C$ used in \nref{lpar:substitution} to derive the transport function $\fun{subst}_P$ is given by
+    \[
+    C(x,y,p)\defeq P(x)\to P(y),
+    \]
+    which, in this case, reduces to
+    \[
+    C(x,y,p)\defeq B\to B,
+    \]
+    while $c\colon C(x,x,\fun{refl}_x)$ remains the identity $c\defeq\lambda b\colon B.\,b$. Let us also recall that $\fun{subst}_P(x,y,p)\equiv\fun{ind}_{\eq A}(C,c,x,y,p)$.
+    
+    Consider the motive
+    \[
+    D(x,y,p)\defeq\prod_{b:B}\fun{subst}_P(p,b)\eq B b.
+    \]
+    For the base case, we need a witness $d$ of type $\prod_{x:A} D(x,x,\fun{refl}_x)$.
+    Since
+    \[
+        \fun{subst}_P(x,x,\fun{refl}_x)\equiv\id_B,
+    \]
+    and $\id_B(b)\equiv b$, evaluating the motive at the base yields
+    \[
+    D(x,x,\fun{refl}_x) \equiv \prod_{b:B}b\eq B b.
+    \]
+    Hence, we can define $d(x)\defeq\lambda b.\,\fun{refl}_b$.
+    We can now invoke the induction principle $\fun{ind}_{\eq A}$ to produce the desired function
+    \[
+    \fun{ind}_{\eq A}(D,d)\colon\prod_{x,y:A}\;\prod_{p:x\eq A y} D(x,y,p).
+    \]
+\end{solution}
+
+\begin{exr}
+    Let\/ $f\colon A\to B$ be a function between types\/ $A$ and\/ $B$.
+    Show that the action on paths\/ $\fun{ap}_f$ can be defined strictly in terms of the transport function\/ $\fun{subst}$.
+    Specifically, given\/ $x,y\colon A$ and a path\/ $p\colon x\eq Ay$, construct a term of type\/ $f(x)\eq Bf(y)$ using only\/ $\fun{subst}$ and\/ $\fun{refl}$.
+\end{exr}
+
+\begin{solution}
+    Fix\/ $x\colon A$ and consider the family\/ $P\colon A\to\univ$ defined by
+    \[
+        P(y)\defeq f(x)\eq B f(y).
+    \]
+    By transport, we know that there is a function
+    \[
+        \fun{subst}_P\colon\prod_{y:A}\;\prod_{p:x\eq Ay}P(x)\to P(y).
+    \]
+    Since\/ $\fun{refl}_{f(x)}\colon P(x)$, given a path\/ $e\colon x\eq A y$, we can apply the transport function to obtain
+    \[
+        \fun{subst}_P(y,e)(\fun{refl}_{f(x)})\colon P(y).
+    \]
+    By definition of\/ $P$, this term is an inhabitant of\/ $f(x)\eq B f(y)$, as required.
+\end{solution}
