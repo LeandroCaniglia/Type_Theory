@@ -1,24 +1,24 @@
 \chapter{Preliminary Concepts}
 
-\section{Introduction} This section aims to describe certain basic concepts in order to create an intuitive background that will be useful when providing formal definitions.
+\section{Introduction} This section describes basic concepts to establish an intuitive background that will be useful when providing formal definitions.
 
 \begin{lpar}{The syntactic nature of Type Theory.}
-    For a mathematician trained in classical theories (like Group Theory or Geometry), the definition of Homotopy Type Theory can seem unusual. Typically, we define a mathematical structure \emph{axiomatically} or \emph{descriptively}: we assume a background universe (usually ZFC Set Theory) and specify a list of properties that a collection of objects must satisfy (e.g., ``A Projective Plane is a set $P$ of points and lines such that...'').
+    For a mathematician trained in classical theories (like Group Theory or Geometry), the definition of Homotopy Type Theory can seem unusual. Typically, mathematical structures are defined \emph{axiomatically} or \emph{descriptively}: we assume a background universe (usually ZFC Set Theory) and specify a list of properties that a collection of objects must satisfy (e.g., ``A Projective Plane is a set of points and lines such that \dots'').
 
     However, Type Theory is not a structure \emph{within} mathematics; it is a \emph{foundation for} mathematics. As such, it cannot rely on a pre-existing universe of sets. Instead, it must be defined \textsl{syntactically} or \textsl{generatively}, much like a programming language.
 
-    This approach rests on three components:
+    This approach relies on three components:
     \begin{enumerate}
-        \item \textbf{The Alphabet:} A finite set of primitive symbols (e.g., variables $x, y$, separators `$:\,,\,(\,)$', and keywords like $\lambda, \Pi$).
+        \item \textbf{The Alphabet:} A finite set of primitive symbols (e.g., variables $x, y$, separators `$:\,,\,(,\,)$', and keywords like $\lambda, \Pi$).
         \item \textbf{The Grammar (Syntax):} A set of structural rules that determine which strings of symbols are ``well-formed'' expressions.
         \item \textbf{The Inference Rules (Logic):} A deductive system that defines how valid judgments can be derived from previous ones. For example, the rule for function application allows us to transition from having ``a function $f$'' and ``an input $a$'' to having ``a term $f(a)$''.
     \end{enumerate}
 
     In this view, mathematical objects are not pre-existing entities that we capture with axioms; they are \textsl{constructions} that we build using the rules. A ``proof'' is not an abstract truth value, but a valid derivation tree within this grammar.
 
-    Therefore, when we ask \textit{What is a Type in} HoTT?, the answer is not given by describing its properties in Set Theory, but by specifying the \emph{inference rules} that govern how to construct it, how to construct its elements (introduction), and how to use them (elimination).
+    Therefore, when we ask \textit{What is a type in} HoTT?, the answer is not given by describing its properties in Set Theory, but by specifying the \emph{inference rules} that govern how to construct it, how to construct its elements (introduction), and how to use them (elimination).
 
-    To set this generative process in motion, the theory requires a set of \textsl{primitive objects} (or base types) to serve as the \textit{seeds} of the universe. Just as a grammar needs terminal symbols to form sentences, Type Theory postulates specific starting points—such as the Empty type ($\fun{0}$), the Unit type ($\fun{1}$), and the Natural Numbers ($\N$).
+    To put this generative process into action, the theory requires a set of \textsl{primitive objects} (or base types) to serve as the \textit{seeds} of the universe. Just as a grammar needs terminal symbols to form sentences, Type Theory postulates specific starting points—such as the Empty type ($\fun{0}$), the Unit type ($\fun{1}$), and the Natural Numbers ($\N$).
     
     These primitives are not constructed from simpler pieces; they are introduced by \emph{fiat} through their own specific rules (Formation, Introduction, Elimination, Computation). They act as the \textit{base cases} of the mathematical induction that builds the universe: once these primitives exist, the generative machinery (like $\Sigma$ and $\Pi$ types) can combine them to construct arbitrarily complex structures.
 \end{lpar}
@@ -45,7 +45,7 @@
 \end{lpar}
 
 \begin{lpar}{Judgments.}
-    A \textsl{deductive system} is a set of \textsl{rules} that can be applied to derive \textsl{judgments}. For example, in the deductive system of first-order logic (on which set theory is based), there is only one kind of judgment: that a given proposition has a proof. Thus, in the deductive system of first-order, if $A$ and $B$ are propositions, then \textsc{$A$ has a proof} and \textsc{$B$ has a proof} are judgments and we can derive the judgment \textsc{$A\wedge B$ has a proof}.
+    A \textsl{deductive system} is a set of \textsl{rules} that can be applied to derive \textsl{judgments}. For example, in the deductive system of first-order logic (on which Set Theory is based), there is only one kind of judgment: that a given proposition has a proof. Thus, in the deductive system of first-order, if $A$ and $B$ are propositions, then \textit{$A$ has a proof} and \textit{$B$ has a proof} are judgments and we can derive the judgment \textit{$A\wedge B$ has a proof}.
 
     The foundation of Type Theory is the deductive system. The theory operates fundamentally using a set of established \textit{rules} for deriving judgments. The rules of Type Theory can be grouped into \textit{type formers}. Each type former consists of a way to construct types (possibly making use of previously constructed types), together with rules for the construction and behavior of elements of that type (see \nref{lpar:witnesses}).
 \end{lpar}
@@ -69,7 +69,7 @@
 \begin{lpar}{Equalities.}
     Since in Type Theory propositions are types, this means that equality is a type: for elements $a, b\colon A$ (that is, both $a\colon A$ and $b\colon A$) we have a type $a\eq{A} b$. When $a\eq{A} b$ is inhabited we say that $a$ and $b$ are \textsl{propositionally equal}.
 
-    The second concept of equality is that of \textsl{judgmental}, \textsl{computational}, or \textsl{definitional equality}, denoted by $a\equiv b\colon A$. This means that $a$ and $b$ are syntactically identical or reduce to the same form via the so called theory's \textsl{computation rules}, which allow automatic rewriting of expressions. For instance, if $f(x)=x^2$, then $f(3)$ and $3^2$ are equal by definition. The idea is that definitional equality is algorithmically decidable (though the algorithm is metatheoretic, not internal to the theory, i.e., is part of the implementation of the type checker in a computer language, not a function defined within the formal system itself).
+    The second concept of equality is that of \textsl{judgmental}, \textsl{computational}, or \textsl{definitional equality}, denoted by $a\equiv b\colon A$. This means that $a$ and $b$ are syntactically identical or reduce to the same form via the theory's \textsl{computation rules}, which allow automatic rewriting of expressions. For instance, if $f(x)=x^2$, then $f(3)$ and $3^2$ are equal by definition. The idea is that definitional equality is algorithmically decidable (though the algorithm is metatheoretic, not internal to the theory, i.e., is part of the implementation of the type checker in a computer language, not a function defined within the formal system itself).
 
     The rule that links both concepts of equality establishes that $a\colon A$ and $A\equiv B$ allow us to derive $a\colon B$. In our example, if $p\colon3^2=9$, then $p\colon f(3)=9$.
 
@@ -77,7 +77,7 @@
 \end{lpar}
 
 \begin{lpar}{Precedence.}
-    Syntactically, the precedence of $:$ and $\equiv$ are the lowest in an expression. The reason is that both symbols are used for judgments, which cannot be put together into more complicated statements. Thus, $A\equiv x=y$ means $A\equiv(x=y)$ since $x=y$ is a type and a judgment (like $A\equiv x$) cannot be equal to anything.\footnote{In fact, judgments cannot be terms in any propositional equality.}
+    Syntactically, the precedence of `$:$' and `$\equiv$' is the lowest in an expression. The reason is that both symbols are used for judgments, which cannot be put together into more complicated statements. Thus, $A\equiv x=y$ means $A\equiv(x=y)$ since $x=y$ is a type and a judgment (like $A\equiv x$) cannot be equal to anything.\footnote{In fact, judgments cannot be terms in any propositional equality.}
 \end{lpar}
 
 \begin{lpar}{Assumptions.}\label{lpar:assumptions}
@@ -85,13 +85,13 @@
 \end{lpar}
 
 \begin{lpar}{Definitional substitution.}\label{lpar:definitional-substitution}
-    Given that $x\equiv a$ is not a type, we cannot have it as an assumption. What we can do instead is to \textsl{substitute $a\colon A$ for $x$} and obtain a more specific type or element. Even though not technically an assumption, the language ``assume $x\equiv a$'' will be used to refer to this process of substitution.
+    Given that $x\equiv a$ is not a type, we cannot have it as an assumption. Instead we \textsl{substitute $a\colon A$ for $x$} and obtain a more specific type or element. Even though not technically an assumption, the language ``assume $x\equiv a$'' will be used to refer to this process of substitution.
 \end{lpar}
 
 \begin{lpar}{Principles.}
-    Some statements (whether a judgment, axiom, or theorem) that possess high generality and acts as fundamental building blocks for reasoning within the theory are called \textsl{principles}. This is not a formal notion, but a pedagogical or communicational one aimed at underlying its importance in the deductive system.
+    Some statements (whether a judgment, axiom, or theorem) that possess high generality and act as fundamental building blocks for reasoning within the theory are called \textsl{principles}. This is not a formal notion, but a pedagogical or communicational one aimed at underlying its importance in the deductive system.
 
-    Substitution (see above), for instance, is usually referred to as the \textit{Principle of substitution}. Note that this is a judgmental principle.
+    Substitution (see above), for instance, is usually referred to as the \textit{principle of substitution}. Note that this is a judgmental principle.
 
     Other statements that correspond to rules, axioms or theorems are broadly called principles.
 \end{lpar}
@@ -99,26 +99,27 @@
 \section{Function Types}
 
 \begin{lpar}{Functions.}
-    Given types $A$ and $B$, we can construct the type $A\to B$ of \textsl{functions with domain $A$ and codomain $B$}. We also sometimes refer to functions as \textsl{maps}. Unlike in set theory, functions are not defined as functional relations; rather they are a primitive concept in Type Theory. We explain the function type by prescribing what we can do with functions, how to construct them and what equalities they induce. Note also that $f\colon A\to B$ stands for both the traditional notation and the type judgment. In both cases the expression is known as the \textsl{signature} of~$f$.
+    Given types $A$ and $B$, we can construct the type $A\to B$ of \textsl{functions with domain $A$ and codomain $B$}. We also sometimes refer to functions as \textsl{maps}. Unlike in Set Theory, functions are not defined as functional relations but as a primitive concept in Type Theory. We explain the function type by prescribing what we can do with functions, how to construct them and what equalities they induce. Note also that $f\colon A\to B$ stands for both the traditional notation and the type judgment. In both cases the expression is known as the \textsl{signature} of~$f$.
 
     Given a function $f\colon A\to B$ and an element of the domain $a\colon A$, we can \textsl{apply} the function to obtain an element of the codomain $B$, denoted $f(a)$ and called the \textsl{value of\/ $f$ at\/ $a$}. It is common in Type Theory to omit the parentheses and denote $f(a)$ simply by $f\,a$.
 
-    \textit{Note:} Functions are a primitive concept.
+    \textit{Remark:} Functions are a primitive concept.
 \end{lpar}
 
 \begin{lpar}{Binders.}\label{lpar:binders}
-    A \textsl{binder} (a.k.a.~\textsl{variable binder}) is an \textit{operator}~$\Omega$ that can be applied to a variable $x$ of type $A$, and an expression $E$ using the syntax
+    A \textsl{binder} (a.k.a.~\textsl{variable binder}) is an \textit{operator}~$\nabla$ that can be applied to a variable $x$ of type $A$, and an expression $\Phi$ (possibly involving $x$), using the syntax
     \[
-        \nabla x\colon A.\,E.
+        \nabla x\colon A.\,\Phi.
     \]
+    We say that $x$ is \textsl{bound} by $\nabla$ inside $\Phi$. A variable is \textsl{free} in an expression if it is not bound by any binder.
 \end{lpar}
 
 \begin{lpar}{Function abstraction.}
     There are two ways of defining a function. We define $f\colon A\to B$ by giving an equation
     \[
-        f(x) \defeq\Phi
+        f(x)\defeq\Phi
     \]
-    where $x$ is a variable and $\Phi$ is an expression which may use $x$. In order for this to be valid, we have to check that $\Phi\colon B$ assuming $x\colon A$ (see \nref{lpar:assumptions}). For example, $f(x)\defeq x^2$ defines a function $f\colon\N\to\N$, and so $f(3)$ is judgmentally equal to $3^2$.
+    where $x$ is a (free) variable and $\Phi$ is an expression which may use $x$. In order for this to be valid, we have to check that $\Phi\colon B$ assuming $x\colon A$ (see \nref{lpar:assumptions}). For example, $f(x)\defeq x^2$ defines a function $f\colon\N\to\N$, and so $f(3)$ is judgmentally equal to $3^2$.
 
     We can also use the \textsl{$\lambda$-abstraction} binder
     \[
@@ -126,13 +127,11 @@
     \]
     For example, $(\lambda x\colon\N.\,x^2)\colon\N\to\N$ defines the same function as above. Another example is the \textsl{constant function} $(\lambda x\colon A.\,b)\colon A\to B$, where $b\colon B$. This function has the value $b$ at every $a\colon A$.
 
-    \textbf{Note.} The mathematical notation $f(x)=\Phi$, where $\Phi$ is an expression possibly involving $x$, binds the variable $x$ to the scope of $\Phi$. However, unlike other binders such as $\forall$, $\exists$, $\Pi$, $\Sigma$, etc., this one is named after the function. The $\lambda$-notation, \textit{removes} this dependency, emphasizing the binding character of the entire expression. 
+    \textbf{Note.} The mathematical notation $f(x)=\Phi$, where $\Phi$ is an expression possibly involving $x$, binds the variable $x$ in the scope of $\Phi$. However, unlike other binders such as $\forall$, $\exists$, $\Pi$, $\Sigma$, etc., this one is named after the function. The $\lambda$-notation, \textit{removes} this dependency, emphasizing the binding character of the entire expression. 
 \end{lpar}
 
 \begin{lpar}{Implicit notation.}
     Whenever the type $A\to B$ is clear from the context, the $\lambda$-notation can be relaxed to $\lambda x.\,\Phi$. Another way to express the same is $(x\mapsto\Phi)\colon A\to B$.
-
-    In particular, if $f\colon A\to B\to C$ and $x\colon A$, then $f(x)$ is a function of type $B\to C$.
 \end{lpar}
 
 \begin{lpar}{Computation rule.}
@@ -144,7 +143,7 @@
 \end{lpar}
 
 \begin{lpar}{Uniqueness principle for function types.}\label{lpar:eta-expansion}
-    This principle expresses that each function $f\colon A\to B$, is judgmentally equal to its $\lambda$-abstraction, i.e.,
+    This principle expresses that each function $f\colon A\to B$ is judgmentally equal to its $\lambda$-abstraction, i.e.,
     \[
         f\equiv\lambda x.\,f(x),
     \]
@@ -170,13 +169,13 @@
 \end{lpar}
 
 \begin{lpar}{Curried form.}\label{lpar:currying}
-    If $f\colon A\times B\to C$ is a function its \textsl{Curried form} is the function $g\colon A\to(B\to C$) defined as $g(a)(b)=f(a,b)$. The equivalence between a function and its Curried form is extended inductively to the case where the domain is $A_1\times\cdots\times A_n$.
+    If $f\colon A\times B\to C$ is a function, its \textsl{Curried form} is the function $g\colon A\to(B\to C$) defined as $g(a)(b)=f(a,b)$. The equivalence between a function and its Curried form is extended inductively to the case where the domain is $A_1\times\cdots\times A_n$.
 
     In combination with $\lambda$-abstractions, for $f\colon A\to B\to C$ given by
     \[
         f(x, y) \defeq\Phi
     \]
-    where $\Phi\colon C$ assuming $x\colon A$ and $y\colon B$, corresponds to
+    where $\Phi\colon C$, assuming $x\colon A$ and $y\colon B$, corresponds to
     \[
         f \defeq\lambda x.\,\lambda y.\,\Phi.
     \]
@@ -193,79 +192,81 @@
 \section{Dependent Function Types}
 
 \begin{lpar}{Universes.}\label{lpar:universes}
-    As every term must have a type, types must have a type as well. To avoid paradoxical situations derived from the global universe, there is a family of universes $\univ_0$, $\univ_1$, $\univ_2,\dots$, such that $\univ_i\colon\univ_{i+1}$ for all $i\ge0$. Thus, $\univ_0$ is the universe of \textsl{small} types, such as $\N$, etc., while $\univ_{i+1}$ is the universe of types in the universe $\univ_i$.\footnote{The indexing here is distinct from the formal type of natural numbers. It is a meta-linguistic device; any finite alphabet containing symbols like `$\univ$' and a successor mark such as `$'$' would suffice, allowing us to write sequences like $\univ : \univ' : \univ''$ of arbitrary depth.}
+    As every term must have a type, types must have a type as well. To avoid paradoxical situations derived from the global universe, there is a family of universes $\univ_0$, $\univ_1$, $\univ_2,\dots$, such that $\univ_i\colon\univ_{i+1}$ for all $i\ge0$. Thus, $\univ_0$ is the universe of \textsl{small} types, such as $\N$, etc., while $\univ_{i+1}$ is the universe of types in the universe $\univ_i$.\footnote{The indexing here is distinct from the formal type of natural numbers. It is a meta-linguistic device; any finite alphabet containing symbols like `$\univ$' and a successor mark such as `$'$' would suffice, allowing us to write sequences like $\univ\colon\univ'\colon\univ''$ of arbitrary depth.}
 
+    Since there is no universe\/ $\univ_\infty$, the expression $\lambda i\colon\N.\,\univ_i$ does not define a function (otherwise, its codomain would be a global universe). More precisely, no rule permits the definition of a function where the codomain depends on the value of the input in a way that transcends the universe hierarchy.
+\end{lpar}
 
-    In addition, this family of universes is \textsl{cumulative}, meaning that $A\colon U_{i+1}$ assuming that $A\colon U_i$.
+\begin{lpar}{The cumulative property.} 
+    The family of universes is \textsl{cumulative}, meaning that $A\colon\univ_{i+1}$ assuming that $A\colon\univ_i$. The following example illustrates the reason behind this rule.
+    
+    \begin{xmpl}
+        Consider a type constructor $\fun{List}$ that forms the type of lists containing elements of a specific type. If we want to create a list of types, we must determine the universe in which this list lives.
+        
+        \begin{enumerate}[-]
+            \item Let $\N\colon\univ_0$ and $\fun{Bool}\colon\univ_0$.
+            
+            \item We can form the list $[\N, \fun{Bool}]$. The type of this list is $\fun{List}(\univ_0)$.
+            
+            \item However, since $\univ_0\colon\univ_1$, the type $\fun{List}(\univ_0)$ itself resides in $\univ_1$.
+        \end{enumerate}
+        Now, suppose we have a more complex type $B$ such that $B\colon\univ_1$. If we wish to construct a list containing both $\N$ and $B$, we face a potential universe mismatch. To include $\N$ in a list of type $\fun{List}(\univ_1)$, we must view $\N$ as an element of $\univ_1$.
+        
+        Therefore, the construction of the list $[\N,B]$ relies on the cumulative property:
+        \[
+            \N\colon\univ_0 \implies \N\colon\univ_1.
+        \]
+        This ensures that both $\N$ and $B$ are valid terms of type $\univ_1$, making the expression $[\N,B]$ well-typed as a term of $\fun{List}(\univ_1)$. \qed
+    \end{xmpl}
 
-    Since there is no universe\/ $\univ_\infty$, the expression $\lambda i\colon\N.\,\univ_i$ does not define a function (otherwise, its codomain would be a global universe). More precisely, there is no rule allowing us to define a function where the codomain depends on the value of the input in a way that transcends the universe hierarchy.
-
-    Note however, that to simplify the notation, the subindex $i$ is usually omitted and $\univ$ is used instead of $\univ_i$. When some universe $\univ$ is assumed, its types are also called \textsl{small}.
+    \textbf{Note.} To simplify the notation, the subindex $i$ is usually omitted and $\univ$ is used instead of $\univ_i$. When some universe $\univ$ is assumed, its types are also called \textsl{small}.
 \end{lpar}
 
 \begin{lpar}{Type Families.}\label{lpar:type-families}
-    A \textsl{type family} is a function $B\colon A\to\univ$ whose codomain is a universe. There are two important examples. The first one is the \textsl{constant} type family defined by
+    A \textsl{type family} is a function $B\colon A\to\univ$ whose codomain is a universe.
+    
+    There are two important examples. The first one is the \textsl{constant} type family defined by
     \[
         (\lambda x.\,B)\colon A\to\univ
     \]
-    under the assumption $B\colon\univ$. The second is the family of \textsl{finite} sets
+    under the assumption $B\colon\univ$. The second is the family of \textsl{finite} sets\footnote{Formally introduced in Exercise \ref{exr:Fin}.}
     \[
         \fun{Fin}\colon\N\to\univ,
     \]
-    where $\fun{Fin}(0)$ is the empty type (it has no elements), $\fun{Fin}(1)$ is a type with exactly one element\footnote{See also \nref{lpar:unit-type}.}, and so on. By its cumulative character (see \nref{lpar:universes}), $\fun{Fin}(n)$ has $n$ elements denoted by $0_n,\dots,(n-1)_n$. The idea behind this definition is to have integer numbers $i$ equipped with a proof that $0\le i<n$.
+    where $\fun{Fin}(0)$ is the empty type (it has no elements), $\fun{Fin}(1)$ is a type with exactly one element\footnote{See also \nref{lpar:unit-type}.}, and so on. By its cumulative character (see \nref{lpar:universes}), $\fun{Fin}(n)$ has $n$ elements denoted by $0_n,\dots,(n-1)_n$. The idea behind this definition is to have integers $i$ equipped with a proof that $0\le i<n$.
 
     The $\fun{Fin}$ function is relevant to define a function like
     \[
-        \fun{get\_elem}\colon\fun{Vect}\,A\, n\to\fun{Fin}(n)\to A,
+        \fun{getElem}\colon\fun{Vect}\,A\, n\to\fun{Fin}(n)\to A,
     \]
     whose second argument is guaranteed to be in the range $\nset[0]{n-1}$.
 \end{lpar}
 
-\begin{lpar}{Dependent functions}\hspace{-0.5em} (a.k.a.~$\Pi$-types). \label{lpar:Pi-types}
+\begin{lpar}{Dependent functions \textrm{(a.k.a.~$\Pi$-types)}.} \label{lpar:Pi-types}
     Given a type $A\colon\univ$ and a family $B\colon A\to\univ$, we may construct the type of \textsl{dependent functions}
     \[
-        \prod_{x:A}B(x)\colon\univ,
+        \prod_{x:\,A}B(x)\colon\univ,
     \]
     by means of the binder $\Pi x.\,B(x)$ (see \nref{lpar:binders}).
     
     This type is a generalization of the function type $A\to B$, which can be recovered by taking the constant family $\lambda x\colon A.\,B$, to produce
     \[
-        \prod_{x:A}B\equiv A\to B.
+        \prod_{x:\,A}B\equiv A\to B.
     \]
-    As before, we can apply a dependent function $f\colon\prod_{x:A}B(x)$ to an argument $a\colon A$ and obtain an element $f(a)\colon B(a)$. In particular, we have the following computation rule: if $a\colon A$ and $f(x)\defeq\Phi$, then $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$, where $\Phi'$ is obtained by replacing all occurrences of $x$ in $\Phi$ by $a$, i.e., avoiding dummy variable captures (see \nref{lpar:bound-variables}).
+    As before, we can apply a dependent function $f\colon\prod_{x:\,A}B(x)$ to an argument $a\colon A$ and obtain an element $f(a)\colon B(a)$. In particular, we have the following computation rule: if $a\colon A$ and $f(x)\defeq\Phi$, then $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$, where $\Phi'$ is obtained by replacing all free occurrences of $x$ in $\Phi$ by $a$, i.e., avoiding dummy variable captures (see \nref{lpar:bound-variables}).
 
-    An example that will become useful later is the dependent function
+    An example that will become useful later is the dependent function\footnote{Exercise \ref{exr:Fin}.}
     \[
-        \fun{fmax}\colon\prod_{n:\N}\fun{Fin}(\fun{succ}(n))
+        \fun{fmax}\colon\prod_{n:\,\N}\fun{Fin}(\fun{succ}(n))
     \]
     that selects the last element of each nonempty finite type (see \nref{lpar:type-families})
     \[
         \fun{fmax}(n)\defeq n_{n+1}.
     \]
-    When not limited by parentheses, the scope of $\Pi$ extends over the rest of the expression. In particular,
+    \textbf{Note.} When not limited by parentheses, the scope of $\Pi$ extends over the rest of the expression. In particular,
     \[
-        \prod_{x:A}A\to A\text{ stands for }\prod_{x:A}(A\to A).
+        \prod_{x:\,A}A\to A\quad\text{stands for}\quad\prod_{x:\,A}(A\to A).
     \]
-\end{lpar}
-
-\begin{lpar}{Generalized Currying.}\label{lpar:generalized-currying}
-    Recall from  \nref{lpar:currying} that standard Currying establishes an equivalence
-    \[
-        (A\times B)\to C \iff A\to B\to C.
-    \]
-    In the context of dependent types, the  $\Sigma$-type acts as the generalization of the Cartesian product (see  \nref{lpar:Sigma-types}).
-    
-    Consequently, the Currying principle extends naturally to this setting: mapping out of a dependent sum is equivalent to mapping out of the components sequentially.
-    
-    Specifically, a function
-    \[
-        f\colon\Big(\sum_{x:A}B(x)\Big)\to C
-    \]
-    is equivalent to a dependent function
-    \[
-        \hat f\colon\prod_{x:A}B(x)\to C,
-    \]
-    where the scope of the binder $\Pi$ includes $C$.
 \end{lpar}
 
 \begin{lpar}{Polymorphic functions.}
@@ -273,23 +274,23 @@
 
     An example is the \textsl{polymorphic identity} function
     \[
-        \id\equiv\prod_{A:\univ}A\to A,\quad
+        \id\equiv\prod_{A:\,\univ}A\to A,\quad
         \id\defeq\lambda A\colon\univ.\,\lambda x\colon A.\,x,
     \]
     or $\id_A(x)\defeq x$ for short.
 
-    When using the Curried form to define dependent functions with several arguments, the second domain may depend on the first one, and the codomain may depend on both. That is, given $A\colon\univ$ and type families $B\colon A\to\univ$ and $C\colon\prod_{x:A}B(x)\to\univ$, we may construct the type
+    When using the Curried form to define dependent functions with several arguments, the second domain may depend on the first one, and the codomain may depend on both. That is, given $A\colon\univ$ and type families $B\colon A\to\univ$ and $C\colon\prod_{x:\,A}B(x)\to\univ$, we may construct the type
     \[
-        \prod_{x:A}\;\prod_{y:B(x)}C(x,y)
+        \prod_{x:\,A}\;\prod_{y:\,B(x)}C(x,y)
     \]
     of functions with two arguments.
     
-    In the case where $B$ is constant and equal to $A$, we may condense the notation and write $\prod_{x,y:A}C(x,y)$.
+    In the case where $B$ is constant and equal to $A$, we may condense the notation and write $\prod_{x,y:\,A}C(x,y)$.
 
     Consider, for instance, the function
     \[
         \fun{swap}\colon
-            \prod_{A,B,C:U}(A\to B\to C)\to(B\to A\to C)
+            \prod_{A,B,C:\,\univ}(A\to B\to C)\to(B\to A\to C)
     \]
     defined as
     \[
@@ -299,28 +300,28 @@
     \[
         \fun{swap}_{A,B,C}(f)(b,a)=f(a,b).
     \]
-    Note that given $f\colon\prod_{(x:A)}\prod_{(y:B(x))}C(x,y)$, we have $f(a,b)\colon C(a,b)$, assuming $a\colon A$ and $b\colon B(a)$.
+    Note that given $f\colon\prod_{x:\,A}\prod_{y:\,B(x)}C(x,y)$, we have $f(a,b)\colon C(a,b)$, assuming $a\colon A$ and $b\colon B(a)$.
 \end{lpar}
 
 \section{Product Types}
 \begin{lpar}{Products.}
     Given types $A,B\colon\univ$ we introduce their \textsl{cartesian product} $A\times B\colon\univ$.
     
-    Note that this type makes no attempt at specifying that the elements of $A\times B$ are pairs $(a,b)\colon A\times B$, where $a\colon A$ and $b\colon B$ (as is the case in Set Theory). Here, we will derive this fact as a theorem. For now, we will only declare $A\times B$ as a (new) type and will specify that all pairs $(a,b)$ with $a\colon A$ and $b\colon B$ satisfy $(a,b)\colon A\times B$.
+    For now, we only declare $A\times B$ as a (new) type, and specify that all pairs $(a,b)$ with $a\colon A$ and $b\colon B$ satisfy $(a,b)\colon A\times B$. In \nref{lpar:products-revisited}, we will further establish the additional rules for defining this new type.
     
-    In \nref{lpar:products-revisited}, we will further specify the additional rules for defining this new type.
+    Even though the pairs $(a,b)$, with $a\colon A$ and $b\colon B$,  are of type $A\times B$, the definition of this type makes no attempt at specifying that all the elements of $A\times B$ are pairs (as is the case in Set Theory). By contrast, we will derive this fact as a theorem.    
 \end{lpar}
 
 \begin{lpar}{Unit type.}\label{lpar:unit-type}
     The \textsl{unit type} is the nullary product type (i.e., the cartesian product of zero types), denoted by $\fun1\colon\univ$. The \textsl{canonical} element is $\fun\star\colon\fun1$.
 
-    Note that this definition is consistent with $\fun{Fin(1)}$. However, a fundamental difference is that the unit type does not rely on $\N$. In particular, it does not depend on the definition of the entire $\fun{Fin}$ family.
+    While this definition is consistent with $\fun{Fin}(1)$, a fundamental difference is that the unit type does not rely on $\N$. In particular, it does not depend on the definition of the entire $\fun{Fin}$ family.
 \end{lpar}
 
 \begin{lpar}{Type specification.}\label{lpar:type-spec}
     When introducing a new type, we must specify the following
     \begin{enumerate}[i),font=\scshape]
-        \item \textit{Formation rules.} Indicate how to form new types. Example: $A\to B$, $\prod_{x:A}B(x)$, etc.
+        \item \textit{Formation rules.} Indicate how to form new types. Example: $A\to B$, $\prod_{x:\,A}B(x)$, etc.
 
         \item \textit{Constructors.} Define how to introduce elements of that type. Example: $f(x)\defeq x^2$, $\lambda x.\,x^2$, for $f\colon A\to B$ and $x\colon A$.
 
@@ -341,7 +342,7 @@
 \end{lpar}
 
 \begin{lpar}{Products revisited.}\label{lpar:products-revisited}
-    The way type specification works in the case of products is the following
+    Type specification for products works as follows:
     \begin{enumerate}[i),font=\scshape]
         \item \textit{Formation rules.} Given two types $A$ and $B$ we can form $A\times B$. Moreover, given zero types we have the unit type $\fun1$.
 
@@ -369,12 +370,12 @@
         \end{equation}
         However, this definition relies on the existence of the projections $\pi_1$ and $\pi_2$. Therefore, we need to define them first. Consider the $\Pi$-type
         \[
-            \prod_{C:\univ}A\to B\to C.
+            \prod_{C:\,\univ}A\to B\to C.
         \]
         It represents the type of all functions $f$ satisfying $\dom(f)\equiv A\times B$, of which $\pi_1$ and $\pi_2$ are instances. So, we can define the \textsl{recursor} function
         \begin{equation}\label{eq:rec-A-times-B}
             \fun{rec}_{A\times B}\colon
-                \prod_{C:\univ}(A\to B\to C)
+                \prod_{C:\,\univ}(A\to B\to C)
                 \to
                 A\times B\to C
         \end{equation}
@@ -384,7 +385,7 @@
         \end{equation}
         where we are using the uniqueness principle that establishes that, to specify a function $f\colon A\times B\to C$, it is enough to specify it on the pairs $(a,b)$ (see \nref{lpar:type-spec}~\textsc{v}).
 
-        In a diagram\footnote{Strictly speaking, the domain of the Curried function\/ $g\colon A\to B\to C$ is not a single object in the diagram, so we represent the input context explicitly.}
+        In a diagram\footnote{Strictly speaking, the domain of the Curried function\/ $g\colon A\to B\to C$ does not appear as a single object in the diagram, so we represent the input context explicitly.}
         \[
             \begin{tikzcd}[row sep=large,column sep=huge]
                 a\colon A,\;b\colon B
@@ -417,7 +418,7 @@
             \pi_2 &\defeq \fun{rec}_{A\times B}
                 (B.\,\lambda a.\,\lambda b.\,b),
         \end{align*}
-        which satisfy $\pi_1((a,b))\equiv a$ and $\pi_2((a,b))\equiv b$, and we can take as the computation rules associated with the product.
+        which satisfy $\pi_1((a,b))\equiv a$ and $\pi_2((a,b))\equiv b$, and we can consider them the computation rules associated with the product.
 
         More generally, the function $\fun{rec}_{A\times B}$, called the \textsl{recursor} for product types, allows us to define functions of type $A\times B\to C$, a property referred to as the \textsl{recursion principle}.
 
@@ -429,20 +430,19 @@
         shows that $\fun{rec}$ is also derivable from the projections.
 
         {\footnotesize
-        The viewpoint under which $\fun{rec}$ is introduced is not the one expressed in the universal property of the product \eqref{dgm:product}, but the fact that the functors $F(A)=A\times B$ and $G(C)=\Hom(B,C)$ satisfy $F\dashv G$, i.e., $\Hom(F(A),C)\cong\Hom(A,G(C))$. In this regard, the universal property leads us to view the product as a function codomain, while the adjoint relation leads us to consider it as a domain.}
+        The viewpoint under which $\fun{rec}$ is introduced is not the one expressed in the universal property of the product \eqref{dgm:product}, but the fact that the functors $F_B(A)=A\times B$ and $G_B(C)=\Hom(B,C)$ satisfy $F_B\dashv G_B$, i.e., $\Hom(F_B(A),C)\cong\Hom(A,G_B(C))$. In this regard, the universal property leads us to view the product as a function codomain, while the adjoint relation leads us to consider it as a domain.}
 
         The version of $\fun{rec}$ for the empty product type $\fun1$ (where $A$ and $B$ are missing) is
         \[
-            \fun{rec}_{\fun1}\colon\prod_{C:\univ}C
-                \to \fun1\to C
+            \fun{rec}_{\fun1}\colon\prod_{C:\,\univ}C\to\fun1\to C
         \]
         specified as
         \[
-            \fun{rec}_{\fun1}(C,g)\defeq\lambda\fun s.\,g(\fun\star)
+            \fun{rec}_{\fun1}(C,c)\defeq\lambda s.\,c.
         \]
-        and since every $g\colon\fun1\to C$ is equivalent to choosing one element $c\colon C$, we have
+        Since every $g\colon\fun1\to C$ is equivalent to choosing one element $c\colon C$, we have
         \[
-            \fun{rec}_{\fun1}(C,g)(\fun\star)\equiv c.
+            \fun{rec}_{\fun1}(C,c)(\fun\star)\equiv c.
         \]
     \end{enumerate}
 \end{lpar}
@@ -454,7 +454,16 @@
 
     In Object-Oriented Programming, recursion is mediated by encapsulation: an object exposes methods that recursively delegate work to the methods of its constituent parts. In Structured Programming, by contrast, processing operates directly on the data stored in record fields rather than through behavior exported by the data itself.
 
-    Note also that $\fun{rec}$ implements \textsl{Uncurrying}, namely $\Hom(A,B\to C)\to\\Hom(A\times B,C)$. In Logic, this corresponds to the transformation from $A\Rightarrow (B\Rightarrow C)$ to $A \wedge B\Rightarrow C$ (cf.~\nref{lpar:currying}).
+    Note also that $\fun{rec}$ implements \textsl{Uncurrying} [cf.~\nref{lpar:currying}], namely 
+    \[
+        \Hom(A,B\to C)\to\Hom(A\times B,C).
+    \]
+    In Logic, this corresponds to the transformation 
+    \[
+        A\implies(B\implies C)
+        \quad\text{into}\quad
+        A \wedge B\implies C.
+    \]
 
     \textbf{Note.} More formally, the definition of every new type $T\colon\univ$ includes a \textit{recursion map}, usually denoted by $\fun{rec}_T$. This map generates functions of type $T\to C$ for any result type $C\colon\univ$, based on values specified for the canonical elements of~$T$.
     
@@ -469,23 +478,23 @@
     
     The type for equality is called the \textsl{identity type}, written $\Id_A(x,y)$ or $x\eq{A} y$. So, $\Id_A(x,y)$ represents the \textit{type of all proofs that\/ $x$ equals\/ $y$}.
     
-    The name of the \textit{unique} canonical term that inhabits the identity type $\Id_A(x,x)$ is $\fun{refl}_x$. With signature $\fun{refl}_x\colon\Id_A(x,x)$, its meaning is that $\fun{refl}_x$ is a witness that $x$ equals itself.
+    The \textit{unique} canonical term inhabiting the identity type\/ $\Id_A(x,x)$ is\/ $\fun{refl}_x$. Denoted as\/ $\fun{refl}_x : \Id_A(x,x)$, this term witnesses that\/ $x$ is equal to itself.
     
     The fact that $\Id_A(x,x)$ has a unique canonical witness is the key to the identity type's elimination rule (see \nref{lpar:induction}), which states that to prove something for all equalities $p\colon x\eq{A} y$, we only need to prove it for the case $p\equiv\fun{refl}_x$. Note however that this does not mean that $\fun{refl}_x$ is the only element of $\Id(x,x)$; in fact, there are cases where there are infinitely many, as well as cases where there is only one.
 \end{lpar}
 
 \begin{lpar}{Dependent functions over product.}\label{lpar:Pi-types-over-product}
-    According to the specification of $\Pi$-types (see \nref{lpar:Pi-types} and \nref{lpar:products-revisited}), given $A,B\colon\univ$ and a type family $C\colon A\times B\to\univ$, a dependent function
+    According to the specification of $\Pi$-types, given $A,B\colon\univ$ and a type family $C\colon A\times B\to\univ$, a dependent function
     \[
-        f\colon\prod_{z:A\times B}C(z)
+        f\colon\prod_{z:\,A\times B}C(z)
     \]
     is defined by means of a function 
     \[
-        g\colon\prod_{(x\colon A)}\prod_{(y\colon B)}C((x,y))
+        g\colon\prod_{x:\,A}\;\prod_{y:\,B}C((x,y))
     \]
     as
     \[
-        f((x,y)) \defeq g(x)(y).
+        f((x,y))\defeq g(x)(y).
     \]
     Thus, $f$ is well defined on (any element of) $A\times B$ as soon as its values are specified in the \textsl{canonical} elements of the product, i.e., the pairs.
     
@@ -510,7 +519,7 @@
     \]
     Given that to construct a witness for the uniqueness principle
     \[
-        \fun{uniq}_{A\times B}\colon\prod_{x:A\times B}
+        \fun{uniq}_{A\times B}\colon\prod_{x:\,A\times B}
             (\pi_1(x),\pi_2(x))\eq{A\times B}x.
     \]
     it suffices to specify it on canonical elements, the definition
@@ -523,7 +532,7 @@
     
     In the case of $\fun1$, we have
     \[
-        \fun{uniq}_{\fun1}\colon\prod_{x:\fun1}
+        \fun{uniq}_{\fun1}\colon\prod_{x:\,\fun1}
             x\eq{\fun1}\fun\star
     \]
     with
@@ -537,10 +546,10 @@
     The \textit{principle} by which defining a function on a product $A\times B$ amounts to specifying its value on each pair, can be formalized by introducing the induction map
     \[
         \fun{ind}_{A\times B}\colon
-            \prod_{C:A\times B\to\univ}
-                \Big(\prod_{x:A}\;\prod_{y:B} C(x,y)\Big)
+            \prod_{C:\,A\times B\to\univ}
+                \Big(\prod_{x:\,A}\;\prod_{y:\,B} C(x,y)\Big)
             \to
-            \prod_{z:A\times B} C(z),
+            \prod_{z:\,A\times B} C(z),
     \]
     given by
     \[
@@ -554,29 +563,29 @@
     
     When the family $C$ is constant we obtain
     \[
-        \prod_{(x:A)}\prod_{(y:B)}C((x,y))
+        \prod_{x:\,A}\;\prod_{y:\,B}C((x,y))
             \equiv A\to B\to C
         \quad\text{and}\quad
-        \prod_{z:A\times B}C(z)\equiv A\times B\to C,
+        \prod_{z:\,A\times B}C(z)\equiv A\times B\to C,
     \]
-    Hence, in this particular case, $\fun{ind}_{A\times B}$ becomes $\fun{rec}_{A\times B}$. Consequently, induction is the (\textsl{dependent}) \textsl{eliminator} and recursion the \textsl{non-dependent eliminator}.
+    Hence, $\fun{ind}_{A\times B}$ becomes $\fun{rec}_{A\times B}$. Consequently, induction is the (\textsl{dependent}) \textsl{eliminator} and recursion the \textsl{non-dependent eliminator}.
 
     In the case of the unit type (see \nref{lpar:unit-type}), where types $A$ and $B$ are both missing, the eliminator is
     \begin{equation}\label{eq:ind1}
-        \fun{ind}_{\fun1}\colon\prod_{C:\fun1\to\univ}
-            \Big(C(\fun\star)\to\prod_{x:\fun1}C(x)\Big)
+        \fun{ind}_{\fun1}\colon\prod_{C:\,\fun1\to\univ}
+            \Big(C(\fun\star)\to\prod_{x:\,\fun1}C(x)\Big)
     \end{equation}
     specified by
     \[
         \fun{ind}_{\fun1}(C,g,\fun\star)\defeq g,\footnote{A more precise notation is $\fun{ind}_{\fun1}(C)(g)(\fun\star)\defeq g$.}
     \]
     
-    \textbf{Interpretation.} Given $C\colon\fun1\to\univ$ and a proof $g$ that $C(\fun\star)$ is true, the resulting term $\fun{ind}_{\fun1}(C,g)$ ---i.e., $\fun{ind}_{\fun1}(C)(g)$--- is a dependent function $f\colon \prod_{x:\fun1}C(x)$ that serves as a proof for $C(x)$ for all $x\colon\fun1$.
+    \textbf{Interpretation.} Given $C\colon\fun1\to\univ$ and a proof $g$ that $C(\fun\star)$ is true, the resulting term $\fun{ind}_{\fun1}(C,g)$ ---i.e., $\fun{ind}_{\fun1}(C)(g)$--- is a dependent function $f\colon \prod_{x:\,\fun1}C(x)$ that serves as a proof for $C(x)$ for all $x\colon\fun1$.
         
     \needspace{2\baselineskip}
     In summary, we have:
     \begin{enumerate}[label=\roman*), font=\scshape]
-        \item \textit{Type:} There is a type called $\mathbf{1}$.
+        \item \textit{Type:} There is a type called $\fun1$.
         \item \textit{Constructor:} There is a term $\fun\star\colon\fun1$.
         \item \textit{Eliminator:} There is a function $\fun{ind}_{\fun1}$ with type signature \eqref{eq:ind1}.
         \item \textit{Computation Rule:} $\fun{ind}_{\fun1}(C,g,\fun\star)\defeq g$.
@@ -605,7 +614,8 @@
 
 \section{Dependent Pair Types}
 
-\begin{lpar}{Dependent pairs}\hspace{-1em} (a.k.a.~$\Sigma$-types). \label{lpar:Sigma-types}
+\begin{lpar}{Dependent pairs \textrm{(a.k.a.~$\Sigma$-types)}.}
+    \label{lpar:Sigma-types}
     In Set Theory the \textsl{disjoint union} of a family $(A_i)_{i\in I}$ of sets is defined as
     \[
         \bigsqcup_{i\in I}\set i\times A_i,
@@ -616,30 +626,51 @@
     \]
     whenever $i\ne j$, even though $A_i$ and $A_j$ might overlap (or coincide).
 
-    The equivalent notion in Type Theory is the \textsl{dependent pair type} (a.k.a.~\textsl{$\Sigma$-type}), which highlights the fact that the second component of the pair depends on the first one. More precisely, given a type $A\colon\univ$ and a type family $B\colon A\to\univ$, the binder $\Sigma$ is used to define the \textsl{dependent pair} type
+    The equivalent notion in Type Theory is the \textsl{dependent pair type} (a.k.a.~\textsl{$\Sigma$-type}), which highlights the dependence of the second component on the first one. More precisely, given a type $A\colon\univ$ and a type family $B\colon A\to\univ$, the binder $\Sigma$ is used to define the \textsl{dependent pair} type
     \[
-        \sum_{x:A}B(x)\colon\univ.
+        \sum_{x:\,A}B(x)\colon\univ.
     \]
     As it is the case with $\lambda$ and $\Pi$, this binder also scopes over the rest of the expression, e.g.,
     \[
-        \sum_{x:A}B(x)\to C\quad\text{stands for}\quad
-            \sum_{x:A}(B(x)\to C).
+        \sum_{x:\,A}B(x)\to C\quad\text{stands for}\quad
+            \sum_{x:\,A}(B(x)\to C).
     \]
     The constructor takes $a\colon A$ and $b\colon B(a)$ and produces
     \[
-        (a,b)\colon \sum_{x:A}B(x).
+        (a,b)\colon \sum_{x:\,A}B(x).
     \]
     In this regard, $\Sigma$-types resemble the existential binder $\exists$ of Set Theory in that its elements $(a,b)$ consist of a first component $a$ and a second $b$, which is a proof of $B(a)$. In particular, in the case where $B$ is constant, we have
     \[
-        \sum_{x:A}B\equiv A\times B.
+        \sum_{x:\,A}B\equiv A\times B.
     \]
+\end{lpar}
+
+\begin{lpar}{Generalized Currying.}\label{lpar:generalized-currying}
+    Recall from  \nref{lpar:currying} that standard Currying establishes an equivalence
+    \[
+        (A\times B)\to C \iff A\to B\to C.
+    \]
+    In the context of dependent types, the  $\Sigma$-type acts as the generalization of the Cartesian product (see  \nref{lpar:Sigma-types}).
+    
+    Consequently, the Currying principle extends naturally to this setting: mapping out of a dependent sum is equivalent to mapping out of the components sequentially.
+    
+    Specifically, a function
+    \[
+        f\colon\Big(\sum_{x:\,A}B(x)\Big)\to C
+    \]
+    is equivalent to a dependent function
+    \[
+        \hat f\colon\prod_{x:\,A}B(x)\to C,
+    \]
+    where the scope of the binder $\Pi$ includes $C$.
+
     To create a nondependent function
     \[
-        f\colon\Big(\sum_{x:A}B(x)\Big)\to C
+        f\colon\Big(\sum_{x:\,A}B(x)\Big)\to C
     \]
     we have to provide a function
     \[
-        g\colon\prod_{x:A}B(x)\to C
+        g\colon\prod_{x:\,A}B(x)\to C
     \]
     and specify
     \[
@@ -650,7 +681,7 @@
 \begin{lpar}{Induction in $\Sigma$-types.}\label{lpar:Sigma-induction}
     The first projection of a $\Sigma$-type can be defined as
     \[
-        \pi_1\colon\Big(\sum_{x:A}B(x)\Big)
+        \pi_1\colon\Big(\sum_{x:\,A}B(x)\Big)
             \to A
     \]
     with specification
@@ -663,7 +694,7 @@
     \]
     However, the second projection is the dependent function
     \begin{equation}\label{eq:Sigma-pi-2}
-        \pi_2\colon\prod_{p:\sum_{(x:A)}B(x)}B(\pi_1(p))
+        \pi_2\colon\prod_{p:\,\sum_{x:\,A}B(x)}B(\pi_1(p))
     \end{equation}
     specified as
     \[
@@ -671,15 +702,15 @@
     \]
     More generally, we need the \textsl{induction principle} of $\Sigma$-types, which says that, given a type family
     \[
-        C\colon\sum_{x:A}B(x)\to\univ,
+        C\colon\sum_{x:\,A}B(x)\to\univ,
     \]
     to define a dependent function
     \[
-        f\colon\prod_{p:\sum_{x:A}B(x)}\!\!\!\!\!C(p)
+        f\colon\prod_{p:\,\sum_{x:\,A}B(x)}\!\!\!\!\!C(p)
     \]
     we must provide a function
     \[
-        g\colon\prod_{(a:A)}\;\prod_{(b:B(a))}C((a,b))
+        g\colon\prod_{a:\,A}\;\prod_{b:\,B(a)}C((a,b))
     \]
     and specify
     \[
@@ -689,7 +720,7 @@
     \[
         g(a)(b) \defeq b
     \]
-    for $(a,b)\colon\sum_{x:A}B(x)$, and obtain \eqref{eq:Sigma-pi-2}. This is valid because
+    for $(a,b)\colon\sum_{x:\,A}B(x)$, and obtain \eqref{eq:Sigma-pi-2}. This is valid because
     \[
         C((a,b))\equiv B(\pi_1((a,b))\equiv B(a)
     \]
@@ -699,15 +730,15 @@
 \begin{lpar}{Recursion in $\Sigma$-types.}\label{lpar:Sigma-type-rec-and-ind}
     Consider the recursion
     \[
-        \fun{rec}_{\sum_{x:A} B(x)}\colon
-            \prod_{C:\univ}\Big(\prod_{x:A}\big(B(x)
-                \to C\big)\Big)
-                \to \Big(\sum_{x:A}B(x)\Big)
+        \fun{rec}_{\sum_{x:\,A} B(x)}\colon
+            \prod_{C:\,\univ}\Big(\prod_{x:\,A}
+                B(x)\to C\Big)
+                \to\Big(\sum_{x:\,A}B(x)\Big)
                 \to C
     \]
     specified as
     \begin{equation}\label{eq:Sigma-type-rec-evaluation}
-        \fun{rec}_{\sum_{x:A}B(x)}(C,g,(a,b))\defeq g(a)(b),
+        \fun{rec}_{\sum_{x:\,A}B(x)}(C,g,(a,b))\defeq g(a)(b),
     \end{equation}
     This can be represented by a collection of diagrams that commute for all $a\colon A$ 
     \[
@@ -715,7 +746,7 @@
         B(a)
                 \arrow[r,"\iota_a"]
                 \arrow[dr,"g(a)"']
-            &{\sum_{x:A}B(x)}
+            &{\sum_{x:\,A}B(x)}
                 \arrow[d,dashed,"{\exists!\,\fun{rec}_{\sum_xB(x)}(C,g,a)}"]\\
             &C
     \end{tikzcd}
@@ -724,48 +755,48 @@
     
     For the induction principle
     \[
-        \fun{ind}_{\sum_{x:A}B(x)}:
-            \prod_{C:\big(\sum_{x:A}B(x)\big)
+        \fun{ind}_{\sum_{x:\,A}B(x)}\colon
+            \prod_{C:\,\big(\sum_{x:\,A}B(x)\big)
                 \to\univ}
                     \Big(
-                        \prod_{(a:A)}\prod_{(b:B(a))}
+                        \prod_{a:\,A}\;\prod_{b:\,B(a)}
                             \!\!\!C((a,b))
                     \Big)
-                    \to\prod_{p:\sum_{x:A}B(x)}\!\!\!\!\!C(p)
+                    \to\prod_{p:\,\sum_{x:\,A}B(x)}\!\!\!\!\!C(p)
     \]
     where
     \[
-        \fun{ind}_{\sum_{x:A}B(x)}
+        \fun{ind}_{\sum_{x:\,A}B(x)}
             (C,g,(a,b))\defeq g(a)(b).
     \]
     Note that when $C$ is constant $\fun{ind}$ reduces to $\fun{rec}$.
 
-    \textbf{Interpretation.} To prove that for every $p\colon\sum_{x:A}B(x)$ there is a proof of $C(p)$ it suffices to show a proof of $C((a,b))$ for every canonical pair $(a,b)$, where $a\colon A$ and $b\colon B(a)$.
+    \textbf{Interpretation.} To prove $C(p)$ for every $p\colon\sum_{x:\,A}B(x)$ it suffices to show a proof of $C((a,b))$ for every canonical pair $(a,b)$.
 \end{lpar}
 
 \begin{lpar}{Relations.}\label{lpar:relations}
     Let $A$ and $B$ be types, $a\colon A$ and $R\colon A\to B\to\univ$. The type
     \[
-        \sum_{y:B}R(a,y)
+        \sum_{y:\,B}R(a,y)
     \]
     represents the fiber at $a$ of the relation $R$. Its elements are pairs $(b,\omega)$ where $b\colon B$ and $\omega\colon R(a,b)$ is a witness that $b$ is related to $a$.
 
-    For instance, let $R(2,n)$ stand for the type representing the relation ``$2\mid n$'', where $n\colon\N$. The elements of the type $\sum_{n:\N}R(2,n)$ represent the even numbers paired with the evidence of their evenness. Thus, if $\omega$ is a witness that $2\cdot3=_\N6$, we have
+    For instance, let $R(2,n)$ stand for the type representing the relation ``$2\mid n$'', where $n\colon\N$. The elements of the type $\sum_{n:\,\N}R(2,n)$ represent the even numbers paired with the evidence of their evenness. Thus, if $\omega$ is a witness that $2\cdot3\eq\N6$, we have
     \[
-        (6,\omega)\colon\sum_{n:\N}R(2,n).
+        (6,\omega)\colon\sum_{n:\,\N}R(2,n).
     \]
-    However, there is no term $\omega$ for which $(3,\omega)\colon\sum_{n:\N}R(2,n)$, because the type $R(2,3)$ is uninhabited (there is no proof of $2\mid 3$).    
+    However, there is no term $\omega$ for which $(3,\omega)\colon\sum_{n:\,\N}R(2,n)$, because the type $R(2,3)$ is uninhabited (there is no proof of $2\mid 3$).    
 \end{lpar}
 
 \begin{lpar}{Type-theoretic Axiom of Choice.}\label{lpar:axiom-of-choice}
     Now consider the following principle, where $A$ and $B$ are types and $R\colon A\to B\to\univ$:
     \[
-        \fun{ac}\colon\Big(\prod_{x:A}\;\sum_{y:B}
-            R(x,y)\Big)\to\Big(\sum_{f:A\to B}\;\prod_{x:A}R(x,f(x))\Big).
+        \fun{ac}\colon\Big(\prod_{x:\,A}\;\sum_{y:\,B}
+            R(x,y)\Big)\to\Big(\sum_{f:\,A\to B}\;\prod_{x:\,A}R(x,f(x))\Big).
     \]
     To specify it, we assume a witness $g$ for the domain:
     \[
-        g\colon \prod_{x:A}\;\sum_{y:B}R(x,y).
+        g\colon \prod_{x:\,A}\;\sum_{y:\,B}R(x,y).
     \]
     For $x\colon A$, the term $g(x)$ is a pair $(y,\omega)$ where $y\colon B$ and $\omega\colon R(x,y)$. We can therefore define the \textit{choice function\/} $f\colon A\to B$ as
     \[
@@ -777,10 +808,10 @@
     \]
     Finally, we specify
     \begin{align*}
-        \fun{ac}&\defeq\lambda g.\,(f,\omega)\\
-            &\phantom\defeq\lambda g.\,
+        \fun{ac}&\defeq
                 \big(
-                \lambda x.\,\pi_1(g(x)),\,\lambda x.\,\pi_2(g(x))
+                \overbrace{\lambda x.\,\pi_1(g(x))}^{f\equiv},\,
+                \overbrace{\lambda x.\,\pi_2(g(x))}^{\omega\equiv}
                 \big).
     \end{align*}
     
@@ -790,11 +821,11 @@
 \begin{lpar}{Mathematical structures.}
     Many mathematical structures are compositions of the simplest one, called magma, that consists of a set $A$ and an operation $m\colon A\times A\to A$. In Type Theory notation the pair $(A,m)$ is an element of a dependent pair type
     \[
-        M \defeq\sum_{A:\univ}A\to A\to A.
+        M \defeq\sum_{A:\,\univ}A\to A\to A.
     \]
-    In more specific cases, as for instance, pointed magmas, where a distinguished element $e$ must be identified, we would have,
+    In more specific cases, such as pointed magmas, where a distinguished element $e$ must be identified, we would have,
     \[
-        PM \defeq\sum_{A:\univ}(A\to A\to A)\times A
+        PM \defeq\sum_{A:\,\univ}(A\to A\to A)\times A
     \]
     and, consequently, we will have expressions like $(A,(m,e))\colon PM$. By abuse of notation, however, we will sometimes simply say \textit{let $A$ be a magma/group/etc.} as it is usually expressed in the regular mathematical jargon. Similarly, instead of $(A,(m,e))$ we will write $(A,m,e)$ to minimize the number of parentheses.
 \end{lpar}
@@ -846,7 +877,7 @@
     \end{align*}
     Additionally,
     \[
-        \fun{rec}_{\fun0}\colon\prod_{C:\univ}\fun0\to C
+        \fun{rec}_{\fun0}\colon\prod_{C:\,\univ}\fun0\to C
     \]
     constructs the unique function $\fun0\to C$ for every $C\colon\univ$.
 
@@ -870,12 +901,12 @@
 \begin{lpar}{Coproduct induction.}\label{lpar:coproduct-induction}
     Given a type family $C\colon(A+B)\to\univ$, to define a dependent function
     \[
-        f\colon\prod_{s:A+B}C(s)
+        f\colon\prod_{s:\,A+B}C(s)
     \]
     we have to provide two dependent functions
     \begin{align*}
-        g_0 &\colon \prod_{x:A}C(\fun{inl}(x)),\\
-        g_1 &\colon \prod_{y:B}C(\fun{inr}(y))
+        g_0 &\colon \prod_{x:\,A}C(\fun{inl}(x)),\\
+        g_1 &\colon \prod_{y:\,B}C(\fun{inr}(y))
     \end{align*}
     and specify, for $a\colon A$ and $b\colon B$,
     \[
@@ -884,17 +915,17 @@
     \]
     As a result, we obtain the \textsl{induction principle for coproducts}
     \[
-        \fun{ind}_{A+B}\colon\prod_{C:(A+B)\to\univ}\;
-            \prod_{x:A}C(\fun{inl}(x))
+        \fun{ind}_{A+B}\colon\prod_{C:\,(A+B)\to\univ}\;
+            \prod_{x:\,A}C(\fun{inl}(x))
             \to
-            \prod_{y:B}C(\fun{inr}(y))
+            \prod_{y:\,B}C(\fun{inr}(y))
             \to
-            \prod_{s:A+B}C(s).
+            \prod_{s:\,A+B}C(s).
     \]
     In the case of the empty type $\fun0$ (the nullary coproduct), there are no constructors to handle. Thus, the induction principle for the empty type (a.k.a.~eliminator) reduces to
     \[
-        \fun{ind}_{\fun0}\colon\prod_{C:\fun0\to\univ}\;
-            \prod_{s:\fun0}C(s).
+        \fun{ind}_{\fun0}\colon\prod_{C:\,\fun0\to\univ}\;
+            \prod_{s:\,\fun0}C(s).
     \]
     This function asserts that if we assume an element of the empty type, we can derive any conclusion $C(s)$ (the principle of \textsl{ex falso quodlibet}).\footnote{In classical logic, intuitionistic logic, and similar logical systems, the \textsl{principle of explosion} is the law according to which any statement can be proven from a contradiction. That is, from a contradiction, any proposition (including its negation) can be inferred; this is known as deductive \textsl{explosion}. Note however the existence of the field of Inconsistent Mathematics, a theory that explains and studies paradoxes and paraconsistency.}
 \end{lpar}
@@ -910,7 +941,7 @@
     \]
     Therefore, the recursor is given by
     \begin{equation}\label{eq:rec2}
-        \fun{rec}_{\fun2}\colon\prod_{C:\univ}C\to C\to\fun2\to C,
+        \fun{rec}_{\fun2}\colon\prod_{C:\,\univ}C\to C\to\fun2\to C,
     \end{equation}
     specified by
     \begin{align*}
@@ -935,7 +966,7 @@
 
     In the case of dependent functions, given a type family $C\colon\fun2\to\univ$, we define
     \[
-        f\colon\prod_{x:\fun2}C(x)
+        f\colon\prod_{x:\,\fun2}C(x)
     \]
     specifying $c_0\colon C(0_{\fun2})$ and $c_1\colon C(1_{\fun2})$ and setting
     \[
@@ -945,14 +976,14 @@
     \]
     For a dependent function
     \[
-        f\colon\prod_{x:\fun2}C(x),
+        f\colon\prod_{x:\,\fun2}C(x),
     \]
     where $C\colon\fun2\to\univ$, we have
     \[
-        \fun{ind}_{\fun2}\colon\prod_{C:\univ}\;
+        \fun{ind}_{\fun2}\colon\prod_{C:\,\univ}\;
             C(0_{\fun2})\to C(1_{\fun2})
             \to\fun2
-            \to\prod_{x:\fun2}C(x)
+            \to\prod_{x:\,\fun2}C(x)
     \]
     along with
     \begin{align*}
@@ -989,7 +1020,7 @@
         \fun{ind}_{\fun2}\big(C,
             \fun{inl}(\fun{refl}_{0_{\fun2}}),
             \fun{inr}(\fun{refl}_{1_{\fun2}})\big)
-            \colon\prod_{x:\fun2}
+            \colon\prod_{x:\,\fun2}
                 (x\eq{\fun2}0_{\fun2})+(x\eq{\fun2}1_{\fun2}).
     \]
 \end{lpar}
@@ -1013,7 +1044,7 @@
     \]
     We can then introduce what we aim to prove as being equivalent to $A+B$,
     \[
-        A \oplus B \defeq \sum_{x:\fun2} \sigma(x)
+        A \oplus B \defeq \sum_{x:\,\fun2} \sigma(x)
     \]
     along with
     \begin{equation}\label{eq:inA-inB}
@@ -1022,7 +1053,7 @@
             \fun{in}_B\colon B&\to A\oplus B, &b&\mapsto(1_{\fun2},b).
         \end{aligned}
     \end{equation}
-    To see that these are well-defined specifications, note that for any $a\colon A$, the pair $(0_{\fun2},a)$ has type $\sum_{x:\fun2}\sigma(x)$ because the second component must have type $\sigma(0_{\fun2})$. Since $\sigma(0_{\fun2})\equiv A$, $a$ is indeed a valid second component. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
+    To see that these are well-defined specifications, note that for any $a\colon A$, the pair $(0_{\fun2},a)$ has type $\sum_{x:\,\fun2}\sigma(x)$ because the second component must have type $\sigma(0_{\fun2})$. Since $\sigma(0_{\fun2})\equiv A$, $a$ is indeed a valid second component. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
 
     It remains to be shown that $A+B\simeq A\oplus B$. To see this first define
     \begin{equation}\label{eq:phi-coproduct-to-sigma}
@@ -1036,15 +1067,15 @@
     \]
     for $a\colon A$ and $b\colon B$. Second, to define a map in the other direction, we have to use the recursor evaluated at the coproduct $A+B$
     \[
-        \fun{rec}_{\sum_{x:\fun2} \sigma(x)}(A+B)\colon
-            \prod_{x:\fun2}\big(\sigma(x)
+        \fun{rec}_{\sum_{x:\,\fun2} \sigma(x)}(A+B)\colon
+            \prod_{x:\,\fun2}\big(\sigma(x)
                 \to A+B\big)
-                \to \Big(\sum_{x:\fun2}\sigma(x)\Big)
+                \to \Big(\sum_{x:\,\fun2}\sigma(x)\Big)
                 \to A+B
     \]
     and apply the result to a well-chosen dependent map
     \[
-        h\colon\prod_{x:\fun2}(\sigma(x)\to A+B).
+        h\colon\prod_{x:\,\fun2}(\sigma(x)\to A+B).
     \]
     Take $h$ to be the one defined by
     \begin{align*}
@@ -1055,7 +1086,7 @@
 
     Now we can define
     \begin{equation}\label{eq:psi-sigma-to-coproduct}
-        \psi\defeq\fun{rec}_{\sum_{x:\fun2}\sigma(x)}(A+B,h).
+        \psi\defeq\fun{rec}_{\sum_{x:\,\fun2}\sigma(x)}(A+B,h).
     \end{equation}
     Finally, we have to check the following two equalities
     \begin{align*}
@@ -1086,7 +1117,7 @@
 
     The recursor
     \begin{align*}
-        \fun{rec}_\N\colon\prod_{C:\univ}C\to(\N\to C\to C)
+        \fun{rec}_\N\colon\prod_{C:\,\univ}C\to(\N\to C\to C)
             &\to\N\to C
     \end{align*}
     is specified by
@@ -1224,16 +1255,16 @@
 \end{lpar}
 
 \begin{lpar}{Induction principle.}\label{lpar:induction-principle}
-    Assume as given a family $C\colon\N\to\univ$, an element $c_0\colon C(0)$, and a function $c_s\colon\prod_{n:\N} C(n) \to C(\fun{succ}(n))$; then we can construct a dependent function $f\colon\prod_{n:\N} C(n)$ with the defining equations:
+    Assume as given a family $C\colon\N\to\univ$, an element $c_0\colon C(0)$, and a function $c_s\colon\prod_{n:\,\N} C(n) \to C(\fun{succ}(n))$; then we can construct a dependent function $f\colon\prod_{n:\,\N} C(n)$ with the defining equations:
     \begin{align*}
         f(0) &\defeq c_0,\\
         f(\fun{succ}(n)) &\defeq c_s(n, f(n)).
     \end{align*}
     We formalize this with the induction function
     \[
-        \fun{ind}_\N:\prod_{C:\N\to\univ}
-            C(0) \to \Big(\prod_{n:\N}C(n) \to C(\fun{succ}(n))\Big)
-            \to \prod_{n:\N}C(n)
+        \fun{ind}_\N\colon\prod_{C:\,\N\to\univ}
+            C(0) \to \Big(\prod_{n:\,\N}C(n) \to C(\fun{succ}(n))\Big)
+            \to \prod_{n:\,\N}C(n)
     \]
     plus the equations
     \begin{align*}
@@ -1261,9 +1292,9 @@
             &\equiv \fun{succ}(0+n)\\
             &\equiv \fun{succ}(n).
     \end{align*}
-    However, the equation $n =_\N n+0$ does not hold definitionally for an arbitrary variable $n$. It is a proposition that must be proven as a theorem.
+    However, the equation $n \eq\N n+0$ does not hold definitionally for an arbitrary variable $n$. It is a proposition that must be proven as a theorem.
 
-    The reason is found in the operational semantics: a \textit{machine} evaluating the expression $\Phi+0$ proceeds by pattern matching on $\Phi$ (the first argument). It checks if the \textit{head}\footnote{The word 'head' refers to the root of the Abstract Syntactic Tree (AST) of the expression.} of $\Phi$ matches the constructor $0$, or if it matches the constructor $\fun{succ}$.
+    The reason is found in the operational semantics: a \textit{machine} evaluating the expression $\Phi+0$ proceeds by pattern matching on $\Phi$ (the first argument). It checks if the \textit{head}\footnote{The word 'head' refers to the root of the Abstract Syntactic Tree (AST) of the expression.} of $\Phi$ matches the constructor $0$ or matches the constructor $\fun{succ}$.
 
     In our case, $\Phi\defeq n$. Since $n$ is a variable and not a constructor, neither reduction rule applies. The machine cannot simplify the expression further, and the computation \textit{blocks}. Thus, we cannot rely on automatic reduction. In \nref{lpar:additive-identity} we construct an explicit proof term.
 \end{lpar}
@@ -1345,7 +1376,7 @@
     \[
         ((A\times B)\to\fun0)\to(A\to\fun0)+(B\to\fun0)
     \]
-    is not generally valid because there is to method to decide which of the two propositions, $A$ or $B$, is false from a proof of $\neg(A\times B)$. However, to exhibit an element of $(A\to\fun0)+(B\to\fun0)$, we must decide whether it will be a value of $\fun{inl}$ or of $\fun{inr}$. For instance, consider the case where $B\defeq\neg A$. We do know that $A\wedge\neg A$ is false\footnote{A witness of this proposition is a pair $(a,b)$ with $a\colon A$ and $b\colon A\to\fun0$. It cannot exist since otherwise $b(a)\colon\fun0$.} but not if this is because $A$ is false or $\neg A$ is false (as it happens with unsolved conjectures).
+    is not generally valid because there is no method to decide which of the two propositions, $A$ or $B$, is false from a proof of $\neg(A\times B)$. However, to exhibit an element of $(A\to\fun0)+(B\to\fun0)$, we must decide whether it will be a value of $\fun{inl}$ or of $\fun{inr}$. For instance, consider the case where $B\defeq\neg A$. We do know that $A\wedge\neg A$ is false\footnote{A witness of this proposition is a pair $(a,b)$ with $a\colon A$ and $b\colon A\to\fun0$. It cannot exist since otherwise $b(a)\colon\fun0$.} but not if this is because $A$ is false or $\neg A$ is false (as it happens with unsolved conjectures).
 \end{lpar}
 
 \begin{lpar}{Predicate logic.}\label{lpar:predicate-logic}
@@ -1357,9 +1388,9 @@
                 &\textbf{Type Theory's type}\\[0.3mm]
             \hline
             \rule{0mm}{4mm}1&for all $x\colon A$, $P(x)$ holds
-                &$\prod_{x:A}P(x)$ \\[1mm]
+                &$\prod_{x:\,A}P(x)$ \\[1mm]
             2&there exists $x\colon A$ such that $P(x)$
-                &$\sum_{x:A}P(x)$\\[1mm]
+                &$\sum_{x:\,A}P(x)$\\[1mm]
             \hline
         \end{tabular}
     \]
@@ -1370,12 +1401,12 @@
     \]
     translates into the type
     \[
-        \Big(\prod_{x:A}(P(x)\times Q(x))\Big)
-            \to\Big(\prod_{x:A}P(x)\Big)\times\Big(\prod_{x:A}Q(x)\Big).
+        \Big(\prod_{x:\,A}(P(x)\times Q(x))\Big)
+            \to\Big(\prod_{x:\,A}P(x)\Big)\times\Big(\prod_{x:\,A}Q(x)\Big).
     \]
     Its proof consists of constructing a witness $f$ for this type.
 
-    Take a dependent function $r$ in the domain. We must construct a pair of dependent functions $(p,q)$, where $p\colon \prod_{x:A}P(x)$ and $q\colon \prod_{x:A}Q(x)$.
+    Take a dependent function $r$ in the domain. We must construct a pair of dependent functions $(p,q)$, where $p\colon \prod_{x:\,A}P(x)$ and $q\colon \prod_{x:\,A}Q(x)$.
     For any $x\colon A$, the term $r(x)$ is a pair in $P(x)\times Q(x)$. Using standard projections, we could define the result directly as:
     \[
         f(r) \defeq \big(\lambda x.\,\pi_1(r(x)),\; \lambda x.\,\pi_2(r(x))\big).
@@ -1402,34 +1433,34 @@ In this section we go in further detail about identity family types. Concretely,
 \]
 The witnesses of this type are regarded as \textit{paths in the space $A$ from the point $a$ to the point $b$}. The constructor of elements of this type is the dependent \textsl{reflexivity} function
 \[
-    \fun{refl}\colon\prod_{a:A}a\eq Aa.
+    \fun{refl}\colon\prod_{a:\,A}a\eq Aa.
 \]
 In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{lpar}{Path recursion.}
     Consider the type of \textsl{free} paths
     \[
-        A^I \defeq \sum_{x,y:A} x=_A y.
+        A^I \defeq \sum_{x,y:\,A} x\eq A y.
     \]
     While this represents the space of all paths in $A$, the fundamental recursion principle is stated for paths starting at a fixed element $x\colon A$.
 
     Given a type $B$, the recursion principle for the \textsl{based} path space at $x$ defines functions that effectively ignore the path. It has the signature:
     \[
-        \fun{rec}_{\eq A}\colon\prod_{B:\univ}B
-            \to\prod_{y:A}(x\eq Ay)\to B.
+        \fun{rec}_{\eq A}\colon\prod_{B:\,\univ}B
+            \to\prod_{y:\,A}(x\eq Ay)\to B.
     \]
     It satisfies the computation rule:
     \[
-        \fun{rec}_{=_A}(B,c_{\fun{refl}},x,\fun{refl}_x)\equiv c_{\fun{refl}},
+        \fun{rec}_{\eq A}(B,c_{\fun{refl}},x,\fun{refl}_x)\equiv c_{\fun{refl}},
     \]
     where $c_{\fun{refl}}\colon B$ is the value assigned to the reflexivity path.
 
     Since $x$ is fixed in the context, the value $b$ may depend on it. For example, taking $B \defeq A$ and $b \defeq x$, we obtain the function
     \begin{align*}
-        f &\colon \prod_{y:A} (x=_A y) \to A \\
+        f &\colon \prod_{y:\,A} (x\eq A y) \to A \\
         f &\defeq \lambda y.\,\lambda p.\,x,
     \end{align*}
-    which is formally defined as $f\defeq\fun{rec}_{=_A}(A, x)$, and satisfies $f(x,p)\eq Ax$ for any path $p$ with origin in $x$.\footnote{Compare this with the function $g\defeq\lambda x.\,\lambda p.\,x$ which satisfies $g(x)\equiv x$ for $x\colon A$.}
+    which is formally defined as $f\defeq\fun{rec}_{\eq A}(A,x)$, and satisfies $f(x,p)\eq Ax$ for any path $p$ with origin in $x$.\footnote{Compare this with the function $g\defeq\lambda x.\,\lambda p.\,x$ which satisfies $g(x)\equiv x$ for $x\colon A$.}
 \end{lpar}
 
 \begin{lpar}{Comparison with natural recursion.}
@@ -1438,11 +1469,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         \begin{tabular}{l|l|l}
                 & $\N$
-                & $\displaystyle\sum_{y:A} x=y$ \\ [4mm]
+                & $\displaystyle\sum_{y:\,A} x=y$ \\ [4mm]
             \hline\rule{0mm}{5mm}
             Constructors
                 & - $0 \colon \N$
-                & - $\fun{refl}_x \colon x=_A x$ \\
+                & - $\fun{refl}_x \colon x\eq A x$ \\
                 & - $\fun{succ} \colon \N \to \N$
                 & \\ [1mm]
             \hline\rule{0mm}{4mm}
@@ -1463,23 +1494,23 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{General path induction.}
     In the case of identity types, the induction principle (a.k.a.~\textsl{path induction}) conceptually requires a motive defined on the total space of paths:
     \[
-        \Big(\sum_{x,y:A}x=_A y\Big)\to\univ.
+        \Big(\sum_{x,y:\,A}x\eq A y\Big)\to\univ.
     \]
     In Type Theory, however, we specify this map using its Curried\footnote{See \nref{lpar:generalized-currying}.} form:
     \[
-        C\colon\prod_{x,y:A}(x\eq A y)\to\univ.
+        C\colon\prod_{x,y:\,A}(x\eq A y)\to\univ.
     \]
     This distinction explains why we write \/ $C(x,y,p)$ rather than \/ $C((x,y,p))$.
 
-    Given such a motive \/ $C$ and a base case function \/ $c\colon\prod_{x:A}C(x,x,\fun{refl}_x)$, the principle establishes the existence of a dependent function
+    Given such a motive \/ $C$ and a base case function \/ $c\colon\prod_{x:\,A}C(x,x,\fun{refl}_x)$, the principle establishes the existence of a dependent function
     \[
-        f\colon\prod_{x,y:A}\;\prod_{p:x\eq A y}C(x,y,p)
+        f\colon\prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}C(x,y,p)
     \]
     such that \/ $f(x,x,\fun{refl}_x)\defeq c(x)$ for \/ $x\colon A$. In other words, the induction principle for identity types is defined as
     \begin{equation}\label{eq:ind=A}
-        \fun{ind}_{\eq A}\colon\prod_{C:\prod_{x,y:A}(x\eq A y)\to\univ}
-            \;\prod_{x:A}C(x,x,\fun{refl}_x)
-                \to\prod_{x,y:A}\;\prod_{p:x\eq Ay}C(x,y,p)
+        \fun{ind}_{\eq A}\colon\prod_{C:\,\prod_{x,y:\,A}(x\eq A y)\to\univ}
+            \;\prod_{x:\,A}C(x,x,\fun{refl}_x)
+                \to\prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}C(x,y,p)
     \end{equation}
     satisfying the computation rule
     \[
@@ -1505,10 +1536,10 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{proof}
         Given a type $A$, define the \textsl{motive}\footnote{The type family whose role is to identify the theorem we are about to prove.} family
         \begin{align*}
-            C&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+            C&\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ\\
             C(x,y,p)&\defeq(y\eq Ax).
         \end{align*}
-        For the base case, we need a function of type $\prod_{x:A}C(x,x,\fun{refl}_x)$. Since
+        For the base case, we need a function of type $\prod_{x:\,A}C(x,x,\fun{refl}_x)$. Since
         \[
             C(x,x,\fun{refl}_x)\equiv(x\eq Ax),
         \]
@@ -1546,18 +1577,18 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{lem}
 
     \begin{proof}
-        Let $D\colon\prod_{x,y:A}(x\eq Ay)\to\univ$ be the motive family 
+        Let $D\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ$ be the motive family 
         \[
-            D(x,y,p) \defeq \prod_{z:A}\;\prod_{q:y\eq Az} (x\eq Az).
+            D(x,y,p) \defeq \prod_{z:\,A}\;\prod_{q:\,y\eq Az} (x\eq Az).
         \]
         Since $x\eq Az$ does not depend on the path $q\colon y\eq Az$, we can rewrite $D$ as
         \[
-            D(x,y,p) \defeq \prod_{z:A}(y\eq Az)\to(x\eq Az).
+            D(x,y,p) \defeq \prod_{z:\,A}(y\eq Az)\to(x\eq Az).
         \]
         For the base case we take
         \[
             d(x)\colon D(x,x,\fun{refl}_x)
-                \equiv\prod_{z:A}\;(x\eq Az)\to (x\eq Az),\quad d(x)\defeq\lambda z.\,\lambda q.\,q.
+                \equiv\prod_{z:\,A}\;(x\eq Az)\to (x\eq Az),\quad d(x)\defeq\lambda z.\,\lambda q.\,q.
         \]
         By path induction, we obtain
         \[
@@ -1583,7 +1614,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{Right unit law.}\label{lpar:right-unit-law}
     The $\fun{refl}$ function also acts as a right unit for concatenation, except that this time what we get is a propositional equality.
     \begin{lem}
-        For every type\/ $A$, every\/ $x,y:A$ and every path\/ $p:x\eq Ay$, we have a path
+        For every type\/ $A$, every\/ $x,y\colon A$ and every path\/ $p\colon x\eq Ay$, we have a path
         \[
             \fun{unit}_r(p)\colon p\ct\fun{refl}_y\eq{x\eq Ay}p.
         \]
@@ -1592,7 +1623,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{proof}
         We perform path induction on $p$. Let $C(x,y,p)$ be the motive family
         \begin{align*}
-            C&\defeq\prod_{x,y:A}\;\prod_{p:x\eq Ay}
+            C&\defeq\prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}
                 (p\ct\fun{refl}_y\eq{x\eq Ay}p).
         \end{align*}
         For the base case, we assume $y \equiv x$ and $p \equiv \fun{refl}_x$. We must construct a term of type
@@ -1620,7 +1651,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{lem}
 
 \begin{proof}
-    Consider the motive $C\colon\prod_{x,y:A}(x\eq Ay)\to\univ$
+    Consider the motive $C\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ$
     \[
         C(x,y,e)\defeq P(x)\to P(y).
     \]
@@ -1635,25 +1666,25 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{Based path induction.}
     A different approach to path induction, which we will show is equivalent to the general one, consists in fixing an element $a\colon A$ before considering the type family~$D$, specific for $a$,
     \[
-        D\colon\prod_{x:A}(a\eq Ax)\to\univ
+        D\colon\prod_{x:\,A}(a\eq Ax)\to\univ
     \]
     and an element $d\colon D(a,\fun{refl}_a)$ and obtain a dependent function
     \[
-        f\colon\prod_{x:A}\;\prod_{p:a\eq Ax}D(x,p).
+        f\colon\prod_{x:\,A}\;\prod_{p:\,a\eq Ax}D(x,p).
     \]
     This means that to define an element of the family $D$ for all $x$ and $p$, it suffices to consider the case where $x$ is $a$ and $p$ is $\fun{refl}_a$.
     
     As a function, based path induction becomes
     \begin{equation}\label{eq:ind'=A}
-        \fun{ind}'_{\eq A}\colon\prod_{a:A}
-            \;\; \prod_{D:\prod_{x:A} (a\eq A x)\to\univ}
-        D(a,\fun{refl}_a)\to\prod_{x:A}\;\prod_{p:a\eq Ax}D(x,p)
+        \fun{ind}'_{\eq A}\colon\prod_{a:\,A}
+            \;\; \prod_{D:\,\prod_{x:\,A} (a\eq A x)\to\univ}
+        D(a,\fun{refl}_a)\to\prod_{x:\,A}\;\prod_{p:\,a\eq Ax}D(x,p)
     \end{equation}
     with the equality
     \[
-        \fun{ind}'_{=_A}(a,D,d,a,\fun{refl}_a)\defeq d.
+        \fun{ind}'_{\eq A}(a,D,d,a,\fun{refl}_a)\defeq d.
     \]
-    \textbf{Note.} The difference between both forms of path induction is that in the based one, we are free to choose and fix an element $a\colon A$ and then (1)~formulate a property $D(x,p)$ for every $p\colon a\eq Ax$, and (2)~exhibit a witness of $D(a,\fun{refl}_a)$. In general path induction, we formulate $C(x,y,p)$ for generic $p\colon x\eq Ay$, and then prove $C(x,x,\fun{refl}_x)$, also for a generic $x\colon A$. While the general approach may look natural in some special cases, the based one is often simpler, as the generalization $D(x,p)$ that it requires is closer to the concrete base case $D(a,\fun{refl}_a)$, where $a$ is fixed, than the full generalization $C(x,y,p)$ required by the $\fun{ind}$ function. As we will see next, both notions are equivalent.
+    \textbf{Note.} The difference between both forms of path induction is that in the based one, we are free to choose and fix an element $a\colon A$ and then (1)~formulate a property $D(x,p)$ for every $p\colon a\eq Ax$, and (2)~exhibit a witness of $D(a,\fun{refl}_a)$. In general path induction, we formulate $C(x,y,p)$ for generic $p\colon x\eq Ay$, and then prove $C(x,x,\fun{refl}_x)$, also for a generic $x\colon A$. While the general approach may look natural in some special cases, the based one is often simpler because the generalization $D(x,p)$ it requires is closer to the concrete base case $D(a,\fun{refl}_a)$, with $a$ fixed, than the full generalization $C(x,y,p)$ required by the $\fun{ind}$ function. As we will see next, both notions are equivalent.
 \end{lpar}
 
 \begin{lpar}{Path induction equivalence.}
@@ -1666,14 +1697,14 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     To see that this is well defined, consider the types required by $\fun{ind}_{\eq A}$:
     \begin{align*}
-        C &\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
-        c &\colon \prod_{x:A}C(x,x,\fun{refl}_x)\\
+        C &\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ\\
+        c &\colon \prod_{x:\,A}C(x,x,\fun{refl}_x)\\
         x,y &\colon A\\
         p &\colon x\eq Ay
     \end{align*}
     By fixing the first argument to $x$, we obtain the specific arguments required by $\fun{ind}'_{\eq A}$ with base point $x$:
     \begin{align*}
-        D&\defeq\lambda y.\,\lambda p'.\,C(x,y,p')\colon\prod_{y:A}(x\eq Ay)\to\univ\\
+        D&\defeq\lambda y.\,\lambda p'.\,C(x,y,p')\colon\prod_{y:\,A}(x\eq Ay)\to\univ\\
         d &\defeq c(x) \colon C(x,x,\fun{refl}_x)\\
         y &\colon A\\
         p &\colon x\eq A y,
@@ -1687,15 +1718,15 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     For the converse, fix  $a\colon A$ and suppose we are given
     \[
-        D\colon\prod_{x:A}(a\eq Ax)\to\univ, \quad \text{and} \quad d\colon D(a,\fun{refl}_a).
+        D\colon\prod_{x:\,A}(a\eq Ax)\to\univ, \quad \text{and} \quad d\colon D(a,\fun{refl}_a).
     \]
     In order to derive  $D$ using  $\fun{ind}$ we define the motive  $C$ as
     \begin{equation}\label{eq:ind-domain-function}
-        C(u,v,q)\defeq\prod_{s:a\eq Au}D(u,s)\to D(v,s\ct q).
+        C(u,v,q)\defeq\prod_{s:\,a\eq Au}D(u,s)\to D(v,s\ct q).
     \end{equation}
     For the base case  $c(u)$ we need a term of type
     \[
-        \prod_{s:a\eq Au}D(u,s)\to D(u,s\ct\fun{refl}_u).
+        \prod_{s:\,a\eq Au}D(u,s)\to D(u,s\ct\fun{refl}_u).
     \]
     By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s\ct\fun{refl}_u\eq As$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq As\ct\fun{refl}_u$.
     
@@ -1744,7 +1775,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \section{Arithmetic of Natural Numbers}
 
 \begin{lpar}{Additive identity.}\label{lpar:additive-identity}
-    Since our definition of addition in $\N$ is by induction in the fist operand, we know that $0+n\equiv n$ for $n\colon\N$. What remains to be seen is the following
+    Since our definition of addition in $\N$ is by induction in the first operand, we know that $0+n\equiv n$ for $n\colon\N$. It remains to show the following
     
     \begin{lem}
         For every $n\colon\N$ the type $n+0\eq\N n$ is inhabited.
@@ -1752,10 +1783,10 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     \begin{proof} We proceed by induction on $n$.
     \begin{itemize}
-        \item \textbf{Base case ($n\defeq0$):} We must show $0 =_\N 0 + 0$. Since $0+0\equiv0$, this holds by reflexivity.
-        \item \textbf{Inductive step:} We assume the hypothesis $h\colon n =_\N n+0$ and must show $\fun{succ}(n) =_\N \fun{succ}(n)+0$.
+        \item \textbf{Base case ($n\defeq0$):} We must show $0 \eq\N 0 + 0$. Since $0+0\equiv0$, this holds by reflexivity.
+        \item \textbf{Inductive step:} We assume the hypothesis $h\colon n \eq\N n+0$ and must show $\fun{succ}(n) \eq\N \fun{succ}(n)+0$.
         By the computation rules, the \rhs\ reduces: $\fun{succ}(n)+0 \equiv \fun{succ}(n+0)$.
-        Thus, the goal becomes $\fun{succ}(n) =_\N \fun{succ}(n+0)$.
+        Thus, the goal becomes $\fun{succ}(n) \eq\N \fun{succ}(n+0)$.
 
         To complete the proof, we need to apply the function $\fun{succ}$ to both sides of the hypothesis $h$. This relies on the \textit{principle of congruence} that states that functions respect equality.\footnote{Exercise~\ref{exr:ap-application}.}
         
@@ -1775,16 +1806,16 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{Associativity of addition.}\label{lpar:associativity-of-addition}
     Proving the associativity of the addition of natural numbers entails defining a function
     \[
-        \fun{assoc}\colon\prod_{i,j,k:\N}i+(j+k)\eq\N(i+j)+k.
+        \fun{assoc}\colon\prod_{i,j,k:\,\N}i+(j+k)\eq\N(i+j)+k.
     \]
     We proceed by induction on $i$. The type family $C\colon\N\to\univ$ is given by:
     \[
-        C(i) \defeq \prod_{j,k:\N} i+(j+k)\eq\N(i+j)+k.
+        C(i) \defeq \prod_{j,k:\,\N} i+(j+k)\eq\N(i+j)+k.
     \]
     To define the function $\fun{assoc} \defeq \fun{ind}_\N(C, c_0, c_s)$, we specify:
     \begin{align*}
         c_0 &\colon C(0),\\
-        c_s &\colon \prod_{i:\N} C(i) \to C(\fun{succ}(i)).
+        c_s &\colon \prod_{i:\,\N} C(i) \to C(\fun{succ}(i)).
     \end{align*}
     For the base case $c_0$, we need a witness of $0+(j+k)\eq\N(0+j)+k$. From the definition of addition we know that $0+n \equiv n$. Therefore, the equality reduces to $j+k = j+k$, and we can define the witness by reflexivity:
     \[
@@ -1810,7 +1841,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{The order relation on $\N$.}
     The translation table (see \nref{lpar:predicate-logic}) implies that the relation $n\le m$, where $n,m\colon\N$, can be defined as
     \[
-        n\le m \defeq \sum_{k:\N} (n+k=_\N m).
+        n\le m \defeq \sum_{k:\,\N} (n+k\eq\N m).
     \]
     The following properties hold:
     \begin{enumerate}[i)]
@@ -1822,7 +1853,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{enumerate}
     \begin{proof}[Proof sketch]${}$
         \begin{enumerate}[i)]
-            \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n =_\N n$. The proof term is $(n,\fun{refl}_n)$.
+            \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n \eq\N n$. The proof term is $(n,\fun{refl}_n)$.
 
             \item This relies on the equality $\fun{succ}(n)=n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:additive-identity} for proving $n+0=n$ .
 
@@ -1875,9 +1906,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         
         \item Based on part a), we define the polymorphic composition operator as
         \[
-            \circ\colon \prod_{(A,B,C\colon\univ)}\;
-                \prod_{(g\colon B\to C)}\;
-                \prod_{(f\colon A\to B)}A\to C,
+            \circ\colon \prod_{A,B,C:\,\univ}\;
+                \prod_{g:\,B\to C}\;
+                \prod_{f:\,A\to B}A\to C,
         \]
         with specification
         \[
@@ -1924,7 +1955,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     Define
     \[
         \fun{rec}_{A\times B}\colon
-            \prod_{C:\univ}(A\to B\to C)
+            \prod_{C:\,\univ}(A\to B\to C)
             \to
             A\times B\to C
     \]
@@ -1946,21 +1977,21 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     For $\Sigma$-types, we define
     \[
-        \fun{rec}_{\sum_{x:A} B(x)}\colon
-            \prod_{C:\univ}\Big(\prod_{x:A}\big(B(x)
+        \fun{rec}_{\sum_{x:\,A} B(x)}\colon
+            \prod_{C:\,\univ}\Big(\prod_{x:\,A}\big(B(x)
                 \to C\big)\Big)
-                \to \Big(\sum_{x:A}B(x)\Big)
+                \to \Big(\sum_{x:\,A}B(x)\Big)
                 \to C
     \]
     and specify it as
     \[
-        \fun{rec}_{\sum_{x:A}B(x)}
+        \fun{rec}_{\sum_{x:\,A}B(x)}
             \defeq\lambda C.\,\lambda g.\,
                 \lambda p.\,g(\pi_1(p))(\pi_2(p)).
     \]
     To see that this is well defined, let us first observe that $g$ can be applied to $\pi_1(p)$. We have
     \[
-        g\colon\prod_{x:A}\big(B(x)\to C\big).
+        g\colon\prod_{x:\,A}\big(B(x)\to C\big).
     \]
     The signature of $\pi_1$ implies that $\pi_1(p)\colon A$. Hence, $g(\pi_1(p))\colon B(\pi_1(p))\to C$.
 
@@ -1968,7 +1999,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     It remains to be seen that the recursion works as expected. To verify this we have to evaluate the function at canonical elements. In this case it suffices to compute the $\lambda$-expression when $p\equiv(a,b)$ with $b\colon B(a)$. Here we have
     \begin{align*}
-        \fun{rec}_{\sum_{x:A}B(x)}(C,g)((a,b))
+        \fun{rec}_{\sum_{x:\,A}B(x)}(C,g)((a,b))
             &\equiv\big(\lambda p.\,g(\pi_1(p))(\pi_2(p))\big)((a,b))\\
             &\equiv g(\pi_1((a,b))(\pi_2((a,b)))\\
             &\equiv g(a)(b),
@@ -1979,7 +2010,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{exr}
     Assuming as given only the iterator for natural numbers
     \[
-        \fun{iter} \colon \prod_{C:\univ} C \to (C \to C) \to \N \to C
+        \fun{iter} \colon \prod_{C:\,\univ} C \to (C \to C) \to \N \to C
     \]
     with the defining equations
     \begin{align*}
@@ -1992,7 +2023,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{solution}
     Fix $C\colon\univ$. We have to define
     \[
-        \fun{rec}\colon\prod_{C:\univ}C\to(\N\to C\to C)\to\N\to C
+        \fun{rec}\colon\prod_{C:\,\univ}C\to(\N\to C\to C)\to\N\to C
     \]
     using $\fun{iter}$. Suppose we are given $c_0\colon C$ and $c_s\colon\N\to C\to C$. We have to produce a function $\fun{rec}(C,c_0,c_s)\colon\N\to C$ such that
     \begin{align*}
@@ -2009,7 +2040,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \fun q(0)&\defeq p_0\\
         \fun q(\fun{succ}(n)) &\defeq p_s(\fun q(n)).
     \end{align*}
-    Let $p_0\defeq(0,0)$ and $p_s(n,m)\defeq(\fun{succ}(n),n)$. Using the projections can write $\fun q(n)\equiv(q_1(n),q_2(n))$, where $q_1,q_2\colon\N\to\N$. Therefore,
+    Let $p_0\defeq(0,0)$ and $p_s(n,m)\defeq(\fun{succ}(n),n)$. Using the projections we can write $\fun q(n)\equiv(q_1(n),q_2(n))$, where $q_1,q_2\colon\N\to\N$. Therefore,
     \begin{align*}
         q_1(0)&\equiv 0\\
         q_2(0)&\equiv 0\\
@@ -2050,65 +2081,65 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 \big(\fun{rec}(C,c_0,c_s,q_1(n))\big)\\
             &\equiv c_s\big(q_1(n),\fun{rec}(C,c_0,c_s,q_1(n))\big).
     \end{align*}
-    Thus, the question of proving that $\fun{rec}$ is propositionally equal to the recursion principle $\fun{rec}_\N$ for $\N$, would follow from the fact that a function $f\colon\N\to\N$ that satisfies $f(0)\equiv0$ and $f(\fun{succ}(n))\equiv\fun{succ}(n)$ is propositionally equal to the identity, i.e., $f=_{\N\to\N}\id_\N$.
+    Thus, the question of proving that $\fun{rec}$ is propositionally equal to the recursion principle $\fun{rec}_\N$ for $\N$, would follow from the fact that a function $f\colon\N\to\N$ that satisfies $f(0)\equiv0$ and $f(\fun{succ}(n))\equiv\fun{succ}(n)$ is propositionally equal to the identity, i.e., $f\eq{\N\to\N}\id_\N$.
 
     However, strictly speaking, that would be too much for our needs, since the equality $q_1(n)=n$ for $n\colon\N$ would imply by congruence\footnote{See Exercise~\ref{exr:ap-application}.} that $\fun{rec}$ satisfies the recursion principle equations propositionally, which is what we want.
 
     In other words, we need a witness of
     \[
-        \prod_{n:\N} q_1(n) =_\N n.
+        \prod_{n:\,\N} q_1(n) \eq\N n.
     \]
     To construct it, we use the induction principle \nref{lpar:induction} for the type family
     \[
-        C:\N \to \univ, \quad C(n) \defeq q_1(n) =_\N n,
+        C:\,\N \to \univ, \quad C(n) \defeq q_1(n) \eq\N n,
     \]
     which requires a constant $c_0\colon C(0)$ and a step function 
     \[
-        c_s\colon\prod_{n:\N}C(n)\to C(\fun{succ}(n)).
+        c_s\colon\prod_{n:\,\N}C(n)\to C(\fun{succ}(n)).
     \]
     The induction principle yields
     \[
-        \fun{ind}_\N(C,c_0,c_s)\colon\prod_{n:\N}C(n).
+        \fun{ind}_\N(C,c_0,c_s)\colon\prod_{n:\,\N}C(n).
     \]
-    For $c_0$, we define it as $\fun{refl}_0$ because $q_1(0) \equiv 0$. For the inductive step, given $n:\N$ and a hypothesis $h:C(n)$ (i.e., $h\colon q_1(n) =_\N n$), we define $c_s(n, h)$ by applying $\fun{succ}$ to $h$ via congruence. This provides a witness for $q_1(\fun{succ}(n))=_\N\fun{succ}(n)$, since $q_1(\fun{succ}(n))\equiv\fun{succ}(q_1(n))$.
+    For $c_0$, we define it as $\fun{refl}_0$ because $q_1(0)\equiv 0$. For the inductive step, given $n\colon\N$ and a hypothesis $h\colon C(n)$ (i.e., $h\colon q_1(n)\eq\N n$), we define $c_s(n,h)$ by applying $\fun{succ}$ to $h$ via congruence. This provides a witness for $q_1(\fun{succ}(n))\eq\N\fun{succ}(n)$, since $q_1(\fun{succ}(n))\equiv\fun{succ}(q_1(n))$.
     
 \end{solution}
 
 
 \begin{exr}
-    Show that if we define\/ $A+B\defeq\sum_{x:\fun2}\fun{rec}_{\fun2}(\univ,A,B,x)$, then we can give a definition of\/ $\fun{ind}_{A+B}$ for which the definitional equalities stated in {\upshape\nref{lpar:coproduct-induction}} hold.
+    Show that if we define\/ $A+B\defeq\sum_{x:\,\fun2}\fun{rec}_{\fun2}(\univ,A,B,x)$, then we can give a definition of\/ $\fun{ind}_{A+B}$ for which the definitional equalities stated in {\upshape\nref{lpar:coproduct-induction}} hold.
 \end{exr}
 
 \begin{solution}
     This is a complement to \nref{lpar:coproduct-as-disjoint-union}, where the notation for the coproduct is $A\oplus B$. The induction function we have to define is
     \[
-        \fun{ind}_{A\oplus B}\colon\prod_{C:A\oplus B\to\univ}\;
-            \prod_{x:A}C(\fun{in}_A(x))
+        \fun{ind}_{A\oplus B}\colon\prod_{C:\,A\oplus B\to\univ}\;
+            \prod_{x:\,A}C(\fun{in}_A(x))
             \to
-            \prod_{y:B}C(\fun{in}_B(y))
+            \prod_{y:\,B}C(\fun{in}_B(y))
             \to
-            \prod_{s:A\oplus B}C(s).
+            \prod_{s:\,A\oplus B}C(s).
     \]
     Fix $C\colon A\oplus B\to\univ$. Given two dependent functions
     \[
-        g_0\colon\prod_{x:A}C(\fun{in}_A(x))
+        g_0\colon\prod_{x:\,A}C(\fun{in}_A(x))
         \quad\text{and}\quad
-        g_1\colon\prod_{y:B}C(\fun{in}_B(y)),
+        g_1\colon\prod_{y:\,B}C(\fun{in}_B(y)),
     \]
     we have to define a function with signature
     \[
-        f\colon\prod_{s:A\oplus B} C(s).
+        f\colon\prod_{s:\,A\oplus B} C(s).
     \]
     To do this we must use the induction principle of the $\Sigma$-type, which requires (see \nref{lpar:Sigma-type-rec-and-ind}) constructing a function $g$ with the following signature 
     \[
         g\colon
-            \prod_{t:\fun2\vphantom{\univ y}}\;
-            \prod_{z:\fun{rec}_{\fun2}(\univ,A,B,t)}
+            \prod_{t:\,\fun2\vphantom{\univ y}}\;
+            \prod_{z:\,\fun{rec}_{\fun2}(\univ,A,B,t)}
             C((t,z)).
     \]
     As a result, we will obtain
     \[
-        f \defeq\fun{ind}_{\sum_{t:\fun2}\fun{rec}_{\fun2}(\univ,A,B,t)}
+        f \defeq\fun{ind}_{\sum_{t:\,\fun2}\fun{rec}_{\fun2}(\univ,A,B,t)}
             (C,g).
     \]
     Now, by \nref{lpar:boolean-type}, we have
@@ -2123,7 +2154,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     where $D\colon\fun2\to\univ$ is given by
     \[
-        D(t)\defeq\prod_{z:\fun{rec}_{\fun2}(\univ,A,B,t)}C((t,z)),
+        D(t)\defeq\prod_{z:\,\fun{rec}_{\fun2}(\univ,A,B,t)}C((t,z)),
     \]
     which, according to \eqref{eq:inA-inB}, confirms the required typing judgments $g_0\colon D(0_{\fun2})$ and $g_1\colon D(1_{\fun2})$.
     %
@@ -2136,7 +2167,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
         \item Verify that\/ $(\N,+,0,{}\cdot{},1)$ is a semiring using only\/ $\fun{ind}_\N$.
 
-        \item Verify that $m^{n+n'}=_\N m^n\cdot m^{n'}$.
+        \item Verify that $m^{n+n'}\eq\N m^n\cdot m^{n'}$.
     \end{enumerate}
 \end{exr}
 
@@ -2182,13 +2213,13 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
             \item \textit{Left distributivity.} Define the motive $C\colon\N\to\univ$ by
             \[
-                D(i)\defeq\prod_{j,k:\N}i\cdot(j+k)\eq\N i\cdot j+i\cdot k.
+                D(i)\defeq\prod_{j,k:\,\N}i\cdot(j+k)\eq\N i\cdot j+i\cdot k.
             \]
             Then
             \[
-                D(0)\equiv\prod_{j,k:\N}0\cdot(i+j)\eq\N0\cdot i+0\cdot j,
+                D(0)\equiv\prod_{j,k:\,\N}0\cdot(i+j)\eq\N0\cdot i+0\cdot j,
             \]
-            which is judgmentally equal to $\prod_{i,j:\N}0\eq\N0$ because $0\equiv0+0$. Thus, the constant map $d_0\colon\N\times\N\to\fun{refl}_0$ is a witness.
+            which is judgmentally equal to $\prod_{i,j:\,\N}0\eq\N0$ because $0\equiv0+0$. Thus, the constant map $d_0\colon\N\times\N\to\fun{refl}_0$ is a witness.
 
             For the inductive step take $p\colon D(i)$ and observe that
             \begin{align*}
@@ -2219,7 +2250,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
             \item \textit{Multiplication commutativity.} Define the motive $C\colon\N\to\univ$ by
             \[
-                C(i)\defeq\prod_{j:\N}i\cdot j\eq\N j\cdot i.
+                C(i)\defeq\prod_{j:\,\N}i\cdot j\eq\N j\cdot i.
             \]
             The base case, where $i\defeq0$, follows from annihilation (part 1). 
 
@@ -2239,11 +2270,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             
             \item \textit{Multiplication associativity.} Define the motive $A\colon\N\to\univ$ given by
             \[
-                A(i)\defeq\prod_{j,k:\N}(i\cdot j)\cdot k \eq\N i\cdot(j\cdot k).
+                A(i)\defeq\prod_{j,k:\,\N}(i\cdot j)\cdot k \eq\N i\cdot(j\cdot k).
             \]
             The base case is
             \[
-                A(0)\equiv\prod_{j,k:\N}
+                A(0)\equiv\prod_{j,k:\,\N}
                     (0\cdot j)\cdot k\eq\N 0\cdot(j\cdot k),
             \]
             which is trivial because, by definition, $0\cdot n\equiv n$ for $n\colon\N$.
@@ -2267,7 +2298,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
         \item Consider the motive $E\colon\N\to\univ$ given by
         \[
-            E\defeq\prod_{n,m,n':\N}m^{n+n'}\eq\N m^n\cdot m^{n'}.
+            E\defeq\prod_{n,m,n':\,\N}m^{n+n'}\eq\N m^n\cdot m^{n'}.
         \]
         Fix $m$ and $n'$. To construct a witness of $E(m,n')$ we proceed by induction on $n$.
         For the base case, we have
@@ -2297,8 +2328,8 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{enumerate}
 \end{solution}
 
-\begin{exr}
-    Define the type family\/ $\fun{Fin}\colon\N\to\mathcal{U}$ mentioned at the end of {\upshape\nref{lpar:type-families}}, and the dependent function\/ $\fun{fmax}\colon\prod_{n:\N}\fun{Fin}(\fun{succ}(n))$ mentioned in {\upshape\nref{lpar:Pi-types}}.
+\begin{exr}\label{exr:Fin}
+    Define the type family\/ $\fun{Fin}\colon\N\to\univ$ mentioned at the end of {\upshape\nref{lpar:type-families}}, and the dependent function\/ $\fun{fmax}\colon\prod_{n:\,\N}\fun{Fin}(\fun{succ}(n))$ mentioned in {\upshape\nref{lpar:Pi-types}}.
 \end{exr}
 
 \begin{solution}
@@ -2521,7 +2552,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{exr}
     Explain why the induction principles for identity types do not allow us to construct a function
     \[
-        f\colon\prod_{x:A}\;\prod_{p:x=x} (p=\fun{refl}_x)
+        f\colon\prod_{x:\,A}\;\prod_{p:\,x=x} (p=\fun{refl}_x)
     \]
     with the defining equation
     \[
@@ -2532,7 +2563,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{solution}
     The construction is invalid because the expression does not fit the type signature required by the induction principle for identity types in either formulation \eqref{eq:ind=A} or \eqref{eq:ind'=A}.
 
-    The given expression only considers paths of the form $p: x=x$, between $x$ and itself, while the induction principle requires paths between two variables.
+    The given expression only considers paths of the form $p\colon x=x$, between $x$ and itself, while the induction principle requires paths between two variables.
 \end{solution}
 
 \begin{exr}\label{exr:+comm}
@@ -2542,31 +2573,31 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{solution}
     We must exhibit a witness for the type
     \[
-        \prod_{i,j:\N} i+j =_\N j+i.
+        \prod_{i,j:\,\N} i+j \eq\N j+i.
     \]
     We proceed by induction on $i$. Define the motive $C \colon \N \to \univ$ by
     \[
-        C(i) \defeq \prod_{j:\N} i+j =_\N j+i.
+        C(i) \defeq \prod_{j:\,\N} i+j \eq\N j+i.
     \]
     
-    \textbf{Base case:} We must provide a term $c_0 \colon \prod_{j:\N} 0+j =_\N j+0$.
-    By definition of addition, $0+j \equiv j$. Thus, the goal reduces to showing $j =_\N j+0$. We have already constructed a witness for this in \nref{lpar:additive-identity}.
+    \textbf{Base case:} We must provide a term $c_0 \colon \prod_{j:\,\N}0+j\eq\N j+0$.
+    By definition of addition, $0+j \equiv j$. Thus, the goal reduces to showing $j \eq\N j+0$. We have already constructed a witness for this in \nref{lpar:additive-identity}.
 
-    \textbf{Inductive step:} Let $i:\N$ and assume the inductive hypothesis
+    \textbf{Inductive step:} Let $i\colon\N$ and assume the inductive hypothesis
     \[
-        h \colon \prod_{j:\N} i+j =_\N j+i.
+        h \colon \prod_{j:\,\N} i+j \eq\N j+i.
     \]
-    We must show that for any $j$, $\fun{succ}(i)+j =_\N j+\fun{succ}(i)$.
+    We must show that for any $j$, $\fun{succ}(i)+j \eq\N j+\fun{succ}(i)$.
     \begin{align*}
         \fun{succ}(i)+j &\equiv \fun{succ}(i+j) \\
-            &=_\N \fun{succ}(j+i) 
+            &\eq\N \fun{succ}(j+i) 
                 &&\text{; $h(j)$ and congruence}\\
-            &=_\N (j+i)+1 
-                &&\text{; } \fun{succ}(n) =_\N n+1\\
-            &=_\N j+(i+1) 
+            &\eq\N (j+i)+1 
+                &&\text{; } \fun{succ}(n) \eq\N n+1\\
+            &\eq\N j+(i+1) 
                 &&\text{; associativity}\\
-            &=_\N j+\fun{succ}(i) 
-                &&\text{; } n+1 =_\N \fun{succ}(n).
+            &\eq\N j+\fun{succ}(i) 
+                &&\text{; } n+1 \eq\N \fun{succ}(n).
     \end{align*}
 \end{solution}
 
@@ -2590,12 +2621,12 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{enumerate}[a)]
         \item Fix the types $A$ and $B$, and a function $f\colon A\to B$. Consider the motive family
         \begin{align*}
-            C_f&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
+            C_f&\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ\\
             C_f&\defeq\lambda x.\,\lambda y.\,\lambda p.\,f(x)\eq Bf(y).
         \end{align*}
         To apply the induction principle, we need a base case function $c_f$ of type
         \[
-             \prod_{x:A} C_f(x,x,\fun{refl}_x).
+             \prod_{x:\,A} C_f(x,x,\fun{refl}_x).
         \]
         Since $C_f(x,x,\fun{refl}_x) \equiv f(x)\eq B f(x)$, we can define this function as
         \[
@@ -2604,7 +2635,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         Then, applying the induction principle $\fun{ind}_{\eq A}$  to $C_f$ and $c_f$, as specified in \eqref{eq:ind=A} yields a function
         \begin{align*}
             \fun{ind}_{\eq A}(C_f,c_f)\colon
-                \prod_{x,y:A}\;\prod_{p:x\eq Ay}f(x)\eq Bf(y),
+                \prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}f(x)\eq Bf(y),
         \end{align*}
         which satisfies
         \[
@@ -2623,18 +2654,18 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
         \item Fix $f\colon A\to B$ and consider the motive
         \begin{align*}
-            D_f&\colon\prod_{x,y:A}(x\eq Ay)\to\univ\\
-                D_f(x,y,p)&\defeq\prod_{z:A}\;\prod_{q:y\eq Az}
+            D_f&\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ\\
+                D_f(x,y,p)&\defeq\prod_{z:\,A}\;\prod_{q:\,y\eq Az}
                 \tilde f(p\ct q)\eq {f(x)\eq Bf(z)}
                     \tilde f(p)\ct\tilde f(q).
         \end{align*}
-        Using pat a) and the fact that $\fun{refl}$ is the  definitionally left concatenation unit, we deduce
+        Using part a) and the fact that $\fun{refl}$ is the  definitionally left concatenation unit, we deduce
         \begin{align*}
             D_f(x,x,\fun{refl}_x)
-                &\equiv\prod_{z:A}\;\prod_{q:x\eq Az}
+                &\equiv\prod_{z:\,A}\;\prod_{q:\,x\eq Az}
                     \tilde f(\fun{refl}_x\ct q)\eq{f(x)\eq Bf(x)}
                         \tilde f(\fun{refl}_x)\ct\tilde f(q)\\
-                &\equiv \prod_{z:A}\;\prod_{q:x\eq Az}
+                &\equiv \prod_{z:\,A}\;\prod_{q:\,x\eq Az}
                     \tilde f(q)\eq{f(x)\eq Bf(x)}\tilde f(q).
         \end{align*}
         Consequently, we can take
@@ -2651,10 +2682,10 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{exr}
     Consider the boolean type\/ $\fun{2}$.
     \begin{enumerate}[a), font=\upshape]
-        \item Define the negation function\/ $\fun{not} : \fun{2} \to \fun{2}$.
+        \item Define the negation function\/ $\fun{not}\colon\fun2\to\fun2$.
         \item Prove that negation is an involution, i.e., construct a witness for
         \[
-            \prod_{b:\fun2}\fun{not}(\fun{not}(b))\eq {\fun2} b.
+            \prod_{b:\,\fun2}\fun{not}(\fun{not}(b))\eq {\fun2} b.
         \]
     \end{enumerate}
 \end{exr}
@@ -2677,7 +2708,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
         \item Consider the motive $C\colon\fun2\to\univ$ given by
         \[
-            C\defeq\prod_{b:\fun2}\fun{not}(\fun{not}(b))\eq{\fun2}b.
+            C\defeq\prod_{b:\,\fun2}\fun{not}(\fun{not}(b))\eq{\fun2}b.
         \]
         Using the induction principle for $\fun2$, we need to specify two paths $c_0\colon C(0_{\fun2})$ and $c_1\colon C(1_{\fun2})$, which we choose as $\fun{refl}_{0_{\fun2}}$ and $\fun{refl}_{1_{\fun2}}$. These are well defined because 
         \[
@@ -2695,9 +2726,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{exr}
     Prove that substitution over a constant type family is the identity function. That is, given a type\/ $B$ and the constant family\/ $P(x)\defeq B$, construct a witness for
     \[
-        \prod_{x,y:A}\;
-            \prod_{p:x\eq Ay}\;
-            \prod_{b:B}\fun{subst}_P(p,b)\eq Bb.
+        \prod_{x,y:\,A}\;
+            \prod_{p:\,x\eq Ay}\;
+            \prod_{b:\,B}\fun{subst}_P(p,b)\eq Bb.
     \]
 \end{exr}
 
@@ -2714,21 +2745,21 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
     Consider the motive
     \[
-    D(x,y,p)\defeq\prod_{b:B}\fun{subst}_P(p,b)\eq B b.
+    D(x,y,p)\defeq\prod_{b:\,B}\fun{subst}_P(p,b)\eq B b.
     \]
-    For the base case, we need a witness $d$ of type $\prod_{x:A} D(x,x,\fun{refl}_x)$.
+    For the base case, we need a witness $d$ of type $\prod_{x:\,A} D(x,x,\fun{refl}_x)$.
     Since
     \[
         \fun{subst}_P(x,x,\fun{refl}_x)\equiv\id_B,
     \]
     and $\id_B(b)\equiv b$, evaluating the motive at the base yields
     \[
-    D(x,x,\fun{refl}_x) \equiv \prod_{b:B}b\eq B b.
+    D(x,x,\fun{refl}_x) \equiv \prod_{b:\,B}b\eq B b.
     \]
     Hence, we can define $d(x)\defeq\lambda b.\,\fun{refl}_b$.
     We can now invoke the induction principle $\fun{ind}_{\eq A}$ to produce the desired function
     \[
-    \fun{ind}_{\eq A}(D,d)\colon\prod_{x,y:A}\;\prod_{p:x\eq A y} D(x,y,p).
+    \fun{ind}_{\eq A}(D,d)\colon\prod_{x,y:\,A}\;\prod_{p:\,x\eq A y} D(x,y,p).
     \]
 \end{solution}
 
@@ -2741,11 +2772,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{solution}
     Fix\/ $x\colon A$ and consider the family\/ $P\colon A\to\univ$ defined by
     \[
-        P(y)\defeq f(x)\eq B f(y).
+        P(y)\defeq f(x)\eq Bf(y).
     \]
     By transport, we know that there is a function
     \[
-        \fun{subst}_P\colon\prod_{y:A}\;\prod_{p:x\eq Ay}P(x)\to P(y).
+        \fun{subst}_P\colon\prod_{y:\,A}\;\prod_{p:\,x\eq Ay}P(x)\to P(y).
     \]
     Since\/ $\fun{refl}_{f(x)}\colon P(x)$, given a path\/ $e\colon x\eq A y$, we can apply the transport function to obtain
     \[
@@ -2753,3 +2784,4 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     By definition of\/ $P$, this term is an inhabitant of\/ $f(x)\eq B f(y)$, as required.
 \end{solution}
+
