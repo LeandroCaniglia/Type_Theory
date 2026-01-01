@@ -831,7 +831,7 @@
 \end{lpar}
 
 \section{Coproduct Types}
-    \begin{lpar}{Coproducts.} Given types $A,B\colon\univ$ their \textsl{coproduct} is the type $A+B\colon\univ$, a type that corresponds to the \textit{disjoint union} in Set Theory. Its constructors consist of two maps
+    \begin{lpar}{Coproducts.} Given types $A,B\colon\univ$ their \textsl{coproduct} is $A+B\colon\univ$, a type that corresponds to the \textit{disjoint union} in Set Theory. Its constructors consist of two maps
     \begin{align*}
         \fun{inl}\colon A&\to A+B
             &(\textsl{left injection})\\
@@ -840,7 +840,7 @@
     \end{align*}
     There is also a nullary version, the \textsl{empty coproduct} (i.e., the coproduct of no types), denoted by $\fun0\colon\univ$, which has no constructors.
 
-    Given $C\colon\univ$, to define a function $f\colon A+B\to C$ we have to provide two maps, as illustrated in the following diagram
+    Given\/ $C\colon\univ$, to define a function\/ $f\colon A+B\to C$ we have to provide two maps, as illustrated in the following diagram
     \[
         \begin{tikzcd}
                 &B
@@ -854,12 +854,12 @@
                 &&C
         \end{tikzcd}
     \]
-    This means that to specify $f$ we have to provide two maps $g_0$ and $g_1$ and define
+    This means that to define\/ $f$ we need to specify\/ $g_0$ and\/ $g_1$, which will satisfy
     \[
-        f(\fun{inl}(a))\defeq g_0(a)\quad\text{and}\quad
-        f(\fun{inr}(b))\defeq g_1(b),
+        f(\fun{inl}(a)) \equiv g_0(a)\quad\text{and}\quad
+        f(\fun{inr}(b)) \equiv g_1(b),
     \]
-    for $a\colon A$ and $b\colon B$.
+    for\/ $a\colon A$ and\/ $b\colon B$.
 
     In the case of the null coproduct, which is known as the \textsl{empty type}, given $C\colon\univ$ there is a unique function $f\colon\fun0\to C$. Since the type $\fun0$ has no elements, this function has no further specification.
 \end{lpar}
@@ -872,15 +872,9 @@
     \]
     with specification
     \begin{align*}
-        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inl}(a)) &\defeq g_0(a),\\
-        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inr}(b)) &\defeq g_1(b).
+        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inl}(a)) &\equiv g_0(a),\\
+        \fun{rec}_{A+B}(C, g_0, g_1, \fun{inr}(b)) &\equiv g_1(b).
     \end{align*}
-    Additionally,
-    \[
-        \fun{rec}_{\fun0}\colon\prod_{C:\,\univ}\fun0\to C
-    \]
-    constructs the unique function $\fun0\to C$ for every $C\colon\univ$.
-
     We can also express this recursion with the definitionally commutative diagram
     \[
         \begin{tikzcd}[row sep=large, column sep=large]
@@ -896,6 +890,12 @@
         \end{tikzcd}
     \]
     where $\fun{rec}\defeq\fun{rec}_{A+B}(C,g_0,g_1)$.
+
+    Additionally,
+    \[
+        \fun{rec}_{\fun0}\colon\prod_{C:\,\univ}\fun0\to C
+    \]
+    constructs the unique function $\fun0\to C$ for every $C\colon\univ$.
 \end{lpar}
 
 \begin{lpar}{Coproduct induction.}\label{lpar:coproduct-induction}
@@ -910,8 +910,8 @@
     \end{align*}
     and specify, for $a\colon A$ and $b\colon B$,
     \[
-        f(\fun{inl}(a))\defeq g_0(a)\quad\text{and}\quad
-        f(\fun{inr}(b))\defeq g_1(b).
+        f(\fun{inl}(a))\equiv g_0(a)\quad\text{and}\quad
+        f(\fun{inr}(b))\equiv g_1(b).
     \]
     As a result, we obtain the \textsl{induction principle for coproducts}
     \[
@@ -939,16 +939,16 @@
         \quad\text{and}\quad
         f(1_{\fun2}) \defeq c_1.
     \]
-    Therefore, the recursor is given by
+    Therefore, the recursor
     \begin{equation}\label{eq:rec2}
         \fun{rec}_{\fun2}\colon\prod_{C:\,\univ}C\to C\to\fun2\to C,
     \end{equation}
-    specified by
+    is specified by
     \begin{align*}
-        \fun{rec}_{\fun2}(C,c_0,c_1,0_{\fun2})&\defeq c_0,\\
-        \fun{rec}_{\fun2}(C,c_0,c_1,1_{\fun2})&\defeq c_1,
+        \fun{rec}_{\fun2}(C,c_0,c_1,0_{\fun2})&\equiv c_0\\
+        \fun{rec}_{\fun2}(C,c_0,c_1,1_{\fun2})&\equiv c_1,
     \end{align*}
-    which express the fact that $f\colon\fun2\to C$ is given by a pair of elements of type $C$. We can capture this in a definitionally commutative diagram
+    which means that $f\colon\fun2\to C$ is defined by a pair of elements of type $C$. We can capture this in a definitionally commutative diagram
     \[
         \begin{tikzcd}[row sep=0.8cm,column sep=2.0cm]
             \fun1
@@ -966,7 +966,7 @@
 
     In the case of dependent functions, given a type family $C\colon\fun2\to\univ$, we define
     \[
-        f\colon\prod_{x:\,\fun2}C(x)
+        f\colon\prod_{b:\,\fun2}C(b)
     \]
     specifying $c_0\colon C(0_{\fun2})$ and $c_1\colon C(1_{\fun2})$ and setting
     \[
@@ -976,14 +976,14 @@
     \]
     For a dependent function
     \[
-        f\colon\prod_{x:\,\fun2}C(x),
+        f\colon\prod_{b:\,\fun2}C(b),
     \]
     where $C\colon\fun2\to\univ$, we have
     \[
         \fun{ind}_{\fun2}\colon\prod_{C:\,\univ}\;
             C(0_{\fun2})\to C(1_{\fun2})
             \to\fun2
-            \to\prod_{x:\,\fun2}C(x)
+            \to\prod_{b:\,\fun2}C(b)
     \]
     along with
     \begin{align*}
@@ -1053,7 +1053,7 @@
             \fun{in}_B\colon B&\to A\oplus B, &b&\mapsto(1_{\fun2},b).
         \end{aligned}
     \end{equation}
-    To see that these are well-defined specifications, note that for any $a\colon A$, the pair $(0_{\fun2},a)$ has type $\sum_{x:\,\fun2}\sigma(x)$ because the second component must have type $\sigma(0_{\fun2})$. Since $\sigma(0_{\fun2})\equiv A$, $a$ is indeed a valid second component. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
+    To see that these are well-defined specifications, note that for any $a\colon A$, the pair $(0_{\fun2},a)$ has type $\sum_{x:\,\fun2}\sigma(x)$ because the second component is of the required type $\sigma(0_{\fun2})\equiv A$. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
 
     It remains to be shown that $A+B\simeq A\oplus B$. To see this first define
     \begin{equation}\label{eq:phi-coproduct-to-sigma}
@@ -1068,14 +1068,14 @@
     for $a\colon A$ and $b\colon B$. Second, to define a map in the other direction, we have to use the recursor evaluated at the coproduct $A+B$
     \[
         \fun{rec}_{\sum_{x:\,\fun2} \sigma(x)}(A+B)\colon
-            \prod_{x:\,\fun2}\big(\sigma(x)
-                \to A+B\big)
+            \Big(\prod_{x:\,\fun2}\sigma(x)
+                \to A+B\Big)
                 \to \Big(\sum_{x:\,\fun2}\sigma(x)\Big)
                 \to A+B
     \]
     and apply the result to a well-chosen dependent map
     \[
-        h\colon\prod_{x:\,\fun2}(\sigma(x)\to A+B).
+        h\colon\prod_{x:\,\fun2}\sigma(x)\to A+B.
     \]
     Take $h$ to be the one defined by
     \begin{align*}
@@ -1090,8 +1090,8 @@
     \end{equation}
     Finally, we have to check the following two equalities
     \begin{align*}
-        \phi(\psi(p))&\equiv p\quad(p\colon A\oplus B)\\
-        \psi(\phi(s))&\equiv s\quad(s\colon A+B)
+        \phi(\psi(p))&\eq{A\oplus B}p\quad(p\colon A\oplus B)\\
+        \psi(\phi(s))&\eq{A+B}s\quad(s\colon A+B)
     \end{align*}
     To verify the first equation, by the definition of $A\oplus B$, it suffices to consider the cases $p\defeq(0_{\fun2},a)$ and $p\defeq(1_{\fun2},b)$, with $a\colon A$ and $b\colon B$, since these exhaust all the canonical pairs of $A\oplus B$.
     \begin{itemize}
@@ -1100,7 +1100,7 @@
         \item For $p\defeq(1_{\fun2},b)$, we have $\psi((1_{\fun2},b)) \equiv h(1_{\fun2})(b) \equiv \fun{inr}(b)$. Thus,
         \[ \phi(\psi(p)) \equiv \phi(\fun{inr}(b)) \equiv \fun{in}_B(b) \equiv (1_{\fun2}, b) \equiv p. \]
     \end{itemize}
-    Conversely, for $s\colon A+B$, we check $\psi(\phi(s))\equiv s$ by induction on the coproduct:
+    Conversely, for $s\colon A+B$, we check $\psi(\phi(s))\eq{A+B}s$ by induction on the coproduct:
     \begin{itemize}
         \item For $s\defeq\fun{inl}(a)$, $\psi(\phi(s)) \equiv \psi(\fun{in}_A(a)) \equiv \psi((0_{\fun2}, a)) \equiv \fun{inl}(a) \equiv s$.
         \item For $s\defeq\fun{inr}(b)$, $\psi(\phi(s)) \equiv \psi(\fun{in}_B(b)) \equiv \psi((1_{\fun2}, b)) \equiv \fun{inr}(b) \equiv s$.
@@ -1111,7 +1111,7 @@
 \section{The Type of Natural Numbers}
 
 \begin{lpar}{Natural numbers.}
-    The type $\N\colon\univ$ is introduced with two constructors: the element \textsl{zero} $0\colon\N$ and a successor operator $\fun{succ}\colon\N\to\N$.
+    The type $\N\colon\univ$ is introduced with two constructors: the element \textsl{zero} $0\colon\N$ and a \textsl{successor} operator $\fun{succ}\colon\N\to\N$.
 
     Predictably, we adopt the conventional notation $1\defeq\fun{succ}(0)$, $2\defeq\fun{succ}(1)$, etc.
 
@@ -1252,6 +1252,27 @@
     where $\Phi'_s$ is obtained from $\Phi_s$ by replacing all occurrences of ``$f(n)$'' by the new variable $g$.
     
     This style of defining functions by recursion (or, more generally, dependent functions by induction) is called definition by \textsl{pattern matching}. We frequently use it for the sake of convenience.
+
+    \needspace{2\baselineskip}
+    \begin{xmpl}
+        Let us define the factorial function $\fun{fact} : \mathbb{N} \to \mathbb{N}$.
+
+        In the convenient pattern matching style, we write:
+        \begin{align*}
+            \fun{fact}(0) &\defeq 1, \\
+            \fun{fact}(\fun{succ}(n)) &\defeq \fun{succ}(n) \cdot \fun{fact}(n),
+        \end{align*}
+        where the usual `$\cdot$' symbol denotes multiplication.
+        
+        Here, our components correspond to the general schema as follows:
+        \begin{enumerate}[a), font=\upshape]
+            \item The target type is $C \equiv \mathbb{N}$.
+            \item The base case is $\Phi_0 \equiv 1$.
+            \item The successor expression is $\Phi_s \equiv \fun{succ}(n) \cdot \fun{fact}(n)$. Note that this involves both the variable $n$ and the recursive call $\fun{fact}(n)$.
+            \item $\Phi'_s \defeq \fun{succ}(n) \cdot g$.
+            \item $\fun{fact}\equiv\fun{rec}_\N(\N,1,\lambda n.\,\lambda g.\,\fun{succ}\cdot g)$.
+        \end{enumerate}
+    \end{xmpl}
 \end{lpar}
 
 \begin{lpar}{Induction principle.}\label{lpar:induction-principle}
@@ -1306,8 +1327,8 @@
     \[
         \begin{tabular}{l|ll}
             \hline
-            &\rule{0mm}{4mm}\textbf{Constructive proposition}
-                &\textbf{Type Theory's type}\\
+            &\rule{0mm}{4mm}\textbf{\small Constructive proposition}
+                &\textbf{\small Type Theory's type}\\
             \hline
             \rule{0mm}{4mm}1&true & $\mathbf{1}$ \\
             2&false & $\mathbf{0}$ \\
@@ -1325,9 +1346,9 @@
 
         \item Since $\fun0$ has no elements, there is no proof for $\fun0$ (it is false).
 
-        \item A proof $x$ of $A\times B$ consists of a proof $\pi_1(x)$ of $A$ and a proof $\pi_2(x)$ of $B$. Conversely, if $a$ is a proof of $A$ and $b$ is a proof of $B$, then the pair $(a,b)$ is a proof of $A\times B$.
+        \item A proof $x$ of $A\times B$ produces a proof $\pi_1(x)$ of $A$ and a proof $\pi_2(x)$ of $B$. Conversely, if $a$ is a proof of $A$ and $b$ is a proof of $B$, then the pair $(a,b)$ is a proof of $A\times B$.
 
-        \item A proof of $A+B$ is constructed either as $\fun{inl}(a)$, given a proof $a$ of $A$, or as $\fun{inr}(b)$, given a proof $b$ of $B$.
+        \item A proof of $A+B$ (propositionally) equals either $\fun{inl}(a)$, for a proof $a$ of $A$, or $\fun{inr}(b)$, for a proof $b$ of $B$. The converse clearly holds.
 
         \item A proof of the implication $A \to B$ is a function $f$. This function provides a method to transform any proof $a$ of $A$ into a proof $f(a)$ of $B$.
 
@@ -1384,8 +1405,8 @@
     \[
         \begin{tabular}{l|ll}
             \hline
-            &\rule{0mm}{4mm}\textbf{Predicate logic}
-                &\textbf{Type Theory's type}\\[0.3mm]
+            &\rule{0mm}{4mm}\textbf{\small Predicate logic}
+                &\textbf{\small Type Theory's type}\\[0.3mm]
             \hline
             \rule{0mm}{4mm}1&for all $x\colon A$, $P(x)$ holds
                 &$\prod_{x:\,A}P(x)$ \\[1mm]
@@ -1427,7 +1448,7 @@
 
 \section{Identity Types}\label{sec:identity-types}
 
-In this section we go in further detail about identity family types. Concretely, if $A\colon\univ$, the $\Id_A\colon A\to A\to\univ$ is the type family dependent on two copies of $A$, whose notation is 
+In this section we go in further detail about identity family types. Concretely, if $A\colon\univ$, then $\Id_A\colon A\to A\to\univ$ is the type family dependent on two copies of~$A$, whose notation is 
 \[
     \Id_A(a,b)\defeq a\eq Ab.
 \]
@@ -1463,34 +1484,6 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     which is formally defined as $f\defeq\fun{rec}_{\eq A}(A,x)$, and satisfies $f(x,p)\eq Ax$ for any path $p$ with origin in $x$.\footnote{Compare this with the function $g\defeq\lambda x.\,\lambda p.\,x$ which satisfies $g(x)\equiv x$ for $x\colon A$.}
 \end{lpar}
 
-\begin{lpar}{Comparison with natural recursion.}
-    The following table compares based path with natural recursion:
-    \small
-    \[
-        \begin{tabular}{l|l|l}
-                & $\N$
-                & $\displaystyle\sum_{y:\,A} x=y$ \\ [4mm]
-            \hline\rule{0mm}{5mm}
-            Constructors
-                & - $0 \colon \N$
-                & - $\fun{refl}_x \colon x\eq A x$ \\
-                & - $\fun{succ} \colon \N \to \N$
-                & \\ [1mm]
-            \hline\rule{0mm}{4mm}
-            Input Data
-                & - Base value $c_0 \colon B$
-                & - Base value $c_{\fun{refl}} \colon B$ \\
-                & - Step $c_s \colon B \to B$
-                & \\ [1mm]
-            \hline\rule{0mm}{4mm}
-            Equations
-                & - $f(0) \equiv c_0$
-                & - $f(x, \fun{refl}_x) \equiv c_{\fun{refl}}$ \\
-                & - $f(\fun{succ}(n)) \equiv c_s(f(n))$
-        \end{tabular}
-    \]
-\end{lpar}
-
 \begin{lpar}{General path induction.}
     In the case of identity types, the induction principle (a.k.a.~\textsl{path induction}) conceptually requires a motive defined on the total space of paths:
     \[
@@ -1500,23 +1493,23 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         C\colon\prod_{x,y:\,A}(x\eq A y)\to\univ.
     \]
-    This distinction explains why we write \/ $C(x,y,p)$ rather than \/ $C((x,y,p))$.
+    This distinction explains why we write $C(x,y,p)$ rather than $C((x,y,p))$.
 
-    Given such a motive \/ $C$ and a base case function \/ $c\colon\prod_{x:\,A}C(x,x,\fun{refl}_x)$, the principle establishes the existence of a dependent function
+    Given such a motive $C$ and a base case function $c\colon\prod_{x:\,A}C(x,x,\fun{refl}_x)$, the principle establishes the existence of a dependent function
     \[
         f\colon\prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}C(x,y,p)
     \]
-    such that \/ $f(x,x,\fun{refl}_x)\defeq c(x)$ for \/ $x\colon A$. In other words, the induction principle for identity types is defined as
+    such that $f(x,x,\fun{refl}_x)\defeq c(x)$ for $x\colon A$. In other words, the induction principle for identity types is defined as
     \begin{equation}\label{eq:ind=A}
         \fun{ind}_{\eq A}\colon\prod_{C:\,\prod_{x,y:\,A}(x\eq A y)\to\univ}
-            \;\prod_{x:\,A}C(x,x,\fun{refl}_x)
+            \;\bigg(\prod_{x:\,A}C(x,x,\fun{refl}_x)\bigg)
                 \to\prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}C(x,y,p)
     \end{equation}
     satisfying the computation rule
     \[
         \fun{ind}_{\eq A}(C,c,a,a,\fun{refl}_a)\defeq c(a)
     \]
-    for every \/ $a\colon A$.
+    for every $a\colon A$.
 \end{lpar}
 
 \begin{lpar}{Path symmetry.}
@@ -1534,7 +1527,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{lem}
     
     \begin{proof}
-        Given a type $A$, define the \textsl{motive}\footnote{The type family whose role is to identify the theorem we are about to prove.} family
+        Given a type $A$, define the \textsl{motive} family\footnote{The type family whose role is to identify the theorem we are about to prove.}
         \begin{align*}
             C&\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ\\
             C(x,y,p)&\defeq(y\eq Ax).
@@ -1579,7 +1572,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{proof}
         Let $D\colon\prod_{x,y:\,A}(x\eq Ay)\to\univ$ be the motive family 
         \[
-            D(x,y,p) \defeq \prod_{z:\,A}\;\prod_{q:\,y\eq Az} (x\eq Az).
+            D(x,y,p) \defeq \prod_{z:\,A}\;\prod_{q:\,y\eq Az}x\eq Az.
         \]
         Since $x\eq Az$ does not depend on the path $q\colon y\eq Az$, we can rewrite $D$ as
         \[
@@ -1592,19 +1585,19 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \]
         By path induction, we obtain
         \[
-            c(x,y,p)\defeq\fun{ind}_{\eq A}(D,d,x,y,p)\colon D(x,y,p).
+            \fun{ct}(x,y,p)\defeq\fun{ind}_{\eq A}(D,d,x,y,p)\colon D(x,y,p).
         \]
         We can define the concatenation $p\ct q$ by applying this function:
         \[
-            p\ct q\defeq c(x,y,p,z,q).
+            p\ct q\defeq \fun{ct}(x,y,p,z,q).
         \]
         The computation rule for path induction implies
         \[
-            c(x,x,\fun{refl}_x)\equiv d(x).
+            \fun{ct}(x,x,\fun{refl}_x)\equiv d(x).
         \]
         Therefore,
         \[
-            \fun{refl}_x\ct q\equiv c(x,x,\fun{refl}_x,z,q)
+            \fun{refl}_x\ct q\equiv \fun{ct}(x,x,\fun{refl}_x,z,q)
                 \equiv d(x)(z,q)\equiv q,
         \]
         which completes the proof.
@@ -1612,7 +1605,8 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{lpar}
 
 \begin{lpar}{Right unit law.}\label{lpar:right-unit-law}
-    The $\fun{refl}$ function also acts as a right unit for concatenation, except that this time what we get is a propositional equality.
+    The term $\fun{refl}$ also acts as a right unit for concatenation; however, in this case, the equality is propositional.
+    
     \begin{lem}
         For every type\/ $A$, every\/ $x,y\colon A$ and every path\/ $p\colon x\eq Ay$, we have a path
         \[
@@ -1621,7 +1615,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{lem}
     
     \begin{proof}
-        We perform path induction on $p$. Let $C(x,y,p)$ be the motive family
+        We perform path induction on $p$. Let $C$ be the motive family
         \begin{align*}
             C&\defeq\prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}
                 (p\ct\fun{refl}_y\eq{x\eq Ay}p).
@@ -1639,8 +1633,44 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{proof}
 \end{lpar}
 
+\begin{lpar}{Further concatenation properties.}
+
+\begin{lem}
+    Let\/ $A\colon\univ$,\/ $x,y,z, w\colon A$ and\/ $p\colon x\eq Ay$. Then, the following types are inhabited:
+    \begin{enumerate}[a), font=\upshape]
+        \item $p^{-1}\cdot p\eq{y\eq Ay}\fun{refl}_y$ and\/ $p\cdot p^{-1}\eq{x\eq Ax}\fun{refl}_x$.
+        \item $(p^{-1})^{-1}\eq{x\eq Ay}p$.
+        \item $p\cdot(q\cdot r)\eq{x\eq Aw}(p\cdot q)\cdot r$, for\/ $q\colon y\eq Az$ and\/ $r\colon z\eq Aw$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}${}$
+    \begin{enumerate}[a), font=\upshape]
+        \item Consider the motive
+        \[
+            C\defeq\prod_{x,y:\,A}\;\prod_{p:\,x\eq Ay}
+                p^{-1}\ct p\eq{y\eq Ay}\fun{refl}_y.
+        \]
+        We must show $C(x,x,\fun{refl}_x)$. Since $\fun{refl}_x^{-1}\equiv\fun{refl}_x$ and $\fun{refl}_x\ct\fun{refl}_x\equiv\fun{refl}_x$, we have
+        \[
+             \fun{refl}_x^{-1}\ct\fun{refl}_x \equiv \fun{refl}_x.
+        \]
+        Thus, we can take $c(x)\defeq\fun{refl}_{\fun{refl}_x}$ and obtain
+        \[
+            \fun{ind}_{\eq A}(C,c,x,y,p)\colon C(x,y,p).
+        \]
+        The other equation is proved similarly.\footnote{Alternatively, it can be derived from part~b) and the equation just proved, applied to $p^{-1}$ in the place of~$p$.}
+
+        \item By path induction on $p$, it suffices to consider the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. In that case, the statement holds definitionally because $\fun{refl}_x^{-1}\equiv\fun{refl}_x$.
+
+        \item By repeated path induction on $p$, $q$, and $r$, it suffices to consider the case where they are all $\fun{refl}_x$. In that case, the statement holds because $\fun{refl}_x\ct\fun{refl}_x\equiv\fun{refl}_x$. \qedhere
+    \end{enumerate}
+\end{proof}
+    
+\end{lpar}
+
 \begin{lpar}{Substitution.}\label{lpar:substitution}
-    The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with type substitution.\footnote{See also Exercise~\ref{exr:ap-application}.}
+    The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with \textsl{type substitution} (a.k.a.~\textsl{type transport}).\footnote{See also Exercise~\ref{exr:ap-application}.}
         
 \begin{lem}
     Let\/ $P\colon A\to\univ$ be a family of types. For any path\/  $e\colon x\eq A y$, there is a function
@@ -1676,15 +1706,17 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
     As a function, based path induction becomes
     \begin{equation}\label{eq:ind'=A}
-        \fun{ind}'_{\eq A}\colon\prod_{a:\,A}
-            \;\; \prod_{D:\,\prod_{x:\,A} (a\eq A x)\to\univ}
-        D(a,\fun{refl}_a)\to\prod_{x:\,A}\;\prod_{p:\,a\eq Ax}D(x,p)
+        \fun{ind}'_{\eq A}\colon\prod_{a:\,A}\;\;
+            \Bigg(
+            \prod_{D:\,\prod_{x:\,A} (a\eq A x)\to\univ}D(a,\fun{refl}_a)
+            \Bigg)
+        \to\prod_{x:\,A}\;\prod_{p:\,a\eq Ax}D(x,p)
     \end{equation}
     with the equality
     \[
         \fun{ind}'_{\eq A}(a,D,d,a,\fun{refl}_a)\defeq d.
     \]
-    \textbf{Note.} The difference between both forms of path induction is that in the based one, we are free to choose and fix an element $a\colon A$ and then (1)~formulate a property $D(x,p)$ for every $p\colon a\eq Ax$, and (2)~exhibit a witness of $D(a,\fun{refl}_a)$. In general path induction, we formulate $C(x,y,p)$ for generic $p\colon x\eq Ay$, and then prove $C(x,x,\fun{refl}_x)$, also for a generic $x\colon A$. While the general approach may look natural in some special cases, the based one is often simpler because the generalization $D(x,p)$ it requires is closer to the concrete base case $D(a,\fun{refl}_a)$, with $a$ fixed, than the full generalization $C(x,y,p)$ required by the $\fun{ind}$ function. As we will see next, both notions are equivalent.
+    \textbf{Note.} The difference between both forms of path induction is that in the based one we are free to choose and fix an element $a\colon A$ and then (1)~formulate a property $D(x,p)$ for every $p\colon a\eq Ax$, and (2)~exhibit a witness of $D(a,\fun{refl}_a)$. In general path induction, we formulate $C(x,y,p)$ for generic $p\colon x\eq Ay$, and then prove $C(x,x,\fun{refl}_x)$, also for a generic $x\colon A$. While the general approach may look natural in some special cases, the based one is often simpler because the generalization $D(x,p)$ it requires is closer to the concrete base case $D(a,\fun{refl}_a)$, with $a$ fixed, than the full generalization $C(x,y,p)$ required by the $\fun{ind}$ function. As we will see next, both notions are equivalent.
 \end{lpar}
 
 \begin{lpar}{Path induction equivalence.}
@@ -1722,27 +1754,28 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     In order to derive  $D$ using  $\fun{ind}$ we define the motive  $C$ as
     \begin{equation}\label{eq:ind-domain-function}
-        C(u,v,q)\defeq\prod_{s:\,a\eq Au}D(u,s)\to D(v,s\ct q).
+        C(u,v,q\colon u\eq Av)\defeq\prod_{s:\,a\eq Au}D(u,s)\to D(v,s\ct q).
     \end{equation}
     For the base case  $c(u)$ we need a term of type
     \[
-        \prod_{s:\,a\eq Au}D(u,s)\to D(u,s\ct\fun{refl}_u).
+        C(u,u,\fun{refl}_u)\equiv\prod_{s:\,a\eq Au}D(u,s)\to D(u,s\ct\fun{refl}_u).
     \]
-    By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s\ct\fun{refl}_u\eq As$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq As\ct\fun{refl}_u$.
+    By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s\ct\fun{refl}_u\eq{a\eq Au}s$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq{a\eq Au}s\ct\fun{refl}_u$.
     
-    Since we need to turn a  $D(u,s)$ into a  $D(u,s\ct\fun{refl}_u)$, we use the helper function  $\fun{subst}$ on the family  $\lambda t.\,D(u,t)$
+    Since we need to transform terms of $D(u,s)$ into terms of $D(u,s\ct\fun{refl}_u)$, we define $P_u\defeq\lambda s.\,D(u,s)$ and use the function $\fun{subst}_{P_u}$
     \begin{equation}\label{eq:ind-base-case-subst}
-        c(u)\defeq\lambda s.\,\fun{subst}(\fun{unit}_r(s)^{-1}).
+        c(u)\defeq\lambda s.\,\fun{subst}_{P_u}(\fun{unit}_r(s)^{-1})
+            \colon C(u,u,\fun{refl}_u).
     \end{equation}
     By path induction, we obtain
     \[
-        E(u,v,q) \defeq\fun{ind}_{\eq A}(C,c,u,v,q)\colon C(u,v,q).
+        E(u,v,q) \defeq\fun{ind}_{\eq A}(C,c,u,v,q)\colon C(u,v,q),
     \]
-    This gives us a witness for the based induction:
+    which yields a witness for the based induction:
     \[
         f(x,p)\defeq E(a,x,p)(\fun{refl}_a)(d).
     \]
-    This is well-typed because, according to \eqref{eq:ind-domain-function},  $E(a,x,p)(\fun{refl}_a)$ provides a map  $D(a,\fun{refl}_a)\to D(x,\fun{refl}_a\ct p)$, and since  $\fun{refl}_a\ct p\equiv p$, the codomain is precisely  $D(x,p)$. Finally, we apply this map to $d\colon D(a,\fun{refl}_a)$ to get an element of $D(x,p)$.
+    This is well-typed because, according to \eqref{eq:ind-domain-function},  $E(a,x,p)(\fun{refl}_a)$ defines a map  $D(a,\fun{refl}_a)\to D(x,\fun{refl}_a\ct p)$, and since  $\fun{refl}_a\ct p\equiv p$, the codomain is precisely  $D(x,p)$. Finally, we apply this map to $d\colon D(a,\fun{refl}_a)$ to get an element of $D(x,p)$.
     
     To verify the computation rule, we have to prove that
     \[
@@ -1812,21 +1845,21 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         C(i) \defeq \prod_{j,k:\,\N} i+(j+k)\eq\N(i+j)+k.
     \]
-    To define the function $\fun{assoc} \defeq \fun{ind}_\N(C, c_0, c_s)$, we specify:
+    To define the function $\fun{assoc} \defeq \fun{ind}_\N(C, c_0, c_s)$, we need to specify:
     \begin{align*}
         c_0 &\colon C(0),\\
         c_s &\colon \prod_{i:\,\N} C(i) \to C(\fun{succ}(i)).
     \end{align*}
-    For the base case $c_0$, we need a witness of $0+(j+k)\eq\N(0+j)+k$. From the definition of addition we know that $0+n \equiv n$. Therefore, the equality reduces to $j+k = j+k$, and we can define the witness by reflexivity:
+    For the base case $c_0$, we need a witness of $0+(j+k)\eq\N(0+j)+k$. From the definition of addition we know that $0+n \equiv n$. Therefore, the equality reduces to $j+k\eq\N j+k$, and we can define the witness by reflexivity:
     \[
         c_0 \defeq \lambda j.\, \lambda k.\, \fun{refl}_{j+k}.
     \]
     
     For the inductive step $c_s$, we assume $i\colon\N$ and the inductive hypothesis $h\colon C(i)$. We must construct a proof for $\fun{succ}(i)$.
     \[
-        c_s \defeq \lambda i.\, \lambda h.\, \lambda j.\, \lambda k.\, \dots
+        c_s\defeq\lambda i.\,\lambda h.\,\lambda j.\,\lambda k.\,\dots
     \]
-    where $h(i,j)\colon i+(j+k)\eq\N(i+j)+k$.
+    where $h(j,k)\colon i+(j+k)\eq\N(i+j)+k$.
     
     Computing the goal, we obtain
     \begin{align*}
@@ -1835,7 +1868,56 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             &\equiv \fun{succ}(i+j)+k\\
             &\equiv (\fun{succ}(i)+j)+k.
     \end{align*}
-    The equality in the second line is justified by applying the function $\fun{succ}$ to the path provided by the hypothesis $h(j,k)$. This relies on the \textit{principle of congruence} ($\fun{ap}$), which we prove in Exercise~\ref{exr:ap-application}.
+    The equality in the second line is justified by applying the function $\fun{succ}$ to the path provided by the hypothesis $h(j,k)$. This relies on the \textit{principle of congruence} ($\fun{ap}$), which we prove in Exercise~\ref{exr:ap-application}. Thus, the expression for $c_s$ is
+    \[
+        c_s\defeq\lambda i.\,\lambda h.\,\lambda j.\,\lambda k.\,
+            \fun{ap}_{\fun{succ}}(h(j,k)).
+    \]
+\end{lpar}
+
+\begin{lpar}{Successor injectivity.}
+    The \textsl{predecessor} function $\fun{pred}\colon\N\to\N$ is inductively defined by
+            \begin{align*}
+                \fun{pred}(0)&\defeq0,\\
+                \fun{pred}(\fun{succ}(n))&\defeq n.
+            \end{align*}
+
+    \begin{lem}\label{lem:succ-ne-0}
+        For every\/ $n\colon\N$, $\fun{succ}(n)\neq0$.
+    \end{lem}
+    
+    \begin{proof}
+        We must construct a map of signature
+        \[
+            \prod_{n:\,\N}\fun{succ}(n)\eq\N0\to\fun0.
+        \]
+        Define a type family $P\colon\N\to\univ$ by recursion:
+        \begin{align*}
+            P(0)&\defeq\fun1\\
+            P(\fun{succ}(n))&\defeq\fun0.
+        \end{align*}
+        Take $n\colon\N$ and suppose we have a path $p\colon\fun{succ}(n)\eq\N0$. By transport along the inverse path $p^{-1}\colon0\eq\N\fun{succ}(n)$, for $\fun\star\colon\fun1$, we obtain:
+        \[
+            \fun{subst}_P(p^{-1})\colon P(0)\to P(\fun{succ}(n)).
+        \]
+        The definition of $P$ implies that the desired map is $(n,p)\mapsto\fun{subst_P}(p^{-1})(\fun\star)$.
+    \end{proof}
+
+    \begin{lem}
+        For\/ $n,m\colon\N$, if\/ $\fun{succ}(n)\eq\N\fun{succ}(m)$ is inhabited, then\/ $n\eq\N m$ is inhabited.
+    \end{lem}
+    
+    \begin{proof}
+        Fix $m\colon\N$. We have to define a function of type
+        \[
+            \prod_{n:\,\N}(\fun{succ}(n)\eq\N\fun{succ}(m)) \to (n\eq\N m).
+        \]
+        This is accomplished by applying the congruence principle $\fun{ap}_{\fun{pred}}$ to every given path, namely
+        \[
+            \lambda n.\,\lambda p.\,\fun{ap}_{\fun{pred}}(p).
+        \]
+    \end{proof}
+    
 \end{lpar}
 
 \begin{lpar}{The order relation on $\N$.}
@@ -1843,45 +1925,49 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         n\le m \defeq \sum_{k:\,\N} (n+k\eq\N m).
     \]
-    The following properties hold:
-    \begin{enumerate}[i)]
-        \item $0\le n$
-        \item $n\le\fun{succ}(n)$
-        \item $n\le n$
-        \item $n\le m$ and $m\le n$ imply $n=m$
-        \item $n\le m$ and $m\le r$ imply $n\le r$
-    \end{enumerate}
-    \begin{proof}[Proof sketch]${}$
-        \begin{enumerate}[i)]
+    \begin{lem}
+        The following properties hold
+        \begin{enumerate}[a),font=\upshape]
+            \item $0\le n$
+            \item $n\le\fun{succ}(n)$
+            \item $n\le n$
+            \item $n\le m$ and $m\le n$ imply\/ $n=m$
+            \item $n\le m$ and $m\le r$ imply\/ $n\le r$
+        \end{enumerate}        
+    \end{lem}
+    \begin{proof} (Sketch)
+        \begin{enumerate}[a)]
             \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n \eq\N n$. The proof term is $(n,\fun{refl}_n)$.
 
-            \item This relies on the equality $\fun{succ}(n)=n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:additive-identity} for proving $n+0=n$ .
+            \item This relies on the equality $\fun{succ}(n)\eq\N n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:additive-identity} for proving $n+0\eq\N n$ .
 
-            \item This is because $n+0=n$.
+            \item This is because $n+0\eq\N n$.
 
             \item The standard mathematical argument goes like this: Take $k$ and $h$ satisfying $n+k\eq\N m$ and $m+h\eq\N n$. Then $n+(k+h)\eq\N n$ and in order to derive $h\eq\N0$ and $k\eq\N0$, we need two theorems
             \begin{align*}
                 n+s\eq\N n&\to s\eq\N0\quad\text{and}\\
                 k+h\eq\N0&\to(k\eq\N0)\times(h\eq\N0).
             \end{align*}
-            All of this can be easily expressed and proved formally. For instance, the first theorem follows by induction on $n$. The base case is trivial since $0+s=s$. The inductive step consists in showing a witness of
+            All of this can be easily expressed and proved formally.
+            
+            The first theorem follows by induction on $n$. The base case is trivial since $0+s\equiv s$. The inductive step consists in showing a witness of
             \[
                 \fun{succ}(n)+s\eq\N\fun{succ(n)}
                     \to\fun{succ}(n+s)\eq\N\fun{succ}(n),
             \]
             which follows from $\fun{succ}(n)\eq\N\fun{succ}(m)\to n\eq\N m$.
 
-            To prove this last theorem, we need to define the predecessor function $\fun{pred}\colon\N\to\N$, which we can easily do by specifying
-            \begin{align*}
-                \fun{pred}(0)&\defeq0,\\
-                \fun{pred}(\fun{succ}(n))&\defeq n.
-            \end{align*}
+            The second theorem follows from induction on $k$. The base case, with $k\equiv0$, is trivial. The inductive step is also trivial because
+            \[
+                \fun{succ}(k)+h\equiv\fun{succ}(k+h)
+            \]
+            and so, by Lemma~\ref{lem:succ-ne-0}, there is no inhabitant of $\fun{succ}(k)+h\eq\N0$.
 
             \item Take $k$ and $h$ so that $n+k\eq\N m$ and $m+h\eq\N r$. Then,
             \[
                 (n+k+h\eq\N m+h)\times(m+h\eq\N r)
             \]
-            is inhabited, and the result is a consequence of the transitivity of the equality, a theorem that we will prove in section \ref{sec:identity-types}~\nameref{sec:identity-types}.
+            is inhabited, and the result is a consequence of the transitivity of the equality.
         \end{enumerate}
     \end{proof}
 \end{lpar}
