@@ -1607,7 +1607,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{Right unit law.}\label{lpar:right-unit-law}
     The term $\fun{refl}$ also acts as a right unit for concatenation; however, in this case, the equality is propositional.
     
-    \begin{lem}
+    \begin{lem}\label{lem:right-unit-law}
         For every type\/ $A$, every\/ $x,y\colon A$ and every path\/ $p\colon x\eq Ay$, we have a path
         \[
             \fun{unit}_r(p)\colon p\ct\fun{refl}_y\eq{x\eq Ay}p.
@@ -1669,15 +1669,15 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
 \end{lpar}
 
-\begin{lpar}{Substitution.}\label{lpar:substitution}
-    The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with \textsl{type substitution} (a.k.a.~\textsl{type transport}).\footnote{See also Exercise~\ref{exr:ap-application}.}
+\begin{lpar}{Transport.}\label{lpar:transport}
+    The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with \textsl{type transport} (a.k.a.~\textsl{type substitution}).\footnote{See also Exercise~\ref{exr:ap-application}.}
         
 \begin{lem}
     Let\/ $P\colon A\to\univ$ be a family of types. For any path\/  $e\colon x\eq A y$, there is a function
     \[
-        \fun{subst}_P(e)\colon P(x)\to P(y).
+        \fun{transport}^P(e)\colon P(x)\to P(y).
     \]
-    Moreover, $\fun{subst}_P(\fun{refl}_x)\equiv\lambda z.\,z$.
+    Moreover, $\fun{transport}^P(\fun{refl}_x)\equiv\lambda z.\,z$.
 \end{lem}
 
 \begin{proof}
@@ -1687,7 +1687,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     For the base case $c\colon C(x,x,\fun{refl}_x)\equiv P(x)\to P(x)$ take the identity function $c\defeq\lambda z.\,z$. Then define
     \[
-        \fun{subst}_P(x,y,e)\defeq\fun{ind}_{\eq A}(C,c,x,y,e).
+        \fun{transport}^P(x,y,e)\defeq\fun{ind}_{\eq A}(C,c,x,y,e).
     \]
 \end{proof}    
 
@@ -1762,9 +1762,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s\ct\fun{refl}_u\eq{a\eq Au}s$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq{a\eq Au}s\ct\fun{refl}_u$.
     
-    Since we need to transform terms of $D(u,s)$ into terms of $D(u,s\ct\fun{refl}_u)$, we define $P_u\defeq\lambda s.\,D(u,s)$ and use the function $\fun{subst}_{P_u}$
+    Since we need to transform terms of $D(u,s)$ into terms of $D(u,s\ct\fun{refl}_u)$, we define $P_u\defeq\lambda s.\,D(u,s)$ and use the function $\fun{transport}^{P_u}$
     \begin{equation}\label{eq:ind-base-case-subst}
-        c(u)\defeq\lambda s.\,\fun{subst}_{P_u}(\fun{unit}_r(s)^{-1})
+        c(u)\defeq\lambda s.\,\fun{transport}^{P_u}(\fun{unit}_r(s)^{-1})
             \colon C(u,u,\fun{refl}_u).
     \end{equation}
     By path induction, we obtain
@@ -1790,11 +1790,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     We reduce the term  $c(a)(\fun{refl}_a)$:
     \begin{align*}
         c(a)(\fun{refl}_a)
-            &\equiv\fun{subst}(\fun{unit}_r(\fun{refl}_a)^{-1})
+            &\equiv\fun{transport}^{P_a}(\fun{unit}_r(\fun{refl}_a)^{-1})
                 &&;\ \eqref{eq:ind-base-case-subst}\\
-            &\equiv\fun{subst}(\fun{refl}_a^{-1})
+            &\equiv\fun{transport}^{P_a}(\fun{refl}_a^{-1})
                 &&;\ \fun{unit}_r(\fun{refl}_a)\equiv\fun{refl}_a\\
-            &\equiv\fun{subst}(\fun{refl}_a)
+            &\equiv\fun{transport}^{P_a}(\fun{refl}_a)
                 &&;\ \fun{refl}_a^{-1}\equiv\fun{refl}_a\\
             &\equiv\lambda z.\,z.
     \end{align*}
@@ -1823,13 +1823,13 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
         To complete the proof, we need to apply the function $\fun{succ}$ to both sides of the hypothesis $h$. This relies on the \textit{principle of congruence} that states that functions respect equality.\footnote{Exercise~\ref{exr:ap-application}.}
         
-        However, we can also use \nref{lpar:substitution} as follows. Consider the type family $P\colon\N\to\univ$ defined by
+        However, we can also use \nref{lpar:transport} as follows. Consider the type family $P\colon\N\to\univ$ defined by
         \[
             P\defeq\lambda k.\,\fun{succ}(n)\eq\N\fun{succ}(k).
         \]
         Since $\fun{refl}_{\fun{succ}(n)}\colon P(n)$, we can evaluate 
         \[
-            \fun{subst}_P(h)\colon P(n)\to P(n+0)
+            \fun{transport}^P(h)\colon P(n)\to P(n+0)
         \]
         at $\fun{refl}_{\fun{succ}(n)}$ to construct an inhabitant of $\fun{succ}(n)\eq\N\fun{succ}(n+0)$, as desired. 
     \end{itemize}        
@@ -1898,7 +1898,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \end{align*}
         Take $n\colon\N$ and suppose we have a path $p\colon\fun{succ}(n)\eq\N0$. By transport along the inverse path $p^{-1}\colon0\eq\N\fun{succ}(n)$, for $\fun\star\colon\fun1$, we obtain:
         \[
-            \fun{subst}_P(p^{-1})\colon P(0)\to P(\fun{succ}(n)).
+            \fun{transport}^P(p^{-1})\colon P(0)\to P(\fun{succ}(n)).
         \]
         The definition of $P$ implies that the desired map is $(n,p)\mapsto\fun{subst_P}(p^{-1})(\fun\star)$.
     \end{proof}
@@ -2810,16 +2810,16 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{solution}
 
 \begin{exr}
-    Prove that substitution over a constant type family is the identity function. That is, given a type\/ $B$ and the constant family\/ $P(x)\defeq B$, construct a witness for
+    Prove that transport over a constant type family is the identity function. That is, given a type\/ $B$ and the constant family\/ $P(x)\defeq B$, construct a witness for
     \[
         \prod_{x,y:\,A}\;
             \prod_{p:\,x\eq Ay}\;
-            \prod_{b:\,B}\fun{subst}_P(p,b)\eq Bb.
+            \prod_{b:\,B}\fun{transport}^P(p,b)\eq Bb.
     \]
 \end{exr}
 
 \begin{solution}
-    The motive $C$ used in \nref{lpar:substitution} to derive the transport function $\fun{subst}_P$ is given by
+    The motive $C$ used in \nref{lpar:transport} to derive the transport function $\fun{transport}^P$ is given by
     \[
     C(x,y,p)\defeq P(x)\to P(y),
     \]
@@ -2827,16 +2827,16 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
     C(x,y,p)\defeq B\to B,
     \]
-    while $c\colon C(x,x,\fun{refl}_x)$ remains the identity $c\defeq\lambda b\colon B.\,b$. Let us also recall that $\fun{subst}_P(x,y,p)\equiv\fun{ind}_{\eq A}(C,c,x,y,p)$.
+    while $c\colon C(x,x,\fun{refl}_x)$ remains the identity $c\defeq\lambda b\colon B.\,b$. Let us also recall that $\fun{transport}^P(x,y,p)\equiv\fun{ind}_{\eq A}(C,c,x,y,p)$.
     
     Consider the motive
     \[
-    D(x,y,p)\defeq\prod_{b:\,B}\fun{subst}_P(p,b)\eq B b.
+    D(x,y,p)\defeq\prod_{b:\,B}\fun{transport}^P(p,b)\eq B b.
     \]
     For the base case, we need a witness $d$ of type $\prod_{x:\,A} D(x,x,\fun{refl}_x)$.
     Since
     \[
-        \fun{subst}_P(x,x,\fun{refl}_x)\equiv\id_B,
+        \fun{transport}^P(x,x,\fun{refl}_x)\equiv\id_B,
     \]
     and $\id_B(b)\equiv b$, evaluating the motive at the base yields
     \[
@@ -2851,8 +2851,8 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{exr}
     Let\/ $f\colon A\to B$ be a function between types\/ $A$ and\/ $B$.
-    Show that the action on paths\/ $\fun{ap}_f$ can be defined strictly in terms of the transport function\/ $\fun{subst}$.
-    Specifically, given\/ $x,y\colon A$ and a path\/ $p\colon x\eq Ay$, construct a term of type\/ $f(x)\eq Bf(y)$ using only\/ $\fun{subst}$ and\/ $\fun{refl}$.
+    Show that the action on paths\/ $\fun{ap}_f$ can be defined strictly in terms of the transport function\/ $\fun{transport}$.
+    Specifically, given\/ $x,y\colon A$ and a path\/ $p\colon x\eq Ay$, construct a term of type\/ $f(x)\eq Bf(y)$ using only\/ $\fun{transport}$ and\/ $\fun{refl}$.
 \end{exr}
 
 \begin{solution}
@@ -2862,11 +2862,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     By transport, we know that there is a function
     \[
-        \fun{subst}_P\colon\prod_{y:\,A}\;\prod_{p:\,x\eq Ay}P(x)\to P(y).
+        \fun{transport}^P\colon\prod_{y:\,A}\;\prod_{p:\,x\eq Ay}P(x)\to P(y).
     \]
     Since\/ $\fun{refl}_{f(x)}\colon P(x)$, given a path\/ $e\colon x\eq A y$, we can apply the transport function to obtain
     \[
-        \fun{subst}_P(y,e)(\fun{refl}_{f(x)})\colon P(y).
+        \fun{transport}^P(y,e)(\fun{refl}_{f(x)})\colon P(y).
     \]
     By definition of\/ $P$, this term is an inhabitant of\/ $f(x)\eq B f(y)$, as required.
 \end{solution}
