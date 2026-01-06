@@ -447,7 +447,7 @@
 \newcommand{\fun}[1][]{\mathsf#1}
 \newcommand{\Id}{\fun{Id}}
 \newcommand{\univ}{\mathcal U}
-\newcommand{\defeq}{\mathrel{:\equiv}}
+\newcommand{\defeq}{\mathrel{\mathop:}\equiv}
 \newcommand{\eq}[1]{\mathrel{=_{#1}}}
 \newcommand{\ct}{\mathbin{\mbf{\fun\cdot}}}
 
@@ -459,3 +459,5 @@
     {:\,}       % Script style (your desired behavior for subscripts)
     {:\,}       % Script-script style (for nested subscripts)
 }
+
+\newcommand{\sbull}{{\vcenter{\hbox{\tiny$\bullet$}}}}

@@ -249,10 +249,10 @@
     \]
     by means of the binder $\Pi x.\,B(x)$ (see \nref{lpar:binders}).
     
-    This type is a generalization of the function type $A\to B$, which can be recovered by taking the constant family $\lambda x\colon A.\,B$, to produce
-    \[
+    This type is a generalization of the function type $A\to B$, which can be recovered by taking the constant family $\lambda x\colon A.\,B$, to produce the definitional equality
+    \begin{equation}\label{eq:function=independent-dependent-function}
         \prod_{x\colon A}B\equiv A\to B.
-    \]
+    \end{equation}
     As before, we can apply a dependent function $f\colon\prod_{x\colon A}B(x)$ to an argument $a\colon A$ and obtain an element $f(a)\colon B(a)$. In particular, we have the following computation rule: if $a\colon A$ and $f(x)\defeq\Phi$, then $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$, where $\Phi'$ is obtained by replacing all free occurrences of $x$ in $\Phi$ by $a$, i.e., avoiding dummy variable captures (see \nref{lpar:bound-variables}).
 
     An example that will become useful later is the dependent function\footnote{Exercise \ref{exr:Fin}.}
@@ -1574,7 +1574,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \[
             D(x,y,p) \defeq \prod_{z\colon A}\;\prod_{q\colon y\eq Az}x\eq Az.
         \]
-        Since $x\eq Az$ does not depend on the path $q\colon y\eq Az$, we can rewrite $D$ as
+        Since $x\eq Az$ does not depend on the path $q\colon y\eq Az$, by \eqref{eq:function=independent-dependent-function} we can rewrite $D$ as
         \[
             D(x,y,p) \defeq \prod_{z\colon A}(y\eq Az)\to(x\eq Az).
         \]
@@ -1635,7 +1635,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{lpar}{Further concatenation properties.}
 
-\begin{lem}
+\begin{lem}\label{lem:concat}
     Let\/ $A\colon\univ$,\/ $x,y,z, w\colon A$ and\/ $p\colon x\eq Ay$. Then, the following types are inhabited:
     \begin{enumerate}[a), font=\upshape]
         \item $p^{-1}\cdot p\eq{y\eq Ay}\fun{refl}_y$ and\/ $p\cdot p^{-1}\eq{x\eq Ax}\fun{refl}_x$.
@@ -1693,7 +1693,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \end{lpar}
 
-\begin{lpar}{Based path induction.}
+\begin{lpar}{Based path induction.}\label{lpar:based-path-induction}
     A different approach to path induction, which we will show is equivalent to the general one, consists in fixing an element $a\colon A$ before considering the type family~$D$, specific for $a$,
     \[
         D\colon\prod_{x\colon A}(a\eq Ax)\to\univ
@@ -1974,8 +1974,8 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \section{Exercises}
 
-\begin{exr}${}$
-    \begin{enumerate}[a), font=\upshape]
+\begin{exr}\label{exr:function-composition}${}$
+    \begin{enumerate}[a),font=\upshape]
         \item Given\/ $f \colon A \to B$ and\/ $g \colon B \to C$, define their composite\/ $g \circ f \colon A \to C$.
     
         \item Show that we have\/ $h \circ (g \circ f) \equiv (h \circ g) \circ f$.
@@ -2809,7 +2809,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{enumerate}
 \end{solution}
 
-\begin{exr}
+\begin{exr}\label{exr:constant-fibration}
     Prove that transport over a constant type family is the identity function. That is, given a type\/ $B$ and the constant family\/ $P(x)\defeq B$, construct a witness for
     \[
         \prod_{x,y\colon A}\;

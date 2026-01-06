@@ -1,9 +1,11 @@
 \chapter{Homotopy Type Theory}
 
+\section{Homotopical Language}
+
 \begin{defn}
     A \textsl{pointed type} $(A,a)$ is a type $A\colon\univ$ together with a point $a\colon A$, called its \textsl{basepoint}. We write
     \[
-        \univ_\bullet\defeq\sum_{A:\,\univ}A
+        \univ_\sbull\defeq\sum_{A:\,\univ}A
     \]
     for the type of pointed types in the universe $\univ$.
 \end{defn}
@@ -19,9 +21,398 @@
         \Omega^{n+1}(A,a)&\defeq\Omega^n(\Omega(A,a)).
     \end{align*}
     An element of it will be called an \textsl{$n$-loop} or an \textsl{$n$dimensional loop} at $a$.
+
+    Note that $\Omega^1(A,a)\equiv\Omega(A,a)$.
 \end{defn}
 
+\begin{rem}
+    Recall from Exercise~\ref{exr:ap-application} that given $f\colon A\to B$, the congruence function
+    \[
+        \fun{ap}_f\colon\prod_{x,y\colon A}\;\prod_{p\colon x\eq Ay}f(x)\eq Bf(y)
+    \]
+    transforms paths in $A$ to paths in $B$. Specifically
+    \[
+        \fun{ap}_f(x,y,p)\colon f(x)\eq Bf(y),\quad\text{for }p\colon x\eq Ay,
+    \]
+    where the notation $\fun{ap}_f(x,y,p)$ is usually simplified to $\fun{ap}_f(p)$ or $\tilde f(p)$.
+\if{false}    
+    Moreover,
+    \[
+        \fun{ap}_f(\fun{refl}_x)\equiv\fun{refl}_{f(x)}
+        \quad\text{and}\quad
+        \fun{ap}_f(p\ct q)\eq {f(x)\eq Bf(z)}
+            \fun{ap}_f(p)\ct \fun{ap}_f(q).
+    \]
+\fi
+\end{rem}
 
+\begin{lem}
+    For functions\/ $f\colon A\to B$ and\/ $g\colon B\to C$ and paths\/ $p\colon x\eq Ay$ and\/ $q\colon y\eq Az$, we have:
+    \begin{enumerate}[a),font=\upshape]
+        \item $\tilde f(\fun{refl}_x)\equiv\fun{refl}_{f(x)}$.
+        \item $\tilde f(p\ct q)\eq{f(x)\eq Bf(z)}\tilde f(p)\ct\tilde f(q)$.
+        \item $\tilde f(p^{-1})\eq{f(y)\eq Bf(x)}\tilde f(p)^{-1}$.
+        \item $\tilde g(\tilde f(p))\eq{h(x)\eq Ch(y)}\tilde h(p)$, where $h\defeq g\circ f$.
+        \item If $B\equiv A$ and $f\equiv\id_A$, then $\widetilde{\fun{id}}_A(p)\eq{x\eq Ay}p$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item Exercise~\ref{exr:ap-application}.
+        \item Exercise~\ref{exr:ap-application}.
+        
+        \item First observe that
+        \begin{align*}
+            \tilde f(p)\ct\tilde f(p^{-1})
+                &\eq{f(x)\eq Bf(x)}\tilde f(p\ct p^{-1})
+                    &&\text{; by part b)}\\
+                &\eq{f(x)\eq Bf(x)}\tilde f(\fun{refl}_x)
+                    &&\text{; inverse law}\\
+                &\equiv\fun{refl}_{f(x)}
+                    &&\text{; by part a).}
+        \end{align*}
+        Therefore,
+        \begin{align*}
+            \tilde f(p)^{-1}
+                &\eq{f(y)\eq Bf(x)}
+                    \tilde f(p)^{-1}\ct\big(\tilde f(p) \ct\tilde f(p^{-1})\big)
+                    &&\text{; right unit}\\
+                &\eq{f(y)\eq Bf(x)}
+                    \big(\tilde f(p)^{-1}\ct\tilde f(p)\big) \ct\tilde f(p^{-1})
+                    &&\text{; associativity}\\
+                &\eq{f(y)\eq Bf(x)}\tilde f(p^{-1})
+                    &&\text{; left inverse.}
+        \end{align*}
+
+        \item Since $p\colon x\eq Ay$, we know that $\tilde f(p)\colon f(x)\eq Bf(y)$. Therefore,
+        \[
+            \tilde g(\tilde f(p))\colon g(f(x))\eq Cg(f(y)).
+        \]
+        Let $h\defeq g\circ f$. Note that the type of the term above is definitionally equal to $h(x)\eq C h(y)$.
+        Consider the case where $p\equiv\fun{refl}_x$. We have
+        \begin{align*}
+            \tilde g(\tilde f(\fun{refl}_x))
+                &\equiv \tilde g(\fun{refl}_{f(x)})\\
+                &\equiv \fun{refl}_{g(f(x))}\\
+                &\equiv \fun{refl}_{h(x)}\\
+                &\equiv \tilde h(\fun{refl}_x).
+        \end{align*}
+        To conclude that $\tilde g(\tilde f(p))\eq{h(x)\eq Ch(y)}\tilde h(p)$, we apply path induction to the motive
+        \[
+            C(x,y,p)\defeq \tilde g(\tilde f(p))\eq{h(x)\eq Ch(y)}\tilde h(p),
+        \]
+        with the base case $c(x)\colon C(x,x,\fun{refl}_x)$ defined as $\fun{refl}_{\tilde h(\fun{refl}_x)}$.
+
+        \item For\/ $p\equiv\fun{refl}_x$, since\/ $\fun{id}_A(x)\equiv x$, we have
+        \begin{align*}
+            \widetilde{\fun{id}}_A(\fun{refl}_x)
+                &\equiv \fun{refl}_{\fun{id}_A(x)}\\
+                &\equiv \fun{refl}_x.
+        \end{align*}
+        Therefore, the conclusion follows by path induction applied to the motive
+        \[
+            C(x,y,p)\defeq\widetilde{\fun{id}}_A(p)\eq{x\eq Ay}p
+        \]
+        with base case\/ $c(x)\defeq\fun{refl}_{\fun{refl}_x}\colon C(x,x,\fun{refl}_x)$.
+        
+    \end{enumerate}
+\end{proof}
+
+\begin{defn}
+    Given a function\/ $f\colon A\to B$ and a point\/ $a\colon A$, the \textsl{induced map on loops} is the function
+    \[
+        \Omega f \colon \Omega(A, a) \to \Omega(B, f(a))
+    \]
+    defined by
+    \[
+        \Omega f(p) \defeq \fun{ap}_f(p).
+    \]
+    Note that by part a) of the previous lemma, we have\/ $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that\/ $\Omega f$ preserves the basepoint definitionally.
+\end{defn}
+
+\begin{rem}
+    Recall from classical topology that a \textsl{fibration} is a continuous map\/ $\pi\colon E\to B$ with the homotopy-lifting property:
+    \[
+        \begin{tikzcd}[row sep=large, column sep=huge]
+            X
+                \arrow[r,"f"]
+                \arrow[d,hook,"i_0"']
+            &E
+                \arrow[d,"\pi"] \\
+            X\times I
+                \arrow[r,"H"']
+                \arrow[ur,dashed,"\tilde{H}"]
+            &B
+        \end{tikzcd}
+    \]
+    In this context, $E$ is the \textsl{total space} and\/ $B$ the \textsl{base space} of the fibration.
+
+    \textsl{Serre fibrations} lift paths, path homotopies, and higher-dimensional volumes. For instance, in the case of paths, the diagram above becomes:
+    \[
+        \begin{tikzcd}[row sep=large, column sep=large]
+            \{0\}
+                \arrow[r, "e_0"]
+                \arrow[d, hook, "i"']
+            & E
+                \arrow[d, "\pi"] \\
+            I
+                \arrow[r, "\gamma"']
+                \arrow[ur, dashed, "\tilde{\gamma}"]
+            & B
+        \end{tikzcd}
+    \]
+    In Homotopy Type Theory, given a type family\/ $P\colon A\to\univ$, the first projection\/ $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space}\/ $\sum_{x\colon A}P(x)$ and \textsl{base space}\/ $A$. This structural analogy is established by the following lemma.
+\end{rem}
+
+\begin{lem}{\upshape[Path Lifting Property]}
+    Let\/ $P\colon A\to\univ$ be a type family over\/ $A$ and let\/ $u\colon P(a)$ for some\/ $a\colon A$. Then, for any path\/ $p\colon a\eq Ax$, there is a path
+    \[
+        \fun{lift}(u,p)\colon(a,u)\eq{\sum_{y\colon A}P(y)}
+            (x,\fun{transport}^P(p,u))
+    \]
+    such that
+    \[
+        \fun{ap}_{\fun{\pi}_1}(\fun{lift}(u, p))\eq{a\eq Ax}p,
+    \]
+    where\/ $\pi_1\colon\sum_{y\colon A}P(y)\to A$ is the first projection.
+\end{lem}
+
+\begin{proof}
+    Consider the motive family\/ $C\colon\prod_{x\colon A}(a\eq Ax)\to\univ$, defined by
+    \[
+        C(x,p)\defeq(a,u)\eq{\sum_{y\colon A}P(y)}(x,\fun{transport}^P(p,u)).
+    \]
+    Since\/ $\fun{transport}^P(\fun{refl}_a,u)\equiv u$, we have
+    \[
+        C(a,\fun{refl}_a)\equiv
+            (a,u)\eq{\sum_{y\colon A}P(y)}(a,u),
+    \]
+    and we can specify the base case\/ $c\defeq\fun{refl}_{(a,u)}$ to define, by \nref{lpar:based-path-induction},
+    \[
+        \fun{lift}(u,p)\defeq\fun{ind}'_{\eq A}(a,C,c,x,p).
+    \]
+    We can use based path induction again to verify that
+    \[
+        \fun{ap}_{\fun{\pi}_1}(\fun{lift}(u,p)) \eq{a\eq Ax} p.
+    \]
+    For the base case, we know definitionally that\/ $\fun{lift}(u,\fun{refl}_a) \equiv \fun{refl}_{(a,u)}$. Thus,
+    \[
+        \fun{ap}_{\fun{\pi}_1}(\fun{lift}(u,\fun{refl}_a))
+        \equiv \fun{ap}_{\fun{\pi}_1}(\fun{refl}_{(a,u)})
+        \equiv \fun{refl}_{\pi_1(a,u)}
+        \equiv \fun{refl}_a.
+    \]
+\end{proof}
+
+\begin{rem}
+    The lemma can be represented by the following diagram, where the horizontal arrows represent paths ---i.e., terms of the propositional equalities between their ends--- and the vertical arrows, functions:
+    \[
+        \begin{tikzcd}[row sep=large, column sep=huge]
+            (a,u)
+                \arrow[r,"{\fun{lift}(u,p)}"]
+                \arrow[d,"\pi_1"']
+            &(x, \fun{transport}^P(p,u))
+                \arrow[d,"\pi_1"] \\
+            a
+                \arrow[r,"p"']
+            &x
+        \end{tikzcd}
+        \qquad;\ u\colon P(a),\;p\colon a\eq Ax.
+    \]
+    Note also that a term $f\colon\prod_{x\colon A}P(x)$ can be regarded as a \textsl{section} of the fibration induced by~$P$.
+\end{rem}
+
+\begin{ntn}
+    When\/ $P$ is clear from the context we will simply write
+    \[
+        p_*(u)\defeq\fun{transport}^P(p,u)\colon P(x).
+    \]
+    In particular,
+    \begin{equation}\label{eq:refl-*}
+        (\fun{refl}_a)_*(u)\equiv u.
+    \end{equation}
+\end{ntn}
+
+\begin{lem}{\upshape[Dependent map]}
+    Let\/ $P\colon A\to\univ$. If\/ $f\colon\prod_{x\colon A}P(x)$, then there is a map
+    \[
+        \fun{apd}_f\colon\prod_{x,y\colon A}\;
+            \prod_{p\colon x\eq Ay}
+                p_*(f(x))\eq{P(y)}f(y)
+    \]
+    satisfying $\fun{apd}_f(\fun{refl}_x)\equiv\fun{refl}_{f(x)}$.
+\end{lem}
+
+\begin{proof}
+    Fix $a\colon A$ and consider the motive
+    \begin{align*}
+        C&\colon\prod_{a\colon A}(a\eq Ax)\to\univ\\
+        C(x,p)&\defeq p_*(f(a))\eq{P(x)}f(x).
+    \end{align*}
+    Since
+    \begin{align*}
+        C(a,\fun{refl}_a)
+            &\equiv (\fun{refl}_a)_*(f(a))\eq{P(a)}f(a)\\
+            &\equiv f(a)\eq{P(a)}f(a)
+                &&\text{; \eqref{eq:refl-*}},
+    \end{align*}
+    we can specify $c\defeq\fun{refl}_{f(a)}$ and obtain $\fun{apd}_f$ by based path induction.
+\end{proof}
+
+\begin{lem}
+    If\/ $P \colon A \to \univ$ is defined by\/ $P(x) :\equiv B$ for a fixed\/ $B \colon \univ$, then for any\/ $x, y \colon A$ and\/ $p \colon x \eq A y$ and\/ $b \colon B$ we have a path
+    \[
+        \fun{transportconst}^B_p(b) \colon \fun{transport}^P(p, b) \eq B b
+    \]
+    satisfying\/ $\fun{transportconst}^B_{\fun{refl}_x}\defeq\lambda b.\,\fun{refl}_b$.
+\end{lem}
+
+\begin{proof}
+    See Exercise \ref{exr:constant-fibration}.
+\end{proof}
+
+\begin{lem}
+    Let\/ $f \colon A \to B$ and define the constant family\/ $P \colon A \to \univ$ by\/ $P(x) :\equiv B$. For any path\/ $p \colon x \eq A y$, we have
+    \[
+        \fun{apd}_f(p)\eq{p_*(f(x))\eq B f(y)}
+            \fun{transportconst}^B_p(f(x))\ct\fun{ap}_f(p).
+    \]
+\end{lem}
+
+\begin{proof}
+    Fix\/ $a\colon A$ and let\/ $C\colon\prod_{x\colon A}(a\eq Ax)\to\univ$ be defined by
+    \[
+        C(x,p)\defeq\fun{apd}_f(p)\eq{p_*(f(a))\eq Bf(x)}
+            \fun{transportconst}^B_p(f(a))\ct\fun{ap}_f(p).
+    \]
+    To verify the base case:
+    \begin{align*}
+        C(a,\fun{refl}_a)
+            &\equiv\fun{apd}_f(\fun{refl}_a)
+                \eq{(\fun{refl}_a)_*(f(a))\eq Bf(a)}
+                \fun{transportconst}^B_{\fun{refl}_a}(f(a))
+                \ct\fun{ap}_f(\fun{refl}_a)\\
+            &\equiv\fun{refl}_{f(a)}
+                \eq{f(a)\eq Bf(a)}
+                \fun{refl}_{f(a)}\ct\fun{refl}_{f(a)}\\
+            &\equiv \fun{refl}_{f(a)}
+                \eq{f(a)\eq Bf(a)}
+                \fun{refl}_{f(a)}.
+    \end{align*}
+    Therefore, we can specify the base case\/ $c\defeq\fun{refl}_{\fun{refl}_{f(a)}}$ to complete the proof by based path induction.
+\end{proof}
+
+\begin{rem}
+    We can represent the previous lemma in a propositionally commutative path diagram, where ``composition'' means concatenation:
+    \[
+        \begin{tikzcd}[column sep=2.8cm,row sep=1.5cm]
+            p_*(f(x))
+                    \arrow[r,"\fun{transportconst}^B_p(f(x))"]
+                    \arrow[rd,"\fun{apd}_f(p)"']&f(x)
+                    \arrow[d,"\fun{ap}_f(p)"]\\
+                &f(y)
+        \end{tikzcd}
+    \]    
+\end{rem}
+
+\begin{lem}
+    Given\/ $P\colon A\to\univ$, $p\colon x\eq Ay$ and, $q\colon y \eq Az$, and\/ $u\colon P(x)$, we have
+    \[
+        q_*(p_*(u))\eq{P(z)}(p\ct q)_*(u).
+    \]
+\end{lem}
+
+\begin{proof}
+    Fix $x\colon A$. We proceed by based path induction on $p\colon x\eq A y$. The motive of the induction is the family of types $D\colon \prod_{y\colon A} (x\eq A y)\to \univ$ defined by
+    \[
+        D(y, p) \defeq \prod_{u\colon P(x)}\; \prod_{z\colon A}\; \prod_{q\colon y\eq A z}
+            q_*(p_*(u)) \eq{P(z)} (p\ct q)_*(u).
+    \]
+    We must construct a term of type $D(x, \fun{refl}_x)$. Substituting $y$ with $x$ and $p$ with $\fun{refl}_x$, the goal becomes
+    \[
+        \prod_{u\colon P(x)}\;
+            \prod_{z\colon A}\;
+            \prod_{q\colon x\eq Az} 
+                q_*((\fun{refl}_x)_*(u))\eq{P(z)}
+                    (\fun{refl}_x\ct q)_*(u).
+    \]
+    Using the definitional equalities $(\fun{refl}_x)_*(u) \equiv u$ and $\fun{refl}_x\ct q \equiv q$, this reduces to
+    \[
+        \prod_{u\colon P(x)}\;
+            \prod_{z\colon A}\;
+                \prod_{q\colon x\eq Az}
+                    q_*(u)\eq{P(z)}q_*(u),
+    \]
+    which is inhabited by $\lambda u,z,q.\,\fun{refl}_{q_*(u)}$.
+\end{proof}
+
+\begin{lem}
+    For a function\/ $f \colon A \to B$, a type family\/ $P \colon B \to \univ$, and any\/ $p \colon x \eq A y$ and\/ $u \colon P(f(x))$, we have
+    \[
+        \fun{transport}^{P\circ f}(p,u) \eq{P(f(y))}
+            \fun{transport}^P(\fun{ap}_f(p),u).
+    \]
+\end{lem}
+
+\begin{proof}
+    We proceed by path induction on $p$. Define the motive
+    \[
+        C\colon \prod_{y\colon A} (x\eq A y)\to \univ
+    \]
+    by
+    \[
+        C(y,p) \defeq
+            \prod_{u\colon P(f(x))}
+                \fun{transport}^{P\circ f}(p,u) \eq{P(f(y))}
+                    \fun{transport}^P(\fun{ap}_f(p),u).
+    \]
+    Evaluating at the base case, we have
+    \begin{align*}
+        C(x,\fun{refl}_x)
+            &\equiv \prod_{u\colon P(f(x))}
+                \fun{transport}^{P\circ f}(\fun{refl}_x,u)
+                    \eq{P(f(x))}
+                    \fun{transport}^P(\fun{ap}_f(\fun{refl}_x),u) \\
+            &\equiv \prod_{u\colon P(f(x))}
+                u \eq{P(f(x))}
+                    \fun{transport}^P(\fun{refl}_{f(x)},u) \\
+            &\equiv \prod_{u\colon P(f(x))}
+                u \eq{P(f(x))} u,
+    \end{align*}
+    which is inhabited by $\lambda u\colon P(f(x)).\,\fun{refl}_u$.
+\end{proof}
+
+\begin{lem}
+    For\/ $P, Q \colon A \to \univ$, a function family\/ $f \colon \prod_{x\colon A} P(x) \to Q(x)$, and any\/ $p \colon x \eq A y$ and\/ $u \colon P(x)$, we have
+    \[
+        \fun{transport}^Q(p,f_x(u))\eq{Q(y)}
+            f_y(\fun{transport}^P(p,u)).
+    \]
+\end{lem}
+
+\begin{proof}
+    To use based path induction on $p$, fix $a\colon A$ and consider the motive 
+    \begin{align*}
+        C&\colon\prod_{x\colon A}(a\eq Ax)\to\univ\\
+        C(x,p)&\defeq\prod_{u\colon P(a)}
+            \fun{transport}^Q(p,f_a(u))\eq{Q(x)}
+                f_x(\fun{transport}^P(p,u)).
+    \end{align*}
+    For the base case we obtain
+    \begin{align*}
+        C(a,\fun{refl}_a)
+            &\equiv\prod_{u\colon P(a)}
+                \fun{transport}^Q(\fun{refl}_a,f_a(u))\eq{Q(a)}
+                    f_a(\fun{transport}^P(\fun{refl}_a,u))\\
+            &\equiv\prod_{u\colon P(a)}f_a(u)\eq{Q(a)}f_a(u),
+    \end{align*}
+    which is inhabited by $\lambda u\colon P(a).\,\fun{refl}_{f_a(u)}$.
+\end{proof}
+
+%
+%
+\newpage
 \[
     \begin{tikzcd}[column sep=huge,row sep=large]
         a
@@ -37,3 +428,4 @@
                     shorten <= 8pt,shorten >= 8pt]
     \end{tikzcd}
 \]
+
