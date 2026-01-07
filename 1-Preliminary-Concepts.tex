@@ -505,12 +505,12 @@
     \]
     we deduce that
     \[
-        \big(\pi_1((a,b)),\pi_2((a,b))\big)\equiv(a,b).
+        \bigl(\pi_1((a,b)),\pi_2((a,b))\bigr)\equiv(a,b).
     \]
     In consequence, the types
     \[
         (a,b)\eq{A\times B}(a,b)\quad\text{and}\quad
-        \big(\pi_1((a,b)),\pi_2((a,b))\big)\eq{A\times B}(a,b)
+        \bigl(\pi_1((a,b)),\pi_2((a,b))\bigr)\eq{A\times B}(a,b)
     \]
     are judgmentally equal. Since $\fun{ref}_{A\times B}$ inhabits the former, it also inhabits the latter, i.e.,
     \[
@@ -547,13 +547,13 @@
     \[
         \fun{ind}_{A\times B}\colon
             \prod_{C\colon A\times B\to\univ}
-                \Big(\prod_{x\colon A}\;\prod_{y\colon B} C(x,y)\Big)
+                \Bigl(\prod_{x\colon A}\;\prod_{y\colon B} C(x,y)\Bigr)
             \to
             \prod_{z\colon A\times B} C(z),
     \]
     given by
     \[
-        \fun{ind}_{A\times B}(C)(g)\big((a,b)\big)\defeq g(a)(b),
+        \fun{ind}_{A\times B}(C)(g)\bigl((a,b)\bigr)\defeq g(a)(b),
     \]
     or, in abbreviated form,
     \[
@@ -573,7 +573,7 @@
     In the case of the unit type (see \nref{lpar:unit-type}), where types $A$ and $B$ are both missing, the eliminator is
     \begin{equation}\label{eq:ind1}
         \fun{ind}_{\fun1}\colon\prod_{C\colon\fun1\to\univ}
-            \Big(C(\fun\star)\to\prod_{x\colon\fun1}C(x)\Big)
+            \Bigl(C(\fun\star)\to\prod_{x\colon\fun1}C(x)\Bigr)
     \end{equation}
     specified by
     \[
@@ -606,7 +606,7 @@
     \]
     which is judgmentally equal to $\fun{uniq}_{\fun1}(\fun\star)$ (see \nref{lpar:Pi-types-over-product}). Thus,
     \begin{equation}\label{eq:uniq1-from-ind1}
-        \fun{ind}_{\fun1}\big(\lambda x.\,x \eq{\fun1} \fun\star,\;\fun{refl}_{\fun\star}\big)
+        \fun{ind}_{\fun1}\bigl(\lambda x.\,x \eq{\fun1} \fun\star,\;\fun{refl}_{\fun\star}\bigr)
         \equiv\fun{uniq}_{\fun1}.
     \end{equation}
     Note that $\fun{ind}_{\fun1}$ is strictly more general than $\fun{uniq}_{\fun1}$, since it is defined for an arbitrary family $C\colon\fun1\to\univ$. Equation~\eqref{eq:uniq1-from-ind1} shows that $\fun{uniq}_{\fun1}$ is simply a specific instance of $\fun{ind}_{\fun1}$. Thus the fact that $\fun1$ is a singleton type is subsumed by the more general induction principle.
@@ -656,7 +656,7 @@
     
     Specifically, a function
     \[
-        f\colon\Big(\sum_{x\colon A}B(x)\Big)\to C
+        f\colon\Bigl(\sum_{x\colon A}B(x)\Bigr)\to C
     \]
     is equivalent to a dependent function
     \[
@@ -666,7 +666,7 @@
 
     To create a nondependent function
     \[
-        f\colon\Big(\sum_{x\colon A}B(x)\Big)\to C
+        f\colon\Bigl(\sum_{x\colon A}B(x)\Bigr)\to C
     \]
     we have to provide a function
     \[
@@ -681,7 +681,7 @@
 \begin{lpar}{Induction in $\Sigma$-types.}\label{lpar:Sigma-induction}
     The first projection of a $\Sigma$-type can be defined as
     \[
-        \pi_1\colon\Big(\sum_{x\colon A}B(x)\Big)
+        \pi_1\colon\Bigl(\sum_{x\colon A}B(x)\Bigr)
             \to A
     \]
     with specification
@@ -731,9 +731,9 @@
     Consider the recursion
     \[
         \fun{rec}_{\sum_{x\colon A} B(x)}\colon
-            \prod_{C\colon\univ}\Big(\prod_{x\colon A}
-                B(x)\to C\Big)
-                \to\Big(\sum_{x\colon A}B(x)\Big)
+            \prod_{C\colon\univ}\Bigl(\prod_{x\colon A}
+                B(x)\to C\Bigr)
+                \to\Bigl(\sum_{x\colon A}B(x)\Bigr)
                 \to C
     \]
     specified as
@@ -756,12 +756,12 @@
     For the induction principle
     \[
         \fun{ind}_{\sum_{x\colon A}B(x)}\colon
-            \prod_{C\colon\big(\sum_{x\colon A}B(x)\big)
+            \prod_{C\colon\bigl(\sum_{x\colon A}B(x)\bigr)
                 \to\univ}
-                    \Big(
+                    \Bigl(
                         \prod_{a\colon A}\;\prod_{b\colon B(a)}
                             \!\!\!C((a,b))
-                    \Big)
+                    \Bigr)
                     \to\prod_{p\colon\sum_{x\colon A}B(x)}\!\!\!\!\!C(p)
     \]
     where
@@ -791,8 +791,8 @@
 \begin{lpar}{Type-theoretic Axiom of Choice.}\label{lpar:axiom-of-choice}
     Now consider the following principle, where $A$ and $B$ are types and $R\colon A\to B\to\univ$:
     \[
-        \fun{ac}\colon\Big(\prod_{x\colon A}\;\sum_{y\colon B}
-            R(x,y)\Big)\to\Big(\sum_{f\colon A\to B}\;\prod_{x\colon A}R(x,f(x))\Big).
+        \fun{ac}\colon\Bigl(\prod_{x\colon A}\;\sum_{y\colon B}
+            R(x,y)\Bigr)\to\Bigl(\sum_{f\colon A\to B}\;\prod_{x\colon A}R(x,f(x))\Bigr).
     \]
     To specify it, we assume a witness $g$ for the domain:
     \[
@@ -809,10 +809,10 @@
     Finally, we specify
     \begin{align*}
         \fun{ac}&\defeq
-                \big(
+                \bigl(
                 \overbrace{\lambda x.\,\pi_1(g(x))}^{f\equiv},\,
                 \overbrace{\lambda x.\,\pi_2(g(x))}^{\omega\equiv}
-                \big).
+                \bigr).
     \end{align*}
     
     \textbf{Note.} Even though both the conventional existence binder $\exists\,y\,R(x,y)$ and the dependent pair type binder $\sum_yR(x,y)$ express the existence of an element~$y$, their semantics differ. While the former predicates the mere existence of $y$, the latter identifies pairs $(y,w)$, where $w$ \textit{proves\/} $R(x,y)$. Thus, in Type Theory, when we evaluate the antecedent function $g$ at $x$, the result $g(x)\equiv(y,w)$ already contains the element $y$ whose existence is claimed. Consequently, the \textit{choice} is trivial in this setting. This explains why, even though the translation to Logic reads as the classical Axiom of Choice, the Type Theoretic version is a theorem whose proof is a direct consequence of the definitions.
@@ -1017,9 +1017,9 @@
     \]
     And so we obtain the proof:
     \[
-        \fun{ind}_{\fun2}\big(C,
+        \fun{ind}_{\fun2}\bigl(C,
             \fun{inl}(\fun{refl}_{0_{\fun2}}),
-            \fun{inr}(\fun{refl}_{1_{\fun2}})\big)
+            \fun{inr}(\fun{refl}_{1_{\fun2}})\bigr)
             \colon\prod_{x\colon\fun2}
                 (x\eq{\fun2}0_{\fun2})+(x\eq{\fun2}1_{\fun2}).
     \]
@@ -1068,9 +1068,9 @@
     for $a\colon A$ and $b\colon B$. Second, to define a map in the other direction, we have to use the recursor evaluated at the coproduct $A+B$
     \[
         \fun{rec}_{\sum_{x\colon\fun2} \sigma(x)}(A+B)\colon
-            \Big(\prod_{x\colon\fun2}\sigma(x)
-                \to A+B\Big)
-                \to \Big(\sum_{x\colon\fun2}\sigma(x)\Big)
+            \Bigl(\prod_{x\colon\fun2}\sigma(x)
+                \to A+B\Bigr)
+                \to \Bigl(\sum_{x\colon\fun2}\sigma(x)\Bigr)
                 \to A+B
     \]
     and apply the result to a well-chosen dependent map
@@ -1134,9 +1134,9 @@
                     \arrow[d,"{(0,c_0)}"']
                 &\N
                     \arrow[r,"\fun{succ}"]
-                    \arrow[d,"{(\fun{id},\fun{rec})}" description]
+                    \arrow[d,"{(\id,\fun{rec})}" description]
                 &\N
-                    \arrow[d,"{(\fun{id},\fun{rec})}"]\\
+                    \arrow[d,"{(\id,\fun{rec})}"]\\
             \fun1\times C
                     \arrow[r,"0\times c_0"']
                 &\N\times C
@@ -1284,7 +1284,7 @@
     We formalize this with the induction function
     \[
         \fun{ind}_\N\colon\prod_{C\colon\N\to\univ}
-            C(0) \to \Big(\prod_{n\colon\N}C(n) \to C(\fun{succ}(n))\Big)
+            C(0) \to \Bigl(\prod_{n\colon\N}C(n) \to C(\fun{succ}(n))\Bigr)
             \to \prod_{n\colon\N}C(n)
     \]
     plus the equations
@@ -1422,15 +1422,15 @@
     \]
     translates into the type
     \[
-        \Big(\prod_{x\colon A}(P(x)\times Q(x))\Big)
-            \to\Big(\prod_{x\colon A}P(x)\Big)\times\Big(\prod_{x\colon A}Q(x)\Big).
+        \Bigl(\prod_{x\colon A}(P(x)\times Q(x))\Bigr)
+            \to\Bigl(\prod_{x\colon A}P(x)\Bigr)\times\Bigl(\prod_{x\colon A}Q(x)\Bigr).
     \]
     Its proof consists of constructing a witness $f$ for this type.
 
     Take a dependent function $r$ in the domain. We must construct a pair of dependent functions $(p,q)$, where $p\colon \prod_{x\colon A}P(x)$ and $q\colon \prod_{x\colon A}Q(x)$.
     For any $x\colon A$, the term $r(x)$ is a pair in $P(x)\times Q(x)$. Using standard projections, we could define the result directly as:
     \[
-        f(r) \defeq \big(\lambda x.\,\pi_1(r(x)),\; \lambda x.\,\pi_2(r(x))\big).
+        f(r) \defeq \bigl(\lambda x.\,\pi_1(r(x)),\; \lambda x.\,\pi_2(r(x))\bigr).
     \]
     To derive this using the recursor, we must separate the components by providing the appropriate step functions. For the first component $p$, the handler must select the first argument:
     \[
@@ -1487,7 +1487,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{General path induction.}
     In the case of identity types, the induction principle (a.k.a.~\textsl{path induction}) conceptually requires a motive defined on the total space of paths:
     \[
-        \Big(\sum_{x,y\colon A}x\eq A y\Big)\to\univ.
+        \Bigl(\sum_{x,y\colon A}x\eq A y\Bigr)\to\univ.
     \]
     In Type Theory, however, we specify this map using its Curried\footnote{See \nref{lpar:generalized-currying}.} form:
     \[
@@ -1502,7 +1502,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     such that $f(x,x,\fun{refl}_x)\defeq c(x)$ for $x\colon A$. In other words, the induction principle for identity types is defined as
     \begin{equation}\label{eq:ind=A}
         \fun{ind}_{\eq A}\colon\prod_{C\colon\prod_{x,y\colon A}(x\eq A y)\to\univ}
-            \;\bigg(\prod_{x\colon A}C(x,x,\fun{refl}_x)\bigg)
+            \;\biggl(\prod_{x\colon A}C(x,x,\fun{refl}_x)\biggr)
                 \to\prod_{x,y\colon A}\;\prod_{p\colon x\eq Ay}C(x,y,p)
     \end{equation}
     satisfying the computation rule
@@ -1707,9 +1707,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     As a function, based path induction becomes
     \begin{equation}\label{eq:ind'=A}
         \fun{ind}'_{\eq A}\colon\prod_{a\colon A}\;\;
-            \Bigg(
+            \Biggl(
             \prod_{D\colon\prod_{x\colon A} (a\eq A x)\to\univ}D(a,\fun{refl}_a)
-            \Bigg)
+            \Biggr)
         \to\prod_{x\colon A}\;\prod_{p\colon a\eq Ax}D(x,p)
     \end{equation}
     with the equality
@@ -2064,9 +2064,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     For $\Sigma$-types, we define
     \[
         \fun{rec}_{\sum_{x\colon A} B(x)}\colon
-            \prod_{C\colon\univ}\Big(\prod_{x\colon A}\big(B(x)
-                \to C\big)\Big)
-                \to \Big(\sum_{x\colon A}B(x)\Big)
+            \prod_{C\colon\univ}\Bigl(\prod_{x\colon A}\bigl(B(x)
+                \to C\bigr)\Bigr)
+                \to \Bigl(\sum_{x\colon A}B(x)\Bigr)
                 \to C
     \]
     and specify it as
@@ -2077,7 +2077,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     To see that this is well defined, let us first observe that $g$ can be applied to $\pi_1(p)$. We have
     \[
-        g\colon\prod_{x\colon A}\big(B(x)\to C\big).
+        g\colon\prod_{x\colon A}\bigl(B(x)\to C\bigr).
     \]
     The signature of $\pi_1$ implies that $\pi_1(p)\colon A$. Hence, $g(\pi_1(p))\colon B(\pi_1(p))\to C$.
 
@@ -2086,7 +2086,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     It remains to be seen that the recursion works as expected. To verify this we have to evaluate the function at canonical elements. In this case it suffices to compute the $\lambda$-expression when $p\equiv(a,b)$ with $b\colon B(a)$. Here we have
     \begin{align*}
         \fun{rec}_{\sum_{x\colon A}B(x)}(C,g)((a,b))
-            &\equiv\big(\lambda p.\,g(\pi_1(p))(\pi_2(p))\big)((a,b))\\
+            &\equiv\bigl(\lambda p.\,g(\pi_1(p))(\pi_2(p))\bigr)((a,b))\\
             &\equiv g(\pi_1((a,b))(\pi_2((a,b)))\\
             &\equiv g(a)(b),
     \end{align*}
@@ -2157,15 +2157,15 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \fun{rec}(C,c_0,c_s,\fun{succ}(n))
             &\equiv \fun{iter}(\hat C,\hat c_0,\hat c_s,
                 q_1(\fun{succ}(n)))(q_2(q_1(\fun{succ}(n)))\\
-            &\equiv \fun{iter}\big(\hat C,\hat c_0,\hat c_s,
-                \fun{succ}(q_1(n))\big)(q_1(q_1(n)))\\
-            &\equiv\hat c_s\big(\fun{iter}(\hat C,\hat c_0,\hat c_s,q_1(n))\big)
+            &\equiv \fun{iter}\bigl(\hat C,\hat c_0,\hat c_s,
+                \fun{succ}(q_1(n))\bigr)(q_1(q_1(n)))\\
+            &\equiv\hat c_s\bigl(\fun{iter}(\hat C,\hat c_0,\hat c_s,q_1(n))\bigr)
                 (q_1(q_1(n)))\\
-            &\equiv c_s\big(q_1(n)\big)\big(\fun{iter}(\hat C,\hat c_0,\hat c_s,q_1(n))\big)
+            &\equiv c_s\bigl(q_1(n)\bigr)\bigl(\fun{iter}(\hat C,\hat c_0,\hat c_s,q_1(n))\bigr)
                 (q_2(q_1(q_1(n))))\\
-            &\equiv c_s\big(q_1(n)\big)
-                \big(\fun{rec}(C,c_0,c_s,q_1(n))\big)\\
-            &\equiv c_s\big(q_1(n),\fun{rec}(C,c_0,c_s,q_1(n))\big).
+            &\equiv c_s\bigl(q_1(n)\bigr)
+                \bigl(\fun{rec}(C,c_0,c_s,q_1(n))\bigr)\\
+            &\equiv c_s\bigl(q_1(n),\fun{rec}(C,c_0,c_s,q_1(n))\bigr).
     \end{align*}
     Thus, the question of proving that $\fun{rec}$ is propositionally equal to the recursion principle $\fun{rec}_\N$ for $\N$, would follow from the fact that a function $f\colon\N\to\N$ that satisfies $f(0)\equiv0$ and $f(\fun{succ}(n))\equiv\fun{succ}(n)$ is propositionally equal to the identity, i.e., $f\eq{\N\to\N}\id_\N$.
 
@@ -2521,7 +2521,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \fun{ack}(\fun{succ}(m), 0)
             &\equiv \fun{rec}_\N(\N\to\N, c_0, c_s, \fun{succ}(m))(0) \\
             &\equiv c_s(m, \fun{ack}(m))(0) \\
-            &\equiv \big(\lambda g.\,\fun{rec}_\N(\N, g(1),d_s)\big)(\fun{ack}(m))(0)
+            &\equiv \bigl(\lambda g.\,\fun{rec}_\N(\N, g(1),d_s)\bigr)(\fun{ack}(m))(0)
                 &&\text{; \eqref{eq:cs-from-ds}}\\
             &\equiv \fun{rec}_\N(\N, \fun{ack}(m)(1), d_s, 0) \\
             &\equiv \fun{ack}(m)(1) \\
@@ -2533,13 +2533,13 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \fun{ack}(\fun{succ}(m),\fun{succ}(n))
             &\equiv c_s(m,\fun{ack}(m))(\fun{succ}(n))\\
             &\equiv\fun{rec}_\N(\N,\fun{ack}(m)(1),d_s,\fun{succ}(n))\\
-            &\equiv d_s\big(n,\fun{rec}_\N(\N,\fun{ack}(m)(1),d_s,n)\big)\\
-            &\equiv d_s\big(n,c_s(m,\fun{ack}(m))(n)\big)
+            &\equiv d_s\bigl(n,\fun{rec}_\N(\N,\fun{ack}(m)(1),d_s,n)\bigr)\\
+            &\equiv d_s\bigl(n,c_s(m,\fun{ack}(m))(n)\bigr)
                 &&\text{; \eqref{eq:cs-from-ds}}
     \intertext{\small(at this point the variable $g$ of \eqref{eq:ds-definition} is bound to $\fun{ack}(m)$; consequently)}
-            &\equiv d_s\big(n,\fun{ack}(\fun{succ}(m),n)\big)
+            &\equiv d_s\bigl(n,\fun{ack}(\fun{succ}(m),n)\bigr)
                 &&\text{; recursion}\\
-            &\equiv\fun{ack}(m)\big(\fun{ack}(\fun{succ}(m),n)\big)
+            &\equiv\fun{ack}(m)\bigl(\fun{ack}(\fun{succ}(m),n)\bigr)
                 &&\text{; \eqref{eq:ds-definition}}\\
             &\equiv \fun{ack}(m, \fun{ack}(\fun{succ}(m), n)).
     \end{align*}
@@ -2617,11 +2617,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{solution}
     We have to define a function
     \[
-        \big(P+(P\to\fun0)\to\fun0\big)\to\fun0.
+        \bigl(P+(P\to\fun0)\to\fun0\bigr)\to\fun0.
     \]
     More generally, let us define a function
     \[
-        f\colon\big(P+(P\to Z)\to Z\big)\to Z.
+        f\colon\bigl(P+(P\to Z)\to Z\bigr)\to Z.
     \]
     Fix a function $g\colon P+(P\to Z)\to Z$. It defines two functions
     \begin{align*}
@@ -2698,7 +2698,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \[
             \fun{ap}_f(p\ct q)\eq {f(x)\eq Bf(z)}\fun{ap}_f(p)\ct \fun{ap}_f(q),
         \]
-        for $x,y,z\colon A$, $p\colon x\eq Ay$ and $q\colon y\eq Az$.
+        for\/ $x,y,z\colon A$, $p\colon x\eq Ay$, and\/ $q\colon y\eq Az$.
     \end{enumerate}
 \end{exr}
 
@@ -2761,7 +2761,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         and apply the induction principle to obtain
         \[
             \fun{ind}_{\eq A}(D_f,d_f,x,y,p)\colon D_f(x,y,p).
-        \]
+        \]\qedhere
     \end{enumerate}
 \end{solution}
 
