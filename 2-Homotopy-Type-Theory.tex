@@ -46,16 +46,16 @@
 \fi
 \end{rem}
 
-\begin{lem}
+\begin{prop}\label{prop:ap-properties}
     For functions\/ $f\colon A\to B$ and\/ $g\colon B\to C$ and paths\/ $p\colon x\eq Ay$ and\/ $q\colon y\eq Az$, we have:
     \begin{enumerate}[a),font=\upshape]
         \item $\tilde f(\fun{refl}_x)\equiv\fun{refl}_{f(x)}$.
         \item $\tilde f(p\ct q)\eq{f(x)\eq Bf(z)}\tilde f(p)\ct\tilde f(q)$.
         \item $\tilde f(p^{-1})\eq{f(y)\eq Bf(x)}\tilde f(p)^{-1}$.
         \item $\tilde g(\tilde f(p))\eq{h(x)\eq Ch(y)}\tilde h(p)$, where $h\defeq g\circ f$.
-        \item If $B\equiv A$ and $f\equiv\id_A$, then $\widetilde{\id}_A(p)\eq{x\eq Ay}p$.
+        \item $\widetilde{\id}_A(p)\eq{x\eq Ay}p$.
     \end{enumerate}
-\end{lem}
+\end{prop}
 
 \begin{proof}${}$
     \begin{enumerate}[a)]
@@ -449,7 +449,16 @@
     \]
 \end{defn}
 
-\begin{prop}
+\begin{xmpl}\label{xmpl:uniq-as-homotopy}${}$    
+    As defined in \nref{lpar:Pi-types-over-product},
+    \[
+        \fun{uniq}_{A\times B}
+            \colon(\pi_1,\pi_2)\sim\id_{A\times B},
+    \]
+    where $(\pi_1,\pi_2)\defeq\lambda x.\,(\pi_1(x),\pi_2(x))$.
+\end{xmpl}
+
+\begin{prop}\label{prop:homotopy-equivalence-relation}
     % Define a length to store the width of the longest subscript.
     \newlength{\maxsubwidth}
     % Measure the widest subscript (the third one) in scriptstyle (standard for limits).
@@ -582,7 +591,7 @@
     where, according to Lemma~\ref{lem:tilde-id-is-id}, we have replaced $\widetilde\id_A(\eta_x)$ with $\eta_x$. The conclusion follows from concatenation with $\eta_x^{-1}$.
 \end{proof}
 
-\begin{lem}{\upshape[Whiskering]}\label{lem:whiskering}
+\begin{prop}{\upshape[Whiskering]}\label{prop:whiskering}
     The homotopy relation is compatible with composition:
     \begin{description}[font=\normalfont\scshape]
         \item[Right:] Given\/ $\eta\colon f\sim g$ and a right composable function\/ $h$, we have
@@ -594,7 +603,7 @@
             h\cdot\eta\defeq\lambda x.\,\fun{ap}_h(\eta(x))\colon h\circ f\sim h\circ g.
         \]
     \end{description}
-\end{lem}
+\end{prop}
 
 \begin{proof}
     Assume that\/ $f,g\colon A\to B$ and let\/ $\eta\colon f\sim g$ be a homotopy.
@@ -604,9 +613,123 @@
     For the case where\/ $h\colon B\to C$, the function\/ $\fun{ap}_h$ constructs a witness of the equality\/ $h(f(x))\eq C h(g(x))$ from the witness\/ $\eta(x)$ of\/ $f(x)\eq B g(x)$. Thus, the term\/ $\lambda x.\,\fun{ap}_h(\eta(x))$ is a well-defined witness of\/ $h\circ f\sim h\circ g$.
 \end{proof}
 
+\begin{defn}
+    Let $A$ be a type and $E\defeq\sum_{x,y\colon A}x\eq Ay$ its total path space. The \textsl{reflexivity section} $\rho_A$ is the map that assigns to every point its trivial loop:
+    \[
+        \rho_A\colon A\to E,
+        \quad x\mapsto(x,x,\fun{refl}_x).
+    \]
+\end{defn}
+
+\begin{rem}
+    Let $C$ be a family over the path space $E$ of $A$. Given a dependent function $f$ defined on $E$
+    \[
+        f\colon\prod_{\omega\colon E}C(\omega),
+    \]
+    the composition of $f\circ\rho_A$ is the dependent function
+    \[
+        f\circ\rho_A\defeq\lambda x.\, f(x,x,\fun{refl}_x)
+        \colon\prod_{x\colon A}C(x,x,\fun{refl}_x).
+    \]
+    
+\end{rem}
+
+\begin{lem}\label{lem:pre-composition-with-rho}
+    With the precedent notation, let\/ $C\colon E\to\univ$ be a type family. Then given two dependent functions\/ $f,g\colon\prod_{\omega\colon E}C(\omega)$, if their compositions with\/ $\rho_A$ are homotopic, i.e.,
+    \[
+        f \circ \fun{\rho} \sim g \circ \fun{\rho},
+    \]
+    then\/ $f \sim g$.
+\end{lem}
+
+\begin{proof}
+    We have to show that for all $\omega\colon E$, $f(\omega)\eq{C(\omega)}g(\omega)$. The element $\omega$ is a triple $(x,y,p)$. Thus, we must show $f(x,y,p)\eq{C(x,y,p)}g(x,y,p)$ for all $x,y \colon A$ and $p \colon x \eq A y$.
+
+    Fix $x$. By based path induction, it suffices to prove the statement for the case where $y \equiv x$ and $p \equiv \fun{refl}_x$. In this case, the triple is $(x, x, \fun{refl}_x)$, which is precisely~$\rho_A(x)$.
+
+    Then goal becomes $f(\rho_A(x))\eq{C(x,x,\fun{refl}_x)}g(\rho(x))$, which holds by hypothesis.
+\end{proof}
+
+\begin{prop}
+    Let\/ $\fun{f}$ and\/ $\fun{g}$ be the functions defined previously between the path space of the product and the product of path spaces. Then\/ $\fun{g} \circ \fun{f} \sim \id$.
+\end{prop}
+
+\begin{proof}
+    By the previous Lemma, to prove that $\fun{g} \circ \fun{f}$ is homotopic to the identity function on the path space, it suffices to verify that they agree upon pre-composition with $\fun{\rho}$. That is, we must check that for every $x \colon A \times B$:
+    \[
+        (\fun{g} \circ \fun{f})(\fun{refl}_x) \eq{} \id(\fun{refl}_x).
+    \]
+    We compute the left-hand side. By the definition of $\fun{f}$, we have $\fun{f}(\fun{refl}_x) \equiv (\fun{refl}_{\fun{\pi}_1(x)}, \fun{refl}_{\fun{\pi}_2(x)})$. Applying $\fun{g}$ to this canonical pair yields the reflexivity path on the pair of projections:
+    \[
+        (\fun{g} \circ \fun{f})(\fun{refl}_x) \equiv \fun{refl}_{(\fun{\pi}_1(x), \fun{\pi}_2(x))}.
+    \]
+    We must compare this to the right-hand side, which is simply $\fun{refl}_x$. We invoke the uniqueness homotopy $\fun{uniq}_{A \times B}(x) \colon (\fun{\pi}_1(x), \fun{\pi}_2(x)) \eq{} x$. Applying the congruence of the reflexivity term (whiskering by $\fun{refl}$), we obtain the path:
+    \[
+        \fun{refl} \cdot \fun{uniq}_{A \times B}(x) \colon \fun{refl}_{(\fun{\pi}_1(x), \fun{\pi}_2(x))} \eq{} \fun{refl}_x.
+    \]
+    This provides the required homotopy for every $x$. Thus, by the Lemma, $\fun{g}\circ\fun{f}\sim\id$.
+\end{proof}
+
+\begin{xmpl}\label{xmpl:refl-is-homotopy}
+    If $f\colon A\to B$, the reflection function
+    \[
+        \fun{refl}\cdot f\colon\prod_{x\colon A}f(x)\eq Bf(x)
+    \]
+    is a homotopy from $f$ to $f$. In particular,
+    \[
+        \fun{refl}\colon\id_A\sim\id_A.
+    \]
+\end{xmpl}
+    
+\begin{prop}\label{prop:whiskering-associativity}
+  Given an homotopy\/ $\eta$ and appropriately composable functions\/ $h$ and\/ $k$, we have
+  \begin{enumerate}[a),font=\upshape]
+      \item $(\eta\cdot h)\cdot k\equiv \eta\cdot(h\circ k)$.
+      \item $k\cdot(h\cdot\eta)=(k\circ h)\cdot\eta$.
+      \item $h\cdot(\eta\cdot k)\equiv(h\cdot\eta)\cdot k$.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    The first equation is a direct consequence of the definitions. The second follows from Proposition~\ref{prop:ap-properties}. For the third we have,
+    \begin{align*}
+        h\cdot(\eta\cdot k)
+            &\equiv\lambda x.\,\fun{ap}_h(\eta(k(x))\\
+            &\equiv\lambda x.\,(h\cdot\eta)(k(x))\\
+            &\equiv\lambda x.\,(h\cdot\eta)\circ k(x)\\
+            &\equiv (h\cdot\eta)\cdot k.
+    \end{align*}
+\end{proof}
+
+\begin{lem}
+    Let\/ $C \colon \prod_{x,y\colon A} (x \eq A y) \to \univ$ be a type family. Given two dependent functions\/
+    \[
+        f,g \colon \prod_{x,y\colon A} \prod_{p\colon x\eq A y} C(x,y,p),
+    \]
+    such that\/
+    \[
+        f \cdot \fun{refl} \sim g \cdot \fun{refl},
+    \]
+    we have\/ $f \sim g$.
+\end{lem}
+
+\begin{proof}
+    According to the definition, we have to construct a term of type
+    \[
+        f(x,y,p) \eq{C(x,y,p)} g(x,y,p)
+    \]
+    for all $x,y \colon A$ and $p\colon x\eq Ay$.
+    
+    Let $x \colon A$ be fixed. To define the term for arbitrary $y$ and $p$, we proceed by based path induction. It suffices to consider the case where the endpoint $y$ is $x$ and the path $p$ is $\fun{refl}_x$. In this base case, the required type becomes:
+    \[
+        f(x, x, \fun{refl}_x) \eq{C(x,x,\fun{refl}_x)} g(x, x, \fun{refl}_x).
+    \]
+    By definition of the whiskering operation, this is exactly the type of the hypothesis evaluated at $x$, namely $(f \cdot \fun{refl})(x) \eq{} (g \cdot \fun{refl})(x)$. Since the hypothesis provides such a term for every $x$, the proof is complete.
+\end{proof}
+
 \section{Equivalences}
 
-\begin{defns}${}$
+\begin{defns}${}$\label{defns:isequiv-qinv}
     \begin{itemize}
         \item A function $f\colon A\to B$ is an \textsl{equivalence}, when the type
         \[
@@ -625,7 +748,16 @@
     \end{itemize}
 \end{defns}
 
-\begin{prop}
+\begin{rem}\label{rem:quasi-inverse-involution}
+    A direct consequence of the definition is that
+    \[
+        (q,\eta,\vartheta)\colon\fun{qinv}(f)
+        \quad\text{implies}\quad
+        (f,\vartheta,\eta)\colon\fun{qinv}(g).
+    \]
+\end{rem}
+
+\begin{prop}\label{prop:qinv<->isequiv}
 Let\/ $f\colon A\to B$. Then,
   \begin{enumerate}[a),font=\upshape]
     \item There is a map\/ $\fun{qinv}(f)\to\fun{isequiv}(f)$.
@@ -643,7 +775,7 @@ Let\/ $f\colon A\to B$. Then,
       \quad\text{and}\quad
       \vartheta\colon h\circ f\sim\id_A.
     \]
-    By Lemma~\ref{lem:whiskering}, we obtain:
+    By Lemma~\ref{prop:whiskering}, we obtain:
     \begin{align*}
       h\cdot\eta &\colon h\circ f\circ g\sim h, \\
       \vartheta\cdot g &\colon h\circ f\circ g\sim g.
@@ -664,16 +796,24 @@ Let\/ $f\colon A\to B$. Then,
     Thus, the triple $(g,\eta,\vartheta')$ inhabits $\fun{qinv}(f)$, where
     \[
       \vartheta'\defeq\lambda x.\,\theta(f(x))\ct\vartheta(x).
-    \]
+    \]\qedhere
   \end{enumerate}
 \end{proof}
 
-\begin{defn}
+\begin{defn}\label{defn:equivalence}
     An \textsl{equivalence} from $A$ to $B$ is a function $f\colon A\to B$ together with an inhabitant of $\fun{isequiv}(f)$, i.e., a proof that it is an equivalence. We write $A\simeq B$ for the type of equivalences from $A$ to $B$, i.e., the type
     \[
         A\simeq B\defeq\!\!\!\sum_{f\colon A\to B}\fun{isequiv}(f).
     \]
 \end{defn}
+
+\begin{ntn}\label{ntn:abuse-equivalence}
+    We will sometimes abbreviate the equivalence
+    \[
+        (f,(g,\eta,h,\vartheta))\colon A\simeq B
+    \]
+    by writing simply\/ $f\colon A\simeq B$.
+\end{ntn}
 
 \begin{prop}
     Type equivalence of types is an equivalence relation on\/ $\univ$. More specifically:
@@ -699,7 +839,324 @@ Let\/ $f\colon A\to B$. Then,
             \colon A\simeq A.
         \]
 
-        \item Suppose that $(g,\eta,h,\vartheta)\colon\fun{isequiv}(f)$. Then
+        \item Suppose that $f\colon A\simeq B$. Then,
+        \begin{align*}
+            (f,\omega)&\colon A\simeq B
+                &&\text{; Notn.~\ref{ntn:abuse-equivalence}}\\
+            \omega\equiv(g,\eta,h,\vartheta)&\colon\fun{isequiv}(f)
+                &&\text{; Defns.~\ref{defn:equivalence} \& \ref{defns:isequiv-qinv}}\\
+            (g,\eta,\vartheta')&\colon\fun{qinv}(f)
+                &&\text{; Prop.~\ref{prop:qinv<->isequiv}}\\
+            (f,\vartheta',\eta)&\colon\fun{qinv}(g)
+                &&\text{; Rem.~\ref{rem:quasi-inverse-involution}}\\
+            (g,(f,\vartheta',f,\eta))&\colon B\simeq A
+                &&\text{; Prop.~\ref{prop:qinv<->isequiv}}.
+        \end{align*}
+
+        \item Suppose that\/ $f\colon A\simeq B$ and\/ $g\colon B\simeq C$. This translates into
+        \begin{align*}
+            (f,(h_1,\eta_1,k_1,\vartheta_1)) &\colon A\simeq B, &
+            (g,(h_2,\eta_2,k_2,\vartheta_2)) &\colon B\simeq C,
+        \end{align*}
+        with
+        \begin{align*}
+            \eta_1 &\colon f\circ h_1\sim\id_B, &
+            \eta_2 &\colon g\circ h_2\sim\id_C, \\
+            \vartheta_1 &\colon k_1\circ f\sim\id_A, &
+            \vartheta_2 &\colon k_2\circ g\sim\id_B.
+        \end{align*}
+        Then, we have the intermediate homotopies:
+        \begin{align*}
+            g\cdot\eta_1 &\colon g\circ f\circ h_1\sim g, &
+            \vartheta_2\cdot f &\colon k_2\circ g\circ f\sim f.
+        \end{align*}
+        By Proposition~\ref{prop:whiskering-associativity} (associativity of whiskering), we obtain:
+        \begin{align*}
+            g\cdot\eta_1\cdot h_2 &\colon g\circ f\circ h_1\circ h_2\sim g\circ h_2, \\
+            k_1\cdot\vartheta_2\cdot f &\colon k_1\circ k_2\circ g\circ f\sim k_1\circ f.
+        \end{align*}
+        By Proposition~\ref{prop:homotopy-equivalence-relation} (homotopy transitivity), utilizing\/ $\eta_2$ and\/ $\vartheta_1$, we deduce that
+        \[
+            (g\circ f)\circ(h_1\circ h_2)\sim \id_C
+            \quad\text{and}\quad
+            (k_1\circ k_2)\circ(g\circ f)\sim\id_A
+        \]
+        are inhabited. Thus, according to Notation~\ref{ntn:abuse-equivalence}, we have\/ $g\circ f\colon A\simeq C$.
     \end{enumerate}
+\end{proof}
+
+\section{Cartesian Product}
+
+\begin{defns}${}$
+    Given $A,B\colon\univ$, we consider their product $A\times B$ and introduce two functions:
+    \begin{enumerate}[a)]
+        \item The function that \textit{splits} a path between pairs into a pair of paths between their components:
+        \begin{align*}
+            \fun{pair}^\times\colon\prod_{x,y\colon A\times B}
+                (x\eq{A\times B}y)
+                &\to
+                (
+                    (\pi_1(x)\eq A\pi_1(y))
+                    \times
+                    (\pi_2(x)\eq B\pi_2(y))
+                )\\
+            (x,y,p)&\mapsto
+                (\fun{ap}_{\pi_1}(p),\fun{ap}_{\pi_2}(p)).
+        \end{align*}
+        Note that for\/ $p\equiv\fun{refl}_x$, this computes to:
+        \[
+            \fun{pair}^\times(\fun{refl}_x)\equiv
+                (\fun{refl}_{\pi_1(x)}, \fun{refl}_{\pi_2(x)}).
+        \]    
     
+        \item The function that \textit{constructs} a path between pairs from paths between their components:
+        \[
+            \fun{pair}^=\colon\prod_{x,y\colon A\times B}
+                ((\pi_1(x)\eq A\pi_1(y))
+                    \times(\pi_2(x)\eq B\pi_2(y)))
+                \to (x\eq{A\times B}y)
+        \]
+        defined by induction as follows:
+        \begin{enumerate}[-]
+            \item By induction on $x$, it is enough to consider the case where $x$ is a pair $(a,b)$. In this case, we must define a function of type
+            \[
+                \prod_{y:A\times B}
+                    \left( (a \eq A \fun{\pi}_1(y)) \times (b \eq B \fun{\pi}_2(y)) \right)
+                    \to (a,b) \eq{A\times B} y.
+            \]
+            \item Now, by induction on $y$, we reduce to the case where $y$ is a pair $(a',b')$. That is, we must define a function
+            \[
+                (a \eq A a') \times (b \eq B b') \to (a,b) \eq{A\times B} (a',b').
+            \]
+            \item Since the domain is a product type, we only need to consider inputs of the form $(p,q)$, where $p \colon a \eq A a'$ and $q \colon b \eq B b'$, and specify a function of type
+            \[
+                \prod_{p\colon a\eq Aa'}
+                \;\prod_{q\colon b\eq Bb'}
+                    (p,q)\to(a,b)\eq{A\times B}(a',b').
+            \]
+            \item Path induction on $p$ allows us to reduce the definition to the case where $a'\equiv a$ and $p\equiv \fun{refl}_a$. Thus, we must define a map
+            \[
+                \prod_{q\colon b\eq Bb'}(\fun{refl}_a,q)
+                    \to (a,b) \eq{A\times B} (a,b').
+            \]
+            \item Finally, by induction on $q$, this reduces to the case where $b'\equiv b$ and $q\equiv\fun{refl}_a$. We are left with a map satisfying
+            \[
+                (\fun{refl}_a, \fun{refl}_b)\mapsto e
+                    \colon(a,b)\eq{A\times B}(a,b).
+            \]
+            \item This is accomplished by
+            \[
+                (\fun{refl}_a, \fun{refl}_b) \mapsto \fun{refl}_{(a,b)}.
+            \]
+        \end{enumerate}
+    \end{enumerate}
+\end{defns}
+
+\begin{lem}\label{lem:AxB-goal-reduction}
+    The type
+    \[
+        \prod_{x,y\colon A\times B}\;
+        \prod_{\zeta\colon(\pi_1(x)\eq A\pi_1(y))
+        \times(\pi_2(x)\eq B\pi_2(y))}
+        P(x,y,\zeta)
+    \]
+    is inhabited if, and only if, for all\/ $a\colon A$ and\/ $b\colon B$, the term
+    \[
+        P((a,b),(a,b),(\fun{refl}_a,\fun{refl}_b))
+    \]
+    has a witness.
+\end{lem}
+
+\begin{proof}
+    By induction on $x$, it suffices to consider the case where $x\equiv(a,b)$. The goal becomes
+    \[
+        \prod_{y\colon A\times B}\;
+        \prod_{\zeta\colon(a\eq A\pi_1(y))
+        \times(b\eq B\pi_2(y))}
+        P((a,b),y,\zeta).
+    \]
+    Similarly, induction on $y$ reduces the goal to the case where $y\equiv(a',b')$
+    \[
+        \prod_{\zeta\colon(a\eq Aa')
+        \times(b\eq Bb')}
+        P((a,b),(a',b'),\zeta).
+    \]
+    Decomposing the pair $\zeta$ into components $(p,q)$, we must find a section of:
+    \[
+        \prod_{p\colon a\eq Aa'}\;\prod_{q\colon b\eq Bb'}
+        P((a,b),(a',b'),(p,q)).
+    \]
+    Path induction on $p$ contracts the endpoint $a'$ to $a$ and the path to $\fun{refl}_a$, yielding
+    \[
+        \prod_{q\colon b\eq Bb'}P((a,b),(a,b'),(\fun{refl}_a,q)).
+    \]
+    Finally, path induction on $q$ contracts $b'$ to $b$, leaving us with
+    \[
+        P((a,b),(a,b),(\fun{refl}_a,\fun{refl}_b)),
+    \]
+    as desired.
+\end{proof}
+
+
+\begin{thm}
+    Let\/ $A,B\colon\univ$ be two types. For any\/ $x,y\colon A\times B$, the function\/ $\fun{pair}^\times(x,y)$ is an equivalence with quasi-inverse\/ $\fun{pair}^=(x,y)$. Consequently:
+    \[
+        (x\eq{A\times B}y)
+        \simeq
+        \bigl((\pi_1(x)\eq A\pi_1(y))
+            \times(\pi_2(x)\eq B\pi_2(y))\bigr).
+    \]
+\end{thm}
+
+\begin{proof}
+    We must show that\/ $\fun{pair}^\times$ and\/ $\fun{pair}^=$ are quasi-inverses.
+    \begin{enumerate}[a), font=\upshape]
+        \item \textbf{Homotopy\/ $\fun{pair}^=(x,y)\circ\fun{pair}^\times(x,y)\sim\id$.}
+         
+        We have to prove that
+        \[
+            \prod_{x,y\colon A\times B}\;\prod_{p\colon x\eq{A\times B}y}
+                \bigl(\fun{pair}^=(x,y)\circ\fun{pair}^\times(x,y)\bigr)(p)\eq{x\eq{A\times B}y}p.
+        \]
+        By path induction it suffices to consider the case where $y\equiv x$ and $p\equiv\fun{refl}_x$, which reduces us to prove
+        \[
+            \bigl(\fun{pair}^=(x,x)\circ\fun{pair}^\times(x,x)\bigr)(\fun{refl}_x)
+                \eq{x\eq{A\times B}x}\fun{refl}_x.
+        \]
+        By the definitions of $f$ and $\fun{pair}^=$, we have
+        \begin{align*}
+            \bigl(\fun{pair}^=(x,x)\circ\fun{pair}^\times(x,x)\bigr)(\fun{refl}_x)
+                &\equiv\fun{pair}^=(x,x,(\fun{pair}^\times(x,x,\fun{refl}_x))\\
+                &\equiv\fun{pair}^=(x,x,
+                    (\fun{refl}_{\pi_1(x)}
+                    ,\fun{refl}_{\pi_2(x)}))\\
+                &\equiv \fun{refl}_{(\pi_1(x),\pi_2(x))}.
+        \end{align*}
+        Applying the uniqueness principle $(\pi_1(x),\pi_2(x))\eq{A\times B}x$, we obtain
+        \[
+            \fun{refl}_{(\pi_1(x),\pi_2(x))}
+                \eq{x\eq{A\times B}x}\fun{refl}_x.
+        \]
+
+        \item \textbf{Homotopy\/ $\fun{pair}^\times(x,y)\circ\fun{pair}^=(x,y)\sim\id$.}
+        
+        We have to prove that
+        \[
+            \prod_{x,y\colon A\times B}\;
+            \prod_{\zeta\colon(\pi_1(x)\eq A\pi_1(y))\times (\pi_2(x)\eq B\pi_2(y))}
+                \bigl(\fun{pair}^\times(x,y)\circ\fun{pair}^=(x,y)\bigr)(\zeta)
+                \eq{}\zeta.
+        \]
+        Applying Lemma~\ref{lem:AxB-goal-reduction}, the goal reduces to
+        \begin{align*}
+            \bigl(\fun{pair}^\times((a,b)&,(a,b))\circ\fun{pair}^=((a,b),(a,b))\bigr)
+            (\fun{refl}_a,\fun{refl}_b)\\
+                &\equiv\fun{pair}^\times\bigl((a,b),(a,b),
+                   \fun{pair}^=((a,b),(a,b),(\fun{refl}_a,\fun{refl}_b))
+                    \bigr)\\
+                &\equiv\fun{pair}^\times((a,b),(a,b),\fun{refl}_{(a,b)})\\
+                &\equiv(\fun{refl}_a,\fun{refl}_b).
+        \end{align*}
+        Thus, the output matches the input, as desired.
+    \end{enumerate}
+    Since both composites are homotopic to the identity, $\fun{pair}^=\colon\fun{qinv}(\fun{pair}^\times)$.
+\end{proof}
+
+\begin{rem} The following tables is a summary of the functions introduced above
+\[
+    \begin{tabular}{lll}
+        \hline
+        %\small\textbf{Function}
+            &\small\textbf{Logic}
+            &\small\textbf{Type Signature}\\
+        \hline
+        \small$\fun{pair}^=$
+        &\small Introduction of Equality
+        &\small
+        $(\pi_1(x)=\pi_1(y))\times(\pi_2(x)=\pi_2(y))\to(x=y)$\\
+        $\fun{pair}^\times$
+        &\small Elimination to Product
+        &\small
+        $(x=y)\to(\pi_1(x)=\pi_1(y))\times(\pi_2(x)=\pi_2(y))$\\
+        \hline
+    \end{tabular}
+\]
+\end{rem}
+
+\begin{prop}
+    Let\/ $A,B\colon\univ$. Then, for all\/ $x,y,z\colon A\times B$, and paths
+    \begin{alignat*}{3}
+        p&\colon\pi_1(x)\eq A\pi_1(y),\quad & r&\colon x\eq{A\times B}y,\quad & p'&\colon\pi_1(y)\eq{A\times B}\pi_1(z),\\
+        q&\colon\pi_2(x)\eq A\pi_2(y),\quad & s&\colon y\eq{A\times B}z,\quad & q'&\colon\pi_2(y)\eq{A\times B}\pi_2(z),
+        \end{alignat*}
+        the following equality types are inhabited:
+        \begin{enumerate}[i), font=\upshape]
+        \item $\fun{ap}_{\pi_1}(\fun{pair}^=(p,q))=p$
+        \item $\fun{ap}_{\pi_2}(\fun{pair}^=(p,q))=q$
+        \item $\fun{pair}^=(\fun{refl}_{\pi_1(x)}, \fun{refl}_{\pi_2(x)}) = \fun{refl}_x$
+        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r), \fun{ap}_{\pi_2}(r)) = r$
+        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)^{-1}, \fun{ap}_{\pi_2}(r)^{-1}) = r^{-1}$
+        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)\ct\fun{ap}_{\pi_1}(s), \fun{ap}_{\pi_2}(r)\ct\fun{ap}_{\pi_2}(s)) = r\ct s$
+        \item $\fun{pair}^=(p^{-1}, q^{-1}) = \fun{pair}^=(p,q)^{-1}$
+        \item $\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q') = \fun{pair}^=(p\ct p', q\ct q')$
+    \end{enumerate}
+\end{prop}
+
+\needspace{2\baselineskip}
+\begin{proof}${}$
+    \begin{enumerate}[i), font=\upshape]
+        \item We must show that $\fun{ap}_{\pi_1}(\fun{pair}^=(\zeta))=\pi_1(\zeta).$, for any pair of paths
+        \[
+            \zeta\colon(\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)
+                \eq B\pi_2(y)),
+        \]
+        By Lemma~\ref{lem:AxB-goal-reduction}, it suffices to check the case where $x\equiv y \equiv (a,b)$ and $\zeta \equiv (\fun{refl}_a, \fun{refl}_b)$. The equality holds definitionally:
+        \begin{align*}
+            \fun{ap}_{\pi_1}(\fun{pair}^=(\fun{refl}_a,\fun{refl}_b))
+            &\equiv\fun{ap}_{\pi_1}(\fun{refl}_{(a,b)})\\
+            &\equiv\fun{refl}_a.
+        \end{align*}
+        
+        \item Analogous to i), replacing $\pi_1$ with $\pi_2$.
+        
+        \item By induction on $x$, we may assume $x\equiv(a,b)$. The statement becomes
+        \[
+            \fun{pair}^=(\fun{refl}_a,\fun{refl}_b)=\fun{refl}_{(a,b)},
+        \]
+        which holds by the definition of $\fun{pair}^=$.
+        
+        \item We proceed by path induction on $r$. It suffices to prove the case where $y\equiv x$ and $r\equiv\fun{refl}_x$:
+        \[
+            \fun{pair}^=(\fun{ap}_{\pi_1}
+            (\fun{refl}_x),\fun{ap}_{\pi_2}
+            (\fun{refl}_x))=\fun{refl}_x.
+        \]
+        This reduces to
+        \[
+            \fun{pair}^=
+            (\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})
+            =\fun{refl}_x,
+        \]
+        which is exactly property iii).
+        
+        \item This follows similarly to part iv) by path induction on $r$, using the fact that $\fun{refl}_x^{-1}\equiv\fun{refl}_x$.
+        
+        \item Path induction on $r$ reduces the problem to the case $r\equiv\fun{refl}_x$. The goal becomes
+        \[
+            \fun{pair}^=
+            (\fun{refl}_{\pi_1(x)}\ct\fun{ap}_{\pi_1}(s),
+            \fun{refl}_{\pi_2(x)}\ct\fun{ap}_{\pi_2}(s))
+            =\fun{refl}_x\ct s.
+        \]
+        Since $\fun{refl}$ acts as the identity for concatenation, this simplifies to
+        \[
+            \fun{pair}^=(\fun{ap}_{\pi_1}(s),\fun{ap}_{\pi_2}(s))
+            =s,
+        \]
+        which holds by property iv).
+        
+        \item This follows by induction on $p$ (reducing to $\fun{refl}$) and subsequently on $q$ (reducing to $\fun{refl}$), at which point both sides compute to $\fun{refl}$.
+        
+        \item Similarly, this follows by induction on $p$ and then on $q$, reducing the \lhs to $\fun{pair}^=(p',q')$ and the \rhs to the same term.
+    \end{enumerate}
 \end{proof}
