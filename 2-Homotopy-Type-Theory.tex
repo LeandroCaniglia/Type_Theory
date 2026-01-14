@@ -485,6 +485,44 @@
     \end{itemize}
 \end{proof}
 
+\begin{prop}\label{prop:ap-as-functor}
+    Let\/ $f\colon A\to B$ and\/ $g\colon B\to C$ be functions. Then,
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun{ap}_f(p\ct q)\eq B\fun{ap}_f(p)\ct\fun{ap}_f(q)$.
+        \item $\fun{ap}_f(p^{-1})\eq B\fun{ap}_f(p)^{-1}$.
+        \item $\fun{ap}_{g\circ f}(p)\eq C\fun{ap}_g(\fun{ap}_f(p))$.
+        \item $\fun{ap}_{\fun{id}_A}(p)\eq Ap$.
+    \end{enumerate}
+\end{prop}
+
+\needspace{2\baselineskip}
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item See Exercise~\ref{exr:ap-application}.
+        
+        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$. We must show:
+        \[
+            \fun{ap}_f(\fun{refl}_x^{-1})
+            \eq B
+            \fun{ap}_f(\fun{refl}_x)^{-1},
+        \]
+        which holds since both sides compute to $\fun{refl}_{f(x)}$.
+        
+        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$.
+        \begin{align*}
+            \fun{ap}_{g\circ f}(\fun{refl}_x)
+                &\equiv\fun{refl}_{g(f(x))}\\
+                &\equiv\fun{ap}_g(\fun{refl}_{f(x)})\\
+                &\equiv \fun{ap}_g(\fun{ap}_f(\fun{refl}_x)).
+        \end{align*}
+        
+        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$, where the equality holds because
+        \[
+        \fun{ap}_{\fun{id}_A}(\fun{refl}_x)\equiv\fun{refl}_x.
+        \]
+    \end{enumerate}
+\end{proof}
+
 \begin{rem}\label{rem:types-as-categories} {\upshape[Types as categories]}
     Types admit different interpretations; depending on the circumstances we can see them as sets, propositions, spaces. Another way to think of types is as categories. In this analogy we have
     \begin{description}[font=\normalfont\scshape]
@@ -553,20 +591,6 @@
     \end{description}
 \end{rem}
 
-\begin{lem}\label{lem:tilde-id-is-id}
-    For any\/ $x,y\colon A$ and\/ $p\colon x\eq A y$, we have
-    \[
-        \fun{ap}_{\id_A}(p) = p.
-    \]
-\end{lem}
-
-\begin{proof}
-    By path induction, it suffices to assume\/ $p$ is\/ $\fun{refl}_x$.
-    The left-hand side reduces to\/ $\fun{ap}_{\id_A}(\fun{refl}_x)$, which is defined as\/ $\fun{refl}_{\id_A(x)} \equiv \fun{refl}_x$.
-    The right-hand side is\/ $\fun{refl}_x$.
-    Thus, the equality holds by\/ $\fun{refl}_{\fun{refl}_x}$.
-\end{proof}
-
 \begin{prop}
     Let\/ $\eta\colon f\sim\id_A$ be a homotopy, with\/ $f\colon A\to A$. Then for any\/ $x\colon A$ we have
     \[
@@ -588,7 +612,7 @@
             &x
         \end{tikzcd}
     \]
-    where, according to Lemma~\ref{lem:tilde-id-is-id}, we have replaced $\widetilde\id_A(\eta_x)$ with $\eta_x$. The conclusion follows from concatenation with $\eta_x^{-1}$.
+    where, according to Lemma~\ref{prop:ap-as-functor}, we have replaced $\widetilde\id_A(\eta_x)$ with $\eta_x$. The conclusion follows from concatenation with $\eta_x^{-1}$.
 \end{proof}
 
 \begin{prop}{\upshape[Whiskering]}\label{prop:whiskering}
@@ -1060,6 +1084,8 @@ Let\/ $f\colon A\to B$. Then,
         Thus, the output matches the input, as desired.
     \end{enumerate}
     Since both composites are homotopic to the identity, $\fun{pair}^=\colon\fun{qinv}(\fun{pair}^\times)$.
+    %
+    
 \end{proof}
 
 \begin{rem} The following tables is a summary of the functions introduced above
@@ -1082,6 +1108,30 @@ Let\/ $f\colon A\to B$. Then,
     \end{tabular}
 \]
 \end{rem}
+
+\begin{cor}\label{cor:uniqueness}
+    Given $x\colon A\times B$, we have
+    \[
+        x\eq{A\times B}(\pi_1(x),\pi_2(x)).
+    \]
+\end{cor}
+
+\begin{proof}
+    Take $y\defeq(\pi_1(x),\pi_2(x))\colon A\to B$. Then
+    \[
+        \pi_1(y)\equiv\pi_1(x)
+        \quad\text{and}\quad
+        \pi_2(y)\equiv\pi_2(x).
+    \]
+    Therefore,
+    \[
+        (\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})\colon
+        (\pi_1(x)=\pi_1(y))\times(\pi_2(x)=\pi_2(y)),
+    \]
+    and the theorem implies that $\fun{pair}^=(\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})\colon x=y$.
+    %
+    
+\end{proof}
 
 \begin{prop}
     Let\/ $A,B\colon\univ$. Then, for all\/ $x,y,z\colon A\times B$, and paths
@@ -1159,4 +1209,67 @@ Let\/ $f\colon A\to B$. Then,
         
         \item Similarly, this follows by induction on $p$ and then on $q$, reducing the \lhs to $\fun{pair}^=(p',q')$ and the \rhs to the same term.
     \end{enumerate}
+\end{proof}
+
+\begin{ntn}
+    Given type families\/ $A,B \colon Z\to\univ$, we denote by\/ $A\times B\colon Z\to\univ$ the type family defined by\/ $(A\times B)(z)\defeq A(z)\times B(z)$.
+\end{ntn}
+
+\begin{thm}
+    Fix $z\colon Z$ and $x\colon(A\times B)(z)$. Then, for $w\colon Z$ and $p\colon z\eq Zw$, we have
+    \[
+        \fun{transport}^{A\times B}(p, x) \eq{A(w)\times B(w)}
+        (\fun{transport}^A(p, \pi_1(x)), \fun{transport}^B
+            (p, \pi_2(x))).
+    \]
+\end{thm}
+
+\begin{proof}
+    By based path induction on $p$ it suffices to consider the case $w\equiv z$ and $p\equiv\fun{refl}_z$. According to \nref{lpar:transport}, the goal becomes
+    \begin{align*}
+        x\eq{A(z)\times B(z)}(\pi_1(x),\pi_2(x)).
+    \end{align*}
+    Hence, the conclusion follows from Corollary~\ref{cor:uniqueness}.
+    %
+    
+\end{proof}
+
+
+
+\begin{defn}
+    Given functions\/ $f\colon A \to A'$ and\/ $g\colon B \to B'$, we define the \textsl{product} function
+    \[
+        f\times g\colon A\times B\to A'\times B'
+    \]
+    by its action on elements:
+    \[
+        (f\times g)(x)\defeq(f(\pi_1(x)),g(\pi_2(x))).
+    \]
+    In particular, $f\times g(a,b)\equiv (f(a),g(b))$ for $a\colon A$ and $b\colon B$.
+\end{defn}
+
+\begin{thm}
+    Let\/ $f\colon A\to A'$ and\/ $g\colon B\to B'$ be two functions.
+    Given\/ $x,y\colon A\times B$ and\/ $\zeta\colon(\pi_1(x)\eq A\pi_1(y))\times(q\colon\pi_2(x)\eq B\pi_2(y))$, we have
+    \[
+        \fun{ap}_{f\times g}(\fun{pair}^=(\zeta))
+        \eq{A'\times B'}
+        \fun{pair}^=(\fun{ap}_f(\pi_1(\zeta)),\fun{ap}_g(\pi_2(\zeta))).
+    \]
+\end{thm}
+
+\begin{proof}
+    By Lemma~\ref{lem:AxB-goal-reduction}, it suffices to consider the case where\/ $x\equiv y\equiv(a,b)$ and\/ $\zeta\equiv(\fun{refl}_a,\fun{refl}_b)$. In this case, the goal becomes
+    \[
+        \fun{ap}_{f\times g}(\fun{pair}^=
+        (\fun{refl}_a,\fun{refl}_b))
+        \eq{A'\times B'}
+        \fun{pair}^=(\fun{ap}_f(\fun{refl}_a),\fun{ap}_g(\fun{refl}_b)).
+    \]
+    Computing the terms, we have:
+    \begin{itemize}
+        \item \lhs: $\fun{ap}_{f\times g}(\fun{refl}_{(a,b)}) \equiv \fun{refl}_{(f(a),g(b))}$.
+        \item \rhs: $\fun{pair}^=(\fun{refl}_{f(a)}, \fun{refl}_{g(b)}) \equiv \fun{refl}_{(f(a),g(b))}$.
+    \end{itemize}
+    Thus, $\fun{refl}_{\fun{refl}_{(f(a),g(b))}}$ is a witness of the target identity type.
 \end{proof}
