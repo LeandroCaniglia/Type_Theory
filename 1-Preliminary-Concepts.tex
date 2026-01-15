@@ -1673,11 +1673,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with \textsl{type transport} (a.k.a.~\textsl{type substitution}).\footnote{See also Exercise~\ref{exr:ap-application}.}
         
 \begin{lem}
-    Let\/ $P\colon A\to\univ$ be a family of types. For any path\/  $e\colon x\eq A y$, there is a function
+    Let\/ $P\colon A\to\univ$ be a family of types. Given\/ $x,y\colon A$ and a path\/ $p\colon x\eq A y$, there is a function
     \[
-        \fun{transport}^P(e)\colon P(x)\to P(y).
+        \fun{transport}^P(p)\colon P(x)\to P(y).
     \]
-    Moreover, $\fun{transport}^P(\fun{refl}_x)\equiv\lambda z.\,z$.
+    Moreover, $\fun{transport}^P(\fun{refl}_x) \equiv \lambda z.\,z$.
 \end{lem}
 
 \begin{proof}

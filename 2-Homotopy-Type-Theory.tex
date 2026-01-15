@@ -120,7 +120,7 @@
 \end{proof}
 
 \begin{rem}
-    Recall from classical topology that a \textsl{fibration} is a continuous map\/ $\pi\colon E\to B$ with the homotopy-lifting property:
+    Recall from classical topology that a \textsl{fibration} is a continuous map $\pi\colon E\to B$ with the homotopy-lifting property:
     \[
         \begin{tikzcd}[row sep=large, column sep=huge]
             X
@@ -129,12 +129,12 @@
             &E
                 \arrow[d,"\pi"] \\
             X\times I
-                \arrow[r,"H"']
-                \arrow[ur,dashed,"\tilde{H}"]
+                \arrow[r,"\forall H"']
+                \arrow[ur,dashed,"\exists\tilde{H}"]
             &B
         \end{tikzcd}
     \]
-    In this context, $E$ is the \textsl{total space} and\/ $B$ the \textsl{base space} of the fibration.
+    In this context, $E$ is the \textsl{total space} and $B$ the \textsl{base space} of the fibration.
 
     \textsl{Serre fibrations} lift paths, path homotopies, and higher-dimensional volumes. For instance, in the case of paths, the diagram above becomes:
     \[
@@ -145,25 +145,28 @@
             & E
                 \arrow[d, "\pi"] \\
             I
-                \arrow[r, "\gamma"']
-                \arrow[ur, dashed, "\tilde{\gamma}"]
+                \arrow[r, "\forall\gamma"']
+                \arrow[ur, dashed, "\exists\tilde{\gamma}"]
             & B
         \end{tikzcd}
     \]
-    In Homotopy Type Theory, given a type family\/ $P\colon A\to\univ$, the first projection\/ $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space}\/ $\sum_{x\colon A}P(x)$ and \textsl{base space}\/ $A$. This structural analogy is established by the following lemma.
+    In Homotopy Type Theory, given a type family $P\colon A\to\univ$, the first projection $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space} $\sum_{x\colon A}P(x)$ and \textsl{base space} $A$. This structural analogy is established by the lemma below.
+
+    Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ and $P(b)$. Although a point $u\colon P(a)$ cannot be directly compared with $v\colon P(b)$ due to type mismatch, it is possible to establish a connection between the pairs $(a,u)$ and $(b,v)$ within the $\Sigma$-type. Specifically, if there exists a path $p\colon a\eq A b$, we can map $u$ along $p$ via transport to obtain an element $\fun{transport}^P(p,y)\colon P(b)$. Since this transported term inhabits the same fiber as $v$, the comparison becomes well-defined. More precisely:
+    
 \end{rem}
 
 \begin{lem}{\upshape[Path Lifting Property]}
-    Let\/ $P\colon A\to\univ$ be a type family over\/ $A$ and let\/ $u\colon P(a)$ for some\/ $a\colon A$. Then, for any path\/ $p\colon a\eq Ax$, there is a path
+    Let\/ $P\colon A\to\univ$ be a type family over\/~$A$. Given\/ $a\colon A$ and\/ $u\colon P(a)$, for any path\/ $p\colon a\eq Ab$ with $b\colon A$, there exists a path
     \[
-        \fun{lift}(u,p)\colon(a,u)\eq{\sum_{y\colon A}P(y)}
-            (x,\fun{transport}^P(p,u))
+        \fun{lift}(u,p)\colon(a,u)\eq{\sum_{x\colon A}P(x)}
+            (b,\fun{transport}^P(p,u))
     \]
-    such that
+    such that\/ $\fun{lift}(u,\fun{refl}_a) \equiv \fun{refl}_{(a,u)}$ and
     \[
-        \fun{ap}_{\fun{\pi}_1}(\fun{lift}(u, p))\eq{a\eq Ax}p,
+        \fun{ap}_{\pi_1}(\fun{lift}(u,p))\eq{a\eq Ab}p,
     \]
-    where\/ $\pi_1\colon\sum_{y\colon A}P(y)\to A$ is the first projection.
+    where\/ $\pi_1\colon \sum_{x\colon A}P(x) \to A$ denotes the first projection.\footnote{Since $\pi_1$ is a function from the total space to $A$, $\fun{ap}_{\pi_1}$ maps paths in the total space to paths in~$A$.}
 \end{lem}
 
 \begin{proof}
@@ -211,7 +214,7 @@
     Note also that a term $f\colon\prod_{x\colon A}P(x)$ can be regarded as a \textsl{section} of the fibration induced by~$P$.
 \end{rem}
 
-\begin{ntn}
+\begin{ntn}\label{ntn:p_*}
     When\/ $P$ is clear from the context we will simply write
     \[
         p_*(u)\defeq\fun{transport}^P(p,u)\colon P(x).
@@ -1273,3 +1276,6 @@ Let\/ $f\colon A\to B$. Then,
     \end{itemize}
     Thus, $\fun{refl}_{\fun{refl}_{(f(a),g(b))}}$ is a witness of the target identity type.
 \end{proof}
+
+\section{\textSigma-Types}
+
