@@ -1400,58 +1400,6 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
     The fiber inclusion embeds the fiber $P(x)$ into the total space. Consequently, given a path $\gamma\colon u\eq{P(x)} v$ in the fiber, the functorial action $\fun{ap}_{\fun{in}_x}$ yields a path $\fun{ap}_{\fun{in}_x}(\gamma)\colon(x,u)\eq E(x,v)$ in the total space.
 \end{rem}
 
-\begin{thm}
-    Let\/ $A\colon\univ$ and let\/ $P\colon A\to\univ$ be a type family. Denote the total space\/ $\sum_{x\colon A}P(x)$ by\/ $E$. Then, for any\/ $\omega,\omega'\colon E$, there is an equivalence
-    \[
-        (\omega\eq E\omega')\simeq
-            \sum_{p\colon \pi_1(\omega)\eq A\pi_1(\omega')}
-                \fun{transport}^P(p,\pi_2(\omega))
-                \eq{P(\pi_1(\omega'))}\pi_2(\omega').
-    \]
-\end{thm}
-
-\begin{proof}
-    As we saw in Remark~\ref{rem:fibration} and Theorem~\ref{thm:path-lift}, and Notation~\ref{ntn:p_*}, since
-    \[
-        \fun{ap}_{\pi_1}(p)\colon\pi_1(\omega)\eq A\pi_1(\omega'),
-    \]
-    we have
-    \[
-        \fun{ap}_{\pi_1}(p)_*(\pi_2(\omega))\eq{P(\pi_1(p))}\pi_2(\omega').
-    \]
-    Therefore, we have to prove that the function $f$ defined by
-    \[
-        f\defeq\lambda p.\,\fun{ap}_{\pi_1}(p)_*
-    \]
-    satisfies $\fun{isequiv}(f)$.
-
-    To define a function in the other direction, we use induction on the $\Sigma$-type. For we set
-    \[
-        B(\omega')\defeq\omega\eq E\omega',
-    \]
-    and introduce the motive
-    \begin{align*}
-        C&\colon\sum_{\omega'\colon E}B(\omega')\to\univ\\
-        C((\omega',q))&\defeq\fun{ap}_{\pi_1}(q)_*
-            (\pi_2(\omega))\eq{P(\pi_2(\omega'))}\pi_2(\omega').
-    \end{align*}
-    We specify
-    \begin{align*}
-        g&\colon\prod_{\omega'\colon E}\;
-        \prod_{q\colon\omega\eq E\omega'}C((\omega',q))\\
-    g(\omega',q)&\defeq
-        \fun{lift}(\pi_2(\omega),\fun{ap}_{\pi_1}(q)).
-    \end{align*}
-    Since $q\colon\omega\eq E\omega'$, we have $\pi_2(\omega)\colon P(\pi_1(\omega))$ and $\fun{ap}_{\pi_1}(q)\colon\pi_1(\omega)\eq A\pi_1(\omega')$. By Theorem~\ref{thm:path-lift}, we can compute $\fun{lift}$ on the pair
-    \[
-        \bigl(\pi_2(\omega),\fun{ap}_{\pi_1}(q)\bigr).
-    \]
-    Moreover, by the same theorem, $g(\omega',q)\colon C(\omega',q)$, so $g$ is well defined. 
-
-    %
-    
-\end{proof}
-
 \begin{thm}\label{thm:pair-equivalence}
     Let\/ $A\colon\univ$ and let\/ $P\colon A\to\univ$ be a type family. Denote the total space\/ $\sum_{x\colon A}P(x)$ by\/ $E$. Then, for any\/ $\omega,\omega'\colon E$, there is an equivalence
     \[
@@ -1664,6 +1612,24 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
     \]
 \end{defn}
 
+\begin{lem}\label{lem:reflexivity-on-pairs} {\upshape[Reflexivity on pairs]}
+    For any\/ $x\colon A$ and\/ $u\colon P(x)$, we have
+    \[
+        \fun{pair}^=(\fun{refl}_x,\fun{refl}_u) \equiv \fun{refl}_{(x,u)}.
+    \]
+\end{lem}
+
+\begin{proof}
+    Applying Definition~\ref{defn:Sigma-pair},
+    \begin{align*}
+        \fun{pair}^=(\fun{refl}_x,\fun{refl}_u)
+            &\equiv \fun{lift}(u,\fun{refl}_x) \ct \fun{ap}_{\fun{in}_x}(\fun{refl}_u) \\
+            &\equiv \fun{refl}_{(x,u)} \ct \fun{refl}_{(x,u)}
+                &&\text{; Prop.~\ref{prop:lift-pair}}\\
+            &\equiv \fun{refl}_{(x,u)}.
+    \end{align*}
+\end{proof}
+
 \newcommand{\explain}[2][]{\underbracket[0.5pt][2pt]{#2}_{#1}}
 
 \begin{thm}
@@ -1723,7 +1689,86 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
                        &\equiv \bigl(u,\fun{transport}^Q\bigl(\fun{refl}_{(x,u)}\bigr)(z)\bigr) \\
                        &\equiv (u,z).
         \end{align*}
-        Thus, LHS $\equiv$ RHS definitionally.
+        Thus, LHS $\equiv$ RHS definitionally.\qedhere
     \end{description}
 \end{proof}
 
+\begin{lem}\label{lem:transport-pV}
+    Let\/ $P\colon A\to\univ$ be a type family. For any path\/ $p\colon x\eq{A}y$ and element\/ $u\colon P(x)$, there are paths
+    \begin{align*}
+        \fun{transportinv}_l^P(p,u)&\colon(p^{-1})_*(p_*(u))\eq{P(x)}u\\
+        \fun{transportinv}_r^P(p,u)&\colon p_*((p^{-1})_*(u))\eq{P(x)}u.
+    \end{align*}
+\end{lem}
+
+\begin{proof}
+    By path induction on\/ $p$. It suffices to assume\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$. In this case, $p^{-1}\equiv\fun{refl}_x$. Since transport along reflexivity is the identity function definitionally, in both cases the \lhs reduces as follows:
+    \begin{align*}
+        (\fun{refl}_x)_*((\fun{refl}_x)_*(u))&
+            \equiv(\fun{refl}_x)_*(u)\equiv u.
+    \end{align*}
+    Thus, the goal is proved by\/ $\fun{refl}_u$.
+\end{proof}
+
+\begin{thm} {\upshape[Symmetry on pairs]}
+    Let\/ $P\colon A\to\univ$ be a type family. Given\/ $x,y\colon A$, $u\colon P(x)$ and\/ $v\colon P(y)$, consider paths\/ $p\colon x\eq{A}y$ and\/ $q\colon p_*(u)\eq{P(y)} v$.
+    Then
+    \begin{equation}\label{eq:pair-symmetry}
+        \fun{pair}^=(p, q)^{-1} \eq{E} \fun{pair}^=\bigl(p^{-1}, \Psi(p,q)\bigr),
+    \end{equation}
+    where\/ $E$ is the total space\/ $\sum_{x\colon A}P(x)$ and\/ $\Psi(p,q)$ is the path in\/ $P(x)$ defined by
+    \[
+        \Psi(p,q) \defeq (p^{-1})_*(q^{-1}) \ct \fun{transportinv}_l^P(p,u).
+    \]
+    Diagrammatically, $\Psi(p,q)$ is the composite:
+    \[
+        (p^{-1})_*(v)
+            \xrightarrow{(p^{-1})_*(q^{-1})} (p^{-1})_*(p_*(u))
+            \xrightarrow{\fun{transportinv}_l^P} u.
+    \]
+\end{thm}
+
+\begin{proof}
+    Path induction on\/ $p$ reduces us to the case where\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$.
+    In this case, $q\colon u\eq{P(x)}v$.
+    Note that\/ $\Psi(\fun{refl}_x,q) \equiv q^{-1} \ct \fun{refl}_u$.
+    We analyze both sides of \eqref{eq:pair-symmetry}:
+    \begin{align*}
+        \lhs &\equiv \fun{pair}^=(\fun{refl}_x,q)^{-1} \\
+             &\equiv \bigl(\fun{lift}(u,\fun{refl}_x) \ct \fun{ap}_{\fun{in}_x}(q)\bigr)^{-1} \\
+             &\equiv \bigl(\fun{refl}_{(x,u)} \ct \fun{ap}_{\fun{in}_x}(q)\bigr)^{-1} \\
+             &\equiv \fun{ap}_{\fun{in}_x}(q)^{-1} \\[1ex]
+        \rhs &\equiv \fun{pair}^=(\fun{refl}_x, q^{-1}\ct\fun{refl}_u) \\
+             &\equiv \fun{lift}(u,\fun{refl}_x) \ct \fun{ap}_{\fun{in}_x}(q^{-1}\ct\fun{refl}_u) \\
+             &\equiv \fun{refl}_{(x,u)} \ct \fun{ap}_{\fun{in}_x}(q^{-1}\ct\fun{refl}_u) \\
+             &\equiv \fun{ap}_{\fun{in}_x}(q^{-1}\ct\fun{refl}_u).
+    \end{align*}
+    By Proposition~\ref{prop:ap-properties} and \nref{lpar:right-unit-law}, both sides reduce to the same term.
+\end{proof}
+
+\begin{thm} {\upshape[Transitivity on pairs]}
+    Let\/ $A, B\colon\univ$. Given paths\/ $p\colon x\eq A y$,\/ $p'\colon y\eq A z$ in\/ $A$ and\/ $q\colon u\eq B v$,\/ $q'\colon v\eq B w$ in\/ $B$, we have
+    \[
+        \fun{pair}^=(p,q) \ct \fun{pair}^=(p',q') = \fun{pair}^=(p\ct p', q\ct q').
+    \]
+\end{thm}
+
+\begin{proof}
+    We proceed by path induction on $p$ and $p'$.
+    It suffices to assume $y,z\equiv x$ and $p, p'\equiv\fun{refl}_x$.
+    Similarly, by path induction on $q$ and $q'$, it suffices to assume $v,w\equiv u$ and $q, q'\equiv\fun{refl}_u$. Then,
+    \begin{align*}
+        \lhs&\equiv
+            \fun{pair}^=(\fun{refl}_x, \fun{refl}_u) \ct \fun{pair}^=(\fun{refl}_x, \fun{refl}_u)\\
+            &\equiv \fun{refl}_{(x,u)} \ct \fun{refl}_{(x,u)}\\
+            &\equiv \fun{refl}_{(x,u)}.\\[1ex]
+        \rhs&\equiv\fun{pair}^=(\fun{refl}_x
+                \ct \fun{refl}_x, \fun{refl}_u
+                \ct \fun{refl}_u)\\
+            &\equiv \fun{pair}^=(\fun{refl}_x, \fun{refl}_u)\\
+            &\equiv \fun{refl}_{(x,u)}.
+    \end{align*}
+    Since both sides reduce to $\fun{refl}_{(x,u)}$, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(x,u)}}$.
+    %
+    
+\end{proof}
