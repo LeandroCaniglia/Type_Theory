@@ -1874,3 +1874,42 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
     \]
 \end{proof}
 
+\section{The Unit Type}
+
+\begin{thm}
+    For any\/ $x,y\colon\fun1$, we have\/ $(x\eq{\fun1}y)\simeq\fun1$.
+\end{thm}
+
+\begin{proof}
+    Define the forward map as
+    \begin{align*}
+        f&\colon\prod_{x,y\colon\fun1}(x\eq{\fun1}y) \to\fun1\\
+        f(x,y,p)&\defeq\star.
+    \end{align*}
+    To define the inverse map $g$, we proceed by induction on $x$.
+    It suffices to construct $g(\star)$.
+    The goal becomes a term of type
+    \[
+        \prod_{y\colon\fun1}\fun1 \to (\star\eq{\fun1}y).
+    \]
+    Induction on $y$ further reduces the goal to $\fun1 \to (\star\eq{\fun1}\star)$, which is inhabited by $\fun{refl}_\star$.
+    
+    Thus, we have defined $g\colon\prod_{x,y\colon\fun1}\fun1\to(x\eq{\fun1}y)$, such that $g(\star,\star,\star) \equiv \fun{refl}_\star$.
+
+    To verify the homotopies, we need to prove
+    \begin{enumerate}[a), font=\upshape]
+        \item $f\circ g \sim \id_{\fun1}$.
+        
+        This translates into $f(g(x,y,u)) \eq{\fun1} u$ for all $x,y,u\colon\fun1$.
+        By the induction principle of $\fun1$, we may set $x,y,u\equiv\star$, which satisfies the goal because $f$ maps everything to $\star$.
+
+        \item $g\circ f \sim \id_{\prod_{x,y\colon\fun1}(x\eq{\fun1}y)}$.
+        
+        We must show $g(x,y,f(x,y,p))\eq{x\eq{\fun1}y}p$ for all $x,y\colon\fun1$ and $p\colon x\eq{\fun1}y$.
+        By path induction on $p$, we can set $y\equiv x$ and $p\equiv\fun{refl}_x$.
+        Then the goal becomes $g(x,x,f(x,x,\fun{refl}_x))\eq{x\eq{\fun1}x} \fun{refl}_x$, which reduces to $g(x,x,\star) \eq{x\eq{\fun1}x}\fun{refl}_x$.
+        Induction on $x$ leaves us with $g(\star,\star,\star)\eq{\star\eq{\fun1}\star}\fun{refl}_\star$, which holds by the definition of $g$.
+    \end{enumerate}
+\end{proof}
+
+
