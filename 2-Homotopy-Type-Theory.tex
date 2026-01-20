@@ -1603,12 +1603,18 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
 \begin{defn}\label{defn:Sigma-pair}
     The \textsl{dependent pair equality constructor}, denoted by\/ $\fun{pair}^=$, is the backward function of the equivalence established in Theorem~\ref{thm:pair-equivalence}. It constructs a path in the total space $E\defeq\sum_{x\colon A}P(x)$ from a path in the base $A$ and a path in the fiber. Its signature is:
     \[
-        \fun{pair}^=\colon \prod_{w,w'\colon E}
+        \fun{pair}^=\colon \prod_{\omega,\omega'\colon E}
         \Biggl(
-            \sum_{p\colon\pi_1(w)\eq A\pi_1(w')}
-                p_*(\pi_2(w))\eq{P(\pi_1(w'))}\pi_2(w')
+            \sum_{p\colon\pi_1(\omega)\eq A\pi_1(\omega')}
+                p_*(\pi_2(\omega))\eq{P(\pi_1(\omega'))}\pi_2(\omega')
         \Biggr)
-        \to(w\eq Ew').
+        \to(\omega\eq E\omega').
+    \]
+    Moreover,
+    \[
+        \fun{pair}^=(p,\gamma)
+            \equiv\fun{lift}(\pi_2(\omega),p)
+            \ct\fun{ap}_{\fun{in}_{\pi_1(\omega')}}(\gamma).
     \]
 \end{defn}
 
@@ -1746,29 +1752,125 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
     By Proposition~\ref{prop:ap-properties} and \nref{lpar:right-unit-law}, both sides reduce to the same term.
 \end{proof}
 
-\begin{thm} {\upshape[Transitivity on pairs]}
-    Let\/ $A, B\colon\univ$. Given paths\/ $p\colon x\eq A y$,\/ $p'\colon y\eq A z$ in\/ $A$ and\/ $q\colon u\eq B v$,\/ $q'\colon v\eq B w$ in\/ $B$, we have
+\begin{thm} {\upshape[Transitivity on pairs]}\label{thm:sigma-transitivity}
+    Let\/ $P\colon A\to\univ$ be a type family and $E\defeq\sum_{x\colon A}P(x)$ its total space.
+    Given elements\/ $\omega,\omega',\omega''\colon E$ and paths
+    \begin{itemize}
+        \item $\rho\defeq\fun{pair}^=(p,q)\colon\omega\eq E\omega'$, with\/ $p\colon x\eq Ax'$ and\/ $q\colon p_*(u)\eq{P(x')}v$
+
+        \item $\rho'\defeq\fun{pair}^=(p',q')\colon\omega'\eq E\omega''$, with\/ $p'\colon x'\eq A x''$ and\/ $q'\colon p'_*(v)\eq{P(x'')}w$,
+    \end{itemize}
+    the concatenation\/ $\rho \ct \rho'$ corresponds to the pair\/ $(p \ct p', \gamma)$, where\/ $\gamma$ is the composite path:
     \[
-        \fun{pair}^=(p,q) \ct \fun{pair}^=(p',q') = \fun{pair}^=(p\ct p', q\ct q').
+        (p\ct p')_*(u)\xrightarrow{\ \zeta\ } p'_*(p_*(u)) \xrightarrow{\fun{ap}_{p'_*}(q)} p'_*(v) \xrightarrow{\ q'\ }w.
+    \]
+    Here, $\zeta$ is the transport coherence path\/ $(p\ct p')_*(u) \eq{} p'_*(p_*(u))$.
+    In terms of the constructor:
+    \[
+        \fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')
+        \eq E
+        \fun{pair}^=(p\ct p',\zeta
+            \ct\fun{ap}_{p'_*}(q)\ct q').
     \]
 \end{thm}
 
 \begin{proof}
-    We proceed by path induction on $p$ and $p'$.
-    It suffices to assume $y,z\equiv x$ and $p, p'\equiv\fun{refl}_x$.
-    Similarly, by path induction on $q$ and $q'$, it suffices to assume $v,w\equiv u$ and $q, q'\equiv\fun{refl}_u$. Then,
-    \begin{align*}
-        \lhs&\equiv
-            \fun{pair}^=(\fun{refl}_x, \fun{refl}_u) \ct \fun{pair}^=(\fun{refl}_x, \fun{refl}_u)\\
-            &\equiv \fun{refl}_{(x,u)} \ct \fun{refl}_{(x,u)}\\
-            &\equiv \fun{refl}_{(x,u)}.\\[1ex]
-        \rhs&\equiv\fun{pair}^=(\fun{refl}_x
-                \ct \fun{refl}_x, \fun{refl}_u
-                \ct \fun{refl}_u)\\
-            &\equiv \fun{pair}^=(\fun{refl}_x, \fun{refl}_u)\\
-            &\equiv \fun{refl}_{(x,u)}.
-    \end{align*}
-    Since both sides reduce to $\fun{refl}_{(x,u)}$, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(x,u)}}$.
-    %
+    To prove the equality, we proceed by path induction on $p$ and $p'$. Consequently, it suffices to assume $x', x''\equiv x$ and $p,p'\equiv\fun{refl}_x$.
     
+    Then the transport maps $p_*$ and $p'_*$ reduce to the identity, and the coherence $\zeta$ becomes $\fun{refl}_u$.
+    
+    The goal then becomes
+    \[
+        \fun{pair}^=(\fun{refl}_x,q)
+        \ct\fun{pair}^=(\fun{refl}_x,q')
+        \eq E
+        \fun{pair}^=(\fun{refl}_x,q\ct q').
+    \]
+    Recalling that $\fun{pair}^=(\fun{refl}_x, \gamma) \equiv \fun{ap}_{\fun{in}_x}(\gamma)$,\footnote{Definition~\ref{defn:Sigma-pair} \&~Theorem~\ref{thm:path-lift}.} this equality becomes:
+    \[
+        \fun{ap}_{\fun{in}_x}(q)\ct\fun{ap}_{\fun{in}_x}(q')
+        \eq E
+        \fun{ap}_{\fun{in}_x}(q\ct q'),
+    \]
+    which holds by the functoriality of $\fun{ap}$.\footnote{Remark~\ref{rem:types-as-categories}.}
+    \[
+    \begin{tikzpicture}[
+        >=stealth, 
+        scale=1.0,
+        font=\small,
+        every node/.style={scale=0.9},
+        dot/.style={circle, fill, inner sep=1.5pt}
+        ]
+    
+        % Coordinates
+        \coordinate (A) at (0,0);
+        \coordinate (B) at (4,0);
+        \coordinate (C) at (8,0);
+    
+        % Base Line
+        \draw[thick, -latex] (A) -- node[below] {$p$} (B);
+        \draw[thick, -latex] (B) -- node[below] {$p'$} (C);
+        \node[dot, label=below:$x$] at (A) {};
+        \node[dot, label=below:$x'$] at (B) {};
+        \node[dot, label=below:$x''$] at (C) {};
+    
+        % Fibers (visualized as vertical dashed lines)
+        \draw[gray] (0,0.5) -- (0,5)
+            node[above,black] {$P(x)$};
+        \draw[gray] (4,0.5) -- (4,5)
+            node[above,black] {$P(x')$};
+        \draw[gray] (8,0.5) -- (8,5)
+            node[above,black] {$P(x'')$};
+    
+        % Fiber over x
+        \node[dot, label=left:{$\omega\equiv(x,u)$}] (u) at (0,1.5) {};
+    
+        % Fiber over x'
+        \node[dot, label=below right:{$p_*(u)$}] (pu) at (4,1.5) {};
+        \node[dot, label=above right:{$v$}] (v) at (4,3.0) {};
+        
+        % Path q in fiber x'
+        \draw[thick,-latex] (pu) -- node[right] {$q$} (v);
+    
+        % Fiber over x''
+        \node[dot, label=right:{$(p\ct p')_*(u)$}] (ppu) at (8,1.3) {};
+        \node[circle,
+            fill,
+            inner sep=1.5pt,
+            label={[yshift=4pt]right:{$p'_*(p_*(u))$}}] 
+                (pprimeu) at (8,1.6) {};
+        \draw[-latex] (ppu) to[out=200,in=200] node[midway, left] {$\zeta$} (8,1.6);
+        % Note: visually separating p'*(p*(u)) might be too cluttered, so we treat the coherence \zeta as the bottom anchor point or a tiny loop, but conceptually it starts here.
+        
+        \node[dot, label=right:{$p'_*(v)$}] (pv) at (8,3.0) {};
+        \node[dot, label=right:{$\omega\equiv(x'',w)$}] (w) at (8,4.5) {};
+    
+        % Transport arrows (Horizontal)
+        \draw[-latex, dashed] (u) to[bend left=10] (pu);
+        \draw[-latex, dashed] (pu) to[out=20,in=135] node[above, pos=0.5] {$\fun{lift}(p_*(u),p')$} (8,1.6); % Slight offset to show distinct endpoints
+        \draw[-latex, dashed] (v) to[bend left=10] node[above,pos=0.5] {$\fun{lift}(v,p')$} (pv);
+    
+        % The paths in the third fiber (The Sum)
+        
+        % 1. The Coherence (approximated as the gap/start)
+        % 2. The transported q
+        \draw[thick, -latex] (8,1.6) -- node[right] {$\fun{ap}_{p'_*}(q)$} (pv);
+        
+        % 3. The path q'
+        \draw[thick, -latex] (pv) -- node[right] {$q'$} (w);
+    
+        % Labels for the total paths
+        \draw[teal,-latex](u) to[out=45,in=135]
+            node[
+                pos=0.4,
+                below right,
+                black] {$\fun{pair}^=(p,q)$} (v);
+        \draw[teal,-latex] (v) to[out=70,in=155]
+            node[
+                midway,
+                below right,
+                black] {$\fun{pair}^=(p',q')$} (w);
+    \end{tikzpicture}
+    \]
 \end{proof}
+
