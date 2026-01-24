@@ -15,12 +15,12 @@
     \[
         \Omega(A,a)\defeq((a\eq Aa),\fun{refl}_a).
     \]
-    An element of it will be called a \textsl{loop} at $a$. For $n\colon\N$, the \textsl{$n$-fold iterated loop space} $\Omega^n(A,a)$ of a pointed type $(A,a)$ is defined recursively by:
+    An element of this type is called a \textsl{loop} at $a$. For $n\colon\N$, the \textsl{$n$-fold iterated loop space} $\Omega^n(A,a)$ of a pointed type $(A,a)$ is defined recursively by:
     \begin{align*}
         \Omega^0(A,a)&\defeq(A,a)\\
         \Omega^{n+1}(A,a)&\defeq\Omega^n(\Omega(A,a)).
     \end{align*}
-    An element of it will be called an \textsl{$n$-loop} or an \textsl{$n$dimensional loop} at $a$.
+    An element of this type is called an \textsl{$n$-loop} or an \textsl{$n$-dimensional loop} at $a$.
 
     Note that $\Omega^1(A,a)\equiv\Omega(A,a)$.
 \end{defn}
@@ -168,7 +168,7 @@
     \]
     In Homotopy Type Theory, given a type family $P\colon A\to\univ$, the first projection $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space} $\sum_{x\colon A}P(x)$ and \textsl{base space} $A$. This structural analogy is established by the lemma below.
 
-    Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ and $P(b)$. Although a point $u\colon P(a)$ cannot be directly compared with $v\colon P(b)$ due to type mismatch, it is possible to establish a connection between the pairs $(a,u)$ and $(b,v)$ within the $\Sigma$-type. Specifically, if there exists a path $p\colon a\eq A b$, we can map $u$ along $p$ via transport to obtain an element $\fun{transport}^P(p,u)\colon P(b)$. Since this transported term inhabits the same fiber as $v$, the comparison becomes well-defined. More precisely:
+    Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ and $P(b)$. Although a point $u\colon P(a)$ cannot be directly compared with $v\colon P(b)$ due to type mismatch, it is possible to establish a connection between the pairs $(a,u)$ and $(b,v)$ within the $\Sigma$-type. Specifically, if there exists a path $p\colon a\eq A b$, we can transport $u$ along $p$ to obtain an element $\fun{transport}^P(p,u)\colon P(b)$. Since this transported term inhabits the same fiber as $v$, the comparison becomes well-defined. More precisely:
     
 \end{rem}
 
@@ -269,7 +269,7 @@
     In the particular case where $P$ is a constant family $P(x)\equiv B$ for $x\colon A$, given $p\colon a\eq Aa'$, we have
     \begin{enumerate}[i)]
         \item $\fun{lift}(b,p)\eq{(a,b)\eq{A\times B}(a',b)}\fun{ap}_{\fun{sec}_b}(p)$,
-        \item $\fun{lift(b,\fun{refl}_a})\equiv\fun{refl}_{(a,b)}$, and
+        \item $\fun{lift}(b,\fun{refl}_a)\equiv\fun{refl}_{(a,b)}$, and
         \item $\fun{ap}_{\pi_1}(\fun{lift}(b,p))\eq{a\eq Aa'}p$.
     \end{enumerate}
     In fact, the equality of part~i) follows from part~ii) by induction on $p$.
@@ -296,7 +296,7 @@
     \]
 \end{rem}
 
-\begin{lem}{\upshape[Dependent map]}
+\begin{lem}{\upshape[Dependent map]}\label{lem:dependent-map}
     Let\/ $P\colon A\to\univ$. If\/ $f\colon\prod_{x\colon A}P(x)$, then there is a map
     \[
         \fun{apd}_f\colon\prod_{x,y\colon A}\;
@@ -322,7 +322,7 @@
     we can specify $c\defeq\fun{refl}_{f(a)}$ and obtain $\fun{apd}_f$ by based path induction.
 \end{proof}
 
-\begin{lem}
+\begin{lem}\label{lem:constant-fibration}
     If\/ $P \colon A \to \univ$ is defined by\/ $P(x) :\equiv B$ for a fixed\/ $B \colon \univ$, then for any\/ $x, y \colon A$ and\/ $p \colon x \eq A y$ and\/ $b \colon B$ we have a path
     \[
         \fun{transportconst}^B_p(b) \colon \fun{transport}^P(p, b) \eq B b
@@ -598,13 +598,13 @@
 \end{proof}
 
 \begin{rem}\label{rem:types-as-categories} {\upshape[Types as categories]}
-    Types admit different interpretations; depending on the circumstances we can see them as sets, propositions, spaces. Another way to think of types is as categories. In this analogy we have
+    Types admit different interpretations: depending on the circumstances, they can be viewed as sets, propositions, or spaces. Another way to think of types is as categories. In this analogy we have
     \begin{description}[font=\normalfont\scshape]
         \item[Objects.] These are the elements of the type: $x,y\colon A$ represent the objects that populate the category $A$.
 
         \item[Arrows.] Given two objects $x,y\colon A$, an arrow is a path $p\colon x\eq Ay$.
 
-        \item[Composition.] Composition is concatenation. Note however that if $p\colon x\eq Ay$ and $q\colon y\eq Az$, then $p\ct q\colon x\eq Az$ is denoted in the reverse order when compared to categorical composition. We could also consider $q\circ p\defeq p\ct q$. Note that concatenation is propositionally associative.
+        \item[Composition.] Composition is concatenation. Note, however, that if $p\colon x\eq Ay$ and $q\colon y\eq Az$, then $p\ct q\colon x\eq Az$ is denoted in the reverse order compared to categorical composition. We could also consider $q\circ p\defeq p\ct q$. Note that concatenation is propositionally associative.
 
         \item[Identity.] Given $x\colon A$ the identity for concatenation is $\fun{refl}_x$. Note that $\fun{refl}_x$ is the propositional unit of concatenation. 
 
@@ -771,9 +771,9 @@
 \begin{xmpl}\label{xmpl:refl-is-homotopy}
     If $f\colon A\to B$, the reflection function
     \[
-        \fun{refl}\cdot f\colon\prod_{x\colon A}f(x)\eq Bf(x)
+        \fun{refl}\cdot f\colon\prod_{x\colon A}f(x)\eq Bf(x),
     \]
-    is a homotopy from $f$ to $f$. In particular,
+    where $\fun{refl}\defeq\lambda x.\,\fun{refl}_x$, is a homotopy from $f$ to $f$. In particular,
     \[
         \fun{refl}\colon\id_A\sim\id_A.
     \]
@@ -831,14 +831,14 @@
     \begin{itemize}
         \item A function $f\colon A\to B$ is an \textsl{equivalence}, when the type
         \[
-            \fun{isequiv}(f) :\equiv
+            \fun{isequiv}(f)\defeq
                 \Bigl(\sum_{g\colon B\to A}f\circ g \sim \id_B\Bigr)
                 \times
                 \Bigl(\sum_{h\colon B\to A}h\circ f\sim\id_A\Bigr)
         \]
         is inhabited.
     
-        \item A \textsl{quasi-inverse} of a function\/ $f \colon A \to B$ is a is a triple\/ $(g,\eta,\varepsilon)$ consisting of a function\/ $g\colon B\to A$ and homotopies\/ $\eta\colon f\circ g\sim \id_B$ and\/ $\varepsilon\colon g\circ f\sim \id_A$. More precisely, a quasi-inverse is an inhabitant of the type
+        \item A \textsl{quasi-inverse} of a function\/ $f \colon A \to B$ is a triple\/ $(g,\eta,\varepsilon)$ consisting of a function\/ $g\colon B\to A$ and homotopies\/ $\eta\colon f\circ g\sim \id_B$ and\/ $\varepsilon\colon g\circ f\sim \id_A$. More precisely, a quasi-inverse is an inhabitant of the type
         \[
             \fun{qinv}(f)\defeq\sum_{g\colon B\to A}(f\circ g\sim\id_B)
                 \times(g\circ f\sim\id_A)
@@ -865,7 +865,7 @@ Let\/ $f\colon A\to B$. Then,
 
 \begin{proof}${}$
   \begin{enumerate}[a),font=\upshape]
-    \item This is immediate: map the triple $(g,\eta,\vartheta)$ to the tuple $(g,\eta,g,\vartheta)$.
+    \item This is immediate; we map the triple $(g,\eta,\vartheta)$ to the tuple $(g,\eta,g,\vartheta)$.
 
     \item Let $(g,\eta,h,\vartheta)\colon\fun{isequiv}(f)$. By definition, we have homotopies:
     \[
@@ -914,7 +914,7 @@ Let\/ $f\colon A\to B$. Then,
 \end{ntn}
 
 \begin{prop}
-    Type equivalence of types is an equivalence relation on\/ $\univ$. More specifically:
+    Type equivalence is an equivalence relation on\/ $\univ$. More specifically:
     \begin{enumerate}[a),font=\upshape]
         \item For any\/ $A$, the identity function\/ $\id_A$ is an equivalence; hence\/ $A\simeq A$.
         
@@ -983,79 +983,152 @@ Let\/ $f\colon A\to B$. Then,
     \end{enumerate}
 \end{proof}
 
+\section{Observational Equality}
+In classical Type Theory, equality is often regarded as \textit{opaque}---essentially a mystery. It is defined as \emph{intensional} (not to be confused with intentional), meaning that for two objects to be equal, they must follow the exact same construction.
+
+Homotopy Type Theory attempts to bridge this gap. By interpreting the inhabitants of the type $x\eq Ay$ as paths from $x$ to $y$ in the \textit{space} $A$, it becomes possible to determine when two objects behave equivalently, independent of their specific construction. This shared behavioral appearance is termed \textit{observational equality}. The rest of this chapter is dedicated to describing the observational equality for each of the basic types introduced in Chapter~1.
+
+Technically, the strategy involves using the $\fun{transport}$ function to construct a homotopy between the actual identity type (which remains intensional) and a description relative to the type's internal structure. This description acts as a specific \emph{implementation}, encoding an equivalent equality that is no longer intensional (opaque), but \textit{observational} (visible).
+
+To achieve this for each basic type, we define a type $\fun{Code}(x,y)$ associated with the identity $x\eq Ay$. We then prove that $\fun{Code}(x,y)\simeq(x\eq Ay)$. This process requires defining an $\fun{encode}$ function (derived from $\fun{transport}$) and a quasi-inverse $\fun{decode}$ that maps in the opposite direction, from $\fun{Code}(x,y)$ to $x\eq Ay$.
+
+This approach consists of the following
+
+\subsection{Observational Equality Framework}\label{observational-framework}
+\begin{description}
+    [font=\normalfont\scshape]
+    \item[Code family.]
+    Define a family that structurally represents the identity type:
+    \[
+        \fun{Code} \colon A \to A \to \univ.
+    \]
+
+    \item[Base code.]
+    Select an element that corresponds to reflexivity:
+    \[
+        c \colon C_x(x).
+    \]
+
+    \item[Encode function.]
+    For any $x,y\colon A$ and path $p\colon x\eq{A}y$, define the map
+    \[
+        \fun{encode}\colon (x\eq{A}y) \to \fun{Code}(x,y).
+    \]
+    Applying transport to the base code $c$ with $C_x\defeq\lambda z.\,\fun{Code}(x,z)\colon A\to\univ$, we obtain
+    \[
+        \fun{encode}(p) \defeq \fun{transport}^{C_x}(p, c) \colon C_x(y).
+    \]
+    Note that, by definition of transport, $\fun{encode}(\fun{refl}_x) \equiv c$.
+
+    \item[Decode function.]
+    Construct a quasi-inverse to $\fun{encode}$
+    \[
+        \fun{decode} \colon \prod_{y\colon A} \fun{Code}(x,y) \to (x\eq{A}y).
+    \]
+\end{description}
+
 \section{Cartesian Product}
 
-\begin{defns}${}$
-    Given $A,B\colon\univ$, we consider their product $A\times B$ and introduce two functions:
-    \begin{enumerate}[a)]
-        \item The function that \textit{splits} a path between pairs into a pair of paths between their components:
-        \begin{align*}
-            \fun{pair}^\times\colon\prod_{x,y\colon A\times B}
-                (x\eq{A\times B}y)
-                &\to
-                (
-                    (\pi_1(x)\eq A\pi_1(y))
-                    \times
-                    (\pi_2(x)\eq B\pi_2(y))
-                )\\
-            (x,y,p)&\mapsto
-                (\fun{ap}_{\pi_1}(p),\fun{ap}_{\pi_2}(p)).
-        \end{align*}
-        Note that for\/ $p\equiv\fun{refl}_x$, this computes to:
-        \[
-            \fun{pair}^\times(\fun{refl}_x)\equiv
-                (\fun{refl}_{\pi_1(x)}, \fun{refl}_{\pi_2(x)}).
-        \]    
-    
-        \item The function that \textit{constructs} a path between pairs from paths between their components:
-        \[
-            \fun{pair}^=\colon\prod_{x,y\colon A\times B}
-                ((\pi_1(x)\eq A\pi_1(y))
-                    \times(\pi_2(x)\eq B\pi_2(y)))
-                \to (x\eq{A\times B}y)
-        \]
-        defined by induction as follows:
-        \begin{enumerate}[-]
-            \item By induction on $x$, it is enough to consider the case where $x$ is a pair $(a,b)$. In this case, we must define a function of type
-            \[
-                \prod_{y:A\times B}
-                    \left( (a \eq A \fun{\pi}_1(y)) \times (b \eq B \fun{\pi}_2(y)) \right)
-                    \to (a,b) \eq{A\times B} y.
-            \]
-            \item Now, by induction on $y$, we reduce to the case where $y$ is a pair $(a',b')$. That is, we must define a function
-            \[
-                (a \eq A a') \times (b \eq B b') \to (a,b) \eq{A\times B} (a',b').
-            \]
-            \item Since the domain is a product type, we only need to consider inputs of the form $(p,q)$, where $p \colon a \eq A a'$ and $q \colon b \eq B b'$, and specify a function of type
-            \[
-                \prod_{p\colon a\eq Aa'}
-                \;\prod_{q\colon b\eq Bb'}
-                    (p,q)\to(a,b)\eq{A\times B}(a',b').
-            \]
-            \item Path induction on $p$ allows us to reduce the definition to the case where $a'\equiv a$ and $p\equiv \fun{refl}_a$. Thus, we must define a map
-            \[
-                \prod_{q\colon b\eq Bb'}(\fun{refl}_a,q)
-                    \to (a,b) \eq{A\times B} (a,b').
-            \]
-            \item Finally, by induction on $q$, this reduces to the case where $b'\equiv b$ and $q\equiv\fun{refl}_a$. We are left with a map satisfying
-            \[
-                (\fun{refl}_a, \fun{refl}_b)\mapsto e
-                    \colon(a,b)\eq{A\times B}(a,b).
-            \]
-            \item This is accomplished by
-            \[
-                (\fun{refl}_a, \fun{refl}_b) \mapsto \fun{refl}_{(a,b)}.
-            \]
-        \end{enumerate}
-    \end{enumerate}
-\end{defns}
+In this section we apply the observational framework \ref{observational-framework} to the product $A\times B$.
+
+\textsc{Code family:}
+\begin{align*}
+    \fun{Code}&\colon A\to A\to\univ\\
+    \fun{Code}(x,y)&\defeq
+        (\pi_1(x)\eq A\pi_1(y))
+        \times
+        (\pi_2(x)\eq B\pi_2(y)).
+\end{align*}
+
+\textsc{Base code:}
+\[
+    c\defeq(\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})
+        \colon\fun{Code}(x,x).
+\]
+Equivalently,
+\[
+    c\equiv(\fun{ap}_{\pi_1}(\fun{refl}_x)
+        ,\fun{ap}_{\pi_2}(\fun{refl}_x)).
+\]
+
+\textsc{Encode function:}
+
+For $C_x\defeq\fun{Code}(x,{}\cdot{})$, the encode function becomes
+\begin{align*}
+    \fun{encode}&\colon(x\eq{A\times B}y)\to\fun{Code}(x,y)\\
+    \fun{encode}(p)
+        &\defeq\fun{transport}^{C_x}(p,c).
+\end{align*}
+In particular, for $p\equiv\fun{refl}_x$, we obtain
+\begin{align*}
+    \fun{encode}(\fun{refl}_x)
+        &\equiv\fun{transport}^{C_x}
+            (\fun{refl}_x,c)\\
+        &\equiv c\\
+        &\equiv(\fun{ap}_{\pi_1}(\fun{refl}_x)
+            ,\fun{ap}_{\pi_2}(\fun{refl}_x)),
+\end{align*}
+which implies, by induction on $p$, that
+\[
+    \fun{encode}(p)\eq{\fun{Code}(x,y)}(\fun{ap}_{\pi_1}(p)
+        ,\fun{ap}_{\pi_2}(p)).
+\]
+We define the function
+\begin{align*}
+        \fun{pair}^\times\colon\prod_{x,y\colon A\times B}
+            (x\eq{A\times B}y)
+            &\to\fun{Code}(x,y)\\
+        (x,y,p)&\mapsto
+            (\fun{ap}_{\pi_1}(p),\fun{ap}_{\pi_2}(p))\\
+        (x,x,\fun{refl}_x)&\mapsto
+            (\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)}),
+    \end{align*}
+and adopt it as our implementation of $\fun{encode}$.
+
+
+The following function \textit{constructs} a path between pairs from paths between their components:
+\[
+    \fun{pair}^=\colon\fun{Code}(x,y)\to (x\eq{A\times B}y).
+\]
+It is defined by induction as follows:
+\begin{enumerate}[-]
+    \item By induction on $x$, it is enough to consider the case where $x$ is a pair $(a,b)$. In this case, we must define a function of type
+    \[
+        \prod_{y:A\times B}
+            \left( (a \eq A \fun{\pi}_1(y)) \times (b \eq B \fun{\pi}_2(y)) \right)
+            \to (a,b) \eq{A\times B} y.
+    \]
+    \item Now, by induction on $y$, we reduce to the case where $y$ is a pair $(a',b')$. That is, we must define a function
+    \[
+        (a \eq A a') \times (b \eq B b') \to (a,b) \eq{A\times B} (a',b').
+    \]
+    \item Since the domain is a product type, we only need to consider inputs of the form $(p,q)$, where $p \colon a \eq A a'$ and $q \colon b \eq B b'$, and specify a function of type
+    \[
+        \prod_{p\colon a\eq Aa'}
+        \;\prod_{q\colon b\eq Bb'}
+            (p,q)\to(a,b)\eq{A\times B}(a',b').
+    \]
+    \item Path induction on $p$ allows us to reduce the definition to the case where $a'\equiv a$ and $p\equiv \fun{refl}_a$. Thus, we must define a map
+    \[
+        \prod_{q\colon b\eq Bb'}(\fun{refl}_a,q)
+            \to (a,b) \eq{A\times B} (a,b').
+    \]
+    \item Finally, by induction on $q$, this reduces to the case where $b'\equiv b$ and $q\equiv\fun{refl}_a$. We are left with a map satisfying
+    \[
+        (\fun{refl}_a, \fun{refl}_b)\mapsto e
+            \colon(a,b)\eq{A\times B}(a,b).
+    \]
+    \item This is accomplished by
+    \[
+        (\fun{refl}_a, \fun{refl}_b) \mapsto \fun{refl}_{(a,b)}.
+    \]
+\end{enumerate}
 
 \begin{lem}\label{lem:AxB-goal-reduction}
     The type
     \[
         \prod_{x,y\colon A\times B}\;
-        \prod_{\zeta\colon(\pi_1(x)\eq A\pi_1(y))
-        \times(\pi_2(x)\eq B\pi_2(y))}
+        \prod_{\zeta\colon\fun{Code}(x,y)}
         P(x,y,\zeta)
     \]
     is inhabited if, and only if, for all\/ $a\colon A$ and\/ $b\colon B$, the term
@@ -1099,10 +1172,7 @@ Let\/ $f\colon A\to B$. Then,
 \begin{thm}
     Let\/ $A,B\colon\univ$ be two types. For any\/ $x,y\colon A\times B$, the function\/ $\fun{pair}^\times(x,y)$ is an equivalence with quasi-inverse\/ $\fun{pair}^=(x,y)$. Consequently:
     \[
-        (x\eq{A\times B}y)
-        \simeq
-        \bigl((\pi_1(x)\eq A\pi_1(y))
-            \times(\pi_2(x)\eq B\pi_2(y))\bigr).
+        (x\eq{A\times B}y)\simeq\fun{Code}(x,y).
     \]
 \end{thm}
 
@@ -1124,7 +1194,7 @@ Let\/ $f\colon A\to B$. Then,
         By the definitions of $f$ and $\fun{pair}^=$, we have
         \begin{align*}
             \bigl(\fun{pair}^=(x,x)\circ\fun{pair}^\times(x,x)\bigr)(\fun{refl}_x)
-                &\equiv\fun{pair}^=(x,x,(\fun{pair}^\times(x,x,\fun{refl}_x))\\
+                &\equiv\fun{pair}^=(x,x,\fun{pair}^\times(x,x,\fun{refl}_x))\\
                 &\equiv\fun{pair}^=(x,x,
                     (\fun{refl}_{\pi_1(x)}
                     ,\fun{refl}_{\pi_2(x)}))\\
@@ -1162,25 +1232,26 @@ Let\/ $f\colon A\to B$. Then,
     
 \end{proof}
 
-\begin{rem} The following tables is a summary of the functions introduced above
-\[
-    \begin{tabular}{lll}
-        \hline
-        %\small\textbf{Function}
-            &\small\textbf{Logic}
-            &\small\textbf{Type Signature}\\
-        \hline
-        \small$\fun{pair}^=$
-        &\small Introduction of Equality
-        &\small
-        $(\pi_1(x)=\pi_1(y))\times(\pi_2(x)=\pi_2(y))\to(x=y)$\\
-        $\fun{pair}^\times$
-        &\small Elimination to Product
-        &\small
-        $(x=y)\to(\pi_1(x)=\pi_1(y))\times(\pi_2(x)=\pi_2(y))$\\
-        \hline
-    \end{tabular}
-\]
+\begin{rem}
+    The following table is a summary of the functions introduced above:
+    \[
+        \begin{tabular}{lll}
+            \hline
+            %\small\textbf{Function}
+                &\small\textbf{Logic}
+                &\small\textbf{Type Signature}\\
+            $\fun{pair}^\times$
+            &\small Encode
+            &\small
+            $(x\eq{A\times B}y)\to\fun{Code}(x,y)$\\
+            \hline
+            \small$\fun{pair}^=$
+            &\small Decode
+            &\small
+            $\fun{Code}(x,y)\to(x\eq{A\times B}y)$\\
+            \hline
+        \end{tabular}
+    \]
 \end{rem}
 
 \begin{cor}\label{cor:uniqueness}
@@ -1191,7 +1262,7 @@ Let\/ $f\colon A\to B$. Then,
 \end{cor}
 
 \begin{proof}
-    Take $y\defeq(\pi_1(x),\pi_2(x))\colon A\to B$. Then
+    Take $y\defeq(\pi_1(x),\pi_2(x))\colon A\times B$. Then
     \[
         \pi_1(y)\equiv\pi_1(x)
         \quad\text{and}\quad
@@ -1200,9 +1271,9 @@ Let\/ $f\colon A\to B$. Then,
     Therefore,
     \[
         (\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})\colon
-        (\pi_1(x)=\pi_1(y))\times(\pi_2(x)=\pi_2(y)),
+        (\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)\eq B\pi_2(y)),
     \]
-    and the theorem implies that $\fun{pair}^=(\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})\colon x=y$.
+    and the theorem implies that $\fun{pair}^=(\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})\colon x\eq{A\times B}y$.
     %
     
 \end{proof}
@@ -1216,24 +1287,23 @@ Let\/ $f\colon A\to B$. Then,
         \needspace{2\baselineskip}
         the following equality types are inhabited:
         \begin{enumerate}[i), font=\upshape]
-        \item $\fun{ap}_{\pi_1}(\fun{pair}^=(p,q))=p$
-        \item $\fun{ap}_{\pi_2}(\fun{pair}^=(p,q))=q$
-        \item $\fun{pair}^=(\fun{refl}_{\pi_1(x)}, \fun{refl}_{\pi_2(x)}) = \fun{refl}_x$
-        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r), \fun{ap}_{\pi_2}(r)) = r$
-        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)^{-1}, \fun{ap}_{\pi_2}(r)^{-1}) = r^{-1}$
-        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)\ct\fun{ap}_{\pi_1}(s), \fun{ap}_{\pi_2}(r)\ct\fun{ap}_{\pi_2}(s)) = r\ct s$
-        \item $\fun{pair}^=(p^{-1}, q^{-1}) = \fun{pair}^=(p,q)^{-1}$
-        \item $\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q') = \fun{pair}^=(p\ct p', q\ct q')$
+        \item $\fun{ap}_{\pi_1}(\fun{pair}^=(p,q))\eq Ap$
+        \item $\fun{ap}_{\pi_2}(\fun{pair}^=(p,q))\eq Bq$
+        \item $\fun{pair}^=(\fun{refl}_{\pi_1(x)}, \fun{refl}_{\pi_2(x)})\equiv\fun{refl}_x$
+        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r), \fun{ap}_{\pi_2}(r))\eq{A\times B}r$
+        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)^{-1}, \fun{ap}_{\pi_2}(r)^{-1})\eq{A\times B}r^{-1}$
+        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)\ct\fun{ap}_{\pi_1}(s), \fun{ap}_{\pi_2}(r)\ct\fun{ap}_{\pi_2}(s))\eq{A\times B}r\ct s$
+        \item $\fun{pair}^=(p^{-1}, q^{-1})\eq{A\times B}\fun{pair}^=(p,q)^{-1}$
+        \item $\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')\eq{A\times B}\fun{pair}^=(p\ct p', q\ct q')$
     \end{enumerate}
 \end{prop}
 
 \needspace{2\baselineskip}
 \begin{proof}${}$
     \begin{enumerate}[i), font=\upshape]
-        \item We must show that $\fun{ap}_{\pi_1}(\fun{pair}^=(\zeta))=\pi_1(\zeta).$, for any pair of paths
+        \item We must show that $\fun{ap}_{\pi_1}(\fun{pair}^=(\zeta))=\pi_1(\zeta)$, for any pair of paths
         \[
-            \zeta\colon(\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)
-                \eq B\pi_2(y)),
+            \zeta\colon\fun{Code}(x,y),
         \]
         By Lemma~\ref{lem:AxB-goal-reduction}, it suffices to check the case where $x\equiv y \equiv (a,b)$ and $\zeta \equiv (\fun{refl}_a, \fun{refl}_b)$. The equality holds definitionally:
         \begin{align*}
@@ -1246,7 +1316,7 @@ Let\/ $f\colon A\to B$. Then,
         
         \item By induction on $x$, we may assume $x\equiv(a,b)$. The statement becomes
         \[
-            \fun{pair}^=(\fun{refl}_a,\fun{refl}_b)=\fun{refl}_{(a,b)},
+            \fun{pair}^=(\fun{refl}_a,\fun{refl}_b)\equiv\fun{refl}_{(a,b)},
         \]
         which holds by the definition of $\fun{pair}^=$.
         
@@ -1302,8 +1372,8 @@ Let\/ $f\colon A\to B$. Then,
 \end{prop}
 
 \begin{proof}
-    We proceed by path induction in both cases.
-    \begin{enumerate}[a), font=\upshape]
+    We proceed by path induction in each case.
+    \begin{enumerate}[a),font=\upshape]
         \item By induction on $p$ it suffices to assume $a'\equiv a$ and $p\equiv\fun{refl}_a$.
         \begin{enumerate}[-]
             \item \lhs: $\fun{lift}(b,\fun{refl}_a)\equiv\fun{refl}_{(a,b)}$.
@@ -1359,7 +1429,7 @@ Let\/ $f\colon A\to B$. Then,
 
 \begin{thm}
     Let\/ $f\colon A\to A'$ and\/ $g\colon B\to B'$ be two functions.
-    Given\/ $x,y\colon A\times B$ and\/ $\zeta\colon(\pi_1(x)\eq A\pi_1(y))\times(q\colon\pi_2(x)\eq B\pi_2(y))$, we have
+    Given\/ $x,y\colon A\times B$ and\/ $\zeta\colon(\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)\eq B\pi_2(y))$, we have
     \[
         \fun{ap}_{f\times g}(\fun{pair}^=(\zeta))
         \eq{A'\times B'}
@@ -1400,37 +1470,73 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
     The fiber inclusion embeds the fiber $P(x)$ into the total space. Consequently, given a path $\gamma\colon u\eq{P(x)} v$ in the fiber, the functorial action $\fun{ap}_{\fun{in}_x}$ yields a path $\fun{ap}_{\fun{in}_x}(\gamma)\colon(x,u)\eq E(x,v)$ in the total space.
 \end{rem}
 
-\begin{thm}\label{thm:pair-equivalence}
-    Let\/ $A\colon\univ$ and let\/ $P\colon A\to\univ$ be a type family. Denote the total space\/ $\sum_{x\colon A}P(x)$ by\/ $E$. Then, for any\/ $\omega,\omega'\colon E$, there is an equivalence
-    \[
-        (\omega\eq E\omega')\simeq
-        \sum_{p\colon \pi_1(\omega)\eq A\pi_1(\omega')}
-        (\fun{transport}^P(p,\pi_2(\omega))
-        \eq{P(\pi_1(\omega'))}\pi_2(\omega')).
-    \]
-\end{thm}
+\separator
 
-\begin{proof}
-    We define the maps in both directions.
-    
-    \textit{Forward Direction.} We define a function
-    \[
-        f\colon\prod_{\omega'\colon E}
+Applying the observational framework \ref{observational-framework} to the total space $E$ we define the
+
+\textsc{Code family:}
+\begin{align*}
+    \fun{Code} &\colon E\to E\to\univ\\
+    \fun{Code}(\omega,\omega') &\defeq \sum_{q\colon\pi_1(\omega)\eq{A}\pi_1(\omega')}
+        \left( \fun{transport}^P(q,\pi_2(\omega)) \eq{P(\pi_1(\omega'))} \pi_2(\omega') \right).
+\end{align*}
+
+\textsc{Base code:}
+\[
+    c \defeq (\fun{refl}_{\pi_1(\omega)}, \fun{refl}_{\pi_2(\omega)}) \colon \fun{Code}(\omega,\omega).
+\]
+Another way to express the first component of $c$ is by observing that
+\[
+    \fun{refl}_{\pi_1(\omega)}\equiv\fun{ap}_{\pi_1}(\omega).
+\]
+For the second component of $c$, since $\pi_2$ is a dependent function,\footnote{See \nref{lpar:Sigma-induction}, equation \eqref{eq:Sigma-pi-2}.} we have to use the dependent application map $\fun{apd}$.\footnote{See Lemma~\ref{lem:dependent-map}.} Thus, $\fun{refl}_{\pi_1(\omega)}\equiv\fun{apd}_{\pi_2}(\omega)$ and $c$ can be written as
+\[
+    c\equiv
+        (\fun{ap}_{\pi_1}(\fun{refl}_\omega),\fun{apd}_{\pi_2}(\fun{refl}_\omega)).
+\]
+
+
+\textsc{Encode function:}
+The transport family\/ $C_\omega\defeq\fun{Code}(\omega,{}\cdot{})$ yields
+\begin{align*}
+    \fun{encode}&\colon(\omega\eq{E}\omega') \to \fun{Code}(\omega,\omega')\\
+    \fun{encode}(p) &\defeq \fun{transport}^{C_\omega}(p, c).
+\end{align*}
+In particular, for $\omega'\equiv\omega$ and $p\equiv\fun{refl}_\omega$, we obtain
+\begin{align*}
+    \fun{encode}(\fun{refl}_\omega)
+        &\equiv\fun{transport}^{C_\omega}(\fun{refl}_\omega,c)\\
+        &\equiv c\\
+        &\equiv(\fun{ap}_{\pi_1}(\fun{refl}_\omega)
+            ,\fun{apd}_{\pi_2}(\fun{refl}_\omega)).
+\end{align*}
+Hence, path induction on $p$ implies that
+\[
+    \fun{encode}(p)\eq{\fun{Code}(\omega,\omega')}
+        (\fun{ap}_{\pi_1}(p),\fun{apd}_{\pi_2}(p)).
+\]
+Therefore, we take the \rhs to define the encode function
+\begin{align*}
+        f&\colon\prod_{\omega,\omega'\colon E}
             (\omega\eq E\omega')
-            \to
-            \sum_{q\colon\pi_1(\omega)\eq A\pi_1(\omega')}
-            \fun{transport}^P(q,\pi_2(\omega))
-                \eq{P(\pi_1(\omega'))}\pi_2(\omega')
-    \]
-    by based path induction on the path in $E$. It suffices to define the value for the base case where $\omega'\equiv\omega$ and the path is $\fun{refl}_{\omega}$. In this case, we must provide a term of type
-    \[
-        \sum_{q\colon\pi_1(\omega)\eq A\pi_1(\omega)}
-        \fun{transport}^P(q,\pi_2(\omega))\eq{P(\pi_1(\omega))}
-            \pi_2(\omega).
-    \]
-    Since $\fun{transport}^P(\fun{refl}, u) \equiv u$, we can choose the pair $(\fun{refl}_{\pi_1(\omega)}, \fun{refl}_{\pi_2(\omega)})$.
+            \to\fun{Code}(\omega,\omega')\\
+        f(\omega,\omega',p)&\defeq
+            (\fun{ap}_{\pi_1}(p),\fun{apd}_{\pi_2}(p)),
+    \end{align*}
+which satisfies:
+\[
+    f(\fun{refl}_\omega)\equiv
+        (\fun{refl}_{\pi_1(\omega)}
+        ,\fun{refl}_{\pi_2(\omega)}).
+\]  
 
-    \textit{Backward Direction.} Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the type of pairs $(q, \gamma)$ where $q\colon \pi_1(\omega) \eq A \pi_1(\omega')$ and $\gamma\colon q_*(u) \eq{P(\pi_1(\omega'))} v$.
+\textsc{Decode function:}
+
+We have to define a backward function
+\[
+    g\colon\fun{Code}(\omega,\omega')\to(\omega\eq E\omega').
+\]
+Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the type of pairs $(q, \gamma)$ where $q\colon \pi_1(\omega) \eq A \pi_1(\omega')$ and $\gamma\colon q_*(u) \eq{P(\pi_1(\omega'))} v$.
     
     We proceed in two steps:
     \begin{enumerate}
@@ -1438,7 +1544,7 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
         \[
             \alpha \defeq \fun{lift}(u, q) \colon (\pi_1(\omega), u) \eq E (\pi_1(\omega'), q_*(u)).
         \]
-
+        
         \item We need to connect $(\pi_1(\omega'), q_*(u))$ to $(\pi_1(\omega'), v)$. Since these two points share the same first component, we can use the fiber inclusion function [cf.~Remark~\ref{rem:fiber-inclusion}] to obtain a vertical path:
         \[
             \beta\defeq\fun{ap}_{\fun{in}_{\pi_1(\omega')}}(\gamma)
@@ -1506,7 +1612,16 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
                     {$g(q,\gamma)\defeq\alpha\ct\beta$} (v);
         \end{tikzpicture}
     \]
-    \textit{Quasi-inversion.} We have to verify two compositions:
+
+\begin{thm}\label{thm:pair-equivalence}
+    Let\/ $A\colon\univ$ and let\/ $P\colon A\to\univ$ be a type family. Denote the total space\/ $\sum_{x\colon A}P(x)$ by\/ $E$. Then, for any\/ $\omega,\omega'\colon E$, there is an equivalence
+    \[
+        (\omega\eq E\omega')\simeq\fun{Code}(\omega,\omega').
+    \]
+\end{thm}
+
+\begin{proof}
+    We have to verify two compositions:
     \begin{enumerate}
         \item $f\circ g\sim\id$.
         
@@ -1571,7 +1686,7 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
 \end{proof}
 
 \begin{rem}
-    If the type family $P\colon A\to\univ$ is constant, say $P(x)\equiv B$ for all $x\colon A$, then the total space $E$ becomes $A\times B$ and, by Exercise~\ref{exr:constant-fibration}, we have $p_*(b)\eq Bb$ for $b\colon B$. Thus, the backward function of the equivalence reduces to
+    If the type family $P\colon A\to\univ$ is constant, say $P(x)\equiv B$ for all $x\colon A$, then the total space $E$ becomes $A\times B$ and, by Lemma~\ref{lem:constant-fibration}, we have $p_*(b)\eq Bb$ for $b\colon B$. Thus, the backward function of the equivalence reduces to
     \[
         g\colon\sum_{q\colon\pi_1(\omega)\eq A\pi_1(\omega')}
             \pi_2(\omega)\eq B\pi_2(\omega')
@@ -1585,16 +1700,16 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
             \to
             (\omega\eq{A\times B}\omega'),
     \]
-    which has the same signature than $\fun{pair}^=$. In fact, given $\omega,\omega'\colon A\times B$, we have
+    which has the same signature as $\fun{pair}^=$. In fact, given $\omega,\omega'\colon A\times B$, we have
     \begin{align*}
         g(q,\gamma)
             &\equiv \fun{lift}(\pi_2(\omega), q) \ct \fun{ap}_{\fun{in}_{\pi_1(\omega')}}(\gamma)
                 &&\text{; Def. of } g \\
-            &= \fun{pair}^=(q, \fun{refl}_{\pi_2(\omega)}) \ct \fun{pair}^=(\fun{refl}_{\pi_1(\omega')},\gamma)
+            &\eq{A\times B}\fun{pair}^=(q, \fun{refl}_{\pi_2(\omega)}) \ct \fun{pair}^=(\fun{refl}_{\pi_1(\omega')},\gamma)
                 &&\text{; Prop.~\ref{prop:lift-pair}}\\
-            &= \fun{pair}^=(q \ct \fun{refl}_{\pi_1(\omega')}, \fun{refl}_{\pi_2(\omega)} \ct \gamma)
+            &\eq{A\times B}\fun{pair}^=(q \ct \fun{refl}_{\pi_1(\omega')}, \fun{refl}_{\pi_2(\omega)} \ct \gamma)
                 &&\text{; Prop.~\ref{prop:pair-properties} viii)}\\
-            &= \fun{pair}^=(q, \gamma)
+            &\eq{A\times B}\fun{pair}^=(q, \gamma)
                 &&\text{; Unit laws.}
     \end{align*}
     In consequence, for the general case, we introduce the following
@@ -1650,7 +1765,7 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
     \]
     Then, for any path\/ $p\colon x\eq Ay$ and any\/ $(u,z)\colon R(x)$, we have
     \[
-        \fun{transport}^R(p)(u,z) =_{R(y)} \left(
+        \fun{transport}^R(p)(u,z)\eq{R(y)} \left(
             p_*(u), \fun{transport}^Q\!\left(\fun{pair}^=(p,\fun{refl}_{p_*(u)})\right)(z)
         \right),
     \]
@@ -1843,7 +1958,7 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
         % Note: visually separating p'*(p*(u)) might be too cluttered, so we treat the coherence \zeta as the bottom anchor point or a tiny loop, but conceptually it starts here.
         
         \node[dot, label=right:{$p'_*(v)$}] (pv) at (8,3.0) {};
-        \node[dot, label=right:{$\omega\equiv(x'',w)$}] (w) at (8,4.5) {};
+        \node[dot, label=right:{$\omega''\equiv(x'',w)$}] (w) at (8,4.5) {};
     
         % Transport arrows (Horizontal)
         \draw[-latex, dashed] (u) to[bend left=10] (pu);
@@ -1876,40 +1991,155 @@ Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path
 
 \section{The Unit Type}
 
-\begin{thm}
+To apply the framework~\ref{observational-framework} to the unit type $\fun1$, we proceed as in the previous cases.
+
+\textsc{Code family:}
+
+\begin{align*}
+    \fun{Code}&\colon\fun1\to\fun1\to\univ\\
+    \fun{Code}(x,y)&\defeq\fun1.
+\end{align*}
+
+\textsc{Base code:}
+
+For $c\colon\fun{Code}(x,x)$ we specify $c\defeq\fun\star$.
+
+\needspace{2\baselineskip}
+\textsc{Encode function:}
+\begin{align*}
+    \fun{encode}&\colon(x\eq{\fun1}y)\to\fun{Code}(x,y)\\
+    \fun{encode}(p)&\defeq\fun{transport}^{C_x}(p,c)
+\end{align*}
+In particular, for $y\equiv x$ and $p\equiv\fun{refl}_x$, we have
+\[
+    \fun{encode}(\fun{refl}_x)\equiv c\equiv\fun\star.
+\]
+Therefore, by induction on $p$, we deduce that
+\[
+    \fun{encode}(p)\eq{\fun1}\fun\star
+\]
+and we take the \rhs to define the constant encode function $f\defeq\lambda x,y.\,\lambda p.\,\fun\star$.
+
+\textsc{Decode function:}
+Let $g$ denote the backward $\fun{decode}$ map. Then
+\[
+    g\colon\prod_{x,y\colon\fun1}\fun{Code}(x,y)\to(x\eq{\fun1}y).
+\]
+To define it we proceed by induction on $x$. It suffices to construct $g(\star)$. The goal becomes a term of type
+\[
+    \prod_{y\colon\fun1}\fun1 \to (\star\eq{\fun1}y).
+\]
+Induction on $y$ further reduces the goal to $\fun1 \to (\star\eq{\fun1}\star)$, which is inhabited by the constant function $z\mapsto\fun{refl}_\star$. In particular,
+\begin{equation}\label{eq:decode(star)}
+    \fun{decode}(\fun\star)\equiv\fun{refl}_{\fun\star}.
+\end{equation}
+
+Thus, we have defined $g\colon\prod_{x,y\colon\fun1}\fun1\to(x\eq{\fun1}y)$ as the unique function that satisfies $g(\star,\star,\star) \equiv \fun{refl}_\star$.
+
+
+\begin{thm}\label{thm:1-equivalence}
     For any\/ $x,y\colon\fun1$, we have\/ $(x\eq{\fun1}y)\simeq\fun1$.
 \end{thm}
 
 \begin{proof}
-    Define the forward map as
-    \begin{align*}
-        f&\colon\prod_{x,y\colon\fun1}(x\eq{\fun1}y) \to\fun1\\
-        f(x,y,p)&\defeq\star.
-    \end{align*}
-    To define the inverse map $g$, we proceed by induction on $x$.
-    It suffices to construct $g(\star)$.
-    The goal becomes a term of type
-    \[
-        \prod_{y\colon\fun1}\fun1 \to (\star\eq{\fun1}y).
-    \]
-    Induction on $y$ further reduces the goal to $\fun1 \to (\star\eq{\fun1}\star)$, which is inhabited by $\fun{refl}_\star$.
-    
-    Thus, we have defined $g\colon\prod_{x,y\colon\fun1}\fun1\to(x\eq{\fun1}y)$, such that $g(\star,\star,\star) \equiv \fun{refl}_\star$.
-
     To verify the homotopies, we need to prove
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item $f\circ g \sim \id_{\fun1}$.
-        
-        This translates into $f(g(x,y,u)) \eq{\fun1} u$ for all $x,y,u\colon\fun1$.
-        By the induction principle of $\fun1$, we may set $x,y,u\equiv\star$, which satisfies the goal because $f$ maps everything to $\star$.
+
+        This translates into\/ $f(g(x,y,u)) \eq{\fun1} u$ for all\/ $x,y,u\colon\fun1$.
+        By the induction principle of\/ $\fun1$, we may set\/ $x,y,u\equiv\star$, which satisfies the goal because\/ $f$ maps every element to\/ $\star$.
 
         \item $g\circ f \sim \id_{\prod_{x,y\colon\fun1}(x\eq{\fun1}y)}$.
-        
-        We must show $g(x,y,f(x,y,p))\eq{x\eq{\fun1}y}p$ for all $x,y\colon\fun1$ and $p\colon x\eq{\fun1}y$.
-        By path induction on $p$, we can set $y\equiv x$ and $p\equiv\fun{refl}_x$.
-        Then the goal becomes $g(x,x,f(x,x,\fun{refl}_x))\eq{x\eq{\fun1}x} \fun{refl}_x$, which reduces to $g(x,x,\star) \eq{x\eq{\fun1}x}\fun{refl}_x$.
-        Induction on $x$ leaves us with $g(\star,\star,\star)\eq{\star\eq{\fun1}\star}\fun{refl}_\star$, which holds by the definition of $g$.
+
+        We must show\/ $g(x,y,f(x,y,p))\eq{x\eq{\fun1}y}p$.
+        By path induction, it suffices to check the case\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$. The goal becomes
+        \[
+            g(x,x,f(x,x,\fun{refl}_x))\eq{x\eq{\fun1}x}\fun{refl}_x.
+        \]
+        By induction on\/ $x$, it is enough to prove\/ $g(\star,\star,f(\star,\star,\fun{refl}_\star))\eq{\star\eq{\fun1}\star}\fun{refl}_\star$. Since\/ $f(\star,\star,\fun{refl}_\star)\equiv\star$, the goal reduces to\/ $g(\star,\star,\star)\eq{\star\eq{\fun1}\star}\fun{refl}_\star$, which holds by the definition of\/ $g$.\qedhere
     \end{enumerate}
 \end{proof}
 
+The theorem has the following consequences:
 
+\begin{description}[font=\normalfont\itshape]
+    \item[Introduction rule.]
+    We define the canonical element inhabiting the identity type of the unit for any two points
+    \[
+        \fun{triv} \colon x \eq{\fun1} y
+    \]
+    as\/ $\fun{triv}\defeq\fun{decode}(x,y,\star)$.
+
+    \item[Elimination rule.]
+    The dependent eliminator asserts that to define a function out of the identity type, we only need to specify its value on the canonical element.
+    \[
+        \fun{ind}_{=_{\fun1}}\colon
+        \prod_{C\colon(x\eq{\fun1}y)\to\univ}
+        C(\fun{triv})\to\prod_{p\colon x\eq{\fun1}y} C(p)
+    \]
+
+    \item[Computation rule.]
+    When the eliminator is applied to the canonical element\/ $\fun{triv}$, it reduces propositionally\footnote{This is weaker than usual. The equality at the base case is definitional if we accept the\/ $\eta$-rule for the identity type [cf.~\nameref{subsection:eta-rule}].} to the base case\/ $c\colon C(\fun{triv})$.
+    \[
+        \fun{ind}_{=_{\fun1}}(C,c,\fun{triv})\eq{C(\fun{triv})}c.
+    \]
+
+    \item[Uniqueness rule.]
+    This rule asserts that the type is contractible (a singleton); any inhabitant\/ $p$ is path-equal to the canonical element.
+    \[
+        \fun{uniq}_{=_{\fun1}}\colon
+        \prod_{p\colon x\eq{\fun1}y}p
+            \eq{x\eq{\fun1}y}\fun{triv}.
+    \]
+\end{description}
+
+To derive the elimination rule, we use Theorem~\ref{thm:1-equivalence}, which gives us a homotopy:
+\[
+    \varepsilon_p\colon
+        \fun{decode}(x,y,\fun{encode}(x,y,p))\eq{\fun1}p
+\]
+for every path\/ $p\colon x\eq{\fun1}y$. Since, by definition, $\fun{encode}(x,y,p)\equiv\fun\star$, the homotopy simplifies:
+\[
+    \fun{decode}(x,y,\fun{encode}(x,y,p))
+        \equiv\fun{decode}(x,y,\star)\equiv\fun{triv},
+\]
+and so
+\[
+    \varepsilon_p \colon \fun{triv}\eq{x\eq{\fun1}y}p.
+\]
+Now, given\/ $C\colon(x\eq{\fun1}y)\to\univ$ and\/ $c\colon C(\fun{triv})$, we want to construct\/ $f(p)\colon C(p)$.
+
+We define
+\[
+    \fun{ind}_{=_{\fun1}}(C,c,p)
+        \defeq\fun{transport}^C(\varepsilon_p,c).
+\]
+In the case\/ $p\equiv\fun{triv}$, we have:
+\begin{equation}\label{eq:eta-rule-dependent}
+    \varepsilon_{\fun{triv}}
+        \eq{x\eq{\fun1}y}\fun{refl}_{\fun{triv}}.
+\end{equation}
+Therefore:
+\begin{equation}\label{eq:definitional-base-case}
+    \fun{ind}_{=_{\fun1}}(C,c,\fun{triv})
+        \eq{C(\fun{triv})}
+        \fun{transport}^C(\fun{refl}_{\fun{triv}},c)
+        \equiv c.
+\end{equation}
+
+The Uniqueness rule is derived by taking the symmetry (inverse) of $\varepsilon_p$:
+    \[
+        \fun{uniq}_{=_{\fun1}}(p) \defeq \varepsilon_p^{-1}.
+    \]
+
+\subsection*{The $\eta$-rule for the Identity of\/ $\fun1$}
+\label{subsection:eta-rule}
+
+The\/ $\eta$-rule asserts that every inhabitant of the identity type of the unit is definitionally equal to reflexivity, namely
+\begin{equation*}
+    p\equiv\fun{refl}_{\fun\star}
+    \qquad(\text{for every } p\colon x\eq{\fun1}y).
+\end{equation*}
+Since the\/ $\eta$-rule for the Identity of\/ $\fun1$ is structurally impossible to state (as a general rule for arbitrary\/ $x,y$) without first assuming the\/ $\eta$-rule for\/ $\fun1$, this requires the\/ $\eta$-rule for the unit type.
+
+\section{Function Extension Axiom}
