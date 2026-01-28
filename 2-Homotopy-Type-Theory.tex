@@ -2263,6 +2263,38 @@ The\/ $\eta$-rule asserts that every inhabitant of the identity type of the unit
 \end{equation*}
 Since the\/ $\eta$-rule for the Identity of\/ $\fun1$ is structurally impossible to state (as a general rule for arbitrary\/ $x,y$) without first assuming the\/ $\eta$-rule for\/ $\fun1$, this requires the\/ $\eta$-rule for the unit type.
 
+\textbf{Extended framework.} For the unit type identity, we have
+\begin{align*}
+    \fun{inv}&\colon\fun{Code}(x,y)\to\fun{Code}(y,x)\\
+    \fun{inv}(u)&\defeq u
+\intertext{and}
+    \ect&\colon\fun{Code}(x,y)\to\fun{Code}(y,z)
+        \to\fun{Code}(x,z)\\
+    u\ect v&\defeq v.
+\end{align*}
+The unit laws follow directly from the definitions above, namely
+\begin{align*}
+    \fun{inv}(c)&\equiv c\\
+    c\ect u&\equiv u.
+\end{align*}
+
+\begin{prop}
+    Given $x,y,z\colon\fun1$, and $p\colon x\eq{\fun1}y$ and $q\colon y\eq{\fun1}z$, we have
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun{decode}(x,x,\fun\star)\eq{x\eq{\fun1}x}\fun{refl}_x$
+        
+        \item $\fun{decode}(y,x,u)\eq{y\eq{\fun1}x}\fun{decode}(x,y,u)^{-1}$
+        
+        \item $\fun{decode}(x,z,u\ect v)\eq{x\eq{\fun1}z}\fun{decode}(x,y,u)\ct\fun{decode}(y,z,v)$
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    This is a direct consequence of Theorem~\ref{thm:extended-framework}.
+    %
+    
+\end{proof}
+
 \section{Function Extensionality Axiom}
 
 In this section we address the question of the identity type for dependent (and non-dependent) functions. To establish the context, let\/ $A\colon\univ$ be a type and\/ $B\colon A\to\univ$ a type family. To analyze the identity in the section space\footnote{Consisting of all dependent functions\/ $s\colon A\to E$, where\/ $E$ is the total space\/ $\sum_{x\colon A}B(x)$, such that\/ $\pi_1(s(x))\eq A x$ for all\/ $x\colon A$.}
