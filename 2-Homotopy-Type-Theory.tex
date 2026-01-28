@@ -150,7 +150,7 @@
             &B
         \end{tikzcd}
     \]
-    In this context, $E$ is the \textsl{total space} and $B$ the \textsl{base space} of the fibration.
+    In this context, $E$ is the \textsl{total space}\footnote{After the French \textit{Espace}.} and $B$ the \textsl{base space} of the fibration.
 
     \textsl{Serre fibrations} lift paths, path homotopies, and higher-dimensional volumes. For instance, in the case of paths, the diagram above becomes:
     \[
@@ -1027,6 +1027,91 @@ This approach consists of the following
     \]
 \end{description}
 
+\subsection{Extended Observational Framework}\label{extended-framework}
+
+There are two additional requirements to the \nameref{observational-framework} that imply further properties of the pair $\fun{encode}$/$\fun{decode}$. They are requirements to be fulfilled for arbitrary $x,y\colon A$.
+\begin{description}[font=\normalfont\scshape]
+    \item[Inversion function:] 
+    \[
+    \fun{inv}
+        \colon\fun{Code}(x,y)\to\fun{Code}(y,x)
+    \]
+
+    \item[Concatenation operation:]
+    \[
+        \ect\colon\fun{Code}(x,y)
+            \to\fun{Code}(y,z)\to\fun{Code}(x,z)
+    \]
+
+    \item[Unit laws:]
+    \[
+        \fun{inv}(c)\equiv c
+        \quad\text{and}\quad
+        c\ect d\equiv d,
+    \]
+    for $d\colon\fun{Code}(x,y)$, where $c\colon\fun{Code}(x,x)$ is the base code.
+\end{description}
+
+\begin{defn}{[Groupoid]}
+    A \textsl{groupoid} is a category in which every morphism is an isomorphism. 
+\end{defn}
+
+\begin{rem}
+    In Homotopy Type Theory, every type $A$ constitutes a (weak) groupoid,\footnote{See also Remark~\ref{rem:types-as-categories}.} often called the \textsl{fundamental groupoid} of $A$:
+    \begin{itemize}
+        \item \textit{Objects:} The terms $a, b \colon A$.
+        \item \textit{Morphisms:} The paths $p \colon a \eq{A} b$.
+        \item \textit{Identity:} The reflexivity path $\fun{refl}_a$.
+        \item \textit{Composition:} Path concatenation `${}\ct{}$'.
+        \item \textit{Inverse:} Path inversion ${}^{-1}$.
+    \end{itemize}
+    Note that in HoTT, the groupoid laws hold only \textit{propositionally} (up to a path one level higher), not structurally (definitionally). This is why types are formally called \textsl{$\infty$-groupoids}.
+\end{rem}
+
+\begin{thm}\label{thm:extended-framework}
+    Let the tuple\/ $(A,\fun{Code}, c,\fun{encode}, \fun{decode}, \fun{inv}, {}\ect{})$ be defined as in the\/ {\upshape Extended Observational Equality Framework}. Then the\/ $\fun{decode}$ function preserves the groupoid structure of identity types:
+    \begin{description}[font=\normalfont\upshape]
+        \item[Reflexivity:] $\fun{decode}(x, x, c)\eq{x\eq Ax}\fun{refl}_x$.
+        \item[Symmetry:] $\fun{decode}(y,x,\fun{inv}(d)) \eq{y\eq Ax}\fun{decode}(x,y,d)^{-1}$.
+        \item[Transitivity:] $\fun{decode}(x,z,d\mathbin{\star}e)\eq{x\eq Az}\fun{decode}(x,y,d) \ct \fun{decode}(y, z, e)$.
+    \end{description}
+\end{thm}
+
+\begin{proof}${}$
+    \begin{description}[font=\normalfont\itshape]
+
+        \item[Reflexivity.]
+        By the definition in the framework,
+        \[
+            \fun{encode}(\fun{refl}_x) \equiv \fun{transport}^{C_x}(\fun{refl}_x, c) \equiv c.
+        \]
+        Applying $\fun{decode}$ to both sides yields
+        \[
+            \fun{refl}_x \eq{} \fun{decode}(x, x, c).
+        \]
+
+        \item[Symmetry.]
+        We prove $\fun{encode}(p^{-1}) \eq{} \fun{inv}(\fun{encode}(p))$ by path induction on $p$.
+        It suffices to assume $y \equiv x$ and $p \equiv \fun{refl}_x$.
+        \begin{align*}
+            \lhs &\equiv \fun{encode}(\fun{refl}_x^{-1}) \equiv \fun{encode}(\fun{refl}_x) \equiv c.\\
+            \rhs &\equiv \fun{inv}(\fun{encode}(\fun{refl}_x)) \equiv \fun{inv}(c).
+        \end{align*}
+        By the hypothesis $\fun{inv}(c) \equiv c$, the LHS and RHS are definitionally equal.
+        Thus, $\fun{encode}$ preserves inverses. Applying $\fun{decode}$, we obtain the result.
+
+        \item[Transitivity.]
+        We prove $\fun{encode}(p \ct q) \eq{} \fun{encode}(p) \mathbin{\star} \fun{encode}(q)$ by path induction on $p$.
+        Assume $y \equiv x$ and $p \equiv \fun{refl}_x$.
+        \begin{align*}
+            \lhs &\equiv \fun{encode}(\fun{refl}_x \ct q) \equiv \fun{encode}(q).\\
+            \rhs &\equiv \fun{encode}(\fun{refl}_x) \mathbin{\star} \fun{encode}(q) \equiv c \mathbin{\star} \fun{encode}(q).
+        \end{align*}
+        By the hypothesis $c \mathbin{\star} d \equiv d$, the RHS reduces to $\fun{encode}(q)$.
+        Thus, $\fun{encode}$ preserves concatenation. Applying $\fun{decode}$ to both sides yields the conclusion. \qedhere
+    \end{description}
+\end{proof}
+
 \section{Cartesian Product}
 
 In this section we apply the observational framework \ref{observational-framework} to the product $A\times B$.
@@ -1179,7 +1264,7 @@ It is defined by induction as follows:
 \begin{proof}
     We must show that\/ $\fun{pair}^\times$ and\/ $\fun{pair}^=$ are quasi-inverses.
     \begin{enumerate}[a), font=\upshape]
-        \item \textbf{Homotopy\/ $\fun{pair}^=(x,y)\circ\fun{pair}^\times(x,y)\sim\id$.}
+        \item $\fun{pair}^=(x,y)\circ\fun{pair}^\times(x,y)\sim\id$.
          
         We have to prove that
         \[
@@ -1206,7 +1291,7 @@ It is defined by induction as follows:
                 \eq{x\eq{A\times B}x}\fun{refl}_x.
         \]
 
-        \item \textbf{Homotopy\/ $\fun{pair}^\times(x,y)\circ\fun{pair}^=(x,y)\sim\id$.}
+        \item $\fun{pair}^\times(x,y)\circ\fun{pair}^=(x,y)\sim\id$.
         
         We have to prove that
         \[
@@ -1232,28 +1317,6 @@ It is defined by induction as follows:
     
 \end{proof}
 
-\begin{rem}
-    The following table is a summary of the functions introduced above:
-    \[
-        \begin{tabular}{lll}
-            \hline
-            %\small\textbf{Function}
-                &\small\textbf{Logic}
-                &\small\textbf{Type Signature}\\
-            $\fun{pair}^\times$
-            &\small Encode
-            &\small
-            $(x\eq{A\times B}y)\to\fun{Code}(x,y)$\\
-            \hline
-            \small$\fun{pair}^=$
-            &\small Decode
-            &\small
-            $\fun{Code}(x,y)\to(x\eq{A\times B}y)$\\
-            \hline
-        \end{tabular}
-    \]
-\end{rem}
-
 \begin{cor}\label{cor:uniqueness}
     Given $x\colon A\times B$, we have
     \[
@@ -1278,6 +1341,86 @@ It is defined by induction as follows:
     
 \end{proof}
 
+\textbf{Extended framework}. To apply the extended framework \ref{extended-framework} we set
+\begin{align*}
+    \fun{inv}&\colon\fun{Code}(x,y)\to\fun{Code}(y,x)\\
+    \fun{inv}(p,q)&\defeq(p^{-1},q^{-1})\\
+\intertext{and}
+    \ect&\colon\fun{Code}(x,y)\to\fun{Code}(y,z)
+        \to\fun{Code}(x,z)\\
+    (p,q)\ect(p',q')&\defeq(p\ct p',q\ct q'),
+\end{align*}
+which are clearly well defined. Moreover
+\begin{align*}
+    \fun{inv}(c)&\equiv
+        \fun{inv}(\fun{refl}_{\pi_1(x)},
+            \fun{refl}_{\pi_2(x)})\\
+        &\equiv(\fun{refl}_{\pi_1(x)}^{-1},
+            \fun{refl}_{\pi_2(x)}^{-1})\\
+        &\equiv(\fun{refl}_{\pi_1(x)},
+            \fun{refl}_{\pi_2(x)})\\
+        &\equiv c
+\intertext{and, for $d\equiv(p,q)$, we have}
+    c\ect d&\equiv(\fun{refl}_{\pi_1(x)}\ct p,
+        \fun{refl}_{\pi_2(x)}\ct q)\\
+        &\equiv(p,q).
+\end{align*}
+
+\begin{rem}
+    The following table is a summary of the functions introduced above:
+    
+    \vspace{-0.7\baselineskip}
+    \small
+    \[
+        \begin{tabular}{lll}
+            \hline
+            &\textbf{Function}
+            &\textbf{Definition}\\
+            \hline\\[-3.5mm]
+             $\fun{pair}^\times$
+            & Encode
+            &
+            $(x\eq{A\times B}y)\to\fun{Code}(x,y)$\\
+            $c$
+            & Base code
+            &$(\fun{refl}_{\pi_1(x)},
+                \fun{refl}_{\pi_2(x)})$\\
+            $\fun{pair}^=$
+            & Decode
+            &
+            $\fun{Code}(x,y)\to(x\eq{A\times B}y)$\\
+            $\fun{inv}$
+            & Inverse
+            & $(p,q)\mapsto(p^{-1},q^{-1})$\\
+            ${}\ect{}$
+            & Concatenation
+            &$(p,q)\ect(p',q')\equiv(p\ct p',q\ct q')$\\
+            \hline
+        \end{tabular}
+    \]
+    \normalsize
+\end{rem}
+
+\begin{prop}\label{prop:product-groupoid-functor}
+    Let\/ $A,B\colon\univ$. Then, for all\/ $x,y,z\colon A\times B$, and paths
+    \begin{alignat*}{2}
+        p&\colon\pi_1(x)\eq A\pi_1(y),\quad& p'&\colon\pi_1(y)\eq{A\times B}\pi_1(z),\\
+        q&\colon\pi_2(x)\eq A\pi_2(y),\quad& q'&\colon\pi_2(y)\eq{A\times B}\pi_2(z),
+        \end{alignat*}
+    we have
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun{pair}^=(\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})\equiv\fun{refl}_x$
+
+        \item $\fun{pair}^=(p^{-1},q^{-1})\eq{A\times B}\fun{pair}^=(p,q)^{-1}$
+
+        \item $\fun{pair}^=(p\ct p',q\ct q')\eq{A\times B}\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')$
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    This is a corollary of Theorem~\ref{thm:extended-framework}.
+\end{proof}
+    
 \begin{prop}\label{prop:pair-properties}
     Let\/ $A,B\colon\univ$. Then, for all\/ $x,y,z\colon A\times B$, and paths
     \begin{alignat*}{3}
@@ -1288,13 +1431,14 @@ It is defined by induction as follows:
         the following equality types are inhabited:
         \begin{enumerate}[i), font=\upshape]
         \item $\fun{ap}_{\pi_1}(\fun{pair}^=(p,q))\eq Ap$
+        
         \item $\fun{ap}_{\pi_2}(\fun{pair}^=(p,q))\eq Bq$
-        \item $\fun{pair}^=(\fun{refl}_{\pi_1(x)}, \fun{refl}_{\pi_2(x)})\equiv\fun{refl}_x$
+        
         \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r), \fun{ap}_{\pi_2}(r))\eq{A\times B}r$
+        
         \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)^{-1}, \fun{ap}_{\pi_2}(r)^{-1})\eq{A\times B}r^{-1}$
+        
         \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)\ct\fun{ap}_{\pi_1}(s), \fun{ap}_{\pi_2}(r)\ct\fun{ap}_{\pi_2}(s))\eq{A\times B}r\ct s$
-        \item $\fun{pair}^=(p^{-1}, q^{-1})\eq{A\times B}\fun{pair}^=(p,q)^{-1}$
-        \item $\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')\eq{A\times B}\fun{pair}^=(p\ct p', q\ct q')$
     \end{enumerate}
 \end{prop}
 
@@ -1313,12 +1457,6 @@ It is defined by induction as follows:
         \end{align*}
         
         \item Analogous to i), replacing $\pi_1$ with $\pi_2$.
-        
-        \item By induction on $x$, we may assume $x\equiv(a,b)$. The statement becomes
-        \[
-            \fun{pair}^=(\fun{refl}_a,\fun{refl}_b)\equiv\fun{refl}_{(a,b)},
-        \]
-        which holds by the definition of $\fun{pair}^=$.
         
         \item We proceed by path induction on $r$. It suffices to prove the case where $y\equiv x$ and $r\equiv\fun{refl}_x$:
         \[
@@ -1349,10 +1487,7 @@ It is defined by induction as follows:
             =s,
         \]
         which holds by property iv).
-        
-        \item This follows by induction on $p$ (reducing to $\fun{refl}$) and subsequently on $q$ (reducing to $\fun{refl}$), at which point both sides compute to $\fun{refl}$.
-        
-        \item Similarly, this follows by induction on $p$ and then on $q$, reducing the \lhs to $\fun{pair}^=(p',q')$ and the \rhs to the same term.
+
     \end{enumerate}
 \end{proof}
 
@@ -1478,7 +1613,7 @@ Applying the observational framework \ref{observational-framework} to the total 
 \begin{align*}
     \fun{Code} &\colon E\to E\to\univ\\
     \fun{Code}(\omega,\omega') &\defeq \sum_{q\colon\pi_1(\omega)\eq{A}\pi_1(\omega')}
-        \left( \fun{transport}^P(q,\pi_2(\omega)) \eq{P(\pi_1(\omega'))} \pi_2(\omega') \right).
+        \fun{transport}^P(q,\pi_2(\omega)) \eq{P(\pi_1(\omega'))} \pi_2(\omega').
 \end{align*}
 
 \textsc{Base code:}
@@ -1489,12 +1624,11 @@ Another way to express the first component of $c$ is by observing that
 \[
     \fun{refl}_{\pi_1(\omega)}\equiv\fun{ap}_{\pi_1}(\omega).
 \]
-For the second component of $c$, since $\pi_2$ is a dependent function,\footnote{See \nref{lpar:Sigma-induction}, equation \eqref{eq:Sigma-pi-2}.} we have to use the dependent application map $\fun{apd}$.\footnote{See Lemma~\ref{lem:dependent-map}.} Thus, $\fun{refl}_{\pi_1(\omega)}\equiv\fun{apd}_{\pi_2}(\omega)$ and $c$ can be written as
+For the second component of $c$, since $\pi_2$ is a dependent function,\footnote{See \nref{lpar:Sigma-induction}, equation \eqref{eq:Sigma-pi-2}.} we have to use the dependent application map $\fun{apd}$.\footnote{See Lemma~\ref{lem:dependent-map}.} Thus, $\fun{refl}_{\pi_2(\omega)}\equiv\fun{apd}_{\pi_2}(\fun{refl}_\omega)$ and $c$ can be written as
 \[
     c\equiv
         (\fun{ap}_{\pi_1}(\fun{refl}_\omega),\fun{apd}_{\pi_2}(\fun{refl}_\omega)).
 \]
-
 
 \textsc{Encode function:}
 The transport family\/ $C_\omega\defeq\fun{Code}(\omega,{}\cdot{})$ yields
@@ -1708,7 +1842,7 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
             &\eq{A\times B}\fun{pair}^=(q, \fun{refl}_{\pi_2(\omega)}) \ct \fun{pair}^=(\fun{refl}_{\pi_1(\omega')},\gamma)
                 &&\text{; Prop.~\ref{prop:lift-pair}}\\
             &\eq{A\times B}\fun{pair}^=(q \ct \fun{refl}_{\pi_1(\omega')}, \fun{refl}_{\pi_2(\omega)} \ct \gamma)
-                &&\text{; Prop.~\ref{prop:pair-properties} viii)}\\
+                &&\text{; Prop.~\ref{prop:product-groupoid-functor} c)}\\
             &\eq{A\times B}\fun{pair}^=(q, \gamma)
                 &&\text{; Unit laws.}
     \end{align*}
@@ -1733,27 +1867,8 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
     \]
 \end{defn}
 
-\begin{lem}\label{lem:reflexivity-on-pairs} {\upshape[Reflexivity on pairs]}
-    For any\/ $x\colon A$ and\/ $u\colon P(x)$, we have
-    \[
-        \fun{pair}^=(\fun{refl}_x,\fun{refl}_u) \equiv \fun{refl}_{(x,u)}.
-    \]
-\end{lem}
-
-\begin{proof}
-    Applying Definition~\ref{defn:Sigma-pair},
-    \begin{align*}
-        \fun{pair}^=(\fun{refl}_x,\fun{refl}_u)
-            &\equiv \fun{lift}(u,\fun{refl}_x) \ct \fun{ap}_{\fun{in}_x}(\fun{refl}_u) \\
-            &\equiv \fun{refl}_{(x,u)} \ct \fun{refl}_{(x,u)}
-                &&\text{; Prop.~\ref{prop:lift-pair}}\\
-            &\equiv \fun{refl}_{(x,u)}.
-    \end{align*}
-\end{proof}
-
 \newcommand{\explain}[2][]{\underbracket[0.5pt][2pt]{#2}_{#1}}
-
-\begin{thm}
+\begin{thm}\label{thm:composite-transport}
     Let\/ $P\colon A\to\mathcal{U}$ be a type family and let\/ $E\defeq\sum_{x\colon A}P(x)$ be its total space. Given a second type family\/ $Q\colon E\to\mathcal{U}$,
     define the type family\/ $R\colon A\to\mathcal{U}$ by\/ $R(x)\defeq\sum_{u\colon P(x)}Q(x,u)$. Let\/ $F\defeq\sum_{(x,u)\colon E}Q(x,u)$ be the total space of the composite family. This forms a tower of fibrations:
     \[
@@ -1814,100 +1929,106 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
     \end{description}
 \end{proof}
 
-\begin{lem}\label{lem:transport-pV}
-    Let\/ $P\colon A\to\univ$ be a type family. For any path\/ $p\colon x\eq{A}y$ and element\/ $u\colon P(x)$, there are paths
+\begin{lem}\label{lem:transportinv}
+    Let\/ $P\colon A\to\univ$ be a type family. For any path\/ $p\colon x\eq{A}y$ and elements\/ $u\colon P(x)$ and\/ $v\colon P(y)$, there are paths
     \begin{align*}
-        \fun{transportinv}_l^P(p,u)&\colon(p^{-1})_*(p_*(u))\eq{P(x)}u\\
-        \fun{transportinv}_r^P(p,u)&\colon p_*((p^{-1})_*(u))\eq{P(x)}u.
+        \fun{transportinv}_l^P(p,u) &\colon (p^{-1})_*(p_*(u)) \eq{P(x)} u, \\
+        \fun{transportinv}_r^P(p,v) &\colon p_*((p^{-1})_*(v)) \eq{P(y)} v.
     \end{align*}
+    Moreover,
+    \begin{alignat*}2
+        \fun{transportinv}^P_l(\fun{refl}_x,u)
+            &\equiv\fun{refl}_u,
+        &\quad
+        \fun{transportinv}^P_r(\fun{refl}_x,v)
+            &\equiv\fun{refl}_v,
+    \end{alignat*}
 \end{lem}
 
 \begin{proof}
-    By path induction on\/ $p$. It suffices to assume\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$. In this case, $p^{-1}\equiv\fun{refl}_x$. Since transport along reflexivity is the identity function definitionally, in both cases the \lhs reduces as follows:
-    \begin{align*}
-        (\fun{refl}_x)_*((\fun{refl}_x)_*(u))&
-            \equiv(\fun{refl}_x)_*(u)\equiv u.
-    \end{align*}
-    Thus, the goal is proved by\/ $\fun{refl}_u$.
+    First, we observe that the expressions are well-typed. Given $u\colon P(x)$ and $v\colon P(y)$, we have:
+    \begin{alignat*}{2}
+        p_*(u) &\colon P(y), &\qquad (p^{-1})_*(v) &\colon P(x).
+    \end{alignat*}
+    We proceed by path induction on $p$. It suffices to assume $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case, definitionally, $p^{-1}\equiv\fun{refl}_x$. Since transport along reflexivity acts as the identity function, the left-hand sides reduce as follows:
+    \[
+        (\fun{refl}_x)_*\bigl((\fun{refl}_x)_*(u)\bigr) \equiv (\fun{refl}_x)_*(u) \equiv u.
+    \]
+    The calculation for $v$ is identical. Thus, in both cases, the goal is proved by $\fun{refl}$.
+    %
+    
 \end{proof}
 
-\begin{thm} {\upshape[Symmetry on pairs]}
-    Let\/ $P\colon A\to\univ$ be a type family. Given\/ $x,y\colon A$, $u\colon P(x)$ and\/ $v\colon P(y)$, consider paths\/ $p\colon x\eq{A}y$ and\/ $q\colon p_*(u)\eq{P(y)} v$.
-    Then
-    \begin{equation}\label{eq:pair-symmetry}
-        \fun{pair}^=(p, q)^{-1} \eq{E} \fun{pair}^=\bigl(p^{-1}, \Psi(p,q)\bigr),
-    \end{equation}
-    where\/ $E$ is the total space\/ $\sum_{x\colon A}P(x)$ and\/ $\Psi(p,q)$ is the path in\/ $P(x)$ defined by
-    \[
-        \Psi(p,q) \defeq (p^{-1})_*(q^{-1}) \ct \fun{transportinv}_l^P(p,u).
-    \]
-    Diagrammatically, $\Psi(p,q)$ is the composite:
-    \[
-        (p^{-1})_*(v)
-            \xrightarrow{(p^{-1})_*(q^{-1})} (p^{-1})_*(p_*(u))
-            \xrightarrow{\fun{transportinv}_l^P} u.
-    \]
-\end{thm}
+\begin{rem}
+    Given $\omega,\omega'\colon E$, a canonical pair $(p,u)\colon\fun{Code}(\omega,\omega')$ is given by
+    \begin{alignat*}2
+        p&\colon\pi_1(\omega)\eq A\pi_1(\omega'),
+        &\quad q&\colon p_*(\pi_2(\omega))
+            \eq{P(\pi_1(\omega'))}\pi_2(\omega')
+    \end{alignat*}
+\end{rem}
 
-\begin{proof}
-    Path induction on\/ $p$ reduces us to the case where\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$.
-    In this case, $q\colon u\eq{P(x)}v$.
-    Note that\/ $\Psi(\fun{refl}_x,q) \equiv q^{-1} \ct \fun{refl}_u$.
-    We analyze both sides of \eqref{eq:pair-symmetry}:
-    \begin{align*}
-        \lhs &\equiv \fun{pair}^=(\fun{refl}_x,q)^{-1} \\
-             &\equiv \bigl(\fun{lift}(u,\fun{refl}_x) \ct \fun{ap}_{\fun{in}_x}(q)\bigr)^{-1} \\
-             &\equiv \bigl(\fun{refl}_{(x,u)} \ct \fun{ap}_{\fun{in}_x}(q)\bigr)^{-1} \\
-             &\equiv \fun{ap}_{\fun{in}_x}(q)^{-1} \\[1ex]
-        \rhs &\equiv \fun{pair}^=(\fun{refl}_x, q^{-1}\ct\fun{refl}_u) \\
-             &\equiv \fun{lift}(u,\fun{refl}_x) \ct \fun{ap}_{\fun{in}_x}(q^{-1}\ct\fun{refl}_u) \\
-             &\equiv \fun{refl}_{(x,u)} \ct \fun{ap}_{\fun{in}_x}(q^{-1}\ct\fun{refl}_u) \\
-             &\equiv \fun{ap}_{\fun{in}_x}(q^{-1}\ct\fun{refl}_u).
-    \end{align*}
-    By Proposition~\ref{prop:ap-properties} and \nref{lpar:right-unit-law}, both sides reduce to the same term.
-\end{proof}
+\textbf{Extended framework.} To apply the extended framework~\ref{extended-framework} to the $\Sigma$-type, we define
+\begin{align}
+    \fun{inv}
+        &\colon \fun{Code}(\omega,\omega')
+            \to\fun{Code}(\omega',\omega)\nonumber\\
+    \fun{inv}(p,q)
+        &\defeq\bigl(p^{-1},(p^{-1})_*(q^{-1})
+        \ct
+        \fun{transportinv}_l^P(p, \pi_2(\omega))\bigr).
+        \label{eq:Sigma-inv}\\
+\intertext{and}
+    \ect&\colon\fun{Code}(\omega,\omega')\to\fun{Code}(\omega',\omega'')
+        \to\fun{Code}(\omega,\omega'')\nonumber\\
+    (p,q)\ect(p',q')&\defeq(p\ct p', p'_*(q) \ct q').\nonumber
+\end{align}
+To verify the unit laws, observe that
+\begin{align*}
+    \fun{inv}(c)
+        &\equiv\fun{inv}(\fun{refl}_{\pi_1(\omega)}
+            ,\fun{refl}_{\pi_2(\omega)})\\
+        &\equiv(\fun{refl}_{\pi_1(\omega)}^{-1}
+            ,\fun{refl}_{\pi_2(\omega)})
+            &&\text{; Lem.~\ref{lem:transportinv}}\\
+        &\equiv c,\\
+    c\ect(p,q)
+        &\equiv(\fun{refl}_{\pi_1(\omega)}
+            ,\fun{refl}_{\pi_2(\omega)})\ect(p,q)\\
+        &\equiv(\fun{refl}_{\pi_1(\omega)}\ct p
+            ,\fun{refl}_{\pi_2(\omega)}\ct q)\\
+        &\equiv(p,q).
+\end{align*}
 
-\begin{thm} {\upshape[Transitivity on pairs]}\label{thm:sigma-transitivity}
-    Let\/ $P\colon A\to\univ$ be a type family and $E\defeq\sum_{x\colon A}P(x)$ its total space.
+\begin{prop}
     Given elements\/ $\omega,\omega',\omega''\colon E$ and paths
-    \begin{itemize}
-        \item $\rho\defeq\fun{pair}^=(p,q)\colon\omega\eq E\omega'$, with\/ $p\colon x\eq Ax'$ and\/ $q\colon p_*(u)\eq{P(x')}v$
+    \begin{alignat*}{4}
+    p\phantom{'}
+        &\colon \pi_1(\omega)
+        &&\eq{A} \pi_1(\omega'),
+        &\quad q\phantom{'}
+        &\colon p_*(\pi_2(\omega))
+        &&\eq{P(\pi_1(\omega'))} \pi_2(\omega'),\\
+    p'
+        &\colon \pi_1(\omega')
+        &&\eq{A} \pi_2(\omega''),
+        &\quad q'
+        &\colon p'_*(\pi_2(\omega'))
+        &&\eq{P(\pi_1(\omega''))} \pi_2(\omega''),
+    \end{alignat*}
+    we have
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun{pair}^=(\fun{refl}_{\pi_1(\omega)},\fun{refl}_{\pi_2(\omega)})\equiv\fun{refl}_\omega$
 
-        \item $\rho'\defeq\fun{pair}^=(p',q')\colon\omega'\eq E\omega''$, with\/ $p'\colon x'\eq A x''$ and\/ $q'\colon p'_*(v)\eq{P(x'')}w$,
-    \end{itemize}
-    the concatenation\/ $\rho \ct \rho'$ corresponds to the pair\/ $(p \ct p', \gamma)$, where\/ $\gamma$ is the composite path:
-    \[
-        (p\ct p')_*(u)\xrightarrow{\ \zeta\ } p'_*(p_*(u)) \xrightarrow{\fun{ap}_{p'_*}(q)} p'_*(v) \xrightarrow{\ q'\ }w.
-    \]
-    Here, $\zeta$ is the transport coherence path\/ $(p\ct p')_*(u) \eq{} p'_*(p_*(u))$.
-    In terms of the constructor:
-    \[
-        \fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')
-        \eq E
-        \fun{pair}^=(p\ct p',\zeta
-            \ct\fun{ap}_{p'_*}(q)\ct q').
-    \]
-\end{thm}
+        \item $\fun{pair}^=(p^{-1},(p^{-1})_*(q^{-1}) \ct \fun{transportinv}_l^P(p, \pi_2(\omega)))
+            \eq E\fun{pair}^=(p,q)^{-1}$
+            
+        \item $\fun{pair}^=(p\ct p',q\ct q')\eq E\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')$
+    \end{enumerate}
+\end{prop}
 
 \begin{proof}
-    To prove the equality, we proceed by path induction on $p$ and $p'$. Consequently, it suffices to assume $x', x''\equiv x$ and $p,p'\equiv\fun{refl}_x$.
-    
-    Then the transport maps $p_*$ and $p'_*$ reduce to the identity, and the coherence $\zeta$ becomes $\fun{refl}_u$.
-    
-    The goal then becomes
-    \[
-        \fun{pair}^=(\fun{refl}_x,q)
-        \ct\fun{pair}^=(\fun{refl}_x,q')
-        \eq E
-        \fun{pair}^=(\fun{refl}_x,q\ct q').
-    \]
-    Recalling that $\fun{pair}^=(\fun{refl}_x, \gamma) \equiv \fun{ap}_{\fun{in}_x}(\gamma)$,\footnote{Definition~\ref{defn:Sigma-pair} \&~Theorem~\ref{thm:path-lift}.} this equality becomes:
-    \[
-        \fun{ap}_{\fun{in}_x}(q)\ct\fun{ap}_{\fun{in}_x}(q')
-        \eq E
-        \fun{ap}_{\fun{in}_x}(q\ct q'),
-    \]
-    which holds by the functoriality of $\fun{ap}$.\footnote{Remark~\ref{rem:types-as-categories}.}
+    This is a direct consequence of Theorem~\ref{thm:extended-framework}.
     \[
     \begin{tikzpicture}[
         >=stealth, 
@@ -1918,9 +2039,9 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
         ]
     
         % Coordinates
-        \coordinate (A) at (0,0);
-        \coordinate (B) at (4,0);
-        \coordinate (C) at (8,0);
+        \coordinate (A) at (0,0.3);
+        \coordinate (B) at (4,0.3);
+        \coordinate (C) at (8,0.3);
     
         % Base Line
         \draw[thick, -latex] (A) -- node[below] {$p$} (B);
@@ -1989,19 +2110,19 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
     \]
 \end{proof}
 
+
+
 \section{The Unit Type}
 
 To apply the framework~\ref{observational-framework} to the unit type $\fun1$, we proceed as in the previous cases.
 
 \textsc{Code family:}
-
 \begin{align*}
     \fun{Code}&\colon\fun1\to\fun1\to\univ\\
     \fun{Code}(x,y)&\defeq\fun1.
 \end{align*}
 
 \textsc{Base code:}
-
 For $c\colon\fun{Code}(x,x)$ we specify $c\defeq\fun\star$.
 
 \needspace{2\baselineskip}
@@ -2142,4 +2263,74 @@ The\/ $\eta$-rule asserts that every inhabitant of the identity type of the unit
 \end{equation*}
 Since the\/ $\eta$-rule for the Identity of\/ $\fun1$ is structurally impossible to state (as a general rule for arbitrary\/ $x,y$) without first assuming the\/ $\eta$-rule for\/ $\fun1$, this requires the\/ $\eta$-rule for the unit type.
 
-\section{Function Extension Axiom}
+\section{Function Extensionality Axiom}
+
+In this section we address the question of the identity type for dependent (and non-dependent) functions. To establish the context, let\/ $A\colon\univ$ be a type and\/ $B\colon A\to\univ$ a type family. To analyze the identity in the section space\footnote{Consisting of all dependent functions\/ $s\colon A\to E$, where\/ $E$ is the total space\/ $\sum_{x\colon A}B(x)$, such that\/ $\pi_1(s(x))\eq A x$ for all\/ $x\colon A$.}
+\[
+    \Gamma\defeq\prod_{x\colon A}B(x)
+\]
+we apply the framework~\ref{observational-framework}.
+
+\textsc{Code family:}
+\begin{align*}
+    \fun{Code}&\colon\Gamma\to\Gamma\to\univ\\
+    \fun{Code}(f,g)&\defeq\prod_{x\colon A} f(x)\eq{B(x)}g(x).
+\end{align*}
+
+\textsc{Base code:} For the reflexive case, we define the term\/ $c\colon\fun{Code}(f,f)$ pointwise by reflexivity:
+\[
+    c \defeq \lambda x\colon A.\, \fun{refl}_{f(x)}.
+\]
+
+\textsc{Encode function:}
+\begin{align*}
+    \fun{encode}&\colon(f\eq\Gamma g)\to\fun{Code}(f,g)\\
+    \fun{encode}(p)&\defeq\fun{transport}^{C_f}(p,c).
+\end{align*}
+Since\/ $C_f\defeq\fun{Code}(f,{}\cdot{})$, we can define the local family at a point\/ $x\colon A$ as
+\[
+    C_{f,x}\defeq\lambda h\colon\Gamma.\, f(x)\eq{B(x)}h(x).
+\]
+In particular, in the case where\/ $g\equiv f$ and\/ $p\equiv\fun{refl}_f$, we have
+\begin{align*}
+    \fun{encode}(\fun{refl}_f)(x)
+        &\equiv\fun{transport}^{C_f}(\fun{refl}_f,c)(x)\\
+        &\equiv c(x)\\
+        &\equiv\fun{refl}_{f(x)}\\
+        &\equiv\fun{transport}^{C_{f,x}}
+            (\fun{refl}_f,\fun{refl}_{f(x)}).
+\end{align*}
+Hence, path induction implies
+\[
+    \fun{encode}(p)(x)\eq{C_{f,x}(g)}
+        \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)}),
+\]
+for $p\colon f\eq\Gamma g$ and $x\colon A$.
+We take the \rhs to define the standard name for the encode function \textsl{homotopy application\/}:
+\begin{equation}\label{eq:homotopy-application}
+    \begin{aligned}
+        \fun{happly}&\colon(f\eq\Gamma g)\to\fun{Code}(f,g)\\
+        \fun{happly}(p)&\defeq \lambda x\colon A.\,
+                \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)})
+    \end{aligned}
+\end{equation}
+and introduce the following
+
+\textbf{Axiom.} [Function Extensionality] The homotopy application function \eqref{eq:homotopy-application} is an equivalence.\footnote{We will see in later chapters that this axiom follows both from univalence and from the interval type.}
+
+Thus, the axiom asserts that\/ $\fun{happly}$ has a quasi-inverse
+\begin{align*}
+    \fun{funext}&\colon\fun{Code}(f,g)\to(f\eq\Gamma g),
+\end{align*}
+which, by definition, satisfies the following homotopies for any path\/ $p\colon f\eq\Gamma g$ and any pointwise homotopy\/ $\alpha\colon\fun{Code}(f,g)$:
+\begin{align*}
+    \fun{funext}(\fun{happly}(p))
+        &\eq{f\eq\Gamma g} p\\
+    \fun{happly}(\fun{funext}(\alpha))
+        &\eq{\fun{Code}(f,g)}\alpha.
+\end{align*}
+
+\begin{rem}
+    The $\fun{funext}$ function acts as the \textit{introduction rule} (or constructor) for the identity type of dependent functions, as it generates paths from homotopies. Consequently, the fact that it is an equivalence justifies the \textit{induction principle}: to prove a property for all paths, it suffices to check those constructed by $\fun{funext}$. More generally, every $\fun{decode}$ function acts as an introduction rule, while the $\fun{encode}$ functions can be seen as \textit{elimination rules}: they extract structural features from the path.
+\end{rem}
+

@@ -325,7 +325,7 @@
 
         \item \textit{Constructors.} Define how to introduce elements of that type. Example: $f(x)\defeq x^2$, $\lambda x.\,x^2$, for $f\colon A\to B$ and $x\colon A$.
 
-        \item \textit{Eliminators.} Establish how to use (or operate on) elements of the type. Example: $f(a)$.
+        \item \textit{Eliminators.}\footnote{The term \textit{elimination} refers to the syntactic transformation from premises to conclusion. In formal logic, when comparing the Abstract Syntax Trees (AST) of the judgments, the \textit{main descriptor} (or root node) of the type being eliminated is replaced by the descriptor characteristic of the conclusion's type.} These rules specify how to use (or operate on) elements of the type. Example: function application $f(a)$.
 
         \item \textit{Computation rules.} Also known as $\beta$-reductions, prescribe how eliminators operate on constructors. Example: $(\lambda x\colon A.\,\Phi)(a)\equiv\Phi'$, where $a\colon A$, and $\Phi'$ is obtained from $\Phi$ by substitution of $a$ for $x$.
 
