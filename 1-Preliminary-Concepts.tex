@@ -1638,9 +1638,9 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lem}\label{lem:concat}
     Let\/ $A\colon\univ$,\/ $x,y,z, w\colon A$ and\/ $p\colon x\eq Ay$. Then, the following types are inhabited:
     \begin{enumerate}[a), font=\upshape]
-        \item $p^{-1}\cdot p\eq{y\eq Ay}\fun{refl}_y$ and\/ $p\cdot p^{-1}\eq{x\eq Ax}\fun{refl}_x$.
+        \item $p^{-1}\ct p\eq{y\eq Ay}\fun{refl}_y$ and\/ $p\ct p^{-1}\eq{x\eq Ax}\fun{refl}_x$.
         \item $(p^{-1})^{-1}\eq{x\eq Ay}p$.
-        \item $p\cdot(q\cdot r)\eq{x\eq Aw}(p\cdot q)\cdot r$, for\/ $q\colon y\eq Az$ and\/ $r\colon z\eq Aw$.
+        \item $p\ct(q\ct r)\eq{x\eq Aw}(p\ct q)\ct r$, for\/ $q\colon y\eq Az$ and\/ $r\colon z\eq Aw$.
     \end{enumerate}
 \end{lem}
 
@@ -1706,11 +1706,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
     As a function, based path induction becomes
     \begin{equation}\label{eq:ind'=A}
-        \fun{ind}'_{\eq A}\colon\prod_{a\colon A}\;\;
-            \Biggl(
-            \prod_{D\colon\prod_{x\colon A} (a\eq A x)\to\univ}D(a,\fun{refl}_a)
-            \Biggr)
-        \to\prod_{x\colon A}\;\prod_{p\colon a\eq Ax}D(x,p)
+    \fun{ind}'_{\eq A}\colon\prod_{a\colon A}
+        \;\prod_{D\colon\prod_{x\colon A}(a\eq Ax)\to\univ}
+        D(a,\fun{refl}_a)
+        \to
+        \prod_{x\colon A}\;\prod_{p\colon a\eq Ax}D(x,p)
     \end{equation}
     with the equality
     \[
