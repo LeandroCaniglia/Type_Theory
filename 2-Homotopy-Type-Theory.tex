@@ -2943,9 +2943,9 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
                 &\colon(x,u)\eq{\Sigma_XA}(y,p_*(u)),
                 &\quad f(w)&\colon B(x,u),\\
         \Phi(w)&\colon B(y,p_*(u)),
-            &\quad\fun{Tr}(p,f,u)&\colon B(y,p(u)).
+            &\quad\fun{Tr}(p,f,u)&\colon B(y,p_*(u)).
     \end{alignat*}
-    Then all expressions are coorectly typed.
+    Then all expressions are correctly typed.
     
     To construct the witnesses $i(p,u)$ and $j(p,u)$, define the motive
     \begin{align*}
@@ -2957,13 +2957,13 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
 
     By based path induction, to show that $P(y,p)$ is inhabited it suffices to construct a witness of $P(x,\fun{refl}_x)$. In this case:
     \begin{enumerate}[-]
-        \item $p$ and $p^{-1}$ reduce definitionally $\fun{refl}_x$.
+        \item $p$ and $p^{-1}$ reduce definitionally to $\fun{refl}_x$.
         
         \item Since the transport operations $p_*$ reduce to identity functions, $p_*(u) \equiv u$ and $p_*(f) \equiv f$.
         
         \item The fiber coordinate $w\defeq(p^{-1})_*(p_*(u))$ reduces definitionally to $u$.
         
-        \item $\Phi(w)$ becomes $f(u)$
+        \item $\Phi(w)$ becomes $f(u)$.
 
         \item $\fun{Tr}(\fun{refl}_x,f,u)$ becomes:
         \[
@@ -2998,7 +2998,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
         \prod_{u\colon A(x)}
         \fun{Tr}(p,f,u)
         \eq{B(y,p_*(u))}
-        g(p_*(u)).
+        g(p_*(u)),
     \]
     where
     \[
@@ -3018,17 +3018,30 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
     \[
         i(p,u)\ct j(p,u)\ct\hat q(u),
     \]
-    where\/ $i(p,u)$ and $j(p,u)$ are the paths given by\/ {\upshape Lemma~\ref{lem:dependent-i-j-path}}.
+    where\/ $i(p,u)$ and $j(p,u)$ are the paths given by\/ {\upshape Lemma~\ref{lem:dependent-i-j-path}}. In a diagram
+    \[
+        \begin{tikzcd}[column sep=7em, row sep=3em]
+            p_*(f)(p_*(u))
+                    \arrow[r,"{\fun{happly}(q, p_*(u))}"]
+                    \arrow[d,"{i(p,u)}"']
+                &g(p_*(u))\\
+            \Phi(w)
+                    \arrow[r,"{j(p,u)}"']
+            &\fun{Tr}(p,f,u)
+                    \arrow[u,"\hat q(u)"']
+        \end{tikzcd}
+    \]
 \end{thm}
 
 \begin{proof}
     To define the motive
     \[
-        P\colon\prod_{y\colon X}(x\eq Xy)\to\univ,
+        P\colon\prod_{y\colon X}(x\eq Xy)\to\univ
     \]
-    we proceed as follows:
+    \needspace{2\baselineskip}
+    proceed as follows:
     \begin{enumerate}[-]
-        \item For\/ $y\colon X$ and\/ $p\colon x\eq Xy$, let
+        \item For $y\colon X$ and $p\colon x\eq Xy$, let
         \begin{align*}
             \fun L(y,p,g)
                 &\defeq p_*(f)\eq{\Pi_AB(y)}g,\\
@@ -3054,27 +3067,26 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
         \]
         with $\delta(p,u)\defeq i(p,u)\ct j(p,u)$.
     \end{enumerate}
-
-    By based path induction, it suffices to specify an inhabitant for the case where\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$. In this case:
+    By based path induction, it suffices to specify an inhabitant for the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case:
     \begin{enumerate}[-]
-        \item $\fun L(x,\fun{refl}_x,g)\equiv f\eq{}g$. Since
-        $\fun{Tr}(\fun{refl}_x,f,u)\equiv f(u)$ and $(\fun{refl}_x)_*(u)\equiv u$, we have $\fun R(x,\fun{refl}_x,g)\equiv f\sim g$.
+        \item $\fun L(x,\fun{refl}_x,g)\equiv f\eq{\Pi_AB(x)}g$,  $\fun{Tr}(\fun{refl}_x,f,u)\equiv f(u)$, $\fun R(x,\fun{refl}_x,g)\equiv f\sim g$.
 
         \item $i(\fun{refl}_x,u)$ and $j(\fun{refl}_x,u)$ reduce to $\fun{refl}_{f(u)}$.
 
-        \item Take $e\defeq\fun{happly}$. The type $\fun E(x,\fun{refl}_x,g,\fun{happly})$ requires us to verify that for every\/ $q\colon f\eq{}g$ and\/ $u\colon A(x)$,
+        \item Take $e\defeq\fun{happly}$. The type $\fun E(x,\fun{refl}_x,g,\fun{happly})$ requires us to verify that for every $q\colon f\eq{\Pi_AB}g$ and $u\colon A(x)$,
         \[
             \fun{happly}(q,u)
             \eq{B(x,u)}
             \fun{refl}_{f(u)}
             \ct\fun{happly}(q,u).
         \]
-        This is inhabited by\/ $\fun{refl}_{\fun{happly}(q,u)}$.
+        This is inhabited by $\fun{refl}_{\fun{happly}(q,u)}$.
     \end{enumerate}
     Thus, the map
     \[
         g\mapsto(\fun{happly}
         ,\lambda q.\,\lambda u.\,\fun{refl}_{\fun{happly}(q,u)})
     \]
-    inhabits\/ $P(x,\fun{refl}_x)$, which completes the proof.
+    inhabits $P(x,\fun{refl}_x)$, which completes the proof.
+
 \end{proof}
