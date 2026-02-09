@@ -2705,77 +2705,74 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     \eq{B(y,v)}
     \fun{transport}^{\hat B}
     \bigl(
-        (
-            \delta^{-1},
-        f((p^{-1})_*(v))
+        \delta^{-1},f((p^{-1})_*(v))
     \bigr),
     \]
     where $\delta\defeq\fun{pair}^=(p^{-1},\fun{refl}_{(p^{-1})_*(v)})$.
 \end{cor}
 
 \begin{proof}
-    Even though this can be derived from the theorem, it is much simpler to use path induction and verify the definitionally equality in the case $y\equiv x$ and $p\equiv\fun{refl}_x$. In fact, in that case we obtain
-    \begin{align*}
-        \lhs&\equiv
-            \fun{transport}^{\Pi_AB}(\fun{refl}_x,f)(v)\\
-            &\equiv f(v),\\
-        \delta&\equiv\fun{pair}^=(\fun{refl}_x
-            ,\fun{refl}_{(\fun{refl}_x)_*(v)})
+    Even though this can be derived from the theorem, it is much simpler to use path induction and verify the definitional equality.
+    \begin{description}[font=\normalfont\scshape]
+        \item[Type verification:]
+        First observe that, by definition,
+        \[
+            \lhs\equiv\fun{transport}^{\Pi_AB}(p,f)(v)
+                \colon B(y,v).
+        \]
+        To compute the \rhs we need to compute $\delta$. Let $w\defeq(p^{-1})_*(v)\colon A(x)$. By Definition~\ref{defn:Sigma-pair}, we have
+        \[
+            \fun{pair}^=\colon
+                \biggl(
+                \sum_{q\colon\pi_1(\omega)\eq X\pi_1(\omega')}
+                q_*(\pi_2(\omega)\eq{A(\pi_1(\omega'))}\pi_2(\omega')
+                \biggr)
+                \to(\omega\eq{\Sigma_XA}\omega').
+        \]
+        In our case, $\omega\defeq(y,v)$, $\omega'\defeq(x,w)$ and $q\defeq p^{-1}$. Thus, we can apply $\fun{pair}^=$ to the dependent pair $(q,r)$, provided that $r\colon q_*(v)\eq{A(x)}w$. Since $q_*(v)\defeq(p^{-1})_*(v)\defeq w$, we deduce that $(p^{-1},(p^{-1})_*(v))\colon\dom(\fun{pair}^=)$. Moreover,
+        \[
+            \delta\defeq
+                \fun{pair}^=(p^{-1},(p^{-1})_*(v))\colon(y,v)
+                \eq{\Sigma_XA}(x,(p^{-1})_*(v)).
+        \]
+        Therefore,
+        \[
+            \fun{transport}^{\hat B}(\delta^{-1})\colon
+                \hat B(x,w)\to\hat B(y,v),
+        \]
+        which is definitionally equal to
+        \[
+            \fun{transport}^{\hat B}(\delta^{-1})\colon
+            B(x,w)\to B(y,v).
+        \]
+        Since $f(w)\colon B(x,w)$, 
+        \[
+            \rhs\equiv\fun{transport}^{\hat B}(\delta^{-1},f(w))
+                \colon B(y,v).
+        \]
+        \item[Inhabitation:] By path induction on $p$, we reduce ourselves to the case $y\equiv x$ and $p\equiv\fun{refl}_x$. We obtain
+        \begin{align*}
+            \lhs&\equiv
+                \fun{transport}^{\Pi_AB}(\fun{refl}_x,f)(v)\\
+                &\equiv f(v),\\
+            \delta&\equiv\fun{pair}^=(\fun{refl}_x
+                ,\fun{refl}_{(\fun{refl}_x)_*(v)})
+                    &&;\ \fun{refl}_x^{-1}\equiv\fun{refl}_x\\
+                &\equiv\fun{refl}_{(\fun{refl}_x)_*(v)}\\
+                &\equiv\fun{refl}_v,\\
+            \rhs
+            &\equiv
+                \fun{transport}^{\hat B}
+                \bigl(
+                    (
+                        \fun{refl}_v,
+                        f((\fun{refl}_x)_*(v))
+                \bigr)
                 &&;\ \fun{refl}_x^{-1}\equiv\fun{refl}_x\\
-            &\equiv\fun{refl}_{(\fun{refl}_x)_*(v)}\\
-            &\equiv\fun{refl}_v,\\
-        \rhs
-        &\equiv
-            \fun{transport}^{\hat B}
-            \bigl(
-                (
-                    \fun{refl}_v,
-                    f((\fun{refl}_x)_*(v))
-            \bigr)
-            &&;\ \fun{refl}_x^{-1}\equiv\fun{refl}_x\\
-        &\equiv f((\fun{refl}_x)_*(v))\\
-        &\equiv f(v).
-    \end{align*}
-\end{proof}
-
-\begin{cor}
-    With the precedent notation, for\/ $v\colon A(y)$ we have
-    \[
-        \fun{transport}^{\Pi_AB}(p,f)(v)
-        \eq{B(y,v)}
-        \fun{transport}^{\hat B}
-        \bigl(
-            \delta^{-1},
-            f((p^{-1})_*(v))
-        \bigr),
-    \]
-    where\/ $\delta\defeq\fun{pair}^=(p^{-1},\fun{refl}_{(p^{-1})_*(v)})$.
-\end{cor}
-
-\begin{proof}
-    Even though this can be derived from the theorem, it is simpler to use path induction and verify the definitional equality in the case\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$.
-    In that case, we obtain
-    \begin{align*}
-        \lhs&\equiv
-            \fun{transport}^{\Pi_AB}(\fun{refl}_x,f)(v)\\
+            &\equiv f((\fun{refl}_x)_*(v))\\
             &\equiv f(v).
-    \intertext{For the right-hand side, since\/ $p^{-1}\equiv\fun{refl}_x$, we have}
-        \delta&\equiv\fun{pair}^=(\fun{refl}_x
-            ,\fun{refl}_{(\fun{refl}_x)_*(v)})\\
-            &\equiv\fun{pair}^=(\fun{refl}_x, \fun{refl}_v)\\
-            &\equiv\fun{refl}_{(x,v)}.
-    \intertext{Thus,\/ $\delta^{-1}\equiv\fun{refl}_{(x,v)}$ and}
-        \rhs
-        &\equiv
-            \fun{transport}^{\hat B}
-            \bigl(
-                \fun{refl}_{(x,v)},
-                f((\fun{refl}_x)_*(v))
-            \bigr)\\
-        &\equiv f((\fun{refl}_x)_*(v)\\
-        &\equiv f(v).
-    \end{align*}
-    This shows that\/ $\lhs\equiv\rhs$.
+        \end{align*}
+    \end{description}
 \end{proof}
 
 \begin{lem}\label{lem:non-dependent-i-j-paths}
@@ -2908,7 +2905,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and Theorem~\ref{thm:function-equality-equivalence} for dependent functions. The notation is the one introduced in the Dependent case of section \nameref{subs:transport-decomposition}.
 
 \begin{lem}\label{lem:dependent-i-j-path}
-    Let $A\colon X\to\univ$ be a type family and $p\colon x\eq Xy$ a path in~$X$. Then, given a second type family $B\colon\prod_{x\colon X}A(x)\to\univ$ and a dependent function $f\colon\Pi_AB(x)$, we have
+    Let $A\colon X\to\univ$ be a type family and $p\colon x\eq Xy$ a path in~$X$. Then, given a second type family $B\colon\prod_{x\colon X}A(x)\to\univ$ and a dependent function $f\colon\Pi_AB(x)$, we have two paths
             \begin{align*}
                 i(p,u)&\colon p_*(f)(p_*(u))
                     \eq{B(y,p_*(u))}\Phi((p^{-1})_*(p_*(u)))\\
@@ -2931,66 +2928,68 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
             \end{align*}
 \end{lem}
 
-\begin{proof}
-    To proceed with type verification, observe that\footnote{See the notation used in Theorem~\ref{thm:dependent-transport-decomp}.}
-    \begin{alignat*}6
-        u&\colon A(x),&\quad p_*(u)&\colon A(y),
-            &\quad w\equiv(p^{-1})_*(p_*(u))&\colon A(x).
-    \end{alignat*}
-    Thus,
-    \begin{alignat*}4
-        \fun{pair}^=(p^{-1},\fun{refl}_w)^{-1}
-                &\colon(x,u)\eq{\Sigma_XA}(y,p_*(u)),
-                &\quad f(w)&\colon B(x,u),\\
-        \Phi(w)&\colon B(y,p_*(u)),
-            &\quad\fun{Tr}(p,f,u)&\colon B(y,p_*(u)).
-    \end{alignat*}
-    Then all expressions are correctly typed.
+\begin{proof}${}$
+    \begin{description}[font=\normalfont\scshape]
+        \item[Type verification:] 
+        Observe that\footnote{See the notation used in Theorem~\ref{thm:dependent-transport-decomp}.}
+        \begin{alignat*}6
+            u&\colon A(x),&\quad p_*(u)&\colon A(y),
+                &\quad w\equiv(p^{-1})_*(p_*(u))&\colon A(x).
+        \end{alignat*}
+        Thus, as shown in Corollary~\ref{cor:dependent-transport-decomp}, {\scshape type verification}, for $v\defeq p_*(u)$:
+        \begin{alignat*}4
+            \fun{pair}^=(p^{-1},\fun{refl}_w)^{-1}
+                    &\colon(x,w)\eq{\Sigma_XA}(y,p_*(u)),
+                    &\quad f(w)&\colon B(x,w),\\
+            \Phi(w)&\colon B(y,p_*(u)),
+                &\quad\fun{Tr}(p,f,u)&\colon B(y,p_*(u)).
+        \end{alignat*}
+        Then all expressions are correctly typed.
+
+        \item[Inhabitation:] To construct the witnesses $i(p,u)$ and $j(p,u)$, define the motive
+        \begin{align*}
+            P&\colon\prod_{y\colon X}(x\eq Xy)\to\univ\\
+            P(y,p)&\defeq\prod_{u\colon A(x)}
+                \fun{Eq}_i(y,p,u)\times\fun{Eq}_j(y,p,u),
+        \end{align*}
+        where $\fun{Eq}_i$ and $\fun{Eq}_j$ are the types of $i(p,u)$ and $j(p,u)$.
     
-    To construct the witnesses $i(p,u)$ and $j(p,u)$, define the motive
-    \begin{align*}
-        P&\colon\prod_{y\colon X}(x\eq Xy)\to\univ\\
-        P(y,p)&\defeq\prod_{u\colon A(x)}
-            \fun{Eq}_i(y,p,u)\times\fun{Eq}_j(y,p,u),
-    \end{align*}
-    where $\fun{Eq}_i$ and $\fun{Eq}_j$ are the types of $i(p,u)$ and $j(p,u)$.
-
-    By based path induction, to show that $P(y,p)$ is inhabited it suffices to construct a witness of $P(x,\fun{refl}_x)$. In this case:
-    \begin{enumerate}[-]
-        \item $p$ and $p^{-1}$ reduce definitionally to $\fun{refl}_x$.
-        
-        \item Since the transport operations $p_*$ reduce to identity functions, $p_*(u) \equiv u$ and $p_*(f) \equiv f$.
-        
-        \item The fiber coordinate $w\defeq(p^{-1})_*(p_*(u))$ reduces definitionally to $u$.
-        
-        \item $\Phi(w)$ becomes $f(u)$.
-
-        \item $\fun{Tr}(\fun{refl}_x,f,u)$ becomes:
+        By based path induction, to show that $P(y,p)$ is inhabited it suffices to construct a witness of $P(x,\fun{refl}_x)$. In this case:
+        \begin{enumerate}[-]
+            \item $p$ and $p^{-1}$ reduce definitionally to $\fun{refl}_x$.
+            
+            \item Since the transport operations $p_*$ reduce to identity functions, $p_*(u) \equiv u$ and $p_*(f) \equiv f$.
+            
+            \item The fiber coordinate $w\defeq(p^{-1})_*(p_*(u))$ reduces definitionally to $u$.
+            
+            \item $\Phi(w)$ becomes $f(u)$.
+    
+            \item $\fun{Tr}(\fun{refl}_x,f,u)$ becomes:
+            \[
+                \fun{transport}^{\hat B}
+                \bigl(
+                    \fun{pair}^=(\fun{refl}_x,\fun{refl}_u),
+                    f(u)
+                \bigr),
+            \]
+            which is definitionally equal to $f(u)$.
+        \end{enumerate}
+    
+        Consequently, for any $u\colon A(x)$, the goals become:
+        \begin{align*}
+            i(\fun{refl}_x,u)&\colon f(u)\eq{B(x,u)}f(u),\\
+            j(\fun{refl}_x,u) &\colon f(u)\eq{B(x,u)}f(u).
+        \end{align*}
+        These are clearly inhabited by $\fun{refl}_{f(u)}$.
+        Thus, the term
         \[
-            \fun{transport}^{\hat B}
-            \bigl(
-                \fun{pair}^=(\fun{refl}_x,\fun{refl}_u),
-                f(u)
-            \bigr),
+            \lambda u.\,(\fun{refl}_{f(u)},\, \fun{refl}_{f(u)})
         \]
-        which is definitionally equal to $f(u)$.
-    \end{enumerate}
-
-    Consequently, for any $u\colon A(x)$, the goals become:
-    \begin{align*}
-        i(\fun{refl}_x, u) &\colon f(u) \eq{B(x,u)} f(u),\\
-        j(\fun{refl}_x, u) &\colon f(u) \eq{B(x,u)} f(u).
-    \end{align*}
-    These are clearly inhabited by $\fun{refl}_{f(u)}$.
-    Thus, the term
-    \[
-        \lambda u.\,(\fun{refl}_{f(u)},\, \fun{refl}_{f(u)})
-    \]
-    witnesses $P(x,\fun{refl}_x)$, completing the proof.
-
+        witnesses $P(x,\fun{refl}_x)$, completing the proof.
+    \end{description}
 \end{proof}
 
-\begin{thm}
+\begin{thm}\label{thm:dependent-function-equality-equivalence}
     Given two families\/ $A\colon X\to\univ$ and\/ $B\colon\prod_{x\colon X}A(x)\to\univ$, a path\/ $p\colon x\eq Xy$, and functions\/ $f\colon\Pi_AB(x)$ and\/ $g\colon\Pi_AB(y)$, there is an equivalence
     \[
         \bigl(p_*(f)\eq{\Pi_AB(y)}g\bigr)
@@ -3007,7 +3006,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
             \bigl(
                 \fun{pair}^=(p,\fun{refl}_{p_*(u)}),
                 f(u)
-            \bigr)
+            \bigr).
     \]
     Moreover, if\/ $q\colon p_*(f)\eq{\Pi_AB(y)}g$ corresponds under this equivalence to\/ $\hat q$, then for any\/ $u\colon A(x)$, the path
     \[
@@ -3018,75 +3017,88 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
     \[
         i(p,u)\ct j(p,u)\ct\hat q(u),
     \]
-    where\/ $i(p,u)$ and $j(p,u)$ are the paths given by\/ {\upshape Lemma~\ref{lem:dependent-i-j-path}}. In a diagram
+    where\/ $i(p,u)$ and $j(p,u)$ are the paths given by\/ {\upshape Lemma~\ref{lem:dependent-i-j-path}}, as illustrated in the following diagram:
     \[
-        \begin{tikzcd}[column sep=7em, row sep=3em]
+        \begin{tikzcd}[column sep=6em, row sep=3em]
             p_*(f)(p_*(u))
                     \arrow[r,"{\fun{happly}(q, p_*(u))}"]
                     \arrow[d,"{i(p,u)}"']
                 &g(p_*(u))\\
-            \Phi(w)
+            \Phi((p^{-1})_*(p_*(u)))
                     \arrow[r,"{j(p,u)}"']
             &\fun{Tr}(p,f,u)
                     \arrow[u,"\hat q(u)"']
         \end{tikzcd}
     \]
+    where $\Phi$ is defined in\/ {\upshape Lemma~\ref{lem:dependent-i-j-path}}.
 \end{thm}
 
-\begin{proof}
-    To define the motive
-    \[
-        P\colon\prod_{y\colon X}(x\eq Xy)\to\univ
-    \]
-    \needspace{2\baselineskip}
-    proceed as follows:
-    \begin{enumerate}[-]
-        \item For $y\colon X$ and $p\colon x\eq Xy$, let
-        \begin{align*}
-            \fun L(y,p,g)
-                &\defeq p_*(f)\eq{\Pi_AB(y)}g,\\
-            \fun R(y,p,g)
-                &\defeq\prod_{u\colon A(x)}
-                \fun{Tr}(p,f,u) \eq{B(y,p_*(u))} g(p_*(u)).
-        \end{align*}
+\needspace{2\baselineskip}
+\begin{proof}${}$
+    \begin{description}[font=\normalfont\scshape]
+        \item[Type verification:] We need to verify that both sides of the equivalence are well-formed elements of $\univ$.
+        
+        For the \lhs, observe that $p_*(f)$ and $g$ both inhabit the function type $\Pi_AB(y)$; thus, the identity type $p_*(f)=g$ is well-formed.
 
-        \item Then define
+        For the \rhs, we must ensure the terms inhabit the same fiber.
+        \begin{enumerate}[a), font=\upshape]
+            \item By Lemma~\ref{lem:dependent-i-j-path}, $\fun{Tr}(p,f,u) \colon B(y, p_*(u))$.
+            \item Since $g\colon \Pi_AB(y)$ and $p_*(u)\colon A(y)$, we have $g(p_*(u)) \colon B(y, p_*(u))$.
+        \end{enumerate}
+        Since both terms inhabit $B(y, p_*(u))$, the identity type on the right is also well-formed.
+        
+        \item[Inhabitation:] To define the motive
         \[
-            P(y,p)\defeq\prod_{g\colon\Pi_AB(y)}
-                \;\sum_{e\colon \fun L\simeq\fun R}
-                \fun E(y,p,g,e),
+            P\colon\prod_{y\colon X}(x\eq Xy)\to\univ
         \]
-        where
+        proceed as follows:
+        \begin{enumerate}[-]
+            \item For $y\colon X$ and $p\colon x\eq Xy$, let
+            \begin{align*}
+                \fun L(y,p,g)
+                    &\defeq p_*(f)\eq{\Pi_AB(y)}g,\\
+                \fun R(y,p,g)
+                    &\defeq\prod_{u\colon A(x)}
+                    \fun{Tr}(p,f,u) \eq{B(y,v)} g(v).
+            \end{align*}
+    
+            \item Then define
+            \[
+                P(y,p)\defeq\prod_{g\colon\Pi_AB(y)}
+                    \;\sum_{e\colon\fun L\simeq\fun R}
+                    \fun E(y,p,g,e),
+            \]
+            where
+            \[
+                \fun E(y,p,g,e)\defeq\!\!\!
+                    \prod_{q\colon\fun L(y,p,g)}
+                    \;\prod_{u\colon A(x)}
+                        \fun{happly}(q,v)
+                        \eq{B(y,v)}
+                        \delta(p,u)\ct e(q)(u),
+            \]
+            with $v\defeq p_*(u)$ and $\delta(p,u)\defeq i(p,u)\ct j(p,u)$.
+        \end{enumerate}
+        By based path induction, it suffices to specify an inhabitant for the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case:
+        \begin{enumerate}[-]
+            \item $\fun L(x,\fun{refl}_x,g)\equiv f\eq{\Pi_AB(x)}g$,  $\fun{Tr}(\fun{refl}_x,f,u)\equiv f(u)$, $\fun R(x,\fun{refl}_x,g)\equiv f\sim g$.
+    
+            \item $i(\fun{refl}_x,u)$ and $j(\fun{refl}_x,u)$ reduce to $\fun{refl}_{f(u)}$.
+    
+            \item Take $e\defeq\fun{happly}$. The type $\fun E(x,\fun{refl}_x,g,\fun{happly})$ requires us to verify that for every $q\colon f\eq{\Pi_AB}g$ and $u\colon A(x)$,
+            \[
+                \fun{happly}(q,u)
+                \eq{B(x,u)}
+                \fun{refl}_{f(u)}
+                \ct\fun{happly}(q,u).
+            \]
+            This is inhabited by $\fun{refl}_{\fun{happly}(q,u)}$.
+        \end{enumerate}
+        Thus, the map
         \[
-            \fun E(y,p,g,e)\defeq\!\!\!
-                \prod_{q\colon\fun L(y,p,g)}
-                \,\prod_{u\colon A(x)}
-                    \!\!\fun{happly}(q,p_*(u))
-                    \eq{B(y,p_*(u))}
-                    \delta(p,u)\ct e(q)(u),
+            g\mapsto(\fun{happly}
+            ,\lambda q.\,\lambda u.\,\fun{refl}_{\fun{happly}(q,u)})
         \]
-        with $\delta(p,u)\defeq i(p,u)\ct j(p,u)$.
-    \end{enumerate}
-    By based path induction, it suffices to specify an inhabitant for the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case:
-    \begin{enumerate}[-]
-        \item $\fun L(x,\fun{refl}_x,g)\equiv f\eq{\Pi_AB(x)}g$,  $\fun{Tr}(\fun{refl}_x,f,u)\equiv f(u)$, $\fun R(x,\fun{refl}_x,g)\equiv f\sim g$.
-
-        \item $i(\fun{refl}_x,u)$ and $j(\fun{refl}_x,u)$ reduce to $\fun{refl}_{f(u)}$.
-
-        \item Take $e\defeq\fun{happly}$. The type $\fun E(x,\fun{refl}_x,g,\fun{happly})$ requires us to verify that for every $q\colon f\eq{\Pi_AB}g$ and $u\colon A(x)$,
-        \[
-            \fun{happly}(q,u)
-            \eq{B(x,u)}
-            \fun{refl}_{f(u)}
-            \ct\fun{happly}(q,u).
-        \]
-        This is inhabited by $\fun{refl}_{\fun{happly}(q,u)}$.
-    \end{enumerate}
-    Thus, the map
-    \[
-        g\mapsto(\fun{happly}
-        ,\lambda q.\,\lambda u.\,\fun{refl}_{\fun{happly}(q,u)})
-    \]
-    inhabits $P(x,\fun{refl}_x)$, which completes the proof.
-
+        inhabits $P(x,\fun{refl}_x)$, which completes the proof.
+    \end{description}
 \end{proof}
