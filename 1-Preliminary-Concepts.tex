@@ -935,9 +935,9 @@
 \begin{lpar}{The type of booleans.}\label{lpar:boolean-type}
     The \textsl{boolean type} is denoted $\fun2\colon\univ$. Its constructors yield $0_{\fun2}$ and $1_{\fun2}$. To derive a function $f\colon\fun2\to C$ we have to specify two elements $c_0,c_1\colon C$ and declare
     \[
-        f(0_{\fun2}) \defeq c_0
+        f(0_{\fun2})\defeq c_0
         \quad\text{and}\quad
-        f(1_{\fun2}) \defeq c_1.
+        f(1_{\fun2})\defeq c_1.
     \]
     Therefore, the recursor
     \begin{equation}\label{eq:rec2}
@@ -1672,7 +1672,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{Transport.}\label{lpar:transport}
     The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with \textsl{type transport} (a.k.a.~\textsl{type substitution}).\footnote{See also Exercise~\ref{exr:ap-application}.}
         
-\begin{lem}
+\begin{lem}\label{lem:transportP}
     Let\/ $P\colon A\to\univ$ be a family of types. Given\/ $x,y\colon A$ and a path\/ $p\colon x\eq A y$, there is a function
     \[
         \fun{transport}^P(p)\colon P(x)\to P(y).
@@ -1971,6 +1971,86 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \end{enumerate}
     \end{proof}
 \end{lpar}
+
+\section{Summary of Constructors and Eliminators}
+
+\begin{enumerate}[-]
+    \item $A\times B$
+    
+    \textsc{Constructors:} $(a,b)$
+    
+    \textsc{Eliminators:} $\pi_1, \pi_2$
+    \begin{align*}
+        \beta & \colon \begin{cases}
+            \pi_1(a,b) \equiv a \\
+            \pi_2(a,b) \equiv b
+        \end{cases} \\
+        \eta & \colon z \equiv (\pi_1(z), \pi_2(z))
+    \end{align*}
+
+    \item $\prod_{x:A} B(x)$
+    
+    \textsc{Constructors:} $\lambda x.\,\Phi$
+    
+    \textsc{Eliminators:} $\fun{ev}(f,a)\equiv f(a)$
+    \begin{align*}
+        \beta&\colon(\lambda x.\,\Phi)(a)\equiv\Phi[x\leftarrow a]\\
+        \eta & \colon f \equiv \lambda x.\, f(x)
+    \end{align*}
+
+    \item $\sum_{x:A}B(x)$
+    
+    \textsc{Constructors:} $(a,b)$
+    
+    \textsc{Eliminators:} $\pi_1, \pi_2$
+    \begin{align*}
+        \beta&\colon\begin{cases}
+            \pi_1(a,b)\equiv a\\
+            \pi_2(a,b)\equiv b
+        \end{cases}\\
+        \eta&\colon z\equiv(\pi_1(z), \pi_2(z))
+    \end{align*}
+
+    \item $A+B$
+    
+    \textsc{Constructors:} $\fun{inl},\fun{inr}$
+    
+    \textsc{Eliminators:} $\fun{ind}_{A+B}$ (case analysis)
+    \begin{align*}
+        \beta & \colon \begin{cases}
+            \fun{ind}_{A+B}(\fun{inl}(a), l, r) \equiv l(a) \\
+            \fun{ind}_{A+B}(\fun{inr}(b), l, r) \equiv r(b)
+        \end{cases} \\
+        \eta & \colon z \equiv \fun{ind}_{A+B}(z, \fun{inl}, \fun{inr})
+    \end{align*}
+
+    \item $\fun{2}$
+    
+    \textsc{Constructors:} $0_{\fun2},1_{\fun2}$
+    
+    \textsc{Eliminators:} $\fun{ind}_{\fun2}$ (if-else)
+    \begin{align*}
+        \beta&\colon\begin{cases}
+            \fun{ind}_{\fun2}(0_{\fun2},c_0,c_1)\equiv c_0\\
+            \fun{ind}_{\fun2}(1_{\fun2},c_0,c_1)\equiv c_1
+        \end{cases} \\
+        \eta&\colon x\equiv\fun{ind}_{\fun2}(x,0_{\fun2},1_{\fun2})
+    \end{align*}
+
+    \item $\N$
+    
+    \textsc{Constructors:} $0,\fun{succ}$
+    
+    \textsc{Eliminators:} $\fun{rec}_\N$ (recursion)
+    \begin{align*}
+        \beta & \colon \begin{cases}
+            \fun{rec}_\N(0, c_0,c_s)\equiv c_0\\
+            \fun{rec}_\N(\fun{succ}(n),c_0,c_s)
+                \equiv c_s(n,\fun{rec}_\N(n,c_0,c_s))
+        \end{cases}\\
+        \eta&\colon n\equiv\fun{rec}_\N(n,0,\fun{succ})
+    \end{align*}
+\end{enumerate}
 
 \section{Exercises}
 

@@ -421,7 +421,7 @@
     In HoTT, the analogous statement is given by the following
 \end{rem}
 
-\begin{lem}
+\begin{lem}\label{lem:post-composition-transport}
     For a function\/ $f \colon A \to B$, a type family\/ $P \colon B \to \univ$, and any\/ $p \colon x \eq A y$ and\/ $u \colon P(f(x))$, we have
     \[
         \fun{transport}^{P\circ f}(p,u) \eq{P(f(y))}
@@ -457,7 +457,7 @@
     which is inhabited by $\lambda u\colon P(f(x)).\,\fun{refl}_u$.
 \end{proof}
 
-\begin{lem}
+\begin{lem}\label{lem:dependent-post-composition-transport}
     For\/ $P, Q \colon A \to \univ$, a function family\/ $f \colon \prod_{x\colon A} P(x) \to Q(x)$, and any\/ $p \colon x \eq A y$ and\/ $u \colon P(x)$, we have
     \[
         \fun{transport}^Q(p,f_x(u))\eq{Q(y)}
@@ -761,23 +761,24 @@
 \end{proof}
 
 \begin{prop}
-    Let\/ $\fun{f}$ and\/ $\fun{g}$ be the functions defined previously between the path space of the product and the product of path spaces. Then\/ $\fun{g} \circ \fun{f} \sim \id$.
+    Let\/ $f$ and\/ $g$ be the functions defined previously between the path space of the product and the product of path spaces. Then\/ $g\circ f\sim\id$.
 \end{prop}
 
 \begin{proof}
-    By the previous Lemma, to prove that $\fun{g} \circ \fun{f}$ is homotopic to the identity function on the path space, it suffices to verify that they agree upon pre-composition with $\fun{\rho}$. That is, we must check that for every $x \colon A \times B$:
+    By the previous Lemma, to prove that $g\circ f$ is homotopic to the identity function on the path space, it suffices to verify that they agree upon pre-composition with $\fun\rho$. That is, we must check that for every $x\colon A\times B$:
     \[
-        (\fun{g} \circ \fun{f})(\fun{refl}_x) \eq{} \id(\fun{refl}_x).
+        (g\circ f)(\fun{refl}_x)\eq{}\id(\fun{refl}_x).
     \]
-    We compute the left-hand side. By the definition of $\fun{f}$, we have $\fun{f}(\fun{refl}_x) \equiv (\fun{refl}_{\fun{\pi}_1(x)}, \fun{refl}_{\fun{\pi}_2(x)})$. Applying $\fun{g}$ to this canonical pair yields the reflexivity path on the pair of projections:
+    By the definition of $f$, we have $f(\fun{refl}_x)\equiv(\fun{refl}_{\fun\pi_1(x)}, \fun{refl}_{\fun\pi_2(x)})$. Applying $g$ to this canonical pair yields the reflexivity path on the pair of projections:
     \[
-        (\fun{g} \circ \fun{f})(\fun{refl}_x) \equiv \fun{refl}_{(\fun{\pi}_1(x), \fun{\pi}_2(x))}.
+        (g\circ f)(\fun{refl}_x)
+            \equiv\fun{refl}_{(\fun\pi_1(x),\fun\pi_2(x))}.
     \]
-    We must compare this to the right-hand side, which is simply $\fun{refl}_x$. We invoke the uniqueness homotopy $\fun{uniq}_{A \times B}(x) \colon (\fun{\pi}_1(x), \fun{\pi}_2(x)) \eq{} x$. Applying the congruence of the reflexivity term (whiskering by $\fun{refl}$), we obtain the path:
+    We must compare this to the right-hand side, which is simply $\fun{refl}_x$. We invoke the uniqueness homotopy $\fun{uniq}_{ \times B}(x)\colon(\fun\pi_1(x),\fun\pi_2(x))\eq{}x$. Applying the congruence of the reflexivity term (whiskering by $\fun{refl}$), we obtain the path:
     \[
-        \fun{refl} \cdot \fun{uniq}_{A \times B}(x) \colon \fun{refl}_{(\fun{\pi}_1(x), \fun{\pi}_2(x))} \eq{} \fun{refl}_x.
+        \fun{refl}\ct\fun{uniq}_{A\times B}(x)\colon \fun{refl}_{(\fun\pi_1(x),\fun\pi_2(x))} \eq{} \fun{refl}_x.
     \]
-    This provides the required homotopy for every $x$. Thus, by the Lemma, $\fun{g}\circ\fun{f}\sim\id$.
+    This provides the required homotopy for every $x$. Thus, by lemma, $g\circ f\sim\id$.
 \end{proof}
 
 \begin{xmpl}\label{xmpl:refl-is-homotopy}
@@ -925,7 +926,7 @@ Let\/ $f\colon A\to B$. Then,
     by writing simply\/ $f\colon A\simeq B$.
 \end{ntn}
 
-\begin{prop}
+\begin{prop}\label{prop:equivalence-is-an-equivalence-relation}
     Type equivalence is an equivalence relation on\/ $\univ$. More specifically:
     \begin{enumerate}[a),font=\upshape]
         \item For any\/ $A$, the identity function\/ $\id_A$ is an equivalence; hence\/ $A\simeq A$.
@@ -1018,7 +1019,7 @@ This approach consists of the following
     \item[Base code.]
     Select an element that corresponds to reflexivity:
     \[
-        c \colon C_x(x).
+        c \colon\fun{Code}(x,x).
     \]
 
     \item[Encode function.]
@@ -3041,8 +3042,9 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
         For the \lhs, observe that $p_*(f)$ and $g$ both inhabit the function type $\Pi_AB(y)$; thus, the identity type $p_*(f)=g$ is well-formed.
 
         For the \rhs, we must ensure the terms inhabit the same fiber.
-        \begin{enumerate}[a), font=\upshape]
+        \begin{enumerate}[-]
             \item By Lemma~\ref{lem:dependent-i-j-path}, $\fun{Tr}(p,f,u) \colon B(y, p_*(u))$.
+            
             \item Since $g\colon \Pi_AB(y)$ and $p_*(u)\colon A(y)$, we have $g(p_*(u)) \colon B(y, p_*(u))$.
         \end{enumerate}
         Since both terms inhabit $B(y, p_*(u))$, the identity type on the right is also well-formed.
@@ -3081,7 +3083,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
         \end{enumerate}
         By based path induction, it suffices to specify an inhabitant for the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case:
         \begin{enumerate}[-]
-            \item $\fun L(x,\fun{refl}_x,g)\equiv f\eq{\Pi_AB(x)}g$,  $\fun{Tr}(\fun{refl}_x,f,u)\equiv f(u)$, $\fun R(x,\fun{refl}_x,g)\equiv f\sim g$.
+            \item $\fun L(x,\fun{refl}_x,g)\equiv f\eq{}g$,  $\fun{Tr}(\fun{refl}_x,f,u)\equiv f(u)$, $\fun R(x,\fun{refl}_x,g)\equiv f\sim g$.
     
             \item $i(\fun{refl}_x,u)$ and $j(\fun{refl}_x,u)$ reduce to $\fun{refl}_{f(u)}$.
     
@@ -3101,4 +3103,169 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
         \]
         inhabits $P(x,\fun{refl}_x)$, which completes the proof.
     \end{description}
+\end{proof}
+
+\section{The Univalence Axiom}
+
+To apply the observational framework~\ref{observational-framework} to the universe \/\(\univ\), we identify the observational equality with the type of equivalences.
+\begin{description}[font=\normalfont\scshape]
+    \item[Code family.]
+    \begin{align*}
+        \fun{Code}&\colon\univ\to\univ\to\univ\\
+        \fun{Code}(A,B)&\defeq(A\simeq B).
+    \end{align*}
+    
+    \item[Base code.]
+    We specify the base code \/$c \colon \fun{Code}(A,A)$ as \/$c \defeq \id_A$. This is an abuse of notation for the canonical equivalence
+    \[
+        (\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))\colon A\simeq A
+    \]
+    [cf.~Proposition~\ref{prop:equivalence-is-an-equivalence-relation}].
+    
+    \item[Encode function.]
+    To define
+    \begin{align*}
+        \fun{encode}&\colon(A\eq\univ B)\to\fun{Code}(A,B),
+    \end{align*}
+    with $C_A\defeq\fun{Code}(A,{}\cdot{})$, we will use based path induction. Given $X\colon\univ$ and $q\colon A\eq\univ X$, consider the motive
+    \[
+        D(X,q)\defeq A\to X.
+    \]
+    To define the depending function
+    \[
+        \prod_{X\colon\univ}\;\prod_{q\colon A\eq\univ X}A\to X,
+    \]
+    it suffices to specify $d\colon D(A,\fun{refl}_A)\equiv A\to A$. Then, for $d\defeq\id_A$, we obtain
+    \[
+        f(p)\defeq\fun{ind}'_{=A}(A,D,\id_A,B,p),
+    \]
+    for $p\colon A\eq\univ B$.
+    
+    To further characterize this map, consider the type family $\id_\univ\colon\univ\to\univ$. Given $p\colon A\eq\univ B$, we have
+    \begin{align*}
+        \fun{transport}^{\id_\univ}&\colon(A\eq\univ B)
+            \to(A\to B).
+    \end{align*}
+    We claim that $f(p)\eq{A\to B}\fun{transport}^{\id_\univ}(p)$. To prove this by path induction on~$p$, it suffices to restrict ourselves to the case $B\equiv A$ and $p\equiv\fun{refl}_A$. In this case
+    \begin{align*}
+        \lhs&\equiv f(\fun{refl}_A)\\
+            &\equiv\fun{ind}'_{=A}(A,D,\id_A,A,\fun{refl}_A)\\
+            &\equiv\id_A,\\[1mm]
+        \rhs&\equiv\fun{transport}^{\id_\univ}(\fun{refl}_A)\\
+            &\equiv\fun{\id_A}
+            &&\text{; Lem.~\ref{lem:transportP}}
+    \end{align*}
+    
+    \begin{thm}
+        Given\/ $A,B\colon\univ$, there is a function
+        \begin{align}\label{eq:idtoeqv}
+            \fun{idtoeqv}&\colon(A\eq\univ B)\to(A\simeq B)
+        \intertext{induced by}
+            p&\mapsto\fun{transport}^{\id_\univ}(p),\nonumber
+            \end{align}
+        whose quasi-inverse is $p\mapsto\fun{transport}^{\id_\univ}(p^{-1})$.
+    \end{thm}
+    
+    \begin{proof}
+        Given $p\colon A\eq\univ B$, the map $\fun{transport}^{\id_\univ}(p^{-1})$ is a quasi-inverse of $\fun{transport}^{\id_\univ}(p)$, with the homotopies
+        \[
+            \fun{transportinv}_l^{\id_\univ}
+            \quad\text{and}\quad
+            \fun{transportinv}_r^{\id_\univ}
+        \]
+        given by Lemma~\ref{lem:transportinv}.
+    \end{proof}
+    
+    \begin{defn}
+        By the theorem, we can define $\fun{encode}\defeq\fun{idtoeqv}$.
+    \end{defn}
+    
+    
+    \item[Decode function.] To define the decoding map we need to add the following
+    
+    \textbf{Axiom.} [Univalence] For any $A,B\colon\univ$, the function \eqref{eq:idtoeqv} is an equivalence.
+    
+    \begin{rem}
+        The Univalence Axiom asserts that $\fun{idtoeqv}$ is an equivalence. In particular, $(A\eq\univ B)\simeq(A\simeq B)$. Moreover, it allows us to stablish the following rules
+        \begin{enumerate}[-]
+            \item the induction principle:
+            \[
+                \fun{ua}\colon(A\simeq B)\to(A\eq\univ B),
+            \]
+            \item the elimination rule:
+            \[
+                \fun{idtoeqv}\colon
+                    (A\eq\univ B)\to(A\simeq B),
+            \]
+            \item the propositionally computation rule: for $f\colon A\simeq B$ and $x\colon A$,
+            \[
+                \fun{ittoeqv}(\fun{ua}(f),x)\eq Bf(x),
+            \]
+            \item the propositional uniqueness principle: for $p\colon A\eq\univ B$,
+            \[
+                \fun{ua}(\fun{idtoeqv}(p))\eq{A\eq\univ B}p.
+            \]
+        \end{enumerate}
+    \end{rem}
+\end{description}
+
+
+\textbf{Extended framework.}
+The groupoid structure corresponds to the groupoid structure of equivalences:
+\begin{align*}
+    \fun{inv}&\colon(A\simeq B)\to(B\simeq A)\\
+    \fun{inv}(e)&\defeq e^{-1}
+\intertext{and}
+    \ect&\colon(A\simeq B)\to(B\simeq C)\to(A\simeq C)\\
+    e\ect e'&\defeq e'\circ e,
+\end{align*}
+with inverse and composition is defined in Proposition~\ref{prop:equivalence-is-an-equivalence-relation}.
+
+\begin{prop}
+    For any type\/ $A$ and\/ $x,y,z\colon A$, let\/ $p\colon x\eq Ay$. The function
+    \begin{align*}
+        t&\colon(y\eq Az)\to(x\eq Az)\\
+        t(q)&\defeq p\ct q
+    \end{align*}
+    is an equivalence definitionally equal to\/ $\fun{transport}^{\fun{Eq}_z}(p)$, where\/ $\fun{Eq}_z \colon A \to \univ$ is the type family\/ $\fun{Eq}_z(w)\defeq w\eq Az$.
+\end{prop}
+
+\begin{proof}
+    The equality between $t$ and $\fun{transport}^{\fun{Eq}_z}$ is clear. To see that it has a quasi-inverse, consider
+    \begin{align*}
+        g&\colon(x\eq Az)\to(y\eq Az)\\
+        g(r)&\defeq p^{-1}\ct r.
+    \end{align*}
+    Then, $g\equiv\fun{transport}^{\fun{Eq}_z}(p^{-1})$. Moreover,
+    \begin{align*}
+        g(t(q)) &\equiv g(p\ct q)\\
+            &\equiv p^{-1}\ct(p\ct q)\\
+            &\eq{y\eq Az}(p^{-1}\ct p)\ct q
+                &&\text{; Lem.~\ref{lem:concat}}\\
+            &\eq{y\eq Az}\fun{refl}_y\ct q
+                &&\text{; Idem}\\
+            &\equiv q.
+                &&\text{; Lem.~\ref{lem:path-concatenation}}
+    \end{align*}
+    Since the argument is symmetric, the proof is complete.
+\end{proof}
+
+
+\begin{prop}\label{prop:transport-function-codomain}
+    Let\/ $A$ be a type, $P\colon X\to\univ$ a type family, and\/ $p\colon x\eq Xy$ a path. For any function\/ $f\colon A\to P(x)$, we have
+    \[
+        \fun{transport}^{\lambda z.\,(A\to P(z))}(p,f)
+            \eq{A\to P(y)}\lambda a.\,\fun{transport}^P(p,f(a)).
+    \]
+\end{prop}
+
+\begin{proof}
+    The \lhs $\fun{transport}$ maps $p$ to a function $(A\to P(x))\to(A\to P(y))$. Therefore, the \lhs at $p$ maps $f\colon A\to P(x)$ to a function $A\to P(y)$.
+
+    The \rhs $\fun{transport}$ at $p$ is a map from $P(x)$ to $P(y)$. Thus, given $a\colon A$, its value at $f(a)\colon P(x)$ is an element of $P(y)$. In sum the \rhs is also a map from $A$ to $P(y)$.
+
+    To verify the propositional equality, by based path induction on $p$, it suffices to consider the case $y\equiv x$ and $p\equiv\fun{refl}_x$. In that case the \lhs reduces to $f$ and the \rhs to $\lambda a.\,f(a)$, which is definitionally equal to $f$.
+
+    %
+    
 \end{proof}
