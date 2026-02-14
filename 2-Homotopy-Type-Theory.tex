@@ -1,6 +1,6 @@
 \chapter{Homotopy Type Theory}
 
-\section{Homotopical Language}
+\section{Pointed Types and Loop Spaces}
 
 \begin{defn}
     A \textsl{pointed type} $(A,a)$ is a type $A\colon\univ$ together with a point $a\colon A$, called its \textsl{basepoint}. We write
@@ -12,20 +12,25 @@
 
 \begin{defn}
     Given a pointed type $(A,a)$, we define the \textsl{loop space} of $(A,a)$ to be the following pointed type:
-    \[
-        \Omega(A,a)\defeq((a\eq Aa),\fun{refl}_a).
-    \]
+    \begin{align*}
+        \Omega&\colon\univ_\bullet\to\univ_\bullet\\
+        \Omega(A,a)&\defeq((a\eq Aa),\fun{refl}_a).        
+    \end{align*}
     An element of this type is called a \textsl{loop} at $a$. For $n\colon\N$, the \textsl{$n$-fold iterated loop space} $\Omega^n(A,a)$ of a pointed type $(A,a)$ is defined recursively by:
     \begin{align*}
         \Omega^0(A,a)&\defeq(A,a)\\
         \Omega^{n+1}(A,a)&\defeq\Omega^n(\Omega(A,a)).
     \end{align*}
     An element of this type is called an \textsl{$n$-loop} or an \textsl{$n$-dimensional loop} at $a$.
-
-    Note that $\Omega^1(A,a)\equiv\Omega(A,a)$.
 \end{defn}
 
-\begin{rem}
+\begin{rem}\label{rem:Omega-abuse}
+    It is usual to sometimes abuse the notation and identify $\Omega(A,a)$ with $a\eq Aa$, i.e., as $\pi_1(a\eq Aa,\fun{refl}_a)$.
+    
+    Note however that the reason to define $\Omega\colon\univ_\bullet\to\univ_\bullet$ and not from $\univ_\bullet$ to $\univ$, is to enable the definition of $\Omega^n$ for $n=0,1,\dots$.
+\end{rem}
+
+\section{Functoriality and Path Algebra}
     Recall from Exercise~\ref{exr:ap-application} that given $f\colon A\to B$, the congruence function
     \[
         \fun{ap}_f\colon\prod_{x,y\colon A}\;\prod_{p\colon x\eq Ay}f(x)\eq Bf(y)
@@ -44,7 +49,6 @@
             \fun{ap}_f(p)\ct \fun{ap}_f(q).
     \]
 \fi
-\end{rem}
 
 \begin{prop}\label{prop:ap-properties}
     Let $A,B,C\colon\univ$. Given functions\/ $f\colon A\to B$ and\/ $g\colon B\to C$ and paths\/ $p\colon x\eq Ay$ and\/ $q\colon y\eq Az$, we have:
@@ -135,42 +139,198 @@
     Since both sides are definitionally equal to $\fun{refl}_b$, the equality is inhabited by $\fun{refl}_{\fun{refl}_b}$.
 \end{proof}
 
-\begin{rem}\label{rem:fibration}
-    Recall from classical topology that a \textsl{fibration} is a continuous map $\pi\colon E\to B$ with the homotopy-lifting property:
+\begin{prop} {\upshape[$\fun{ap}$ as functor]}\label{prop:ap-as-functor}
+    Let\/ $f\colon A\to B$ and\/ $g\colon B\to C$ be functions. Then,
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun{ap}_f(p\ct q)\eq B\fun{ap}_f(p)\ct\fun{ap}_f(q)$.
+        \item $\fun{ap}_f(p^{-1})\eq B\fun{ap}_f(p)^{-1}$.
+        \item $\fun{ap}_{g\circ f}(p)\eq C\fun{ap}_g(\fun{ap}_f(p))$.
+        \item $\fun{ap}_{\fun{id}_A}(p)\eq Ap$.
+    \end{enumerate}
+\end{prop}
+
+\needspace{2\baselineskip}
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item See Exercise~\ref{exr:ap-application}.
+        
+        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$. We must show:
+        \[
+            \fun{ap}_f(\fun{refl}_x^{-1})
+            \eq B
+            \fun{ap}_f(\fun{refl}_x)^{-1},
+        \]
+        which holds since both sides compute to $\fun{refl}_{f(x)}$.
+        
+        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$.
+        \begin{align*}
+            \fun{ap}_{g\circ f}(\fun{refl}_x)
+                &\equiv\fun{refl}_{g(f(x))}\\
+                &\equiv\fun{ap}_g(\fun{refl}_{f(x)})\\
+                &\equiv \fun{ap}_g(\fun{ap}_f(\fun{refl}_x)).
+        \end{align*}
+        
+        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$, where the equality holds because
+        \[
+        \fun{ap}_{\fun{id}_A}(\fun{refl}_x)\equiv\fun{refl}_x.
+        \]
+    \end{enumerate}
+\end{proof}
+
+\subsection{Path Whiskering}
+
+\begin{defn}
+    Let $A$ be a type and $x,y,z\colon A$ points.
+    \begin{enumerate}[a),font=\upshape]
+        \item Given a path $p\colon x\eq Ay$ and a $2$-path $\beta\colon q\eq{y\eq Az}r$ between paths $q,r\colon y\eq Az$,
+        \[
+            \begin{tikzcd}[column sep=large,
+                row sep=huge]
+                x 
+                        \arrow[r,"p"]
+                    &y
+                        \arrow[r,bend left=45,"r"{name=U}]
+                        \arrow[r,bend right=45,"s"'{name=D}]
+                    &z
+                        \arrow[Rightarrow,
+                            from=U,
+                            to=D,
+                            "\beta", 
+                            shorten <= 8pt,
+                            shorten >= 8pt]
+            \end{tikzcd}
+        \]
+        we define the \textsl{left whiskering}
+        \[
+            p\cdot\alpha\colon(p\ct q)\eq{x\eq Az}(p\ct r)
+        \]
+        by induction on $\beta$. If $r\equiv q$ and $\beta\equiv\fun{refl}_q$, then $p\cdot\fun{refl}_q\defeq\fun{refl}_{p\ct q}$.
+        
+        \item Given a $2$-path $\alpha\colon p\eq{x\eq Ay}q$ between paths $p,q\colon x\eq Ay$ and a path $r\colon y\eq Az$,
+        \[
+            \begin{tikzcd}[column sep=large,
+                row sep=huge]
+                x
+                        \arrow[r,bend left=45,"p"{name=U}]
+                        \arrow[r,bend right=45,"q"'{name=D}]
+                    &y 
+                        \arrow[r, "r"]
+                    &z
+                        \arrow[Rightarrow,
+                            from=U,
+                            to=D,
+                            "\alpha", 
+                            shorten <= 8pt,
+                            shorten >= 8pt]
+            \end{tikzcd}
+        \]
+        we define the \textsl{right whiskering}
+        \[
+            \alpha\cdot r\colon(p\ct r)\eq{x\eq Az}(q\ct r)
+        \]
+        by induction on $\alpha$. If $q\equiv p$ and $\alpha\equiv\fun{refl}_p$, then $\fun{refl}_p\cdot r\defeq\fun{refl}_{p\ct r}$.
+    \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    Given a function $f\colon A\to B$ and a point $a\colon A$, the \textsl{induced map on loops} is the function
     \[
-        \begin{tikzcd}[row sep=large, column sep=huge]
-            X
-                \arrow[r,"f"]
-                \arrow[d,hook,"i_0"']
-            &E
-                \arrow[d,"\pi"] \\
-            X\times I
-                \arrow[r,"\forall H"']
-                \arrow[ur,dashed,"\exists\tilde{H}"]
-            &B
+        \Omega f\colon\Omega(A,a)\to\Omega(B,f(a))
+    \]
+    defined by\footnote{See Remark \ref{rem:Omega-abuse}.}
+    \[
+        \Omega f(p)\defeq\fun{ap}_f(p).
+    \]
+    Note that by part a) of the previous lemma, we have $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that $\Omega f$ preserves the basepoint definitionally.
+\end{defn}
+
+\begin{defn}
+    Let $A$ be a type and let $a,b,c\colon A$ be points. Consider paths $p,q\colon a\eq Ab$ and $r,s \colon b\eq Ac$, along with homotopies $\alpha\colon p\eq{a\eq Ab}q$ and $\beta\colon r\eq{b\eq Ac}s$, as depicted below:
+    \[
+        \begin{tikzcd}[column sep=huge,row sep=large]
+            a 
+                \arrow[r,bend left=45,"p"{name=U1}]
+                \arrow[r,bend right=45,"q"'{name=D1}]
+            &b
+                \arrow[r,bend left=45,"r"{name=U2}]
+                \arrow[r,bend right=45,"s"'{name=D2}]
+            &c
+                \arrow[Rightarrow,from=U1,to=D1,"\alpha", 
+                    shorten <= 8pt,shorten >= 8pt]
+                \arrow[Rightarrow,from=U2,to=D2,"\beta", 
+                    shorten <= 8pt,shorten >= 8pt]
         \end{tikzcd}
     \]
-    In this context, $E$ is the \textsl{total space}\footnote{After the French \textit{Espace}.} and $B$ the \textsl{base space} of the fibration.
-
-    \textsl{Serre fibrations} lift paths, path homotopies, and higher-dimensional volumes. For instance, in the case of paths, the diagram above becomes:
+    The \textsl{horizontal composition} of $\alpha$ and $\beta$ is the homotopy
     \[
-        \begin{tikzcd}[row sep=large, column sep=large]
-            \{0\}
-                \arrow[r, "e_0"]
-                \arrow[d, hook, "i"']
-            & E
-                \arrow[d, "\pi"] \\
-            I
-                \arrow[r, "\forall\gamma"']
-                \arrow[ur, dashed, "\exists\tilde{\gamma}"]
-            & B
-        \end{tikzcd}
+        \alpha\hct\beta\colon(p\ct r)\eq{a\eq Ac}(q\ct s)
     \]
-    In Homotopy Type Theory, given a type family $P\colon A\to\univ$, the first projection $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space} $\sum_{x\colon A}P(x)$ and \textsl{base space} $A$. This structural analogy is established by the lemma below.
+    defined by path induction on $\alpha$ and $\beta$. Explicitly, if $\alpha \equiv \fun{refl}_p$ and $\beta \equiv \fun{refl}_r$, we define
+    \[
+        \fun{refl}_p\hct\fun{refl}_r\defeq\fun{refl}_{p\ct r}.
+    \]
+\end{defn}
 
-    Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ and $P(b)$. Although a point $u\colon P(a)$ cannot be directly compared with $v\colon P(b)$ due to type mismatch, it is possible to establish a connection between the pairs $(a,u)$ and $(b,v)$ within the $\Sigma$-type. Specifically, if there exists a path $p\colon a\eq A b$, we can transport $u$ along $p$ to obtain an element $\fun{transport}^P(p,u)\colon P(b)$. Since this transported term inhabits the same fiber as $v$, the comparison becomes well-defined. More precisely:
-    
+\begin{rem}
+    The horizontal composition can also be computed in terms of whiskering (up to homotopy) as:
+    \[
+        \alpha\hct\beta\eq{(p\ct r)\eq{a\eq Ac}(q\ct s)}(\alpha\cdot r)\ct(q\cdot\beta).
+    \]
 \end{rem}
+
+\begin{lem} {\upshape[Interchange Law]}
+    Let\/ $A$ be a type and\/ $\alpha, \beta, \gamma, \delta$ be homotopies in\/ $A$ arranged in a commutative square (meaning their boundaries match appropriately). Then, the horizontal composition\/ $\hct$ and the vertical composition\/ $\ct$ satisfy:
+    \[
+        (\alpha\hct\beta)\ct(\gamma\hct\delta)
+        \eq{}
+        (\alpha\ct\gamma)\hct(\beta\ct\delta).
+    \]
+\end{lem}
+
+\begin{thm} {\upshape[Eckmann-Hilton]}
+    The composition operation on the second loop space
+    \[
+        \Omega^2(A)\times\Omega^2(A)\to\Omega^2(A)
+    \]
+    is commutative: $\alpha\ct\beta=\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
+\end{thm}
+
+\section{Fibrations and Transport}
+
+\label{rem:fibration}
+Recall from classical topology that a \textsl{fibration} is a continuous map $\pi\colon E\to B$ with the homotopy-lifting property:
+\[
+    \begin{tikzcd}[row sep=large, column sep=huge]
+        X
+            \arrow[r,"f"]
+            \arrow[d,hook,"i_0"']
+        &E
+            \arrow[d,"\pi"] \\
+        X\times I
+            \arrow[r,"\forall H"']
+            \arrow[ur,dashed,"\exists\tilde{H}"]
+        &B
+    \end{tikzcd}
+\]
+In this context, $E$ is the \textsl{total space}\footnote{After the French \textit{Espace}.} and $B$ the \textsl{base space} of the fibration.
+
+\textsl{Serre fibrations} lift paths, path homotopies, and higher-dimensional volumes. For instance, in the case of paths, the diagram above becomes:
+\[
+    \begin{tikzcd}[row sep=large, column sep=large]
+        \{0\}
+            \arrow[r, "e_0"]
+            \arrow[d, hook, "i"']
+        & E
+            \arrow[d, "\pi"] \\
+        I
+            \arrow[r, "\forall\gamma"']
+            \arrow[ur, dashed, "\exists\tilde{\gamma}"]
+        & B
+    \end{tikzcd}
+\]
+In Homotopy Type Theory, given a type family $P\colon A\to\univ$, the first projection $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space} $\sum_{x\colon A}P(x)$ and \textsl{base space} $A$. This structural analogy is established by the lemma below.
+
+Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ and $P(b)$. Although a point $u\colon P(a)$ cannot be directly compared with $v\colon P(b)$ due to type mismatch, it is possible to establish a connection between the pairs $(a,u)$ and $(b,v)$ within the $\Sigma$-type. Specifically, if there exists a path $p\colon a\eq A b$, we can transport $u$ along $p$ to obtain an element $\fun{transport}^P(p,u)\colon P(b)$. Since this transported term inhabits the same fiber as $v$, the comparison becomes well-defined. More precisely:
 
 \begin{thm}{\upshape[Path Lifting Property]}\label{thm:path-lift}
     Let\/ $P\colon A\to\univ$ be a type family over\/~$A$ and let\/ $E\defeq\sum_{x\colon A}P(x)$ be its total space. Given $a,b\colon A$, there exists a function
@@ -484,45 +644,9 @@
     which is inhabited by $\lambda u\colon P(a).\,\fun{refl}_{f_a(u)}$.
 \end{proof}
 
-%
-%
-\begin{defn}
-    Given a function\/ $f\colon A\to B$ and a point\/ $a\colon A$, the \textsl{induced map on loops} is the function
-    \[
-        \Omega f \colon \Omega(A, a) \to \Omega(B, f(a))
-    \]
-    defined by
-    \[
-        \Omega f(p) \defeq \fun{ap}_f(p).
-    \]
-    Note that by part a) of the previous lemma, we have\/ $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that\/ $\Omega f$ preserves the basepoint definitionally.
-\end{defn}
-
-\[
-    \begin{tikzcd}[column sep=huge,row sep=large]
-        a
-                \arrow[r,bend left=45,"p"{name=U1}]
-                \arrow[r,bend right=45,"q"'{name=D1}]
-            &b
-                \arrow[r,bend left=45,"r"{name=U2}]
-                \arrow[r,bend right=45,"s"'{name=D2}]
-            &c
-                \arrow[Rightarrow,from=U1,to=D1,"\alpha",
-                    shorten <= 8pt,shorten >= 8pt]
-                \arrow[Rightarrow,from=U2,to=D2,"\beta",
-                    shorten <= 8pt,shorten >= 8pt]
-    \end{tikzcd}
-\]
-
-\begin{thm} {\upshape[Eckmann-Hilton]}
-    The composition operation on the second loop space
-    \[
-        \Omega^2(A)\times\Omega^2(A)\to\Omega^2(A)
-    \]
-    is commutative: $\alpha\ct\beta=\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
-\end{thm}
-
 \section{Function Homotopies}
+
+\subsection{The Homotopy Relation}
 
 \begin{ntn}
     Given a type family $P\colon A\to\univ$, we will sometimes denote type of sections\footnote{Remark \ref{rem:section-type}.} $\prod_{x\colon A}P(x)$ by $\Gamma(P)$.
@@ -534,6 +658,18 @@
         f\sim g\defeq\prod_{x\colon A}f(x)\eq\univ g(x).
     \]
 \end{defn}
+
+\begin{xmpl}\label{xmpl:refl-is-homotopy}
+    If $f\colon A\to B$, the reflection function
+    \[
+        \fun{refl}\cdot f\colon\prod_{x\colon A}f(x)\eq Bf(x),
+    \]
+    where $\fun{refl}\defeq\lambda x.\,\fun{refl}_x$, is a homotopy from $f$ to $f$. In particular,
+    \[
+        \fun{refl}\colon\id_A\sim\id_A.
+    \]
+\end{xmpl}
+
 
 \begin{xmpl}\label{xmpl:uniq-as-homotopy}${}$    
     As defined in \nref{lpar:Pi-types-over-product},
@@ -571,111 +707,74 @@
     \end{itemize}
 \end{proof}
 
-\begin{prop}\label{prop:ap-as-functor}
-    Let\/ $f\colon A\to B$ and\/ $g\colon B\to C$ be functions. Then,
-    \begin{enumerate}[a),font=\upshape]
-        \item $\fun{ap}_f(p\ct q)\eq B\fun{ap}_f(p)\ct\fun{ap}_f(q)$.
-        \item $\fun{ap}_f(p^{-1})\eq B\fun{ap}_f(p)^{-1}$.
-        \item $\fun{ap}_{g\circ f}(p)\eq C\fun{ap}_g(\fun{ap}_f(p))$.
-        \item $\fun{ap}_{\fun{id}_A}(p)\eq Ap$.
-    \end{enumerate}
-\end{prop}
+\subsection{Types as Categories}
 
-\needspace{2\baselineskip}
-\begin{proof}${}$
-    \begin{enumerate}[a)]
-        \item See Exercise~\ref{exr:ap-application}.
-        
-        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$. We must show:
-        \[
-            \fun{ap}_f(\fun{refl}_x^{-1})
-            \eq B
-            \fun{ap}_f(\fun{refl}_x)^{-1},
-        \]
-        which holds since both sides compute to $\fun{refl}_{f(x)}$.
-        
-        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$.
-        \begin{align*}
-            \fun{ap}_{g\circ f}(\fun{refl}_x)
-                &\equiv\fun{refl}_{g(f(x))}\\
-                &\equiv\fun{ap}_g(\fun{refl}_{f(x)})\\
-                &\equiv \fun{ap}_g(\fun{ap}_f(\fun{refl}_x)).
-        \end{align*}
-        
-        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$, where the equality holds because
-        \[
-        \fun{ap}_{\fun{id}_A}(\fun{refl}_x)\equiv\fun{refl}_x.
-        \]
-    \end{enumerate}
-\end{proof}
+\label{rem:types-as-categories}
+Types admit different interpretations: depending on the circumstances, they can be viewed as sets, propositions, or spaces. Another way to think of types is as categories. In this analogy we have
+\begin{description}[font=\normalfont\scshape]
+    \item[Objects.] These are the elements of the type: $x,y\colon A$ represent the objects that populate the category $A$.
 
-\begin{rem}\label{rem:types-as-categories} {\upshape[Types as categories]}
-    Types admit different interpretations: depending on the circumstances, they can be viewed as sets, propositions, or spaces. Another way to think of types is as categories. In this analogy we have
-    \begin{description}[font=\normalfont\scshape]
-        \item[Objects.] These are the elements of the type: $x,y\colon A$ represent the objects that populate the category $A$.
+    \item[Arrows.] Given two objects $x,y\colon A$, an arrow is a path $p\colon x\eq Ay$.
 
-        \item[Arrows.] Given two objects $x,y\colon A$, an arrow is a path $p\colon x\eq Ay$.
+    \item[Composition.] Composition is concatenation. Note, however, that if $p\colon x\eq Ay$ and $q\colon y\eq Az$, then $p\ct q\colon x\eq Az$ is denoted in the reverse order compared to categorical composition. We could also consider $q\circ p\defeq p\ct q$. Note that concatenation is propositionally associative.
 
-        \item[Composition.] Composition is concatenation. Note, however, that if $p\colon x\eq Ay$ and $q\colon y\eq Az$, then $p\ct q\colon x\eq Az$ is denoted in the reverse order compared to categorical composition. We could also consider $q\circ p\defeq p\ct q$. Note that concatenation is propositionally associative.
+    \item[Identity.] Given $x\colon A$ the identity for concatenation is $\fun{refl}_x$. Note that $\fun{refl}_x$ is the propositional unit of concatenation. 
 
-        \item[Identity.] Given $x\colon A$ the identity for concatenation is $\fun{refl}_x$. Note that $\fun{refl}_x$ is the propositional unit of concatenation. 
+    \item[Functors.] A function $f\colon A\to B$ acts as a functor between the corresponding categories:
+    \begin{center}
+        \begin{tabular}{lll}
+            \small
+            \textbf{Feature}
+                &\textbf{Domain}
+                &\textbf{Codomain}\\
+            \hline\rule{0mm}{3.5mm}\small
+            Objects
+                &$x\colon A$
+                &$f(x)\colon B$\\[0.7mm]
+            \small
+            Morphisms
+                &$p\colon x\eq A y$
+                &$\tilde f(p)\colon f(x)\eq Bf(y)$\\[0.7mm]
+            \small
+            Composition
+                &$p\ct q$
+                &$\tilde f(p)\ct\tilde f(q)$
+        \end{tabular}
+    \end{center}
 
-        \item[Functors.] A function $f\colon A\to B$ acts as a functor between the corresponding categories:
-        \begin{center}
-            \begin{tabular}{lll}
-                \small
-                \textbf{Feature}
-                    &\textbf{Domain}
-                    &\textbf{Codomain}\\
-                \hline\rule{0mm}{3.5mm}\small
-                Objects
-                    &$x\colon A$
-                    &$f(x)\colon B$\\[0.7mm]
-                \small
-                Morphisms
-                    &$p\colon x\eq A y$
-                    &$\tilde f(p)\colon f(x)\eq Bf(y)$\\[0.7mm]
-                \small
-                Composition
-                    &$p\ct q$
-                    &$\tilde f(p)\ct\tilde f(q)$
-            \end{tabular}
-        \end{center}
-
-        \item[Natural transformations.] These are the homotopies: given $f,g\colon A\to B$, a natural transformation between them is an inhabitant of the homotopy type $\eta\colon f\sim g$. To see this we need to show the (propositional) commutativity of the square
-        \begin{equation}\label{eq:nat-transformation}
-            \begin{tikzcd}
-                f(x)
-                        \arrow[r,"\tilde f(p)"]
-                        \arrow[d,"\eta_x"']
-                    &f(y)
-                        \arrow[d,"\eta_y"]\\
-                g(x)
-                        \arrow[r,"\tilde g(p)"']
-                    &g(y)
-            \end{tikzcd}
-        \end{equation}
-        i.e., for every $p\colon x\eq Ay$, the type
-        \begin{align*}
-            \tilde f(p)\ct\eta_y\eq B\eta_x\ct\tilde g(p)
-        \end{align*}
-        is inhabited. This follows by based path induction on $p$ using the motive $C\colon\prod_{y\colon A}(x\eq Ay)\to\univ$ defined by
-        \[
-            C(y,p)\defeq
-                \tilde f(p)\ct\eta_y\eq B\eta_x\ct\tilde g(p),
-        \]
-        which satisfies
-        \begin{align*}
-            C(x,\fun{refl}_x)
-                &\defeq\tilde f(\fun{refl}_x)\ct\eta_x
-                    \eq B\eta_x\ct\tilde g(p)\\
-                &\equiv\fun{refl}_{f(x)}\ct\eta_x
-                    \eq B\eta_x\ct\fun{refl}_{g(x)}\\
-                &\equiv \eta_x\eq B\eta_x\ct\fun{refl}_{g(x)}.
-        \end{align*}
-        By Lemma~\ref{lem:right-unit-law}, $\fun{unit}_r(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq B\eta_x$. Hence, $\fun{unit}_r(\eta_x)^{-1}$ is an inhabitant $C(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{unit}_l$, that satisfies $\fun{unit}_l(p)\colon\fun{refl}_x\ct p\eq Ap$, arriving at $\fun{unit}_l(\eta_x)\ct\fun{unit}_r(\eta_x)^{-1}$.}
-    \end{description}
-\end{rem}
+    \item[Natural transformations.] These are the homotopies: given $f,g\colon A\to B$, a natural transformation between them is an inhabitant of the homotopy type $\eta\colon f\sim g$. To see this we need to show the (propositional) commutativity of the square
+    \begin{equation}\label{eq:nat-transformation}
+        \begin{tikzcd}
+            f(x)
+                    \arrow[r,"\tilde f(p)"]
+                    \arrow[d,"\eta_x"']
+                &f(y)
+                    \arrow[d,"\eta_y"]\\
+            g(x)
+                    \arrow[r,"\tilde g(p)"']
+                &g(y)
+        \end{tikzcd}
+    \end{equation}
+    i.e., for every $p\colon x\eq Ay$, the type
+    \begin{align*}
+        \tilde f(p)\ct\eta_y\eq B\eta_x\ct\tilde g(p)
+    \end{align*}
+    is inhabited. This follows by based path induction on $p$ using the motive $C\colon\prod_{y\colon A}(x\eq Ay)\to\univ$ defined by
+    \[
+        C(y,p)\defeq
+            \tilde f(p)\ct\eta_y\eq B\eta_x\ct\tilde g(p),
+    \]
+    which satisfies
+    \begin{align*}
+        C(x,\fun{refl}_x)
+            &\defeq\tilde f(\fun{refl}_x)\ct\eta_x
+                \eq B\eta_x\ct\tilde g(p)\\
+            &\equiv\fun{refl}_{f(x)}\ct\eta_x
+                \eq B\eta_x\ct\fun{refl}_{g(x)}\\
+            &\equiv \eta_x\eq B\eta_x\ct\fun{refl}_{g(x)}.
+    \end{align*}
+    By Lemma~\ref{lem:right-unit-law}, $\fun{unit}_r(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq B\eta_x$. Hence, $\fun{unit}_r(\eta_x)^{-1}$ is an inhabitant $C(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{unit}_l$, that satisfies $\fun{unit}_l(p)\colon\fun{refl}_x\ct p\eq Ap$, arriving at $\fun{unit}_l(\eta_x)\ct\fun{unit}_r(\eta_x)^{-1}$.}
+\end{description}
 
 \begin{prop}
     Let\/ $\eta\colon f\sim\id_A$ be a homotopy, with\/ $f\colon A\to A$. Then for any\/ $x\colon A$ we have
@@ -701,8 +800,10 @@
     where, according to Lemma~\ref{prop:ap-as-functor}, we have replaced $\widetilde\id_A(\eta_x)$ with $\eta_x$. The conclusion follows from concatenation with $\eta_x^{-1}$.
 \end{proof}
 
+\subsection{The Algebra of Homotopies}
+
 \begin{prop}{\upshape[Whiskering]}\label{prop:whiskering}
-    The homotopy relation is compatible with composition:
+    The homotopy relation is compatible with right and left composition:
     \begin{description}[font=\normalfont\scshape]
         \item[Right:] Given\/ $\eta\colon f\sim g$ and a right composable function\/ $h$, we have
         \[
@@ -722,6 +823,72 @@
 
     For the case where\/ $h\colon B\to C$, the function\/ $\fun{ap}_h$ constructs a witness of the equality\/ $h(f(x))\eq C h(g(x))$ from the witness\/ $\eta(x)$ of\/ $f(x)\eq B g(x)$. Thus, the term\/ $\lambda x.\,\fun{ap}_h(\eta(x))$ is a well-defined witness of\/ $h\circ f\sim h\circ g$.
 \end{proof}
+
+\begin{rem}\label{rem:whiskering-with-id}
+    In the particular case where $f\equiv g$ and $\eta\equiv\fun{refl}_f$, defined by $x\mapsto\fun{refl}_{f(x)}$, we have
+    \begin{align*}
+        \fun{refl}_f\cdot h
+            &\equiv\lambda z.\,\fun{refl}_f(h(z))\\
+            &\equiv\lambda z.\,\fun{refl_{f(h(z))}}\\
+            &\equiv\fun{refl}_{f\circ h}
+    \intertext{and}
+        h\cdot\fun{refl}_f
+            &\equiv\lambda x.\,\fun{ap}_h(\fun{refl}_f(x))\\
+            &\equiv\lambda x.\,\fun{ap}_h(\fun{refl}_{f(x)})\\
+            &\equiv\lambda x.\,\fun{refl}_{h(f(x))}
+                &&\text{; Exr.~\ref{exr:ap-application} a)}\\
+            &\equiv\fun{refl}_{h\circ f}.
+    \end{align*}
+\end{rem}
+
+
+\begin{prop}\label{prop:whiskering-associativity}
+  Given an homotopy\/ $\eta$ and appropriately composable functions\/ $h$ and\/ $k$, we have
+  \begin{enumerate}[a),font=\upshape]
+      \item $(\eta\cdot h)\cdot k\equiv \eta\cdot(h\circ k)$.
+      \item $k\cdot(h\cdot\eta)=(k\circ h)\cdot\eta$.
+      \item $h\cdot(\eta\cdot k)\equiv(h\cdot\eta)\cdot k$.
+  \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    The first equation is a direct consequence of the definitions. The second follows from Proposition~\ref{prop:ap-properties}. For the third we have,
+    \begin{align*}
+        h\cdot(\eta\cdot k)
+            &\equiv\lambda x.\,\fun{ap}_h(\eta(k(x))\\
+            &\equiv\lambda x.\,(h\cdot\eta)(k(x))\\
+            &\equiv\lambda x.\,(h\cdot\eta)\circ k(x)\\
+            &\equiv (h\cdot\eta)\cdot k.
+    \end{align*}
+\end{proof}
+
+\begin{lem}
+    Let\/ $C \colon \prod_{x,y\colon A} (x \eq A y) \to \univ$ be a type family. Given two dependent functions\/
+    \[
+        f,g \colon \prod_{x,y\colon A} \prod_{p\colon x\eq A y} C(x,y,p),
+    \]
+    such that\/
+    \[
+        f \cdot \fun{refl} \sim g \cdot \fun{refl},
+    \]
+    we have\/ $f \sim g$.
+\end{lem}
+
+\begin{proof}
+    According to the definition, we have to construct a term of type
+    \[
+        f(x,y,p) \eq{C(x,y,p)} g(x,y,p)
+    \]
+    for all $x,y \colon A$ and $p\colon x\eq Ay$.
+    
+    Let $x \colon A$ be fixed. To define the term for arbitrary $y$ and $p$, we proceed by based path induction. It suffices to consider the case where the endpoint $y$ is $x$ and the path $p$ is $\fun{refl}_x$. In this base case, the required type becomes:
+    \[
+        f(x, x, \fun{refl}_x) \eq{C(x,x,\fun{refl}_x)} g(x, x, \fun{refl}_x).
+    \]
+    By definition of the whiskering operation, this is exactly the type of the hypothesis evaluated at $x$, namely $(f \cdot \fun{refl})(x) \eq{} (g \cdot \fun{refl})(x)$. Since the hypothesis provides such a term for every $x$, the proof is complete.
+\end{proof}
+
+\subsection{Sections of Path Spaces}
 
 \begin{defn}
     Let $A$ be a type and $E\defeq\sum_{x,y\colon A}x\eq Ay$ its total path space. The \textsl{reflexivity section} $\rho_A$ is the map that assigns to every point its trivial loop:
@@ -776,138 +943,159 @@
     \]
     We must compare this to the right-hand side, which is simply $\fun{refl}_x$. We invoke the uniqueness homotopy $\fun{uniq}_{ \times B}(x)\colon(\fun\pi_1(x),\fun\pi_2(x))\eq{}x$. Applying the congruence of the reflexivity term (whiskering by $\fun{refl}$), we obtain the path:
     \[
-        \fun{refl}\ct\fun{uniq}_{A\times B}(x)\colon \fun{refl}_{(\fun\pi_1(x),\fun\pi_2(x))} \eq{} \fun{refl}_x.
+        \fun{refl}\cdot\fun{uniq}_{A\times B}(x)\colon \fun{refl}_{(\fun\pi_1(x),\fun\pi_2(x))} \eq{} \fun{refl}_x.
     \]
     This provides the required homotopy for every $x$. Thus, by lemma, $g\circ f\sim\id$.
 \end{proof}
 
-\begin{xmpl}\label{xmpl:refl-is-homotopy}
-    If $f\colon A\to B$, the reflection function
-    \[
-        \fun{refl}\cdot f\colon\prod_{x\colon A}f(x)\eq Bf(x),
-    \]
-    where $\fun{refl}\defeq\lambda x.\,\fun{refl}_x$, is a homotopy from $f$ to $f$. In particular,
-    \[
-        \fun{refl}\colon\id_A\sim\id_A.
-    \]
-\end{xmpl}
-    
-\begin{prop}\label{prop:whiskering-associativity}
-  Given an homotopy\/ $\eta$ and appropriately composable functions\/ $h$ and\/ $k$, we have
-  \begin{enumerate}[a),font=\upshape]
-      \item $(\eta\cdot h)\cdot k\equiv \eta\cdot(h\circ k)$.
-      \item $k\cdot(h\cdot\eta)=(k\circ h)\cdot\eta$.
-      \item $h\cdot(\eta\cdot k)\equiv(h\cdot\eta)\cdot k$.
-  \end{enumerate}
-\end{prop}
-
-\begin{proof}
-    The first equation is a direct consequence of the definitions. The second follows from Proposition~\ref{prop:ap-properties}. For the third we have,
-    \begin{align*}
-        h\cdot(\eta\cdot k)
-            &\equiv\lambda x.\,\fun{ap}_h(\eta(k(x))\\
-            &\equiv\lambda x.\,(h\cdot\eta)(k(x))\\
-            &\equiv\lambda x.\,(h\cdot\eta)\circ k(x)\\
-            &\equiv (h\cdot\eta)\cdot k.
-    \end{align*}
-\end{proof}
-
-\begin{lem}
-    Let\/ $C \colon \prod_{x,y\colon A} (x \eq A y) \to \univ$ be a type family. Given two dependent functions\/
-    \[
-        f,g \colon \prod_{x,y\colon A} \prod_{p\colon x\eq A y} C(x,y,p),
-    \]
-    such that\/
-    \[
-        f \cdot \fun{refl} \sim g \cdot \fun{refl},
-    \]
-    we have\/ $f \sim g$.
-\end{lem}
-
-\begin{proof}
-    According to the definition, we have to construct a term of type
-    \[
-        f(x,y,p) \eq{C(x,y,p)} g(x,y,p)
-    \]
-    for all $x,y \colon A$ and $p\colon x\eq Ay$.
-    
-    Let $x \colon A$ be fixed. To define the term for arbitrary $y$ and $p$, we proceed by based path induction. It suffices to consider the case where the endpoint $y$ is $x$ and the path $p$ is $\fun{refl}_x$. In this base case, the required type becomes:
-    \[
-        f(x, x, \fun{refl}_x) \eq{C(x,x,\fun{refl}_x)} g(x, x, \fun{refl}_x).
-    \]
-    By definition of the whiskering operation, this is exactly the type of the hypothesis evaluated at $x$, namely $(f \cdot \fun{refl})(x) \eq{} (g \cdot \fun{refl})(x)$. Since the hypothesis provides such a term for every $x$, the proof is complete.
-\end{proof}
 
 \section{Equivalences}
 
-\begin{defns}${}$\label{defns:isequiv-qinv}
+\begin{defns}\label{defns:isequiv-qinv}${}$
     \begin{itemize}
-        \item A function $f\colon A\to B$ is an \textsl{equivalence}, when the type
+        \item A function $f\colon A\to B$ is an \textsl{equivalence} if the type $\fun{isequiv}(f)$ is inhabited, where
         \[
             \fun{isequiv}(f)\defeq
                 \Bigl(\sum_{g\colon B\to A}f\circ g \sim \id_B\Bigr)
                 \times
-                \Bigl(\sum_{h\colon B\to A}h\circ f\sim\id_A\Bigr)
+                \Bigl(\sum_{h\colon B\to A}h\circ f\sim\id_A\Bigr).
         \]
-        is inhabited.
     
-        \item A \textsl{quasi-inverse} of a function\/ $f \colon A \to B$ is a triple\/ $(g,\eta,\varepsilon)$ consisting of a function\/ $g\colon B\to A$ and homotopies\/ $\eta\colon f\circ g\sim \id_B$ and\/ $\varepsilon\colon g\circ f\sim \id_A$. More precisely, a quasi-inverse is an inhabitant of the type
+        \item A \textsl{quasi-inverse} of a function $f \colon A \to B$ is a triple $(g,\eta,\vartheta)$ consisting of a function $g\colon B\to A$ and homotopies $\eta\colon f\circ g\sim \id_B$ and $\vartheta\colon g\circ f\sim \id_A$. Formally, it is an inhabitant of the type
         \[
-            \fun{qinv}(f)\defeq\sum_{g\colon B\to A}(f\circ g\sim\id_B)
-                \times(g\circ f\sim\id_A)
+            \fun{qinv}(f)\defeq\sum_{g\colon B\to A}
+                (f\circ g\sim\id_B)\times(g\circ f\sim\id_A).
         \]
     \end{itemize}
 \end{defns}
 
-\begin{rem}\label{rem:quasi-inverse-involution}
-    A direct consequence of the definition is that
+\begin{lem}\label{lem:equivalence-of-quasi-inverses}
+    If\/ $f\colon A\to B$ has two quasi-inverses
     \[
-        (q,\eta,\vartheta)\colon\fun{qinv}(f)
-        \quad\text{implies}\quad
-        (f,\vartheta,\eta)\colon\fun{qinv}(g).
+        (g,(\eta,\vartheta))\colon\fun{qinv}(f)
+        \quad\text{and}\quad
+        (g',(\eta',\vartheta'))\colon\fun{qinv}(f),
     \]
+    then\/ $g\sim g'$.
+\end{lem}
+
+\begin{proof}
+    Let\/ $y\colon B$. Since\/ $\eta'\colon f\circ g'\sim\id_B$, we have the path\/ $\eta'(y)^{-1}\colon y\eq B f(g'(y))$. Hence,
+    \begin{align*}
+        g(y)&\eq A g(f(g'(y)))
+                &&\text{; by }\fun{ap}_g(\eta'(y)^{-1})\\
+            &\equiv (g\circ f)(g'(y))\\
+             &\eq A g'(y)
+                &&\text{; by }\vartheta(g'(y)).
+    \end{align*}
+    Thus, $g \sim g'$.
+\end{proof}
+
+\begin{ntn}\label{ntn:quasi-inverse}
+    Given a quasi-invertible function\/ $f\colon A\to B$, we will write\/ $f^{-1}$ to refer to an arbitrary quasi-inverse of\/ $f$. By\/ {\upshape Lemma~\ref{lem:equivalence-of-quasi-inverses}}, this notation is unambiguous up to homotopy.
+\end{ntn}
+
+\begin{lem}\label{lem:equivalence-composition}
+    If\/ $f \colon A \to B$ and\/ $g \colon B \to C$ are equivalences with inhabitants
+    \[
+        ((h_1,\eta_1),(k_1,\vartheta_1))\colon\fun{isequiv}(f)
+        \quad\text{and}\quad
+        ((h_2,\eta_2),(k_2,\vartheta_2))\colon\fun{isequiv}(g),
+    \]
+    then their composition\/ $g \circ f$ is an equivalence inhabited by
+    \[
+        ((h_1 \circ h_2, \eta), (k_1 \circ k_2, \vartheta)) \colon \fun{isequiv}(g \circ f),
+    \]
+    where the homotopies are defined by whiskering:
+    \begin{equation}\label{eq:equivalence-composition}
+        \begin{aligned}
+            \eta&\defeq
+                (g\cdot\eta_1\cdot h_2)\ct\eta_2
+                    \colon g\circ f\circ h_1\circ h_2\sim\id_C\\
+            \vartheta&\defeq
+                (k_1\cdot\vartheta_2 \cdot f)\ct\vartheta_1
+                    \colon k_1\circ k_2\circ g \circ f\sim \id_A.
+        \end{aligned}
+    \end{equation}
+\end{lem}
+
+\begin{proof}
+    The hypotheses provide the following homotopies:
+    \begin{align*}
+        \eta_1 &\colon f\circ h_1\sim\id_B, &
+        \eta_2 &\colon g\circ h_2\sim\id_C, \\
+        \vartheta_1 &\colon k_1\circ f\sim\id_A, &
+        \vartheta_2 &\colon k_2\circ g\sim\id_B.
+    \end{align*}
+    Whiskering these yields the intermediate steps:
+    \begin{align*}
+        g\cdot\eta_1 &\colon g\circ f\circ h_1\sim g, \\
+        \vartheta_2\cdot f&\colon k_2\circ g\circ f\sim f.
+    \end{align*}
+    By Proposition~\ref{prop:whiskering-associativity} (associativity of whiskering), we obtain:
+    \begin{align*}
+        g\cdot\eta_1\cdot h_2 &\colon g\circ f\circ h_1\circ h_2\sim g\circ h_2, \\
+        k_1\cdot\vartheta_2\cdot f &\colon k_1\circ k_2\circ g\circ f\sim k_1\circ f.
+    \end{align*}
+    Finally, by Proposition~\ref{prop:homotopy-equivalence-relation} (homotopy transitivity), utilizing\/ $\eta_2$ and\/ $\vartheta_1$, we obtain the homotopies in~\eqref{eq:equivalence-composition}.
+\end{proof}
+
+\begin{rem}\label{rem:inverse-of-inverse-of-equivalence}
+    Notation~\ref{ntn:quasi-inverse} allows us to restate Lemma~\ref{lem:equivalence-of-quasi-inverses} and the symmetry of the quasi-inverse definition as
+    \[
+        (f^{-1})^{-1}\sim f,
+    \]
+    whenever $f$ has a quasi-inverse.
 \end{rem}
 
+
+
 \begin{prop}\label{prop:qinv<->isequiv}
-Let\/ $f\colon A\to B$. Then,
+Let\/ $f\colon A\to B$. Then:
   \begin{enumerate}[a),font=\upshape]
-    \item There is a map\/ $\fun{qinv}(f)\to\fun{isequiv}(f)$.
-    \item There is a map\/ $\fun{isequiv}(f)\to\fun{qinv}(f)$.
+    \item There is a canonical map
+        \begin{align*}
+            \fun{qinv}(f)&\to\fun{isequiv}(f)\\
+            (g,(\eta,\vartheta))&\mapsto((g,\eta),(g,\vartheta)).
+        \end{align*}
+    \item There is a map
+    \[
+        \fun{isequiv}(f)\to\fun{qinv}(f).
+    \]
   \end{enumerate}
+  Consequently, the type\/ $\fun{qinv}(f)$ is inhabited if, and only if, $\fun{isequiv}(f)$ is inhabited.
 \end{prop}
 
 \begin{proof}${}$
-  \begin{enumerate}[a),font=\upshape]
-    \item This is immediate; we map the triple $(g,\eta,\vartheta)$ to the tuple $(g,\eta,g,\vartheta)$.
+  \begin{enumerate}[a)]
+    \item This follows immediately from the definition, setting $h \defeq g$.
 
-    \item Let $(g,\eta,h,\vartheta)\colon\fun{isequiv}(f)$. By definition, we have homotopies:
+    \item Let $((g,\eta),(h,\vartheta))\colon\fun{isequiv}(f)$. By definition, we have homotopies:
     \[
       \eta\colon f\circ g\sim\id_B
       \quad\text{and}\quad
       \vartheta\colon h\circ f\sim\id_A.
     \]
-    By Lemma~\ref{prop:whiskering}, we obtain:
+    Using the whiskering operations, we obtain:
     \begin{align*}
       h\cdot\eta &\colon h\circ f\circ g\sim h, \\
       \vartheta\cdot g &\colon h\circ f\circ g\sim g.
     \end{align*}
-    Thus, we can define $\theta\colon g\sim h$, as follows:
+    Evaluating these at a point $y\colon B$ gives paths
     \[
-        \theta\defeq\lambda y.\,
-            \vartheta(g(y))^{-1}\ct\fun{ap}_h(\eta(y)).
+       \fun{ap}_h(\eta(y))\colon h(f(g(y)))\eq B h(y)
+       \quad\text{and}\quad
+       \vartheta(g(y))\colon h(f(g(y)))\eq A g(y).
     \]
-    In particular, when $y\equiv f(x)$, we have
+    We can therefore define a homotopy $\gamma\colon g\sim h$ by
     \[
-      \theta(f(x))\colon g(f(x))\eq A h(f(x)).
+        \gamma(y) \defeq \vartheta(g(y))^{-1} \ct \fun{ap}_h(\eta(y)).
     \]
-    Concatenating this path with $\vartheta(x)$ yields
+    We now construct the required left homotopy $\vartheta'\colon g \circ f \sim \id_A$. For any $x\colon A$, we have the path $\gamma(f(x))\colon g(f(x))\eq A h(f(x))$. Concatenating this with $\vartheta(x)$ yields
     \[
-      \theta(f(x))\ct\vartheta(x)\colon g(f(x))\eq A x.
+      \gamma(f(x))\ct\vartheta(x)\colon g(f(x))\eq A x.
     \]
-    Thus, the triple $(g,\eta,\vartheta')$ inhabits $\fun{qinv}(f)$, where
-    \[
-      \vartheta'\defeq\lambda x.\,\theta(f(x))\ct\vartheta(x).
-    \]\qedhere
+    Thus, we define the map to be $(g,\eta,\vartheta')$, where $\vartheta'(x) \defeq \gamma(f(x))\ct\vartheta(x)$.
   \end{enumerate}
 \end{proof}
 
@@ -917,6 +1105,148 @@ Let\/ $f\colon A\to B$. Then,
         A\simeq B\defeq\!\!\!\sum_{f\colon A\to B}\fun{isequiv}(f).
     \]
 \end{defn}
+
+\begin{prop}\label{prop:qinv-composition}
+    The following properties hold
+    \begin{enumerate}[a),font=\upshape]
+        \item $(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\colon\fun{qinv}(\id_A)$
+        
+        \item Given $f\colon A\to B$ and $g\colon B\to C$ we have,
+        \[
+            \left.\begin{aligned}
+                (f^{-1},(\eta_f,\vartheta_f))&\colon\fun{qinv}(f)\\
+                (g^{-1},(\eta_g,\vartheta_g))&\colon\fun{qinv}(g)
+            \end{aligned}\right\}
+            \implies(g^{-1}\circ f^{-1},(\eta,\vartheta))\colon\fun{qinv}(g\circ f),
+        \]
+        where
+        \begin{align*}
+            \eta&\defeq
+                (g\cdot\eta_f\cdot g^{-1})\ct\eta_g
+                    \colon g\circ f\circ f^{-1}\circ g^{-1}\sim\id_C\\
+            \vartheta&\defeq
+                (f^{-1}\cdot\vartheta_g\cdot f)\ct\vartheta_f
+                    \colon f^{-1}\circ g^{-1}\circ g\circ f\sim\id_A.
+        \end{align*}
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item By definition
+        \[
+            \fun{qinv}(\id_A)\equiv\sum_{g\colon A\to A}
+                (\id_A\circ g\sim\id_A)
+                \times(g\circ\id_A\sim\id_A).
+        \]
+        Since $\id_A\circ\id_A\equiv\id_A$, we can take $g\equiv\id_A$ and observe that
+        \[
+            \fun{refl}_{\id_A}\colon\id_A\eq{A\to A}\id_A
+        \]
+        defines the homotopy $x\mapsto\fun{refl}_x$ between $\id_A$ and itself.
+
+        \item By Proposition~\ref{prop:qinv<->isequiv}, this is a direct consequence of Lemma~\ref{lem:equivalence-composition} applied to the case where $h_1\equiv k_1\equiv f^{-1}$ and $h_2\equiv k_2\equiv g^{-1}$.
+    \end{enumerate}    
+\end{proof}
+
+\begin{defn}\label{defn:qinv-composition}
+    Part b) of Proposition~\ref{prop:qinv-composition}, allows us to define the \textsl{composition} of quasi-inverses by
+    \[
+        (f^{-1},(\eta_f,\vartheta_f))
+            \circ(g^{-1},(\eta_g,\vartheta_g))
+                \colon\fun{qinv}(g\circ f).
+    \]
+\end{defn}
+
+\begin{cor}\label{cor:qinv-composition-with-id}
+    In the particular case where one of the functions is the identity, we have
+    \begin{enumerate}[a),font=\upshape]
+        \item $(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\circ(f^{-1},(\eta_f,\vartheta_f))\equiv(f^{-1}
+            ,(\eta_f,\vartheta_f\ct\fun{refl}_{\id_A}))$
+
+        \item $(f^{-1},(\eta_f,\vartheta_f))\circ(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\equiv(f^{-1}
+            ,(\eta_f\ct\fun{refl}_{\id_B},\vartheta_f))$
+    \end{enumerate}
+\end{cor}
+
+\needspace{2\baselineskip}
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item By the proposition,
+        \begin{align*}
+            \lhs&\equiv(f^{-1},\eta,\vartheta)\\[1mm]
+            \eta&\equiv(f\cdot\fun{refl}_{\id_A}\cdot f^{-1})\ct\eta_f\\
+                &\equiv\fun{refl}_{\id_A}\ct\eta_f
+                    &&\text{; Rem.~\ref{rem:whiskering-with-id}}\\
+                &\equiv\lambda x.\,\fun{refl}_x\ct\eta_f(x)\\
+                &\equiv\lambda x.\,\eta_f(x)\\
+                &\equiv\eta_f.\\[1mm]
+            \vartheta&\equiv(\id_A\cdot\vartheta_f\cdot\id_A)
+                    \ct\fun{refl}_{\id_A}\\
+                &\equiv\vartheta_f\ct\fun{refl}_{\id_A}
+                    &&\text{; Prop. \ref{prop:whiskering}}.
+        \end{align*}
+
+        \item Similarly,
+        \begin{align*}
+            \rhs&\equiv(f^{-1},(\eta,\vartheta))\\[1mm]
+            \eta&\equiv(\id_A\cdot\eta_f\cdot\id_A)
+                    \cdot\fun{refl}_{\id_A}\\
+                &\equiv\eta_f\ct\fun{refl}_{\id_A}.
+                    &&\text{; Prop. \ref{prop:whiskering}}\\[1mm]
+            \vartheta&\equiv
+                (f^{-1}\cdot\fun{refl}_{\id_A}\cdot f)
+                    \ct\vartheta_f\\
+                &\equiv\vartheta_f
+                    &&\text{; Idem part a)}
+        \end{align*}
+    \end{enumerate}
+\end{proof}
+
+\begin{lem}
+    Let\/ $f\colon A\to B$. Suppose that\/ $(f^{-1},(\eta,\vartheta))\colon\fun{qinv}(f)$. Then\/ $(f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A}))\colon\fun{qinv}(f)$ and both quasi-inverses are (propositionally) equal.
+\end{lem}
+
+\begin{proof}
+    We construct the path in $\fun{qinv}(f)$ by pairs.
+    \begin{enumerate}[1.]
+        \item The path between the functions is $\fun{refl}_{f^{-1}}$.
+        \item The path between the homotopy pairs is given component-wise:
+        \begin{itemize}
+            \item For the right homotopies: $\eta \equiv \eta$, so we use $\fun{refl}_\eta$.
+            \item For the left homotopies: we need to show that 
+            \[
+                \vartheta\ct\fun{refl}_{\id_A}\eq{f^{-1}\circ f\sim\id_A}\vartheta.
+            \]
+            By function extensionality, this follows from the right unit law for paths.\footnote{Lemma \ref{lem:right-unit-law}.} Therefore,
+            \[
+                \fun{ru}_{\vartheta}\defeq
+                    \fun{funext}(\lambda x.\,
+                        \fun{unit}_r(\vartheta(x))).
+            \]
+        \end{itemize}
+    \end{enumerate}
+    Thus, the total identity path is
+    \[
+        \fun{pair}^=(\fun{refl}_{f^{-1}}
+            ,\fun{pair}^=(\fun{refl}_\eta,\fun{ru}_{\vartheta}))
+            \colon(f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A}))
+            \eq{\fun{qinv}(f)}
+            (f^{-1},(\eta,\vartheta)).
+    \]
+\end{proof}
+
+Now we can establish the main
+
+\begin{cor}\label{cor:propositional-qinv-composition-with-id}
+    In the particular case where one of the functions is the identity, we have
+    \begin{enumerate}[a),font=\upshape]
+        \item $(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\circ(f^{-1},(\eta_f,\vartheta_f))\eq{\fun{qinv}(f)}(f^{-1}
+            ,(\eta_f,\vartheta_f))$
+
+        \item $(f^{-1},(\eta_f,\vartheta_f))\circ(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\eq{\fun{qinv}(f)}(f^{-1},(\eta_f,\vartheta_f))$
+    \end{enumerate}
+\end{cor}
 
 \begin{ntn}\label{ntn:abuse-equivalence}
     We will sometimes abbreviate the equivalence
@@ -959,9 +1289,9 @@ Let\/ $f\colon A\to B$. Then,
             (g,\eta,\vartheta')&\colon\fun{qinv}(f)
                 &&\text{; Prop.~\ref{prop:qinv<->isequiv}}\\
             (f,\vartheta',\eta)&\colon\fun{qinv}(g)
-                &&\text{; Rem.~\ref{rem:quasi-inverse-involution}}\\
+                &&\text{; Lem.~\ref{lem:equivalence-of-quasi-inverses}}\\
             (g,(f,\vartheta',f,\eta))&\colon B\simeq A
-                &&\text{; Prop.~\ref{prop:qinv<->isequiv}}.
+                &&\text{; Lem.~\ref{lem:equivalence-of-quasi-inverses}}.
         \end{align*}
 
         \item Suppose that\/ $f\colon A\simeq B$ and\/ $g\colon B\simeq C$. This translates into
@@ -995,6 +1325,14 @@ Let\/ $f\colon A\to B$. Then,
         are inhabited. Thus, according to Notation~\ref{ntn:abuse-equivalence}, we have\/ $g\circ f\colon A\simeq C$.
     \end{enumerate}
 \end{proof}
+
+\begin{rem}\label{rem:id-equivalence-inverse}
+    Given that $(g,\eta,\vartheta)\colon\fun{qinv}(f)\iff(f,\vartheta,\eta)\colon\fun{qinv}(g)$,
+    we deduce that $(f,(g,\eta,g,\vartheta))^{-1}\equiv(g,(f,\vartheta,f,\eta))$. In particular,
+    \[
+        (\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))^{-1}\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl})).
+    \]
+\end{rem}
 
 \section{Observational Equality}
 In classical Type Theory, equality is often regarded as \textit{opaque}---essentially a mystery. It is defined as \emph{intensional} (not to be confused with intentional), meaning that for two objects to be equal, they must follow the exact same construction.
@@ -1086,7 +1424,7 @@ There are two additional requirements to the \nameref{observational-framework} t
     \begin{description}[font=\normalfont\upshape]
         \item[Reflexivity:] $\fun{decode}(x, x, c)\eq{x\eq Ax}\fun{refl}_x$.
         \item[Symmetry:] $\fun{decode}(y,x,\fun{inv}(d)) \eq{y\eq Ax}\fun{decode}(x,y,d)^{-1}$.
-        \item[Transitivity:] $\fun{decode}(x,z,d\mathbin{\star}e)\eq{x\eq Az}\fun{decode}(x,y,d) \ct \fun{decode}(y, z, e)$.
+        \item[Transitivity:] $\fun{decode}(x,z,d\ect e)\eq{x\eq Az}\fun{decode}(x,y,d) \ct \fun{decode}(y, z, e)$.
     \end{description}
 \end{thm}
 
@@ -1114,13 +1452,17 @@ There are two additional requirements to the \nameref{observational-framework} t
         Thus, $\fun{encode}$ preserves inverses. Applying $\fun{decode}$, we obtain the result.
 
         \item[Transitivity.]
-        We prove $\fun{encode}(p \ct q) \eq{} \fun{encode}(p) \mathbin{\star} \fun{encode}(q)$ by path induction on $p$.
+        We prove $\fun{encode}(p \ct q) \eq{} \fun{encode}(p) \ect \fun{encode}(q)$ by path induction on $p$.
         Assume $y \equiv x$ and $p \equiv \fun{refl}_x$.
         \begin{align*}
-            \lhs &\equiv \fun{encode}(\fun{refl}_x \ct q) \equiv \fun{encode}(q).\\
-            \rhs &\equiv \fun{encode}(\fun{refl}_x) \mathbin{\star} \fun{encode}(q) \equiv c \mathbin{\star} \fun{encode}(q).
+            \lhs&\equiv\fun{encode}(\fun{refl}_x\ct q)
+                \equiv\fun{encode}(q).\\
+            \rhs&\equiv
+                \fun{encode}(\fun{refl}_x)\ect\fun{encode}q)
+                \equiv c \ect \fun{encode}(q).
         \end{align*}
-        By the hypothesis $c \mathbin{\star} d \equiv d$, the RHS reduces to $\fun{encode}(q)$.
+        By the hypothesis $c\ect d\equiv d$, the RHS reduces to $\fun{encode}(q)$.
+        
         Thus, $\fun{encode}$ preserves concatenation. Applying $\fun{decode}$ to both sides yields the conclusion. \qedhere
     \end{description}
 \end{proof}
@@ -2234,7 +2576,7 @@ To apply the framework~\ref{observational-framework} to the unit type $\fun1$, w
 \end{align*}
 
 \textsc{Base code:}
-For $c\colon\fun{Code}(x,x)$ we specify $c\defeq\fun\star$.
+For $c\colon\fun{Code}(x,x)$ we specify $c\defeq\fstar$.
 
 \needspace{2\baselineskip}
 \textsc{Encode function:}
@@ -2244,29 +2586,29 @@ For $c\colon\fun{Code}(x,x)$ we specify $c\defeq\fun\star$.
 \end{align*}
 In particular, for $y\equiv x$ and $p\equiv\fun{refl}_x$, we have
 \[
-    \fun{encode}(\fun{refl}_x)\equiv c\equiv\fun\star.
+    \fun{encode}(\fun{refl}_x)\equiv c\equiv\fstar.
 \]
 Therefore, by induction on $p$, we deduce that
 \[
-    \fun{encode}(p)\eq{\fun1}\fun\star
+    \fun{encode}(p)\eq{\fun1}\fstar
 \]
-and we take the \rhs to define the constant encode function $f\defeq\lambda x,y.\,\lambda p.\,\fun\star$.
+and we take the \rhs to define the constant encode function $f\defeq\lambda x,y.\,\lambda p.\,\fstar$.
 
 \textsc{Decode function:}
 Let $g$ denote the backward $\fun{decode}$ map. Then
 \[
     g\colon\prod_{x,y\colon\fun1}\fun{Code}(x,y)\to(x\eq{\fun1}y).
 \]
-To define it we proceed by induction on $x$. It suffices to construct $g(\star)$. The goal becomes a term of type
+To define it we proceed by induction on $x$. It suffices to construct $g(\fstar)$. The goal becomes a term of type
 \[
-    \prod_{y\colon\fun1}\fun1 \to (\star\eq{\fun1}y).
+    \prod_{y\colon\fun1}\fun1\to(\fstar\eq{\fun1}y).
 \]
-Induction on $y$ further reduces the goal to $\fun1 \to (\star\eq{\fun1}\star)$, which is inhabited by the constant function $z\mapsto\fun{refl}_\star$. In particular,
+Induction on $y$ further reduces the goal to $\fun1\to(\fstar\eq{\fun1}\fstar)$, which is inhabited by the constant function $z\mapsto\fun{refl}_\fstar$. In particular,
 \begin{equation}\label{eq:decode(star)}
-    \fun{decode}(\fun\star)\equiv\fun{refl}_{\fun\star}.
+    \fun{decode}(\fstar)\equiv\fun{refl}_\fstar.
 \end{equation}
 
-Thus, we have defined $g\colon\prod_{x,y\colon\fun1}\fun1\to(x\eq{\fun1}y)$ as the unique function that satisfies $g(\star,\star,\star) \equiv \fun{refl}_\star$.
+Thus, we have defined $g\colon\prod_{x,y\colon\fun1}\fun1\to(x\eq{\fun1}y)$ as the unique function that satisfies $g(\fstar,\fstar,\fstar) \equiv \fun{refl}_\fstar$.
 
 
 \begin{thm}\label{thm:1-equivalence}
@@ -2278,17 +2620,17 @@ Thus, we have defined $g\colon\prod_{x,y\colon\fun1}\fun1\to(x\eq{\fun1}y)$ as t
     \begin{enumerate}[a),font=\upshape]
         \item $f\circ g \sim \id_{\fun1}$.
 
-        This translates into\/ $f(g(x,y,u)) \eq{\fun1} u$ for all\/ $x,y,u\colon\fun1$.
-        By the induction principle of\/ $\fun1$, we may set\/ $x,y,u\equiv\star$, which satisfies the goal because\/ $f$ maps every element to\/ $\star$.
+        This translates into $f(g(x,y,u)) \eq{\fun1} u$ for all $x,y,u\colon\fun1$.
+        By the induction principle of $\fun1$, we may set $x,y,u\equiv\fstar$, which satisfies the goal because $f$ maps every element to $\fstar$.
 
         \item $g\circ f \sim \id_{\prod_{x,y\colon\fun1}(x\eq{\fun1}y)}$.
 
-        We must show\/ $g(x,y,f(x,y,p))\eq{x\eq{\fun1}y}p$.
-        By path induction, it suffices to check the case\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$. The goal becomes
+        We must show $g(x,y,f(x,y,p))\eq{x\eq{\fun1}y}p$.
+        By path induction, it suffices to check the case $y\equiv x$ and $p\equiv\fun{refl}_x$. The goal becomes
         \[
             g(x,x,f(x,x,\fun{refl}_x))\eq{x\eq{\fun1}x}\fun{refl}_x.
         \]
-        By induction on\/ $x$, it is enough to prove\/ $g(\star,\star,f(\star,\star,\fun{refl}_\star))\eq{\star\eq{\fun1}\star}\fun{refl}_\star$. Since\/ $f(\star,\star,\fun{refl}_\star)\equiv\star$, the goal reduces to\/ $g(\star,\star,\star)\eq{\star\eq{\fun1}\star}\fun{refl}_\star$, which holds by the definition of\/ $g$.\qedhere
+        By induction on $x$, it is enough to prove $g(\fstar,\fstar,f(\fstar,\fstar,\fun{refl}_\fstar))\eq{\fstar\eq{\fun1}\fstar}\fun{refl}_\fstar$. Since $f(\fstar,\fstar,\fun{refl}_\fstar)\equiv\fstar$, the goal reduces to $g(\fstar,\fstar,\fstar)\eq{\fstar\eq{\fun1}\fstar}\fun{refl}_\fstar$, which holds by the definition of $g$.\qedhere
     \end{enumerate}
 \end{proof}
 
@@ -2300,7 +2642,7 @@ The theorem has the following consequences:
     \[
         \fun{triv} \colon x \eq{\fun1} y
     \]
-    as\/ $\fun{triv}\defeq\fun{decode}(x,y,\star)$.
+    as\/ $\fun{triv}\defeq\fun{decode}(x,y,\fstar)$.
 
     \item[Elimination rule.]
     The dependent eliminator asserts that to define a function out of the identity type, we only need to specify its value on the canonical element.
@@ -2330,10 +2672,10 @@ To derive the elimination rule, we use Theorem~\ref{thm:1-equivalence}, which gi
     \varepsilon_p\colon
         \fun{decode}(x,y,\fun{encode}(x,y,p))\eq{\fun1}p
 \]
-for every path\/ $p\colon x\eq{\fun1}y$. Since, by definition, $\fun{encode}(x,y,p)\equiv\fun\star$, the homotopy simplifies:
+for every path\/ $p\colon x\eq{\fun1}y$. Since, by definition, $\fun{encode}(x,y,p)\equiv\fstar$, the homotopy simplifies:
 \[
     \fun{decode}(x,y,\fun{encode}(x,y,p))
-        \equiv\fun{decode}(x,y,\star)\equiv\fun{triv},
+        \equiv\fun{decode}(x,y,\fstar)\equiv\fun{triv},
 \]
 and so
 \[
@@ -2369,7 +2711,7 @@ The Uniqueness rule is derived by taking the symmetry (inverse) of $\varepsilon_
 
 The\/ $\eta$-rule asserts that every inhabitant of the identity type of the unit is definitionally equal to reflexivity, namely
 \begin{equation*}
-    p\equiv\fun{refl}_{\fun\star}
+    p\equiv\fun{refl}_\fstar
     \qquad(\text{for every } p\colon x\eq{\fun1}y).
 \end{equation*}
 Since the\/ $\eta$-rule for the Identity of\/ $\fun1$ is structurally impossible to state (as a general rule for arbitrary\/ $x,y$) without first assuming the\/ $\eta$-rule for\/ $\fun1$, this requires the\/ $\eta$-rule for the unit type.
@@ -2392,7 +2734,7 @@ The unit laws follow directly from the definitions above, namely
 \begin{prop}
     Given $x,y,z\colon\fun1$, and $p\colon x\eq{\fun1}y$ and $q\colon y\eq{\fun1}z$, we have
     \begin{enumerate}[a),font=\upshape]
-        \item $\fun{decode}(x,x,\fun\star)\eq{x\eq{\fun1}x}\fun{refl}_x$
+        \item $\fun{decode}(x,x,\fstar)\eq{x\eq{\fun1}x}\fun{refl}_x$
         
         \item $\fun{decode}(y,x,u)\eq{y\eq{\fun1}x}\fun{decode}(x,y,u)^{-1}$
         
@@ -2454,9 +2796,40 @@ We take the \rhs to define the standard name for the encode function \textsl{hom
     \begin{aligned}
         \fun{happly}&\colon(f\eq\Gamma g)\to\fun{Code}(f,g)\\
         \fun{happly}(p)&\defeq \lambda x\colon A.\,
-                \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)})
+                \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)}),
     \end{aligned}
 \end{equation}
+which can be illustrated by
+\[
+    % Left: Path in function space
+    \begin{tikzpicture}[
+        baseline=(current bounding box.center),
+        font=\small]
+        \node (A) at (0,2) {$\displaystyle{
+            \Gamma\equiv\prod_{x\colon A}B(x)}$};
+        \node (f) at (-1,0.5) {$f$};
+        \node (g) at (1,0.5) {$g$};
+        \draw[->, thick] (f) to[bend left=20] node[above] {$p$} (g);
+        \node at (0, -0.7) {\text{Path in function space}};
+    \end{tikzpicture}
+    \hspace{2cm}
+    % Right: Homotopy as a mapping
+    \begin{tikzpicture}[baseline=(current bounding box.center),
+        font=\small]
+        \node (A) at (0,2) {$A$};
+        \node (B) at (3,2) {$B(x)$};
+        \node (x) at (0,0.5) {$x$};
+        \node (fx) at (3,1.5) {$f(x)$};
+        \node (gx) at (3,-0.5) {$g(x)$};
+        
+        \draw[|->] (x) -- node[above, sloped] {} (fx);
+        \draw[|->] (x) -- node[below, sloped] {} (gx);
+        \draw[double, double distance=2pt] (fx) -- node[right] {$\fun{happly}(p)(x)$} (gx);
+        
+        \node at (1.5, -1.0) {\text{Pointwise function homotopy}};
+    \end{tikzpicture}
+\]
+
 and introduce the following
 
 \textbf{Axiom.} [Function Extensionality] The homotopy application function \eqref{eq:homotopy-application} is an equivalence.\footnote{We will see in later chapters that this axiom follows both from univalence and from the interval type.}
@@ -3221,6 +3594,17 @@ The groupoid structure corresponds to the groupoid structure of equivalences:
 \end{align*}
 with inverse and composition is defined in Proposition~\ref{prop:equivalence-is-an-equivalence-relation}.
 
+The unit laws hold trivially
+\begin{align*}
+    \fun{inv}(c)
+        &\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))^{-1}\\
+        &\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))\\
+        &\equiv c\\
+    c\ect d
+        &\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))\circ d\\
+        &\equiv d.
+\end{align*}
+
 \begin{prop}
     For any type\/ $A$ and\/ $x,y,z\colon A$, let\/ $p\colon x\eq Ay$. The function
     \begin{align*}
@@ -3249,7 +3633,6 @@ with inverse and composition is defined in Proposition~\ref{prop:equivalence-is-
     \end{align*}
     Since the argument is symmetric, the proof is complete.
 \end{proof}
-
 
 \begin{prop}\label{prop:transport-function-codomain}
     Let\/ $A$ be a type, $P\colon X\to\univ$ a type family, and\/ $p\colon x\eq Xy$ a path. For any function\/ $f\colon A\to P(x)$, we have

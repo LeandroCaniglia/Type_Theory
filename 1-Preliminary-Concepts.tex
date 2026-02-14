@@ -313,7 +313,7 @@
 \end{lpar}
 
 \begin{lpar}{Unit type.}\label{lpar:unit-type}
-    The \textsl{unit type} is the nullary product type (i.e., the cartesian product of zero types), denoted by $\fun1\colon\univ$. The \textsl{canonical} element is $\fun\star\colon\fun1$.
+    The \textsl{unit type} is the nullary product type (i.e., the cartesian product of zero types), denoted by $\fun1\colon\univ$. The \textsl{canonical} element is $\fstar\colon\fun1$.
 
     While this definition is consistent with $\fun{Fin}(1)$, a fundamental difference is that the unit type does not rely on $\N$. In particular, it does not depend on the definition of the entire $\fun{Fin}$ family.
 \end{lpar}
@@ -346,7 +346,7 @@
     \begin{enumerate}[i),font=\scshape]
         \item \textit{Formation rules.} Given two types $A$ and $B$ we can form $A\times B$. Moreover, given zero types we have the unit type $\fun1$.
 
-        \item \textit{Constructors.} Given $a\colon A$ and $b\colon B$ we have $(a,b)\colon A\times B$. In addition, $\fun\star$ is the unique element of type $\fun1$.
+        \item \textit{Constructors.} Given $a\colon A$ and $b\colon B$ we have $(a,b)\colon A\times B$. In addition, $\fstar$ is the unique element of type $\fun1$.
 
         \item \textit{Eliminators.} If $f\colon A\times B\to C$, the prescription for evaluating $f$ is given by providing a function $g\colon A\to B\to C$ and defining
         \[
@@ -442,7 +442,7 @@
         \]
         Since every $g\colon\fun1\to C$ is equivalent to choosing one element $c\colon C$, we have
         \[
-            \fun{rec}_{\fun1}(C,c)(\fun\star)\equiv c.
+            \fun{rec}_{\fun1}(C,c)(\fstar)\equiv c.
         \]
     \end{enumerate}
 \end{lpar}
@@ -533,11 +533,11 @@
     In the case of $\fun1$, we have
     \[
         \fun{uniq}_{\fun1}\colon\prod_{x\colon\fun1}
-            x\eq{\fun1}\fun\star
+            x\eq{\fun1}\fstar
     \]
     with
     \[
-        \fun{uniq}_{\fun1}(\fun\star)\defeq\fun{refl}_{\fun\star},
+        \fun{uniq}_{\fun1}(\fstar)\defeq\fun{refl}_\fstar,
     \]
     which shows that $\fun\ast$ is the unique element of $\fun1$.
 \end{lpar}
@@ -573,40 +573,40 @@
     In the case of the unit type (see \nref{lpar:unit-type}), where types $A$ and $B$ are both missing, the eliminator is
     \begin{equation}\label{eq:ind1}
         \fun{ind}_{\fun1}\colon\prod_{C\colon\fun1\to\univ}
-            \Bigl(C(\fun\star)\to\prod_{x\colon\fun1}C(x)\Bigr)
+            \Bigl(C(\fstar)\to\prod_{x\colon\fun1}C(x)\Bigr)
     \end{equation}
     specified by
     \[
-        \fun{ind}_{\fun1}(C,g,\fun\star)\defeq g,\footnote{A more precise notation is $\fun{ind}_{\fun1}(C)(g)(\fun\star)\defeq g$.}
+        \fun{ind}_{\fun1}(C,g,\fstar)\defeq g,\footnote{A more precise notation is $\fun{ind}_{\fun1}(C)(g)(\fstar)\defeq g$.}
     \]
     
-    \textbf{Interpretation.} Given $C\colon\fun1\to\univ$ and a proof $g$ that $C(\fun\star)$ is true, the resulting term $\fun{ind}_{\fun1}(C,g)$ ---i.e., $\fun{ind}_{\fun1}(C)(g)$--- is a dependent function $f\colon \prod_{x\colon\fun1}C(x)$ that serves as a proof for $C(x)$ for all $x\colon\fun1$.
+    \textbf{Interpretation.} Given $C\colon\fun1\to\univ$ and a proof $g$ that $C(\fstar)$ is true, the resulting term $\fun{ind}_{\fun1}(C,g)$ ---i.e., $\fun{ind}_{\fun1}(C)(g)$--- is a dependent function $f\colon \prod_{x\colon\fun1}C(x)$ that serves as a proof for $C(x)$ for all $x\colon\fun1$.
         
     \needspace{2\baselineskip}
     In summary, we have:
     \begin{enumerate}[label=\roman*), font=\scshape]
         \item \textit{Type:} There is a type called $\fun1$.
-        \item \textit{Constructor:} There is a term $\fun\star\colon\fun1$.
+        \item \textit{Constructor:} There is a term $\fstar\colon\fun1$.
         \item \textit{Eliminator:} There is a function $\fun{ind}_{\fun1}$ with type signature \eqref{eq:ind1}.
-        \item \textit{Computation Rule:} $\fun{ind}_{\fun1}(C,g,\fun\star)\defeq g$.
+        \item \textit{Computation Rule:} $\fun{ind}_{\fun1}(C,g,\fstar)\defeq g$.
     \end{enumerate}
 
     \medskip
     
     If for $C\colon\fun1\to\univ$ we take
     \[
-        C\defeq\lambda x.\,(x\eq{\fun1}\fun\star)
+        C\defeq\lambda x.\,(x\eq{\fun1}\fstar)
     \]
-    and for $g\colon C(\fun\star)$ we take $\fun{refl}_{\fun\star}$, then the result is
+    and for $g\colon C(\fstar)$ we take $\fun{refl}_\fstar$, then the result is
     \[
         \fun{ind}_{\fun1}((\lambda x.
-            \,x\eq{\fun1}\fun\star)
-            ,\fun{refl}_{\fun\star}
-            ,\fun\star)\equiv\fun{refl}_{\fun\star},
+            \,x\eq{\fun1}\fstar)
+            ,\fun{refl}_\fstar
+            ,\fstar)\equiv\fun{refl}_\fstar,
     \]
-    which is judgmentally equal to $\fun{uniq}_{\fun1}(\fun\star)$ (see \nref{lpar:Pi-types-over-product}). Thus,
+    which is judgmentally equal to $\fun{uniq}_{\fun1}(\fstar)$ (see \nref{lpar:Pi-types-over-product}). Thus,
     \begin{equation}\label{eq:uniq1-from-ind1}
-        \fun{ind}_{\fun1}\bigl(\lambda x.\,x \eq{\fun1} \fun\star,\;\fun{refl}_{\fun\star}\bigr)
+        \fun{ind}_{\fun1}\bigl(\lambda x.\,x \eq{\fun1} \fstar,\;\fun{refl}_\fstar\bigr)
         \equiv\fun{uniq}_{\fun1}.
     \end{equation}
     Note that $\fun{ind}_{\fun1}$ is strictly more general than $\fun{uniq}_{\fun1}$, since it is defined for an arbitrary family $C\colon\fun1\to\univ$. Equation~\eqref{eq:uniq1-from-ind1} shows that $\fun{uniq}_{\fun1}$ is simply a specific instance of $\fun{ind}_{\fun1}$. Thus the fact that $\fun1$ is a singleton type is subsumed by the more general induction principle.
@@ -1896,11 +1896,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             P(0)&\defeq\fun1\\
             P(\fun{succ}(n))&\defeq\fun0.
         \end{align*}
-        Take $n\colon\N$ and suppose we have a path $p\colon\fun{succ}(n)\eq\N0$. By transport along the inverse path $p^{-1}\colon0\eq\N\fun{succ}(n)$, for $\fun\star\colon\fun1$, we obtain:
+        Take $n\colon\N$ and suppose we have a path $p\colon\fun{succ}(n)\eq\N0$. By transport along the inverse path $p^{-1}\colon0\eq\N\fun{succ}(n)$, for $\fstar\colon\fun1$, we obtain:
         \[
             \fun{transport}^P(p^{-1})\colon P(0)\to P(\fun{succ}(n)).
         \]
-        The definition of $P$ implies that the desired map is $(n,p)\mapsto\fun{subst_P}(p^{-1})(\fun\star)$.
+        The definition of $P$ implies that the desired map is $(n,p)\mapsto\fun{subst_P}(p^{-1})(\fstar)$.
     \end{proof}
 
     \begin{lem}
@@ -2517,7 +2517,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
      To define $\fun{fmax}$ we simply declare
     \begin{align*}
         \fun{fmax}\colon\N&\to\fun{Fin}(n)+\fun1\\
-        n&\mapsto\fun{inr}_n(\fun\star),
+        n&\mapsto\fun{inr}_n(\fstar),
     \end{align*}
     where $\fun{inr}_n$ denotes the $n$th right inclusion of $\fun1$ into $\fun{Fin}(n)+\fun1$. This completes the proof because $\fun{Fin}(n)+\fun1\equiv\fun{Fin}(\fun{succ}(n))$.
     %
