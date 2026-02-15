@@ -182,7 +182,7 @@
 \begin{defn}
     Let $A$ be a type and $x,y,z\colon A$ points.
     \begin{enumerate}[a),font=\upshape]
-        \item Given a path $p\colon x\eq Ay$ and a $2$-path $\beta\colon q\eq{y\eq Az}r$ between paths $q,r\colon y\eq Az$,
+        \item Given a $1$-path $p\colon x\eq Ay$ and a $2$-path $\beta\colon r\eq{y\eq Az}s$ between $1$-paths $r,s\colon y\eq Az$,
         \[
             \begin{tikzcd}[column sep=large,
                 row sep=huge]
@@ -202,9 +202,9 @@
         \]
         we define the \textsl{left whiskering}
         \[
-            p\cdot\alpha\colon(p\ct q)\eq{x\eq Az}(p\ct r)
+            p\cdot\beta\colon(p\ct r)\eq{x\eq Az}(p\ct s)
         \]
-        by induction on $\beta$. If $r\equiv q$ and $\beta\equiv\fun{refl}_q$, then $p\cdot\fun{refl}_q\defeq\fun{refl}_{p\ct q}$.
+        by path induction on $\beta$: if $r\equiv s$ and $\beta\equiv\fun{refl}_r$, then $p\cdot\fun{refl}_r\defeq\fun{refl}_{p\ct r}$.
         
         \item Given a $2$-path $\alpha\colon p\eq{x\eq Ay}q$ between paths $p,q\colon x\eq Ay$ and a path $r\colon y\eq Az$,
         \[
@@ -228,7 +228,7 @@
         \[
             \alpha\cdot r\colon(p\ct r)\eq{x\eq Az}(q\ct r)
         \]
-        by induction on $\alpha$. If $q\equiv p$ and $\alpha\equiv\fun{refl}_p$, then $\fun{refl}_p\cdot r\defeq\fun{refl}_{p\ct r}$.
+        by induction on $\alpha$: if $q\equiv p$ and $\alpha\equiv\fun{refl}_p$, then $\fun{refl}_p\cdot r\defeq\fun{refl}_{p\ct r}$.
     \end{enumerate}
 \end{defn}
 
@@ -237,11 +237,11 @@
     \[
         \Omega f\colon\Omega(A,a)\to\Omega(B,f(a))
     \]
-    defined by\footnote{See Remark \ref{rem:Omega-abuse}.}
+    defined by\footnote{As noted in Remark \ref{rem:Omega-abuse}, by abusing notation $\Omega(A,a)$ sometimes refers to $a\eq Aa$ rather than to the pointed type.}
     \[
         \Omega f(p)\defeq\fun{ap}_f(p).
     \]
-    Note that by part a) of the previous lemma, we have $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that $\Omega f$ preserves the basepoint definitionally.
+    Note that by part a) of Proposition~\ref{prop:ap-properties}, we have $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that $\Omega f$ preserves the basepoint definitionally.
 \end{defn}
 
 \begin{defn}
@@ -261,31 +261,116 @@
                     shorten <= 8pt,shorten >= 8pt]
         \end{tikzcd}
     \]
-    The \textsl{horizontal composition} of $\alpha$ and $\beta$ is the homotopy
-    \[
-        \alpha\hct\beta\colon(p\ct r)\eq{a\eq Ac}(q\ct s)
-    \]
-    defined by path induction on $\alpha$ and $\beta$. Explicitly, if $\alpha \equiv \fun{refl}_p$ and $\beta \equiv \fun{refl}_r$, we define
-    \[
+    The \textsl{horizontal composition} of $\alpha$ and $\beta$ is the $2$-path
+    \begin{align*}
+        \alpha\hct\beta&\colon(p\ct r)\eq{a\eq Ac}(q\ct s)        
+    \end{align*}
+    defined by path induction on $\alpha$ and $\beta$. Explicitly, if $q\equiv p$ and $\alpha\equiv\fun{refl}_p$, we define
+    \begin{align*}
+        \fun{refl}_p\hct\beta\colon(p\ct r)\eq{a\eq Ac}(p\ct s)
+    \end{align*}
+    by induction on $\beta$ as follows: if $s\equiv r$ and $\beta\equiv\fun{refl}_r$, then
+    \begin{equation}\label{eq:refl-hct}
         \fun{refl}_p\hct\fun{refl}_r\defeq\fun{refl}_{p\ct r}.
+    \end{equation}
+\end{defn}
+
+\begin{defn}
+    Given 2-paths $\alpha\colon p\eq{x\eq A y} q$ and $\gamma\colon q\eq{x\eq A y} r$, their \textsl{vertical composition} is their concatenation as paths in the identity type $x\eq A y$:
+    \[
+        \alpha\ct\gamma \colon p\eq{x\eq A y} r.
     \]
 \end{defn}
 
-\begin{rem}
-    The horizontal composition can also be computed in terms of whiskering (up to homotopy) as:
+\begin{lem}\label{lem:interchange-law} {\upshape[Interchange Law]}
+    Let\/ $A$ be a type. Consider the configuration of paths and homotopies depicted in the following commutative diagram:
     \[
-        \alpha\hct\beta\eq{(p\ct r)\eq{a\eq Ac}(q\ct s)}(\alpha\cdot r)\ct(q\cdot\beta).
+        \begin{tikzcd}[column sep=huge,
+            row sep=huge]
+            x
+                \arrow[r, bend left=60, "p"{name=U1}]
+                \arrow[r, "q"{name=M1, description}]
+                \arrow[r, bend right=60, "u"'{name=D1}]
+            & y
+                \arrow[r, bend left=60, "r"{name=U2}]
+                \arrow[r, "s"{name=M2, description}]
+                \arrow[r, bend right=60, "v"'{name=D2}]
+            & z
+            % Left Column 2-cells
+            \arrow[Rightarrow,
+                from=U1,
+                to=M1,
+                "\alpha",
+                shorten <=3pt,
+                shorten >= 1pt]
+            \arrow[Rightarrow,
+                from=M1,
+                to=D1,
+                "\gamma",
+                shorten <=2pt,
+                shorten >= 3pt]
+            % Right Column 2-cells
+            \arrow[Rightarrow,
+                from=U2,
+                to=M2,
+                "\beta",
+                shorten <=3pt,
+                shorten >= 1pt]
+            \arrow[Rightarrow,
+                from=M2,
+                to=D2,
+                "\delta",
+                shorten <=2pt,
+                shorten >= 3pt]
+        \end{tikzcd}
     \]
-\end{rem}
-
-\begin{lem} {\upshape[Interchange Law]}
-    Let\/ $A$ be a type and\/ $\alpha, \beta, \gamma, \delta$ be homotopies in\/ $A$ arranged in a commutative square (meaning their boundaries match appropriately). Then, the horizontal composition\/ $\hct$ and the vertical composition\/ $\ct$ satisfy:
+    The horizontal and vertical compositions satisfy:
     \[
         (\alpha\hct\beta)\ct(\gamma\hct\delta)
         \eq{}
         (\alpha\ct\gamma)\hct(\beta\ct\delta).
     \]
 \end{lem}
+
+\begin{proof}
+    Let us first observe that the types match. We have:
+    \begin{align*}
+        \alpha\hct\beta &\colon (p\ct r)\eq{x\eq Az}(q\ct s)\\
+        \gamma\hct\delta &\colon (q\ct s)\eq{x\eq Az}(u\ct v).
+    \end{align*}
+    Thus, the \lhs is a path of type $(p\ct r)\eq{x\eq Az}(u\ct v)$.
+    Similarly, for the right-hand side components:
+    \begin{align*}
+        \alpha\ct\gamma &\colon p\eq{x\eq Ay}u\\
+        \beta\ct\delta &\colon r\eq{y\eq Az}v.
+    \end{align*}
+    Thus, the \rhs is also a path of type $(p\ct r)\eq{x\eq Az}(u\ct v)$.
+    
+    Since the types agree, we proceed by path induction.
+    \begin{description}[font=\normalfont\scshape]
+        \item[Step 1.] Induction on $\alpha$. We assume $\alpha$ is $\fun{refl}_p$, which definitionaly forces the endpoint $q$ to be $p$. Consequently, the type of $\gamma$ becomes $p\eq{x\eq Ay}u$.
+
+        \item[Step 2.] Induction on $\gamma$. We assume $\gamma$ is $\fun{refl}_p$, which forces $u$ to be $p$.
+
+        \item[Step 3.] Induction on $\beta$ and $\delta$. Applying the same logic to the right column, we assume $\beta$ and $\delta$ are $\fun{refl}_r$, which forces $s \equiv r$ and $v \equiv r$.
+        
+        \item[Step 4.] Computation. In this base case, all paths are definitionally reflexivity. We compute both sides:
+        \begin{align*}
+            \lhs&\equiv(\fun{refl}_p\hct\fun{refl}_r)
+                \ct(\fun{refl}_p\hct\fun{refl}_r)\\
+                    &\equiv\fun{refl}_{p\ct r}
+                        \ct \fun{refl}_{p\ct r}\\
+                    &\equiv\fun{refl}_{p\ct r}.
+                        &&;\ \eqref{eq:refl-hct}\\[1mm]
+            \rhs&\equiv(\fun{refl}_p\ct\fun{refl}_p)
+                \hct(\fun{refl}_r\ct\fun{refl}_r)\\
+                    &\equiv\fun{refl}_p\hct\fun{refl}_r\\
+                    &\equiv\fun{refl}_{p\ct r}.
+                        &&;\ \eqref{eq:refl-hct}
+        \end{align*}
+    \end{description}
+    Since both sides reduce to the same term $\fun{refl}_{p\ct r}$ in the base case, the path induction principle ensures they are equal in the general case.
+\end{proof}
 
 \begin{thm} {\upshape[Eckmann-Hilton]}
     The composition operation on the second loop space
@@ -294,6 +379,64 @@
     \]
     is commutative: $\alpha\ct\beta=\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
 \end{thm}
+
+\begin{proof}
+    Introduce the $2$-loop
+    \[
+        e \defeq \fun{refl}_{\fun{refl}_a}
+        \colon \fun{refl}_a \eq{\Omega(A)} \fun{refl}_a,
+    \]
+    which is the identity element of the second loop space $\Omega^2(A)$.
+    
+    \begin{description}[font=\normalfont\scshape]
+        \item[Horizontal $=$ vertical:] Consider the expression
+        \[
+            (\alpha\hct e)\ct(e\hct\beta).
+        \]
+        Using the unit laws for horizontal composition (which hold propositionally by path induction), we have $\alpha\hct e \eq{a\eq Aa} \alpha$ and $e\hct\beta \eq{a\eq Aa} \beta$. Thus, we have a path:
+        \begin{equation}\label{eq:eckmann-1}
+            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} \alpha\ct\beta.
+        \end{equation}
+        On the other hand, applying the Interchange Law Lemma~\ref{lem:interchange-law} to the original expression yields:
+        \[
+            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} (\alpha\ct e)\hct(e\ct\beta).
+        \]
+        Using the unit laws for vertical composition, namely
+        \[
+            \alpha\ct e \eq{a\eq Aa} \alpha
+            \quad\text{and}\quad
+            e\ct\beta \eq{a\eq Aa} \beta,
+        \]
+        the right-hand side becomes $\alpha\hct\beta$. Comparing this result with \eqref{eq:eckmann-1}, we conclude:
+        \begin{equation}\label{eq:hct=ct}
+            \alpha\hct\beta\eq{a\eq Aa}\alpha\ct\beta.
+        \end{equation}
+        
+        \item[Commutativity:] Now consider the expression with terms swapped:
+        \[
+            (e\hct\beta)\ct(\alpha\hct e).
+        \]
+        Using the horizontal unit laws first:
+        \[
+            (e\hct\beta)\ct(\alpha\hct e)
+                \eq{a\eq Aa}\beta\ct\alpha.
+        \]
+        Alternatively, applying the Interchange Law first:
+        \[
+            (e\hct\beta)\ct(\alpha \hct e) 
+                \eq{a\eq Aa}(e\ct\alpha)\hct(\beta\ct e).
+        \]
+        Using the vertical unit laws on the right side, this reduces to $\alpha\hct\beta$. 
+        
+        Combining these chains of equalities with \eqref{eq:hct=ct}, we obtain:
+        \[
+            \beta\ct\alpha
+                \eq{a\eq Aa}\alpha\hct\beta
+                \eq{a\eq Aa}\alpha\ct\beta,
+        \]
+        as desired.
+    \end{description}
+\end{proof}
 
 \section{Fibrations and Transport}
 
@@ -773,7 +916,7 @@ Types admit different interpretations: depending on the circumstances, they can 
                 \eq B\eta_x\ct\fun{refl}_{g(x)}\\
             &\equiv \eta_x\eq B\eta_x\ct\fun{refl}_{g(x)}.
     \end{align*}
-    By Lemma~\ref{lem:right-unit-law}, $\fun{unit}_r(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq B\eta_x$. Hence, $\fun{unit}_r(\eta_x)^{-1}$ is an inhabitant $C(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{unit}_l$, that satisfies $\fun{unit}_l(p)\colon\fun{refl}_x\ct p\eq Ap$, arriving at $\fun{unit}_l(\eta_x)\ct\fun{unit}_r(\eta_x)^{-1}$.}
+    By Lemma~\ref{lem:right-unit-law}, $\fun{ru}(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq B\eta_x$. Hence, $\fun{ru}(\eta_x)^{-1}$ is an inhabitant $C(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{lu}$, that satisfies $\fun{lu}(p)\colon\fun{refl}_x\ct p\eq Ap$, arriving at $\fun{lu}(\eta_x)\ct\fun{ru}(\eta_x)^{-1}$.}
 \end{description}
 
 \begin{prop}
@@ -1222,7 +1365,7 @@ Let\/ $f\colon A\to B$. Then:
             \[
                 \fun{ru}_{\vartheta}\defeq
                     \fun{funext}(\lambda x.\,
-                        \fun{unit}_r(\vartheta(x))).
+                        \fun{ru}(\vartheta(x))).
             \]
         \end{itemize}
     \end{enumerate}

@@ -1610,7 +1610,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{lem}\label{lem:right-unit-law}
         For every type\/ $A$, every\/ $x,y\colon A$ and every path\/ $p\colon x\eq Ay$, we have a path
         \[
-            \fun{unit}_r(p)\colon p\ct\fun{refl}_y\eq{x\eq Ay}p.
+            \fun{ru}(p)\colon p\ct\fun{refl}_y\eq{x\eq Ay}p.
         \]
     \end{lem}
     
@@ -1628,7 +1628,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
         Applying path induction, we obtain the desired term
         \[
-            \fun{unit}_r(p) \defeq \fun{ind}_{\eq A}(C,c,x,y,p).
+            \fun{ru}(p) \defeq \fun{ind}_{\eq A}(C,c,x,y,p).
         \]
     \end{proof}
 \end{lpar}
@@ -1760,11 +1760,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         C(u,u,\fun{refl}_u)\equiv\prod_{s\colon a\eq Au}D(u,s)\to D(u,s\ct\fun{refl}_u).
     \]
-    By \nref{lpar:right-unit-law}, there is a path  $\fun{unit}_r(s)\colon s\ct\fun{refl}_u\eq{a\eq Au}s$. Then, its inverse path satisfies  $\fun{unit}_r(s)^{-1}\colon s\eq{a\eq Au}s\ct\fun{refl}_u$.
+    By \nref{lpar:right-unit-law}, there is a path  $\fun{ru}(s)\colon s\ct\fun{refl}_u\eq{a\eq Au}s$. Then, its inverse path satisfies  $\fun{ru}(s)^{-1}\colon s\eq{a\eq Au}s\ct\fun{refl}_u$.
     
     Since we need to transform terms of $D(u,s)$ into terms of $D(u,s\ct\fun{refl}_u)$, we define $P_u\defeq\lambda s.\,D(u,s)$ and use the function $\fun{transport}^{P_u}$
     \begin{equation}\label{eq:ind-base-case-subst}
-        c(u)\defeq\lambda s.\,\fun{transport}^{P_u}(\fun{unit}_r(s)^{-1})
+        c(u)\defeq\lambda s.\,\fun{transport}^{P_u}(\fun{ru}(s)^{-1})
             \colon C(u,u,\fun{refl}_u).
     \end{equation}
     By path induction, we obtain
@@ -1790,10 +1790,10 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     We reduce the term  $c(a)(\fun{refl}_a)$:
     \begin{align*}
         c(a)(\fun{refl}_a)
-            &\equiv\fun{transport}^{P_a}(\fun{unit}_r(\fun{refl}_a)^{-1})
+            &\equiv\fun{transport}^{P_a}(\fun{ru}(\fun{refl}_a)^{-1})
                 &&;\ \eqref{eq:ind-base-case-subst}\\
             &\equiv\fun{transport}^{P_a}(\fun{refl}_a^{-1})
-                &&;\ \fun{unit}_r(\fun{refl}_a)\equiv\fun{refl}_a\\
+                &&;\ \fun{ru}(\fun{refl}_a)\equiv\fun{refl}_a\\
             &\equiv\fun{transport}^{P_a}(\fun{refl}_a)
                 &&;\ \fun{refl}_a^{-1}\equiv\fun{refl}_a\\
             &\equiv\lambda z.\,z.
