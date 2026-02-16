@@ -1,5 +1,35 @@
 \chapter{Homotopy Type Theory}
 
+\section{Pointed Types and Loop Spaces}
+
+\begin{defn}
+    A \textsl{pointed type} $(A,a)$ is a type $A\colon\univ$ together with a point $a\colon A$, called its \textsl{basepoint}. We write
+    \[
+        \univ_\sbull\defeq\sum_{A:\,\univ}A
+    \]
+    for the type of pointed types in the universe $\univ$.
+\end{defn}
+
+\begin{defn}
+    Given a pointed type $(A,a)$, we define the \textsl{loop space} of $(A,a)$ as the following pointed type:
+    \begin{align*}
+        \Omega&\colon\univ_\bullet\to\univ_\bullet\\
+        \Omega(A,a)&\defeq((a\eq Aa),\fun{refl}_a).        
+    \end{align*}
+    An element of this type is called a \textsl{loop} at $a$. For $n\colon\N$, the \textsl{$n$-fold iterated loop space} $\Omega^n(A,a)$ of a pointed type $(A,a)$ is defined recursively by:
+    \begin{align*}
+        \Omega^0(A,a)&\defeq(A,a)\\
+        \Omega^{n+1}(A,a)&\defeq\Omega^n(\Omega(A,a)).
+    \end{align*}
+    An element of this type is called an \textsl{$n$-loop} or an \textsl{$n$-dimensional loop} at $a$.
+\end{defn}
+
+\begin{rem}\label{rem:Omega-abuse}
+    It is usual to sometimes abuse the notation and identify $\Omega(A,a)$ with $a\eq Aa$, i.e., as $\pi_1(a\eq Aa,\fun{refl}_a)$.
+    
+    Note however that the reason to define $\Omega\colon\univ_\bullet\to\univ_\bullet$ and not from $\univ_\bullet$ to $\univ$, is to enable the definition of $\Omega^n$ for $n=0,1,\dots$.
+\end{rem}
+
 \section{Functoriality and Path Algebra}
     Recall from Exercise~\ref{exr:ap-application} that given $f\colon A\to B$, the congruence function
     \[
@@ -202,6 +232,17 @@
     \end{enumerate}
 \end{defn}
 
+\begin{defn}
+    Given a function $f\colon A\to B$ and a point $a\colon A$, the \textsl{induced map on loops} is the function
+    \[
+        \Omega f\colon\Omega(A,a)\to\Omega(B,f(a))
+    \]
+    defined by\footnote{As noted in Remark \ref{rem:Omega-abuse}, by abusing notation $\Omega(A,a)$ sometimes refers to $a\eq Aa$ rather than to the pointed type.}
+    \[
+        \Omega f(p)\defeq\fun{ap}_f(p).
+    \]
+    Note that by part a) of Proposition~\ref{prop:ap-properties}, we have $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that $\Omega f$ preserves the basepoint definitionally.
+\end{defn}
 
 \begin{defn}
     Let $A$ be a type and let $a,b,c\colon A$ be points. Consider paths $p,q\colon a\eq Ab$ and $r,s \colon b\eq Ac$, along with homotopies $\alpha\colon p\eq{a\eq Ab}q$ and $\beta\colon r\eq{b\eq Ac}s$, as depicted below:
@@ -329,6 +370,72 @@
         \end{align*}
     \end{description}
     Since both sides reduce to the same term $\fun{refl}_{p\ct r}$ in the base case, the path induction principle ensures they are equal in the general case.
+\end{proof}
+
+\begin{thm} {\upshape[Eckmann-Hilton]}
+    The composition operation on the second loop space
+    \[
+        \Omega^2(A)\times\Omega^2(A)\to\Omega^2(A)
+    \]
+    is commutative: $\alpha\ct\beta=\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
+\end{thm}
+
+\begin{proof}
+    Introduce the $2$-loop
+    \[
+        e \defeq \fun{refl}_{\fun{refl}_a}
+        \colon \fun{refl}_a \eq{\Omega(A)} \fun{refl}_a,
+    \]
+    which is the identity element of the second loop space $\Omega^2(A)$.
+    
+    \begin{description}[font=\normalfont\scshape]
+        \item[Horizontal $=$ vertical:] Consider the expression
+        \[
+            (\alpha\hct e)\ct(e\hct\beta).
+        \]
+        Using the unit laws for horizontal composition (which hold propositionally by path induction), we have $\alpha\hct e \eq{a\eq Aa} \alpha$ and $e\hct\beta \eq{a\eq Aa} \beta$. Thus, we have a path:
+        \begin{equation}\label{eq:eckmann-1}
+            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} \alpha\ct\beta.
+        \end{equation}
+        On the other hand, applying the Interchange Law Lemma~\ref{lem:interchange-law} to the original expression yields:
+        \[
+            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} (\alpha\ct e)\hct(e\ct\beta).
+        \]
+        Using the unit laws for vertical composition, namely
+        \[
+            \alpha\ct e \eq{a\eq Aa} \alpha
+            \quad\text{and}\quad
+            e\ct\beta \eq{a\eq Aa} \beta,
+        \]
+        the right-hand side becomes $\alpha\hct\beta$. Comparing this result with \eqref{eq:eckmann-1}, we conclude:
+        \begin{equation}\label{eq:hct=ct}
+            \alpha\hct\beta\eq{a\eq Aa}\alpha\ct\beta.
+        \end{equation}
+        
+        \item[Commutativity:] Now consider the expression with terms swapped:
+        \[
+            (e\hct\beta)\ct(\alpha\hct e).
+        \]
+        Using the horizontal unit laws first:
+        \[
+            (e\hct\beta)\ct(\alpha\hct e)
+                \eq{a\eq Aa}\beta\ct\alpha.
+        \]
+        Alternatively, applying the Interchange Law first:
+        \[
+            (e\hct\beta)\ct(\alpha \hct e) 
+                \eq{a\eq Aa}(e\ct\alpha)\hct(\beta\ct e).
+        \]
+        Using the vertical unit laws on the right side, this reduces to $\alpha\hct\beta$. 
+        
+        Combining these chains of equalities with \eqref{eq:hct=ct}, we obtain:
+        \[
+            \beta\ct\alpha
+                \eq{a\eq Aa}\alpha\hct\beta
+                \eq{a\eq Aa}\alpha\ct\beta,
+        \]
+        as desired.
+    \end{description}
 \end{proof}
 
 \section{Fibrations and Transport}
@@ -984,6 +1091,7 @@ Types admit different interpretations: depending on the circumstances, they can 
     This provides the required homotopy for every $x$. Thus, by lemma, $g\circ f\sim\id$.
 \end{proof}
 
+
 \section{Equivalences}
 
 \begin{defns}\label{defns:isequiv-qinv}${}$
@@ -1369,7 +1477,7 @@ Now we can establish the main
     \]
 \end{rem}
 
-\section{Observational Equality Framework}
+\section{Observational Equality}
 In classical Type Theory, equality is often regarded as \textit{opaque}---essentially a mystery. It is defined as \emph{intensional} (not to be confused with intentional), meaning that for two objects to be equal, they must follow the exact same construction.
 
 Homotopy Type Theory attempts to bridge this gap. By interpreting the inhabitants of the type $x\eq Ay$ as paths from $x$ to $y$ in the \textit{space} $A$, it becomes possible to determine when two objects behave equivalently, independent of their specific construction. This shared behavioral appearance is termed \textit{observational equality}. The rest of this chapter is dedicated to describing the observational equality for each of the basic types introduced in Chapter~1.
@@ -1502,7 +1610,7 @@ There are two additional requirements to the \nameref{observational-framework} t
     \end{description}
 \end{proof}
 
-\section{Equality in Cartesian Products}
+\section{Cartesian Product}
 
 In this section we apply the observational framework \ref{observational-framework} to the product $A\times B$.
 
@@ -1877,10 +1985,10 @@ which are clearly well defined. Moreover
             =s,
         \]
         which holds by property iv).
+
     \end{enumerate}
 \end{proof}
 
-\needspace{2\baselineskip}
 \begin{prop}\label{prop:lift-pair}
     Let\/ $A, B\colon\univ$.
     \begin{enumerate}[a), font=\upshape]
@@ -1977,7 +2085,7 @@ which are clearly well defined. Moreover
     Thus, $\fun{refl}_{\fun{refl}_{(f(a),g(b))}}$ is a witness of the target identity type.
 \end{proof}
 
-\section{Equality in \textSigma-Types}
+\section{\textSigma-Types}
 
 Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path $p\colon\omega\eq E\omega'$ between points $\omega$ and $\omega'$ in the total space $E\defeq\sum_{x\colon A}P(x)$, the behavior of the first and second projections is asymmetric. While $\pi_1$ yields a path $\fun{ap}_{\pi_1}(p)\colon\pi_1(\omega)\eq A\pi_1(\omega')$, the second components $\pi_2(\omega)$ and $\pi_2(\omega')$ cannot be compared because they inhabit the fibers $P(\pi_1(\omega))$ and $P(\pi_1(\omega'))$, which are not necessarily the same type.
 
@@ -2599,7 +2707,7 @@ To verify the unit laws, observe that
     \end{align*}
 \end{proof}
 
-\section{Equality in the Unit Type}
+\section{The Unit Type}
 
 To apply the framework~\ref{observational-framework} to the unit type $\fun1$, we proceed as in the previous cases.
 
@@ -3366,7 +3474,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
         \begin{enumerate}[-]
             \item $p$ and $p^{-1}$ reduce definitionally to $\fun{refl}_x$.
             
-            \item Since the transport operations $p_*$ reduce to identity functions, we get $p_*(u)\equiv u$ and $p_*(f)\equiv f$.
+            \item Since the transport operations $p_*$ reduce to identity functions, $p_*(u) \equiv u$ and $p_*(f) \equiv f$.
             
             \item The fiber coordinate $w\defeq(p^{-1})_*(p_*(u))$ reduces definitionally to $u$.
             
@@ -3685,114 +3793,4 @@ The unit laws hold trivially
 
     %
     
-\end{proof}
-
-
-\section{Pointed Types and Loop Spaces}
-
-\begin{defn}
-    A \textsl{pointed type} $(A,a)$ is a type $A\colon\univ$ together with a point $a\colon A$, called its \textsl{basepoint}. We write
-    \[
-        \univ_\sbull\defeq\sum_{A:\,\univ}A
-    \]
-    for the type of pointed types in the universe $\univ$.
-\end{defn}
-
-\begin{defn}
-    Given a pointed type $(A,a)$, we define the \textsl{loop space} of $(A,a)$ as the following pointed type:
-    \begin{align*}
-        \Omega&\colon\univ_\sbull\to\univ_\sbull\\
-        \Omega(A,a)&\defeq((a\eq Aa),\fun{refl}_a).        
-    \end{align*}
-    An element of this type is called a \textsl{loop} at $a$. For $n\colon\N$, the \textsl{$n$-fold iterated loop space} $\Omega^n(A,a)$ of a pointed type $(A,a)$ is defined recursively by:
-    \begin{align*}
-        \Omega^0(A,a)&\defeq(A,a)\\
-        \Omega^{n+1}(A,a)&\defeq\Omega^n(\Omega(A,a)).
-    \end{align*}
-    An element of this type is called an \textsl{$n$-loop} or an \textsl{$n$-dimensional loop} at $a$.
-\end{defn}
-
-\begin{rem}\label{rem:Omega-abuse}
-    It is usual to sometimes abuse the notation and identify $\Omega(A,a)$ with $a\eq Aa$, i.e., as $\pi_1(a\eq Aa,\fun{refl}_a)$.
-    
-    Note however that the reason to define $\Omega\colon\univ_\sbull\to\univ_\sbull$ and not from $\univ_\sbull$ to $\univ$, is to enable the definition of $\Omega^n$ for $n=0,1,\dots$.
-\end{rem}
-
-\begin{defn}
-    Given a function $f\colon A\to B$ and a point $a\colon A$, the \textsl{induced map on loops} is the function
-    \[
-        \Omega f\colon\Omega(A,a)\to\Omega(B,f(a))
-    \]
-    defined by\footnote{As noted in Remark \ref{rem:Omega-abuse}, by abusing notation $\Omega(A,a)$ sometimes refers to $a\eq Aa$ rather than to the pointed type.}
-    \[
-        \Omega f(p)\defeq\fun{ap}_f(p).
-    \]
-    Note that by part a) of Proposition~\ref{prop:ap-properties}, we have $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that $\Omega f$ preserves the basepoint definitionally.
-\end{defn}
-
-
-\begin{thm} {\upshape[Eckmann-Hilton]}
-    The composition operation on the second loop space
-    \[
-        \Omega^2(A)\times\Omega^2(A)\to\Omega^2(A)
-    \]
-    is commutative: $\alpha\ct\beta=\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
-\end{thm}
-
-\begin{proof}
-    Introduce the $2$-loop
-    \[
-        e \defeq \fun{refl}_{\fun{refl}_a}
-        \colon \fun{refl}_a \eq{\Omega(A)} \fun{refl}_a,
-    \]
-    which is the identity element of the second loop space $\Omega^2(A)$.
-    
-    \begin{description}[font=\normalfont\scshape]
-        \item[Horizontal $=$ vertical:] Consider the expression
-        \[
-            (\alpha\hct e)\ct(e\hct\beta).
-        \]
-        Using the unit laws for horizontal composition (which hold propositionally by path induction), we have $\alpha\hct e \eq{a\eq Aa} \alpha$ and $e\hct\beta \eq{a\eq Aa} \beta$. Thus, we have a path:
-        \begin{equation}\label{eq:eckmann-1}
-            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} \alpha\ct\beta.
-        \end{equation}
-        On the other hand, applying the Interchange Law Lemma~\ref{lem:interchange-law} to the original expression yields:
-        \[
-            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} (\alpha\ct e)\hct(e\ct\beta).
-        \]
-        Using the unit laws for vertical composition, namely
-        \[
-            \alpha\ct e \eq{a\eq Aa} \alpha
-            \quad\text{and}\quad
-            e\ct\beta \eq{a\eq Aa} \beta,
-        \]
-        the right-hand side becomes $\alpha\hct\beta$. Comparing this result with \eqref{eq:eckmann-1}, we conclude:
-        \begin{equation}\label{eq:hct=ct}
-            \alpha\hct\beta\eq{a\eq Aa}\alpha\ct\beta.
-        \end{equation}
-        
-        \item[Commutativity:] Now consider the expression with terms swapped:
-        \[
-            (e\hct\beta)\ct(\alpha\hct e).
-        \]
-        Using the horizontal unit laws first:
-        \[
-            (e\hct\beta)\ct(\alpha\hct e)
-                \eq{a\eq Aa}\beta\ct\alpha.
-        \]
-        Alternatively, applying the Interchange Law first:
-        \[
-            (e\hct\beta)\ct(\alpha \hct e) 
-                \eq{a\eq Aa}(e\ct\alpha)\hct(\beta\ct e).
-        \]
-        Using the vertical unit laws on the right side, this reduces to $\alpha\hct\beta$. 
-        
-        Combining these chains of equalities with \eqref{eq:hct=ct}, we obtain:
-        \[
-            \beta\ct\alpha
-                \eq{a\eq Aa}\alpha\hct\beta
-                \eq{a\eq Aa}\alpha\ct\beta,
-        \]
-        as desired.
-    \end{description}
 \end{proof}
