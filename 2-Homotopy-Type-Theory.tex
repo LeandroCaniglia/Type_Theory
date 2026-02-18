@@ -23,11 +23,11 @@
 \begin{prop}\label{prop:ap-properties}
     Let $A,B,C\colon\univ$. Given functions\/ $f\colon A\to B$ and\/ $g\colon B\to C$ and paths\/ $p\colon x\eq Ay$ and\/ $q\colon y\eq Az$, we have:
     \begin{enumerate}[a),font=\upshape]
-        \item $\tilde f(\fun{refl}_x)\equiv\fun{refl}_{f(x)}$.
-        \item $\tilde f(p\ct q)\eq{f(x)\eq Bf(z)}\tilde f(p)\ct\tilde f(q)$.
-        \item $\tilde f(p^{-1})\eq{f(y)\eq Bf(x)}\tilde f(p)^{-1}$.
-        \item $\tilde g(\tilde f(p))\eq{h(x)\eq Ch(y)}\tilde h(p)$, where $h\defeq g\circ f$.
-        \item $\widetilde{\id}_A(p)\eq{x\eq Ay}p$.
+        \item $\fun{ap}_f(\fun{refl}_x)\equiv\fun{refl}_{f(x)}$.
+        \item $\fun{ap}_f(p\ct q)\eq{f(x)\eq Bf(z)}\fun{ap}_f(p)\ct\fun{ap}_f(q)$.
+        \item $\fun{ap}_f(p^{-1})\eq{f(y)\eq Bf(x)}\fun{ap}_f(p)^{-1}$.
+        \item $\fun{ap}_g(\fun{ap}_f(p))\eq{g\circ f(x)\eq Cg\circ f(y)}\fun{ap}_{g\circ f}(p)$.
+        \item $\fun{ap}_{\id_A}(p)\eq{x\eq Ay}p$.
     \end{enumerate}
 \end{prop}
 
@@ -36,57 +36,65 @@
         \item Exercise~\ref{exr:ap-application}.
         \item Exercise~\ref{exr:ap-application}.
         
-        \item First observe that
+        \item This easily follows by path induction on $p$. However, here we will illustrate how to deduce it from what we have proven so far.
+        
+        First observe that
         \begin{align*}
-            \tilde f(p)\ct\tilde f(p^{-1})
-                &\eq{f(x)\eq Bf(x)}\tilde f(p\ct p^{-1})
+            \fun{ap}_f(p)\ct\fun{ap}_f(p^{-1})
+                &\eq{f(x)\eq Bf(x)}\fun{ap}_f(p\ct p^{-1})
                     &&\text{; by part b)}\\
-                &\eq{f(x)\eq Bf(x)}\tilde f(\fun{refl}_x)
-                    &&\text{; inverse law}\\
+                &\eq{f(x)\eq Bf(x)}\fun{ap}_f(\fun{refl}_x)
+                    &&\text{; by } \fun{ap}_{\fun{ap}_f}(\text{inverse law})\\
                 &\equiv\fun{refl}_{f(x)}
                     &&\text{; by part a).}
         \end{align*}
-        Therefore,
+        The second equality applies $\fun{ap}_{\fun{ap}_f}$ to the witness of the inverse law, i.e., to the path $p\ct p^{-1}\eq{x\eq Ax}\fun{refl}_x$.
+    
+        Now consider the function
         \begin{align*}
-            \tilde f(p)^{-1}
-                &\eq{f(y)\eq Bf(x)}
-                    \tilde f(p)^{-1}\ct\big(\tilde f(p) \ct\tilde f(p^{-1})\big)
-                    &&\text{; right unit}\\
-                &\eq{f(y)\eq Bf(x)}
-                    \big(\tilde f(p)^{-1}\ct\tilde f(p)\big) \ct\tilde f(p^{-1})
+            g &\colon (f(x)\eq Bf(x)) \to (f(y)\eq Bf(x)) \\
+            g(r) &\defeq \fun{ap}_f(p)^{-1}\ct r.
+        \end{align*}
+        Let $\gamma$ be the witness of the equality we just proved. Applying $\fun{ap}_g$ to $\gamma^{-1}$ yields
+        \begin{align*}
+            \fun{ap}_f(p)^{-1}
+                &\eq{f(y)\eq Bf(x)} \fun{ap}_f(p)^{-1}\ct\big(\fun{ap}_f(p) \ct\fun{ap}_f(p^{-1})\big)
+                    &&\text{; }\fun{ap}_g(\gamma^{-1})\\
+                &\eq{f(y)\eq Bf(x)} \big(\fun{ap}_f(p)^{-1}\ct\fun{ap}_f(p)\big) \ct\fun{ap}_f(p^{-1})
                     &&\text{; associativity}\\
-                &\eq{f(y)\eq Bf(x)}\tilde f(p^{-1})
+                &\eq{f(y)\eq Bf(x)}\fun{ap}_f(p^{-1})
                     &&\text{; left inverse.}
         \end{align*}
+        where the last equality can be proven by mirroring the deduction of the first one.
 
-        \item Since $p\colon x\eq Ay$, we know that $\tilde f(p)\colon f(x)\eq Bf(y)$. Therefore,
+        \item Since $p\colon x\eq Ay$, we know that $\fun{ap}_f(p)\colon f(x)\eq Bf(y)$. Therefore,
         \[
-            \tilde g(\tilde f(p))\colon g(f(x))\eq Cg(f(y)).
+            \fun{ap}_g(\fun{ap}_f(p))\colon g(f(x))\eq Cg(f(y)).
         \]
-        Let $h\defeq g\circ f$. Note that the type of the term above is definitionally equal to $h(x)\eq C h(y)$.
+        The type of the term above is definitionally equal to $g\circ f(x)\eq C g\circ f(y)$.
         Consider the case where $p\equiv\fun{refl}_x$. We have
         \begin{align*}
-            \tilde g(\tilde f(\fun{refl}_x))
-                &\equiv \tilde g(\fun{refl}_{f(x)})\\
+            \fun{ap}_g(\fun{ap}_f(\fun{refl}_x))
+                &\equiv \fun{ap}_g(\fun{refl}_{f(x)})\\
                 &\equiv \fun{refl}_{g(f(x))}\\
-                &\equiv \fun{refl}_{h(x)}\\
-                &\equiv \tilde h(\fun{refl}_x).
+                &\equiv \fun{refl}_{g\circ f(x)}\\
+                &\equiv \fun{ap}_{g\circ f}(\fun{refl}_x).
         \end{align*}
-        To conclude that $\tilde g(\tilde f(p))\eq{h(x)\eq Ch(y)}\tilde h(p)$, we apply path induction to the motive
+        To conclude that $\fun{ap}_g(\fun{ap}_f(p))\eq{g\circ f(x)\eq Cg\circ f(y)}\fun{ap}_{g\circ f}(p)$, we apply path induction to the motive
         \[
-            C(x,y,p)\defeq \tilde g(\tilde f(p))\eq{h(x)\eq Ch(y)}\tilde h(p),
+            C(x,y,p)\defeq \fun{ap}_g(\fun{ap}_f(p))\eq{g\circ f(x)\eq Cg\circ f(y)}\fun{ap}_{g\circ f}(p),
         \]
-        with the base case $c(x)\colon C(x,x,\fun{refl}_x)$ defined as $\fun{refl}_{\tilde h(\fun{refl}_x)}$.
+        with the base case $c(x)\colon C(x,x,\fun{refl}_x)$ defined as $\fun{refl}_{\fun{ap}_{g\circ f}(\fun{refl}_x)}$.
 
         \item For\/ $p\equiv\fun{refl}_x$, since\/ $\id_A(x)\equiv x$, we have
         \begin{align*}
-            \widetilde{\id}_A(\fun{refl}_x)
+            \fun{ap}_{\id_A}(\fun{refl}_x)
                 &\equiv \fun{refl}_{\id_A(x)}\\
                 &\equiv \fun{refl}_x.
         \end{align*}
         Therefore, the conclusion follows by path induction applied to the motive
         \[
-            C(x,y,p)\defeq\widetilde{\id}_A(p)\eq{x\eq Ay}p
+            C(x,y,p)\defeq\fun{ap}_{\id_A}(p)\eq{x\eq Ay}p
         \]
         with base case\/ $c(x)\defeq\fun{refl}_{\fun{refl}_x}\colon C(x,x,\fun{refl}_x)$.
         
@@ -107,44 +115,6 @@
         \item \rhs: $\fun{refl}_b$.
     \end{enumerate}
     Since both sides are definitionally equal to $\fun{refl}_b$, the equality is inhabited by $\fun{refl}_{\fun{refl}_b}$.
-\end{proof}
-
-\begin{prop} {\upshape[$\fun{ap}$ as functor]}\label{prop:ap-as-functor}
-    Let\/ $f\colon A\to B$ and\/ $g\colon B\to C$ be functions. Then,
-    \begin{enumerate}[a),font=\upshape]
-        \item $\fun{ap}_f(p\ct q)\eq B\fun{ap}_f(p)\ct\fun{ap}_f(q)$.
-        \item $\fun{ap}_f(p^{-1})\eq B\fun{ap}_f(p)^{-1}$.
-        \item $\fun{ap}_{g\circ f}(p)\eq C\fun{ap}_g(\fun{ap}_f(p))$.
-        \item $\fun{ap}_{\fun{id}_A}(p)\eq Ap$.
-    \end{enumerate}
-\end{prop}
-
-\needspace{2\baselineskip}
-\begin{proof}${}$
-    \begin{enumerate}[a)]
-        \item See Exercise~\ref{exr:ap-application}.
-        
-        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$. We must show:
-        \[
-            \fun{ap}_f(\fun{refl}_x^{-1})
-            \eq B
-            \fun{ap}_f(\fun{refl}_x)^{-1},
-        \]
-        which holds since both sides compute to $\fun{refl}_{f(x)}$.
-        
-        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$.
-        \begin{align*}
-            \fun{ap}_{g\circ f}(\fun{refl}_x)
-                &\equiv\fun{refl}_{g(f(x))}\\
-                &\equiv\fun{ap}_g(\fun{refl}_{f(x)})\\
-                &\equiv \fun{ap}_g(\fun{ap}_f(\fun{refl}_x)).
-        \end{align*}
-        
-        \item By path induction on $p$, we reduce to the case where $p\equiv\fun{refl}_x$, where the equality holds because
-        \[
-        \fun{ap}_{\fun{id}_A}(\fun{refl}_x)\equiv\fun{refl}_x.
-        \]
-    \end{enumerate}
 \end{proof}
 
 \subsection{Path Whiskering}
@@ -202,9 +172,59 @@
     \end{enumerate}
 \end{defn}
 
+\begin{rem}\label{rem:path-whiskering-defn}
+    By definition,
+    \begin{align*}
+        \alpha\rwct r&\equiv\fun{ap}_{\fun{rct}_r}(\alpha)\\
+        p\lwct\beta&\equiv\fun{ap}_{\fun{lct}_lp}(\beta),
+    \end{align*}
+    where $\fun{rct}_r\defeq x\mapsto x\ct r$ and $\fun{lct}_p\defeq x\mapsto p\ct x$.
+\end{rem}
+
+\begin{prop}\label{prop:path-whiskering-associativity}
+    Given a $2$-path\/ $\alpha\colon p\eq{}q$ and appropriately composable $1$-paths\/ $r$ and\/ $s$, we have the following homotopies witnessing the associativity of whiskering:
+    \begin{enumerate}[a),font=\upshape]
+        \item $(\alpha\rwct r)\rwct s\eq{}\alpha\rwct(r\ct s)$.
+        \item $p\lwct(q \lwct\alpha)\eq{}(p\ct q)\lwct\alpha$.
+        \item $p\lwct(\alpha\rwct r)\eq{}(p\lwct\alpha)\rwct r$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}    
+    For a) observe that
+    \begin{align*}
+        (\alpha\rwct r)\rwct s
+            &\equiv\fun{ap}_{\fun{rct}_r}
+                (\fun{ap}_{\fun{rct}_r}(\alpha))\\
+            &\eq{}\fun{ap}_{\fun{rct}_s\circ\fun{rct}_r}(\alpha)\\
+            &\equiv\fun{ap}_{\fun{rct}_{r\ct s}}(\alpha)\\
+            &\equiv\alpha\rwct(r\ct s).
+    \end{align*}
+    The proof of b) is similar.
+    
+    For c) compare left and right actions:
+    \begin{align*}
+        \lhs&\equiv
+            \fun{ap}_{\fun{lct}_p}
+                (\fun{ap}_{\fun{rct}_r}(\alpha))\\
+            &\eq{}\fun{ap}_{\fun{lct}_p\circ\fun{rct}_r}(\alpha).\\[1mm]
+        \rhs&\equiv
+            \fun{ap}_{\fun{rct}_r}(\fun{ap}_{\fun{lct}_p}
+                (\alpha))\\
+            &\eq{}\fun{ap}_{\fun{rct}_r\circ\fun{lct}_rp}
+                (\alpha).
+    \end{align*}
+    The conclusion follows because
+    \[
+        \fun{rct}_r\circ\fun{lct}_p
+            \eq{}\fun{lct}_p\circ\fun{rct}_r
+    \]
+    since concatenation of $1$-paths is propositionally associative.
+\end{proof}
+
 
 \begin{defn}
-    Let $A$ be a type and let $a,b,c\colon A$ be points. Consider paths $p,q\colon a\eq Ab$ and $r,s \colon b\eq Ac$, along with homotopies $\alpha\colon p\eq{a\eq Ab}q$ and $\beta\colon r\eq{b\eq Ac}s$, as depicted below:
+    Let $A$ be a type and $a,b,c\colon A$ points. Consider paths $p,q\colon a\eq Ab$ and $r,s \colon b\eq Ac$, along with homotopies $\alpha\colon p\eq{a\eq Ab}q$ and $\beta\colon r\eq{b\eq Ac}s$, as depicted below:
     \[
         \begin{tikzcd}[column sep=huge,row sep=large]
             a 
@@ -465,30 +485,44 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     In the particular case where $P$ is a constant family $P(x)\equiv B$ for $x\colon A$, given $p\colon a\eq Aa'$, we have
     \begin{enumerate}[i)]
         \item $\fun{lift}(b,p)\eq{(a,b)\eq{A\times B}(a',b)}\fun{ap}_{\fun{sec}_b}(p)$,
-        \item $\fun{lift}(b,\fun{refl}_a)\equiv\fun{refl}_{(a,b)}$, and
+        \item $\fun{lift}(b,\fun{refl}_a)\equiv\fun{refl}_{(a,b)}$,
         \item $\fun{ap}_{\pi_1}(\fun{lift}(b,p))\eq{a\eq Aa'}p$.
     \end{enumerate}
-    In fact, the equality of part~i) follows from part~ii) by induction on $p$.
+    Part~ii) is property ii) of Theorem~\ref{thm:path-lift}. The equality of part~i) follows from part~ii) by induction on $p$.
     \[
-\begin{tikzpicture}[scale=1, >=stealth, font=\small]
-    % Points
-    \coordinate (start) at (0,0);
-    \coordinate (end) at (4,0);
-
-    \fill (start) circle (1.5pt) node[left] {$(a,b)$};
-    \fill (end) circle (1.5pt) node[right] {$(a',b)$};
-
-    % Top Path: lift(b,p)
-    \draw[-latex,] (start) to[out=40, in=135] 
-        node[midway, above,black] {$\fun{lift}(b,p)$} (end);
-
-    % Bottom Path: ap(sec_b, p)
-    \draw[-latex, thick, teal] (start) to[out=-45, in=-150] 
-        node[midway, below,black] {$\fun{ap}_{\fun{sec}_b}(p)$} (end);
-
-    % The 2-path (Equality)
-    \node at (2,0) {$\Downarrow \cong$};
-\end{tikzpicture}
+        \begin{tikzpicture}[scale=1,
+            >=stealth,
+            font=\small]
+            % Points
+            \coordinate (start) at (0,0);
+            \coordinate (end) at (4,0);
+        
+            \fill (start) circle (1.5pt) node[left] {$(a,b)$};
+            \fill (end) circle (1.5pt) node[right] {$(a',b)$};
+        
+            % Top Path: lift(b,p)
+            \draw[-latex] (start) to[out=40, in=135] 
+                node[midway, above,black]
+                    {$\fun{lift}(b,p)$} (end);
+        
+            % Bottom Path: ap(sec_b, p)
+            \draw[-latex,
+                thick,
+                teal] (start) to[out=-45, in=-150] 
+                node[midway, below,black]
+                    {$\fun{ap}_{\fun{sec}_b}(p)$} (end);
+        
+            % The 2-path (Equality)
+            \node at (2,0) {$\downarrow\eq{}$};
+        \end{tikzpicture}
+    \]
+    For iii) observe that
+    \[
+        \fun{ap}_{\pi_1}(\fun{lift}(b,p)) 
+        \eq{} \fun{ap}_{\pi_1}(\fun{ap}_{\fun{sec}_b}(p))
+        \eq{} \fun{ap}_{\pi_1 \circ \fun{sec}_b}(p)
+        \equiv \fun{ap}_{\fun{id}_A}(p)
+        \eq{} p.
     \]
 \end{rem}
 
@@ -519,7 +553,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{proof}
 
 \begin{lem}\label{lem:constant-fibration}
-    If\/ $P \colon A \to \univ$ is defined by\/ $P(x) :\equiv B$ for a fixed\/ $B \colon \univ$, then for any\/ $x, y \colon A$ and\/ $p \colon x \eq A y$ and\/ $b \colon B$ we have a path
+    If\/ $P \colon A \to \univ$ is defined by\/ $P(x) \defeq B$ for a fixed\/ $B \colon \univ$, then for any\/ $x, y \colon A$ and\/ $p \colon x \eq A y$ and\/ $b \colon B$ we have a path
     \[
         \fun{transportconst}^B_p(b) \colon \fun{transport}^P(p, b) \eq B b
     \]
@@ -531,7 +565,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{proof}
 
 \begin{lem}
-    Let\/ $f \colon A \to B$ and define the constant family\/ $P \colon A \to \univ$ by\/ $P(x) :\equiv B$. For any path\/ $p \colon x \eq A y$, we have
+    Let\/ $f\colon A\to B$ and define the constant family\/ $P\colon A\to\univ$ by\/ $P(x)\defeq B$. For any path\/ $p\colon x\eq Ay$, we have
     \[
         \fun{apd}_f(p)\eq{p_*(f(x))\eq B f(y)}
             \fun{transportconst}^B_p(f(x))\ct\fun{ap}_f(p).
@@ -539,6 +573,14 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{lem}
 
 \begin{proof}
+    Fist note that $C(x,p)$ is well defined because
+    \begin{align*}
+        \fun{apd}_f(p)&\colon p_*(f(x))\eq{P(y)}f(y)
+            &&\text{; Lem.~\ref{lem:dependent-map}.}\\
+        \fun{transportconst}^B_p(f(x))&\colon p_*(f(x))\eq Bf(x)
+            &&\text{; Lem.~\ref{lem:constant-fibration}.}\\
+        \fun{ap}_f(p)&\colon f(x)\eq Bf(y).
+    \end{align*}
     Fix\/ $a\colon A$ and let\/ $C\colon\prod_{x\colon A}(a\eq Ax)\to\univ$ be defined by
     \[
         C(x,p)\defeq\fun{apd}_f(p)\eq{p_*(f(a))\eq Bf(x)}
@@ -575,14 +617,16 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{rem}
 
 \begin{lem}\label{lem:transport-composition}
-    Given\/ $P\colon A\to\univ$, $p\colon x\eq Ay$ and, $q\colon y \eq Az$, and\/ $u\colon P(x)$, we have
+    Let\/ $P\colon A\to\univ$ be a type family. Given paths\/ $p\colon x\eq Ay$ and\/ $q\colon y\eq Az$, and a term\/ $u\colon P(x)$, we have
     \[
         q_*(p_*(u))\eq{P(z)}(p\ct q)_*(u).
     \]
 \end{lem}
 
 \begin{proof}
-    Fix $x\colon A$. We proceed by based path induction on $p\colon x\eq A y$. The motive of the induction is the family of types $D\colon \prod_{y\colon A} (x\eq A y)\to \univ$ defined by
+    First, observe that both sides of the equation inhabit $P(z)$. To prove equality, we fix $x\colon A$ and proceed by based path induction on $p$.
+
+    The motive of the induction is the family of types $D\colon \prod_{y\colon A} (x\eq A y)\to \univ$ defined by
     \[
         D(y, p) \defeq \prod_{u\colon P(x)}\; \prod_{z\colon A}\; \prod_{q\colon y\eq A z}
             q_*(p_*(u)) \eq{P(z)} (p\ct q)_*(u).
@@ -626,7 +670,9 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{lem}
 
 \begin{proof}
-    We proceed by path induction on $p$. Define the motive
+    Since both sides of the equality are inhabitants of $P(f(y))$, we can proceed to proving it by path induction on $p$.
+    
+    For the motive, define
     \[
         C\colon \prod_{y\colon A} (x\eq A y)\to \univ
     \]
@@ -654,15 +700,16 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{proof}
 
 \begin{lem}\label{lem:dependent-post-composition-transport}
-    For\/ $P, Q \colon A \to \univ$, a function family\/ $f \colon \prod_{x\colon A} P(x) \to Q(x)$, and any\/ $p \colon x \eq A y$ and\/ $u \colon P(x)$, we have
+    Let\/ $P,Q\colon A\to\univ$ be type families and\/ $f\colon\prod_{x\colon A}(P(x)\to Q(x))$ a family map. For any path\/ $p\colon x\eq A y$ and term\/ $u\colon P(x)$, we have
     \[
-        \fun{transport}^Q(p,f_x(u))\eq{Q(y)}
-            f_y(\fun{transport}^P(p,u)).
+        \fun{transport}^Q(p,f_x(u)) \eq{Q(y)} f_y(\fun{transport}^P(p,u)).
     \]
 \end{lem}
 
 \begin{proof}
-    To use based path induction on $p$, fix $a\colon A$ and consider the motive 
+    Since $\fun{transport}^P(p,u)\colon P(y)$, both sides inhabit $Q(y)$. Therefore, we can proceed with based path induction on $p$ to proving it.
+    
+    Fix $a\colon A$ and consider the motive 
     \begin{align*}
         C&\colon\prod_{x\colon A}(a\eq Ax)\to\univ\\
         C(x,p)&\defeq\prod_{u\colon P(a)}
@@ -689,21 +736,18 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{ntn}
 
 \begin{defn}\label{defn:homotopy}
-    Given two sections\/ $f,g\colon\prod_{x\colon A}P(x)$ of a family\/ $P\colon A\to\univ$, a \textsl{homotopy} from\/ $f$ to\/ $g$ is a dependent function of type
+    Let\/ $f,g\colon\prod_{x\colon A}P(x)$ be two sections of the family\/ $P\colon A\to\univ$. A \textsl{homotopy} from\/ $f$ to\/ $g$ is a dependent function of type
     \[
         f\sim g\defeq\prod_{x\colon A}f(x)\eq\univ g(x).
     \]
 \end{defn}
 
 \begin{xmpl}\label{xmpl:refl-is-homotopy}
-    If $f\colon A\to B$, the reflection function
+    For any function $f\colon A\to B$, the dependent function
     \[
-        \fun{refl}\cdot f\colon\prod_{x\colon A}f(x)\eq Bf(x),
+        \lambda x.\,\fun{refl}_{f(x)} \;\colon \prod_{x\colon A} f(x) \eq B f(x)
     \]
-    where $\fun{refl}\defeq\lambda x.\,\fun{refl}_x$, is a homotopy from $f$ to $f$. In particular,
-    \[
-        \fun{refl}\colon\id_A\sim\id_A.
-    \]
+    is a homotopy from $f$ to $f$. This is often called the \textsl{reflexive homotopy}.
 \end{xmpl}
 
 
@@ -742,6 +786,21 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
         \item \textit{Transitivity:}\/ $\lambda f,g,h\colon\Gamma(P).\,\lambda\eta\colon f\sim g.\,\lambda\vartheta\colon g\sim h.\,\lambda x\colon A.\,\eta(x)\ct\vartheta(x)$.
     \end{itemize}
 \end{proof}
+
+\begin{defns}\label{defn:homotopy-inverse-and-ct}${}$
+    \begin{itemize}
+        \item Given a homotopy $\eta\colon f\sim g$, its \textsl{inverse} is the homotopy $\eta^{-1}\colon g\sim f$ defined by
+        \[
+            \eta^{-1}\defeq\lambda x.\,\eta(x)^{-1}.
+        \]
+        
+        \item Given homotopies $\eta\colon f\sim g$ and $\vartheta\colon g\sim h$, their \textsl{composition} (a.k.a.\ \textsl{vertical concatenation}) is the homotopy $\eta\ct\vartheta\colon f\sim h$ defined by
+        \[
+            \eta\ct\vartheta\defeq\lambda x.\,
+                \eta(x)\ct\vartheta(x).
+        \]
+    \end{itemize}
+\end{defns}
 
 \subsection{Types as Categories}
 
@@ -804,7 +863,7 @@ Types admit different interpretations: depending on the circumstances, they can 
     \begin{align*}
         C(x,\fun{refl}_x)
             &\defeq\tilde f(\fun{refl}_x)\ct\eta_x
-                \eq B\eta_x\ct\tilde g(p)\\
+                \eq B\eta_x\ct\tilde g(\fun{refl}_x)\\
             &\equiv\fun{refl}_{f(x)}\ct\eta_x
                 \eq B\eta_x\ct\fun{refl}_{g(x)}\\
             &\equiv \eta_x\eq B\eta_x\ct\fun{refl}_{g(x)}.
@@ -833,21 +892,22 @@ Types admit different interpretations: depending on the circumstances, they can 
             &x
         \end{tikzcd}
     \]
-    where, according to Lemma~\ref{prop:ap-as-functor}, we have replaced $\widetilde\id_A(\eta_x)$ with $\eta_x$. The conclusion follows from concatenation with $\eta_x^{-1}$.
+    where, according to Lemma~\ref{prop:ap-properties}, we have replaced $\widetilde\id_A(\eta_x)$ with $\eta_x$. The conclusion follows from concatenation with $\eta_x^{-1}$.
+    
 \end{proof}
 
 \subsection{The Algebra of Homotopies}
 
-\begin{prop}{\upshape[Whiskering]}\label{prop:whiskering}
+\begin{prop}{\upshape[Function whiskering]}\label{prop:whiskering}
     The homotopy relation is compatible with right and left composition:
     \begin{description}[font=\normalfont\scshape]
         \item[Right:] Given\/ $\eta\colon f\sim g$ and a right composable function\/ $h$, we have
         \[
-            \eta\cdot h\defeq\lambda z.\,\eta(h(z))\colon f\circ h\sim g\circ h.
+            \eta\rwct h\defeq\lambda z.\,\eta(h(z))\colon f\circ h\sim g\circ h.
         \]
         \item[Left:] Given a left composable function\/ $h$ and\/ $\eta\colon f\sim g$, we have
         \[
-            h\cdot\eta\defeq\lambda x.\,\fun{ap}_h(\eta(x))\colon h\circ f\sim h\circ g.
+            h\lwct\eta\defeq\lambda x.\,\fun{ap}_h(\eta(x))\colon h\circ f\sim h\circ g.
         \]
     \end{description}
 \end{prop}
@@ -858,17 +918,18 @@ Types admit different interpretations: depending on the circumstances, they can 
     First, consider the case where\/ $h\colon C\to A$. Given\/ $z\colon C$, we have\/ $h(z)\colon A$ and therefore a path\/ $\eta(h(z))\colon f(h(z))\eq B g(h(z))$. Hence, the term\/ $\lambda z.\,\eta(h(z))$ is a well-defined witness of\/ $f\circ h\sim g\circ h$.
 
     For the case where\/ $h\colon B\to C$, the function\/ $\fun{ap}_h$ constructs a witness of the equality\/ $h(f(x))\eq C h(g(x))$ from the witness\/ $\eta(x)$ of\/ $f(x)\eq B g(x)$. Thus, the term\/ $\lambda x.\,\fun{ap}_h(\eta(x))$ is a well-defined witness of\/ $h\circ f\sim h\circ g$.
+    
 \end{proof}
 
 \begin{rem}\label{rem:whiskering-with-id}
     In the particular case where $f\equiv g$ and $\eta\equiv\fun{refl}_f$, defined by $x\mapsto\fun{refl}_{f(x)}$, we have
     \begin{align*}
-        \fun{refl}_f\cdot h
+        \fun{refl}_f\rwct h
             &\equiv\lambda z.\,\fun{refl}_f(h(z))\\
             &\equiv\lambda z.\,\fun{refl_{f(h(z))}}\\
             &\equiv\fun{refl}_{f\circ h}
     \intertext{and}
-        h\cdot\fun{refl}_f
+        h\lwct\fun{refl}_f
             &\equiv\lambda x.\,\fun{ap}_h(\fun{refl}_f(x))\\
             &\equiv\lambda x.\,\fun{ap}_h(\fun{refl}_{f(x)})\\
             &\equiv\lambda x.\,\fun{refl}_{h(f(x))}
@@ -877,51 +938,75 @@ Types admit different interpretations: depending on the circumstances, they can 
     \end{align*}
 \end{rem}
 
+\needspace{3\baselineskip}
+\begin{prop}\label{prop:whiskering-distributivity}
+    Function whiskering\footnote{Definition \ref{defn:homotopy-inverse-and-ct}.} preserves inverses and vertical composition.\footnote{Thus, function whiskering is a homomorphism of the groupoid structure of homotopies.}
+
+    More precisely; let\/ $\eta\colon f\sim g$ and\/ $\vartheta\colon g\sim h$, then
+    \begin{description}[font=\normalfont\scshape]
+        \item[Right Whiskering:] Given\/ $k\colon A'\to A$, the following hold definitionally:
+        \begin{enumerate}[-]
+            \item $(\eta^{-1})\rwct k\equiv(\eta\rwct k)^{-1}$.
+            \item $(\eta\ct\vartheta)\rwct k\equiv(\eta\rwct k)\ct(\vartheta\rwct k)$.
+        \end{enumerate}
+        
+        \item[Left Whiskering:] Given\/ $k\colon B\to B'$, we have homotopies:
+        \begin{enumerate}[-]
+            \item $k\lwct(\eta^{-1})\sim(k\lwct\eta)^{-1}$.
+            \item $k\lwct(\eta\ct\vartheta) \sim (k\lwct\eta)\ct(k\lwct\vartheta)$.
+        \end{enumerate}
+    \end{description}
+\end{prop}
+
+\begin{proof}
+    In the case of right whiskering, the properties follow immediately from $\lambda$-conversion:
+    \begin{align*}
+        (\eta^{-1}\rwct k)(x)
+            &\equiv\eta^{-1}(k(x))\\
+            &\equiv\eta(k(x))^{-1}\\
+            &\equiv(\eta\rwct k)(x)^{-1}\\
+            &\equiv(\eta\rwct k)^{-1}(x).
+    \intertext{Similarly for composition:}
+        ((\eta\ct\vartheta)\rwct k)(x)
+            &\equiv(\eta\ct\vartheta)(k(x))\\
+            &\equiv\eta(k(x))\ct\vartheta(k(x))\\
+            &\equiv(\eta\rwct k)(x)\ct(\vartheta\rwct k)(x)\\
+            &\equiv((\eta\rwct k)\ct(\vartheta\rwct k))(x).
+    \end{align*}
+    The properties for left whiskering follow pointwise from the functorial properties of $\fun{ap}_k$ (Proposition~\ref{prop:ap-properties}):
+    \begin{align*}
+        (k\lwct\eta^{-1})(x)
+            &\equiv\fun{ap}_k(\eta(x)^{-1})\\
+            &\eq{k(g(x))\eq{B'}k(f(x))} \fun{ap}_k(\eta(x))^{-1}\\
+            &\equiv(k\lwct\eta)(x)^{-1}\\
+            &\equiv(k\lwct\eta)^{-1}(x).
+    \intertext{And for composition:}
+        (k\lwct(\eta\ct\vartheta))(x) 
+            &\equiv\fun{ap}_k(\eta(x)\ct\vartheta(x))\\
+            &\eq{k(f(x))\eq{B'}k(h(x))} \fun{ap}_k(\eta(x))\ct\fun{ap}_k(\vartheta(x))\\
+            &\equiv(k\lwct\eta)(x)\ct(k\lwct\vartheta)(x)\\
+            &\equiv((k\lwct\eta)\ct(k\lwct\vartheta))(x).
+    \end{align*}
+\end{proof}
 
 \begin{prop}\label{prop:whiskering-associativity}
-  Given an homotopy\/ $\eta$ and appropriately composable functions\/ $h$ and\/ $k$, we have
+  Given an homotopy\/ $\eta$ and appropriately composable functions\/ $h$ and\/ $k$, we have\footnote{Compare with Proposition~\ref{prop:path-whiskering-associativity}.}
   \begin{enumerate}[a),font=\upshape]
-      \item $(\eta\cdot h)\cdot k\equiv \eta\cdot(h\circ k)$.
-      \item $k\cdot(h\cdot\eta)=(k\circ h)\cdot\eta$.
-      \item $h\cdot(\eta\cdot k)\equiv(h\cdot\eta)\cdot k$.
+      \item $(\eta\rwct h)\rwct k\equiv \eta\rwct(h\circ k)$.
+      \item $k\lwct(h\lwct\eta)=(k\circ h)\lwct\eta$.
+      \item $h\lwct(\eta\rwct k)\equiv(h\lwct\eta)\rwct k$.
   \end{enumerate}
 \end{prop}
 
 \begin{proof}
     The first equation is a direct consequence of the definitions. The second follows from Proposition~\ref{prop:ap-properties}. For the third we have,
     \begin{align*}
-        h\cdot(\eta\cdot k)
+        h\lwct(\eta\rwct k)
             &\equiv\lambda x.\,\fun{ap}_h(\eta(k(x))\\
-            &\equiv\lambda x.\,(h\cdot\eta)(k(x))\\
-            &\equiv\lambda x.\,(h\cdot\eta)\circ k(x)\\
-            &\equiv (h\cdot\eta)\cdot k.
+            &\equiv\lambda x.\,(h\lwct\eta)(k(x))\\
+            &\equiv\lambda x.\,(h\lwct\eta)\circ k(x)\\
+            &\equiv (h\lwct\eta)\rwct k.
     \end{align*}
-\end{proof}
-
-\begin{lem}
-    Let\/ $C \colon \prod_{x,y\colon A} (x \eq A y) \to \univ$ be a type family. Given two dependent functions\/
-    \[
-        f,g \colon \prod_{x,y\colon A} \prod_{p\colon x\eq A y} C(x,y,p),
-    \]
-    such that\/
-    \[
-        f \cdot \fun{refl} \sim g \cdot \fun{refl},
-    \]
-    we have\/ $f \sim g$.
-\end{lem}
-
-\begin{proof}
-    According to the definition, we have to construct a term of type
-    \[
-        f(x,y,p) \eq{C(x,y,p)} g(x,y,p)
-    \]
-    for all $x,y \colon A$ and $p\colon x\eq Ay$.
-    
-    Let $x \colon A$ be fixed. To define the term for arbitrary $y$ and $p$, we proceed by based path induction. It suffices to consider the case where the endpoint $y$ is $x$ and the path $p$ is $\fun{refl}_x$. In this base case, the required type becomes:
-    \[
-        f(x, x, \fun{refl}_x) \eq{C(x,x,\fun{refl}_x)} g(x, x, \fun{refl}_x).
-    \]
-    By definition of the whiskering operation, this is exactly the type of the hypothesis evaluated at $x$, namely $(f \cdot \fun{refl})(x) \eq{} (g \cdot \fun{refl})(x)$. Since the hypothesis provides such a term for every $x$, the proof is complete.
 \end{proof}
 
 \subsection{Sections of Path Spaces}
@@ -950,38 +1035,76 @@ Types admit different interpretations: depending on the circumstances, they can 
 \begin{lem}\label{lem:pre-composition-with-rho}
     With the precedent notation, let\/ $C\colon E\to\univ$ be a type family. Then given two dependent functions\/ $f,g\colon\prod_{\omega\colon E}C(\omega)$, if their compositions with\/ $\rho_A$ are homotopic, i.e.,
     \[
-        f \circ \fun{\rho} \sim g \circ \fun{\rho},
+        f\circ\fun{\rho}_A\sim g\circ\fun{\rho}_A,
     \]
-    then\/ $f \sim g$.
+    then\/ $f\sim g$.
 \end{lem}
 
 \begin{proof}
-    We have to show that for all $\omega\colon E$, $f(\omega)\eq{C(\omega)}g(\omega)$. The element $\omega$ is a triple $(x,y,p)$. Thus, we must show $f(x,y,p)\eq{C(x,y,p)}g(x,y,p)$ for all $x,y \colon A$ and $p \colon x \eq A y$.
-
-    Fix $x$. By based path induction, it suffices to prove the statement for the case where $y \equiv x$ and $p \equiv \fun{refl}_x$. In this case, the triple is $(x, x, \fun{refl}_x)$, which is precisely~$\rho_A(x)$.
-
-    Then goal becomes $f(\rho_A(x))\eq{C(x,x,\fun{refl}_x)}g(\rho(x))$, which holds by hypothesis.
+    By definition of homotopy, we must construct a term of type
+    \[
+        f(x,y,p) \eq{C(x,y,p)} g(x,y,p)
+    \]
+    for all $x,y \colon A$ and $p\colon x\eq Ay$.
+    
+    Fix $x \colon A$. By based path induction on $p$, it suffices to construct the term for the base case where $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case, the required type becomes
+    \[
+        f(x, x, \fun{refl}_x) \eq{C(x,x,\fun{refl}_x)} g(x, x, \fun{refl}_x),
+    \]
+    which is exactly the type inhabited by the hypothesis.
 \end{proof}
 
 \begin{prop}
-    Let\/ $f$ and\/ $g$ be the functions defined previously between the path space of the product and the product of path spaces. Then\/ $g\circ f\sim\id$.
+    Let\/ $A$ and\/ $B$ be types. Then the maps
+    \begin{align*}
+        f&\colon(x\eq{A\times B}y)
+            \to
+            (\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)\eq B\pi_2(y))\\
+        &\quad p\mapsto(\fun{ap}_{\pi_1}(p),\fun{ap}_{\pi_2}(p)),
+            \\[1ex]
+        g&\colon(\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)
+            \eq B\pi_2(y))
+            \to(x\eq{A\times B}y)\\
+        &\quad(u,v)\mapsto\fun{uniq}_{A\times B}(x)^{-1}
+            \ct\fun{pair}^=(u,v)
+            \ct\fun{uniq}_{A\times B}(y)
+    \end{align*}
+    satisfy $g\circ f\sim\id$.
 \end{prop}
 
 \begin{proof}
-    By the previous Lemma, to prove that $g\circ f$ is homotopic to the identity function on the path space, it suffices to verify that they agree upon pre-composition with $\fun\rho$. That is, we must check that for every $x\colon A\times B$:
+    By Lemma~\ref{lem:pre-composition-with-rho}, it suffices to verify that the functions agree upon pre-composition with the reflexivity section\/ $\rho_{A\times B}$. That is, for every\/ $z\colon A\times B$, we must show:
     \[
-        (g\circ f)(\fun{refl}_x)\eq{}\id(\fun{refl}_x).
+        (g\circ f)(\fun{refl}_z) \eq{} \fun{refl}_z.
     \]
-    By the definition of $f$, we have $f(\fun{refl}_x)\equiv(\fun{refl}_{\fun\pi_1(x)}, \fun{refl}_{\fun\pi_2(x)})$. Applying $g$ to this canonical pair yields the reflexivity path on the pair of projections:
+    First, we compute the action of\/ $f$ on the reflexivity path:
     \[
-        (g\circ f)(\fun{refl}_x)
-            \equiv\fun{refl}_{(\fun\pi_1(x),\fun\pi_2(x))}.
+        f(\fun{refl}_z)
+        \equiv(\fun{ap}_{\pi_1}(\fun{refl}_z),
+            \fun{ap}_{\pi_2}(\fun{refl}_z))
+        \equiv(\fun{refl}_{\pi_1(z)},\fun{refl}_{\pi_2(z)}).
     \]
-    We must compare this to the right-hand side, which is simply $\fun{refl}_x$. We invoke the uniqueness homotopy $\fun{uniq}_{ \times B}(x)\colon(\fun\pi_1(x),\fun\pi_2(x))\eq{}x$. Applying the congruence of the reflexivity term (whiskering by $\fun{refl}$), we obtain the path:
+    Next, we apply\/ $g$ to this pair. Note that since the starting path was a loop on\/ $z$, we have\/ $x \equiv y \equiv z$. The definition of\/ $g$ becomes a conjugation:
     \[
-        \fun{refl}\cdot\fun{uniq}_{A\times B}(x)\colon \fun{refl}_{(\fun\pi_1(x),\fun\pi_2(x))} \eq{} \fun{refl}_x.
+        g(\fun{refl}_{\pi_1(z)},\fun{refl}_{\pi_2(z)})
+        \equiv\fun{uniq}_{A\times B}(z)^{-1}
+            \ct\fun{pair}^=(\fun{refl}_{\pi_1(z)},
+                \fun{refl}_{\pi_2(z)})\ct\fun{uniq}_{A\times B}(z).
     \]
-    This provides the required homotopy for every $x$. Thus, by lemma, $g\circ f\sim\id$.
+    The term\/ $\fun{pair}^=$ applied to reflexivities computes definitionally to the reflexivity of the pair:
+    \[
+        \fun{pair}^=(\fun{refl}_{\pi_1(z)}, \fun{refl}_{\pi_2(z)}) \equiv \fun{refl}_{(\pi_1(z), \pi_2(z))}.
+    \]
+    Substituting this back, the expression simplifies via the unit laws for path concatenation:
+    \begin{align*}
+        \fun{uniq}_{A\times B}(z)^{-1}
+            \ct\fun{refl}_{(\pi_1(z),
+                \pi_2(z))}\ct\fun{uniq}_{A\times B}(z)
+        &\equiv\fun{uniq}_{A\times B}(z)^{-1}
+            \ct\fun{uniq}_{A\times B}(z)\\
+        &\eq{z\eq{A\times B}z}\fun{refl}_z.
+    \end{align*}
+    Thus, the equality holds, completing the proof.
 \end{proof}
 
 \section{Equivalences}
@@ -1045,10 +1168,10 @@ Types admit different interpretations: depending on the circumstances, they can 
     \begin{equation}\label{eq:equivalence-composition}
         \begin{aligned}
             \eta&\defeq
-                (g\cdot\eta_1\cdot h_2)\ct\eta_2
+                (g\lwct\eta_1\rwct h_2)\ct\eta_2
                     \colon g\circ f\circ h_1\circ h_2\sim\id_C\\
             \vartheta&\defeq
-                (k_1\cdot\vartheta_2 \cdot f)\ct\vartheta_1
+                (k_1\lwct\vartheta_2\rwct f)\ct\vartheta_1
                     \colon k_1\circ k_2\circ g \circ f\sim \id_A.
         \end{aligned}
     \end{equation}
@@ -1064,13 +1187,13 @@ Types admit different interpretations: depending on the circumstances, they can 
     \end{align*}
     Whiskering these yields the intermediate steps:
     \begin{align*}
-        g\cdot\eta_1 &\colon g\circ f\circ h_1\sim g, \\
-        \vartheta_2\cdot f&\colon k_2\circ g\circ f\sim f.
+        g\lwct\eta_1 &\colon g\circ f\circ h_1\sim g, \\
+        \vartheta_2\rwct f&\colon k_2\circ g\circ f\sim f.
     \end{align*}
     By Proposition~\ref{prop:whiskering-associativity} (associativity of whiskering), we obtain:
     \begin{align*}
-        g\cdot\eta_1\cdot h_2 &\colon g\circ f\circ h_1\circ h_2\sim g\circ h_2, \\
-        k_1\cdot\vartheta_2\cdot f &\colon k_1\circ k_2\circ g\circ f\sim k_1\circ f.
+        g\lwct\eta_1\rwct h_2 &\colon g\circ f\circ h_1\circ h_2\sim g\circ h_2, \\
+        k_1\lwct\vartheta_2\rwct f &\colon k_1\circ k_2\circ g\circ f\sim k_1\circ f.
     \end{align*}
     Finally, by Proposition~\ref{prop:homotopy-equivalence-relation} (homotopy transitivity), utilizing\/ $\eta_2$ and\/ $\vartheta_1$, we obtain the homotopies in~\eqref{eq:equivalence-composition}.
 \end{proof}
@@ -1113,8 +1236,8 @@ Let\/ $f\colon A\to B$. Then:
     \]
     Using the whiskering operations, we obtain:
     \begin{align*}
-      h\cdot\eta &\colon h\circ f\circ g\sim h, \\
-      \vartheta\cdot g &\colon h\circ f\circ g\sim g.
+      h\lwct\eta &\colon h\circ f\circ g\sim h, \\
+      \vartheta\rwct g &\colon h\circ f\circ g\sim g.
     \end{align*}
     Evaluating these at a point $y\colon B$ gives paths
     \[
@@ -1157,10 +1280,10 @@ Let\/ $f\colon A\to B$. Then:
         where
         \begin{align*}
             \eta&\defeq
-                (g\cdot\eta_f\cdot g^{-1})\ct\eta_g
+                (g\lwct\eta_f\rwct g^{-1})\ct\eta_g
                     \colon g\circ f\circ f^{-1}\circ g^{-1}\sim\id_C\\
             \vartheta&\defeq
-                (f^{-1}\cdot\vartheta_g\cdot f)\ct\vartheta_f
+                (f^{-1}\lwct\vartheta_g\rwct f)\ct\vartheta_f
                     \colon f^{-1}\circ g^{-1}\circ g\circ f\sim\id_A.
         \end{align*}
     \end{enumerate}
@@ -1189,50 +1312,56 @@ Let\/ $f\colon A\to B$. Then:
     \[
         (f^{-1},(\eta_f,\vartheta_f))
             \circ(g^{-1},(\eta_g,\vartheta_g))
-                \colon\fun{qinv}(g\circ f).
+            \defeq(g^{-1}\circ f^{-1},(\eta,\vartheta))
     \]
+    with
+    \begin{align*}
+        \eta&\defeq
+            (g\lwct\eta_f\rwct g^{-1})\ct\eta_g\\
+        \vartheta&\defeq
+            (f^{-1}\lwct\vartheta_g\rwct f)\ct\vartheta_f.
+    \end{align*}
 \end{defn}
 
 \begin{cor}\label{cor:qinv-composition-with-id}
     In the particular case where one of the functions is the identity, we have
     \begin{enumerate}[a),font=\upshape]
-        \item $(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\circ(f^{-1},(\eta_f,\vartheta_f))\equiv(f^{-1}
-            ,(\eta_f,\vartheta_f\ct\fun{refl}_{\id_A}))$
+        \item $(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\circ(f^{-1},(\eta,\vartheta))\equiv(f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A}))$
 
-        \item $(f^{-1},(\eta_f,\vartheta_f))\circ(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\equiv(f^{-1}
-            ,(\eta_f\ct\fun{refl}_{\id_B},\vartheta_f))$
+        \item $(f^{-1},(\eta,\vartheta))\circ(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\equiv(f^{-1},(\eta\ct\fun{refl}_{\id_A},\vartheta))$
     \end{enumerate}
 \end{cor}
 
 \needspace{2\baselineskip}
 \begin{proof}${}$
     \begin{enumerate}[a)]
-        \item By the proposition,
+        \item By definition,
         \begin{align*}
-            \lhs&\equiv(f^{-1},\eta,\vartheta)\\[1mm]
-            \eta&\equiv(f\cdot\fun{refl}_{\id_A}\cdot f^{-1})\ct\eta_f\\
-                &\equiv\fun{refl}_{\id_A}\ct\eta_f
+            \lhs&\equiv(f^{-1},\eta',\vartheta')\\[1mm]
+            \eta'&\equiv(f\lwct\fun{refl}_{\id_A}\rwct f^{-1})\ct\eta\\
+                &\equiv\fun{refl}_{f\circ f^{-1}}\ct\eta
                     &&\text{; Rem.~\ref{rem:whiskering-with-id}}\\
-                &\equiv\lambda x.\,\fun{refl}_x\ct\eta_f(x)\\
-                &\equiv\lambda x.\,\eta_f(x)\\
-                &\equiv\eta_f.\\[1mm]
-            \vartheta&\equiv(\id_A\cdot\vartheta_f\cdot\id_A)
+                &\equiv\lambda x.\,
+                    \fun{refl}_{f\circ f^{-1}(x)}\ct\eta(x)\\
+                &\equiv\lambda x.\,\eta(x)\\
+                &\equiv\eta.\\[1mm]
+            \vartheta'&\equiv(\id_A\lwct\vartheta\rwct\id_A)
                     \ct\fun{refl}_{\id_A}\\
-                &\equiv\vartheta_f\ct\fun{refl}_{\id_A}
+                &\equiv\vartheta\ct\fun{refl}_{\id_A}
                     &&\text{; Prop. \ref{prop:whiskering}}.
         \end{align*}
 
         \item Similarly,
         \begin{align*}
-            \rhs&\equiv(f^{-1},(\eta,\vartheta))\\[1mm]
-            \eta&\equiv(\id_A\cdot\eta_f\cdot\id_A)
-                    \cdot\fun{refl}_{\id_A}\\
-                &\equiv\eta_f\ct\fun{refl}_{\id_A}.
+            \rhs&\equiv(f^{-1},(\eta',\vartheta'))\\[1mm]
+            \eta'&\equiv(\id_A\lwct\eta\rwct\id_A)
+                    \ct\fun{refl}_{\id_A}\\
+                &\equiv\eta\ct\fun{refl}_{\id_A}.
                     &&\text{; Prop. \ref{prop:whiskering}}\\[1mm]
-            \vartheta&\equiv
-                (f^{-1}\cdot\fun{refl}_{\id_A}\cdot f)
-                    \ct\vartheta_f\\
-                &\equiv\vartheta_f
+            \vartheta'&\equiv
+                (f^{-1}\lwct\fun{refl}_{\id_A}\rwct f)
+                    \ct\vartheta\\
+                &\equiv\vartheta
                     &&\text{; Idem part a)}
         \end{align*}
     \end{enumerate}
@@ -1343,13 +1472,13 @@ Now we can establish the main
         \end{align*}
         Then, we have the intermediate homotopies:
         \begin{align*}
-            g\cdot\eta_1 &\colon g\circ f\circ h_1\sim g, &
-            \vartheta_2\cdot f &\colon k_2\circ g\circ f\sim f.
+            g\lwct\eta_1 &\colon g\circ f\circ h_1\sim g, &
+            \vartheta_2\rwct f &\colon k_2\circ g\circ f\sim f.
         \end{align*}
         By Proposition~\ref{prop:whiskering-associativity} (associativity of whiskering), we obtain:
         \begin{align*}
-            g\cdot\eta_1\cdot h_2 &\colon g\circ f\circ h_1\circ h_2\sim g\circ h_2, \\
-            k_1\cdot\vartheta_2\cdot f &\colon k_1\circ k_2\circ g\circ f\sim k_1\circ f.
+            g\lwct\eta_1\rwct h_2 &\colon g\circ f\circ h_1\circ h_2\sim g\circ h_2, \\
+            k_1\lwct\vartheta_2\rwct f &\colon k_1\circ k_2\circ g\circ f\sim k_1\circ f.
         \end{align*}
         By Proposition~\ref{prop:homotopy-equivalence-relation} (homotopy transitivity), utilizing\/ $\eta_2$ and\/ $\vartheta_1$, we deduce that
         \[
@@ -3693,7 +3822,7 @@ The unit laws hold trivially
 \begin{defn}
     A \textsl{pointed type} $(A,a)$ is a type $A\colon\univ$ together with a point $a\colon A$, called its \textsl{basepoint}. We write
     \[
-        \univ_\sbull\defeq\sum_{A:\,\univ}A
+        \puniv\defeq\sum_{A:\,\univ}A
     \]
     for the type of pointed types in the universe $\univ$.
 \end{defn}
@@ -3701,7 +3830,7 @@ The unit laws hold trivially
 \begin{defn}
     Given a pointed type $(A,a)$, we define the \textsl{loop space} of $(A,a)$ as the following pointed type:
     \begin{align*}
-        \Omega&\colon\univ_\sbull\to\univ_\sbull\\
+        \Omega&\colon\puniv\to\puniv\\
         \Omega(A,a)&\defeq((a\eq Aa),\fun{refl}_a).        
     \end{align*}
     An element of this type is called a \textsl{loop} at $a$. For $n\colon\N$, the \textsl{$n$-fold iterated loop space} $\Omega^n(A,a)$ of a pointed type $(A,a)$ is defined recursively by:
@@ -3715,7 +3844,7 @@ The unit laws hold trivially
 \begin{rem}\label{rem:Omega-abuse}
     It is usual to sometimes abuse the notation and identify $\Omega(A,a)$ with $a\eq Aa$, i.e., as $\pi_1(a\eq Aa,\fun{refl}_a)$.
     
-    Note however that the reason to define $\Omega\colon\univ_\sbull\to\univ_\sbull$ and not from $\univ_\sbull$ to $\univ$, is to enable the definition of $\Omega^n$ for $n=0,1,\dots$.
+    Note however that the reason to define $\Omega\colon\puniv\to\puniv$ and not from $\puniv$ to $\univ$, is to enable the definition of $\Omega^n$ for $n=0,1,\dots$.
 \end{rem}
 
 \begin{defn}
