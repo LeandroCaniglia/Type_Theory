@@ -71,6 +71,8 @@
 
 \usepackage{bussproofs}
 
+
+
 %NEW COMMANDS
 \newcommand{\T}[1]{#1^{\rm T}}
 \newcommand{\col}[1]{\mathbf{#1}}
@@ -108,6 +110,7 @@
 \newcommand{\rank}[1]{\op{rank}#1}
 \newcommand{\ev}[1]{{\rm ev}_{#1}}
 \newcommand{\im}[1]{\op{im}#1}
+\newcommand{\fun}[1]{\mathsf{#1}}
 \newcommand{\id}{\fun{id}}
 \newcommand{\nset}[2][1]{\llbracket#1,#2\rrbracket}
 \newcommand{\dom}{\mathrm{dom}}
@@ -447,13 +450,13 @@
 }
 \makeatother
 
-\newcommand{\fun}[1][]{\mathsf#1}
 \newcommand{\Id}{\fun{Id}}
 \newcommand{\univ}{\mathcal U}
 %\newcommand{\defeq}{\mathrel{\mathop:}\equiv}
 \newcommand{\defeq}{\mathrel{\vcentcolon}\equiv}
 \newcommand{\eq}[1]{\mathrel{=_{#1}}}
-\newcommand{\ct}{\mathbin{\mbf{\fun\cdot}}}
+%\newcommand{\ct}{\mathbin{\mbf{\fun\cdot}}}
+\newcommand{\ct}{\mathbin{\boldsymbol{\cdot}}}
 \newcommand{\ect}{\mathbin\ast}
 \newcommand{\hct}{\mathbin{\vcenter{\hbox{$\scriptstyle\bullet$}}}}
 \newcommand{\fstar}{{\fun{\star}}}
@@ -471,4 +474,4 @@
 
 \newcommand{\sbull}{{\vcenter{\hbox{\tiny$\bullet$}}}}
 
-\newcommand{\puniv}{\univ_\sbull}
+\newcommand{\puniv}{{\univ_\sbull}}

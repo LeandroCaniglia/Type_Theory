@@ -3,13 +3,13 @@
 \section{Introduction} This section describes basic concepts to establish an intuitive background that will be useful when providing formal definitions.
 
 \begin{lpar}{The syntactic nature of Type Theory.}
-    For a mathematician trained in classical theories (like Group Theory or Geometry), the definition of Homotopy Type Theory can seem unusual. Typically, mathematical structures are defined \emph{axiomatically} or \emph{descriptively}: we assume a background universe (usually ZFC Set Theory) and specify a list of properties that a collection of objects must satisfy (e.g., ``A Projective Plane is a set of points and lines such that \dots'').
+    For a mathematician trained in classical structures (like groups or geometries), the definition of Homotopy Type Theory can seem unusual. Typically, mathematical structures are defined \emph{axiomatically} or \emph{descriptively}: we assume a background universe (usually ZFC Set Theory) and specify a list of properties that a collection of objects must satisfy (e.g., ``A Projective Plane is a set of points and lines such that \dots'').
 
     However, Type Theory is not a structure \emph{within} mathematics; it is a \emph{foundation for} mathematics. As such, it cannot rely on a pre-existing universe of sets. Instead, it must be defined \textsl{syntactically} or \textsl{generatively}, much like a programming language.
 
     This approach relies on three components:
     \begin{enumerate}
-        \item \textbf{The Alphabet:} A finite set of primitive symbols (e.g., variables $x, y$, separators `$\colon ,\,(,\,)$', and keywords like $\lambda, \Pi$).
+        \item \textbf{The Alphabet:} A finite set of primitive symbols (e.g., variables $x$, $y$), separators (e.g., `$:$' , `$($', `$)$'), and keywords like $\lambda, \Pi$).
         \item \textbf{The Grammar (Syntax):} A set of structural rules that determine which strings of symbols are ``well-formed'' expressions.
         \item \textbf{The Inference Rules (Logic):} A deductive system that defines how valid judgments can be derived from previous ones. For example, the rule for function application allows us to transition from having ``a function $f$'' and ``an input $a$'' to having ``a term $f(a)$''.
     \end{enumerate}

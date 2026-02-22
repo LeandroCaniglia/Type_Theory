@@ -5,7 +5,7 @@
     \[
         \fun{ap}_f\colon\prod_{x,y\colon A}\;\prod_{p\colon x\eq Ay}f(x)\eq Bf(y)
     \]
-    transforms paths in $A$ to paths in $B$. Specifically
+    transforms paths in $A$ to paths in $B$. More precisely
     \[
         \fun{ap}_f(x,y,p)\colon f(x)\eq Bf(y),\quad\text{for }p\colon x\eq Ay,
     \]
@@ -374,13 +374,13 @@ In this context, $E$ is the \textsl{total space}\footnote{After the French \text
 \[
     \begin{tikzcd}[row sep=large, column sep=large]
         \{0\}
-            \arrow[r, "e_0"]
-            \arrow[d, hook, "i"']
+            \arrow[r,"e_0"]
+            \arrow[d,hook,"i"']
         & E
-            \arrow[d, "\pi"] \\
+            \arrow[d,"\pi"] \\
         I
-            \arrow[r, "\forall\gamma"']
-            \arrow[ur, dashed, "\exists\tilde{\gamma}"]
+            \arrow[r,"\forall\gamma"']
+            \arrow[ur,dashed,"\exists\tilde{\gamma}"]
         & B
     \end{tikzcd}
 \]
@@ -397,7 +397,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     \]
     \needspace{2\baselineskip}
     satisfying the following properties:
-    \begin{enumerate}[i), font=\upshape]
+    \begin{enumerate}[i),font=\upshape]
         \item $\fun{lift}(u,p)\colon (a,u)\eq E (b,\fun{transport}^P(p,u))$.
         \item $\fun{lift}(u,\fun{refl}_a)\equiv\fun{refl}_{(a,u)}$.
         \item $\fun{ap}_{\pi_1}(\fun{lift}(u,p))\eq{a\eq Ab}p$.
@@ -738,7 +738,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \begin{defn}\label{defn:homotopy}
     Let\/ $f,g\colon\prod_{x\colon A}P(x)$ be two sections of the family\/ $P\colon A\to\univ$. A \textsl{homotopy} from\/ $f$ to\/ $g$ is a dependent function of type
     \[
-        f\sim g\defeq\prod_{x\colon A}f(x)\eq\univ g(x).
+        f\sim g\defeq\prod_{x\colon A}f(x)\eq{P(x)}g(x).
     \]
 \end{defn}
 
@@ -1529,7 +1529,7 @@ This approach consists of the following
     \[
         \fun{encode}\colon (x\eq{A}y) \to \fun{Code}(x,y).
     \]
-    Applying transport to the base code $c$ with $C_x\defeq\lambda z.\,\fun{Code}(x,z)\colon A\to\univ$, we obtain
+    Applying transport to the base code $c$ with $C_x\defeq\lambda z.\,\fun{Code}(x,z)\colon A\to\univ$, obtain
     \[
         \fun{encode}(p) \defeq \fun{transport}^{C_x}(p, c) \colon C_x(y).
     \]
@@ -1542,30 +1542,31 @@ This approach consists of the following
     \]
 \end{description}
 
+\begin{rem}
+    The $\fun{decode}$ function acts as an \textit{introduction rule} (or constructor) for the identity type of points in the space $A$, as it generates paths from structured data. Establishing that $\fun{encode}$ and $\fun{decode}$ are quasi-inverses justifies an \textit{induction principle}: to prove a property for all paths, it suffices to consider those constructed by $\fun{decode}$. Conversely, the $\fun{encode}$ function serves as an \textit{elimination rule}, extracting structural features from a given path.
+\end{rem}
+
 \subsection{Extended Observational Framework}\label{extended-framework}
 
 There are two additional requirements to the \nameref{observational-framework} that imply further properties of the pair $\fun{encode}$/$\fun{decode}$. They are requirements to be fulfilled for arbitrary $x,y\colon A$.
-\begin{description}[font=\normalfont\scshape]
-    \item[Inversion function:] 
-    \[
-    \fun{inv}
-        \colon\fun{Code}(x,y)\to\fun{Code}(y,x)
-    \]
 
-    \item[Concatenation operation:]
-    \[
-        \ect\colon\fun{Code}(x,y)
-            \to\fun{Code}(y,z)\to\fun{Code}(x,z)
-    \]
+\begin{center}
+    \begin{tabular}{ll}
+        \textsc{Inversion map:}
+            &$\fun{inv}\colon\fun{Code}(x,y)\to\fun{Code}(y,x)$\\
+            [1.5ex]
+        \textsc{Concatenation:}
+            &$\ect\colon\fun{Code}(x,y)\to\fun{Code}
+            (y,z)\to\fun{Code}(x,z)$\\
+            [1.5ex]
+        \textsc{Unit laws:}
+            &$\fun{inv}(c)\equiv c
+            \quad\text{\&}\quad
+            c\ect d\equiv d$
+    \end{tabular}    
+\end{center}
+where $c\colon\fun{Code}(x,x)$ is the base code and the unit laws hold for $d\colon\fun{Code}(x,y)$.\footnote{In some cases the second unit law is relaxed to $c\ect d\eq{\fun{Code}(x,z)}d$.}
 
-    \item[Unit laws:]
-    \[
-        \fun{inv}(c)\equiv c
-        \quad\text{and}\quad
-        c\ect d\equiv d,
-    \]
-    for $d\colon\fun{Code}(x,y)$, where $c\colon\fun{Code}(x,x)$ is the base code.
-\end{description}
 
 \begin{defn}{[Groupoid]}
     A \textsl{groupoid} is a category in which every morphism is an isomorphism. 
@@ -1575,49 +1576,62 @@ There are two additional requirements to the \nameref{observational-framework} t
     In Homotopy Type Theory, every type $A$ constitutes a (weak) groupoid,\footnote{See also Remark~\ref{rem:types-as-categories}.} often called the \textsl{fundamental groupoid} of $A$:
     \begin{itemize}
         \item \textit{Objects:} The terms $a, b \colon A$.
-        \item \textit{Morphisms:} The paths $p \colon a \eq{A} b$.
+        \item \textit{Morphisms:} The paths $p\colon a\eq Ab$.
         \item \textit{Identity:} The reflexivity path $\fun{refl}_a$.
-        \item \textit{Composition:} Path concatenation `${}\ct{}$'.
-        \item \textit{Inverse:} Path inversion ${}^{-1}$.
+        \item \textit{Composition:} Path concatenation $(p,q)\mapsto p\ct q$.
+        \item \textit{Inverse:} Path inversion $p\mapsto p^{-1}$.
     \end{itemize}
     Note that in HoTT, the groupoid laws hold only \textit{propositionally} (up to a path one level higher), not structurally (definitionally). This is why types are formally called \textsl{$\infty$-groupoids}.
 \end{rem}
 
 \begin{thm}\label{thm:extended-framework}
     Let the tuple\/ $(A,\fun{Code}, c,\fun{encode}, \fun{decode}, \fun{inv}, {}\ect{})$ be defined as in the\/ {\upshape Extended Observational Equality Framework}. Then the\/ $\fun{decode}$ function preserves the groupoid structure of identity types:
-    \begin{description}[font=\normalfont\upshape]
+    \begin{description}[font=\normalfont\itshape]
         \item[Reflexivity:] $\fun{decode}(x, x, c)\eq{x\eq Ax}\fun{refl}_x$.
         \item[Symmetry:] $\fun{decode}(y,x,\fun{inv}(d)) \eq{y\eq Ax}\fun{decode}(x,y,d)^{-1}$.
         \item[Transitivity:] $\fun{decode}(x,z,d\ect e)\eq{x\eq Az}\fun{decode}(x,y,d) \ct \fun{decode}(y, z, e)$.
     \end{description}
 \end{thm}
 
+\needspace{2\baselineskip}
 \begin{proof}${}$
     \begin{description}[font=\normalfont\itshape]
 
         \item[Reflexivity.]
         By the definition in the framework,
         \[
-            \fun{encode}(\fun{refl}_x) \equiv \fun{transport}^{C_x}(\fun{refl}_x, c) \equiv c.
+            \fun{encode}(\fun{refl}_x)
+                \equiv
+                \fun{transport}^{C_x}(\fun{refl}_x,c)\equiv c.
         \]
         Applying $\fun{decode}$ to both sides yields
         \[
-            \fun{refl}_x \eq{} \fun{decode}(x, x, c).
+            \fun{refl}_x\eq{x\eq Ay}\fun{decode}(x,x,c).
         \]
 
         \item[Symmetry.]
-        We prove $\fun{encode}(p^{-1}) \eq{} \fun{inv}(\fun{encode}(p))$ by path induction on $p$.
-        It suffices to assume $y \equiv x$ and $p \equiv \fun{refl}_x$.
+        Consider the equality
+        \[
+            \fun{encode}(p^{-1})
+            \eq{\fun{Code}(x,y)}
+            \fun{inv}(\fun{encode}(p)).
+        \]
+        To prove it by path induction on $p$ it suffices to assume $y\equiv x$ and $p\equiv\fun{refl}_x$:
         \begin{align*}
             \lhs &\equiv \fun{encode}(\fun{refl}_x^{-1}) \equiv \fun{encode}(\fun{refl}_x) \equiv c.\\
             \rhs &\equiv \fun{inv}(\fun{encode}(\fun{refl}_x)) \equiv \fun{inv}(c).
         \end{align*}
-        By the hypothesis $\fun{inv}(c) \equiv c$, the LHS and RHS are definitionally equal.
-        Thus, $\fun{encode}$ preserves inverses. Applying $\fun{decode}$, we obtain the result.
+        By the hypothesis $\fun{inv}(c) \equiv c$, the \lhs and \rhs are definitionally equal.
+        Thus, $\fun{encode}$ preserves inverses. The result follows applying $\fun{decode}$.
 
         \item[Transitivity.]
-        We prove $\fun{encode}(p \ct q) \eq{} \fun{encode}(p) \ect \fun{encode}(q)$ by path induction on $p$.
-        Assume $y \equiv x$ and $p \equiv \fun{refl}_x$.
+        Consider
+        \[
+            \fun{encode}(p\ct q)
+            \eq{\fun{Code}(x,y)}
+            \fun{encode}(p)\ect\fun{encode}(q).
+        \]
+        By path induction on $p$, assume $y\equiv x$ and $p\equiv\fun{refl}_x$. Then
         \begin{align*}
             \lhs&\equiv\fun{encode}(\fun{refl}_x\ct q)
                 \equiv\fun{encode}(q).\\
@@ -1625,9 +1639,7 @@ There are two additional requirements to the \nameref{observational-framework} t
                 \fun{encode}(\fun{refl}_x)\ect\fun{encode}(q)
                 \equiv c \ect \fun{encode}(q).
         \end{align*}
-        By the hypothesis $c\ect d\equiv d$, the RHS reduces to $\fun{encode}(q)$.
-        
-        Thus, $\fun{encode}$ preserves concatenation. Applying $\fun{decode}$ to both sides yields the conclusion. \qedhere
+        By the hypothesis $c\ect d\equiv d$, and so the \rhs reduces to $\fun{encode}(q)$. Thus, $\fun{encode}$ preserves concatenation. Applying $\fun{decode}$ to both sides yields the conclusion. \qedhere
     \end{description}
 \end{proof}
 
@@ -1694,37 +1706,38 @@ The following function \textit{constructs} a path between pairs from paths betwe
 \[
     \fun{pair}^=\colon\fun{Code}(x,y)\to (x\eq{A\times B}y).
 \]
-It is defined by induction as follows:
+It is defined as follows:
 \begin{enumerate}[-]
-    \item By induction on $x$, it is enough to consider the case where $x$ is a pair $(a,b)$. In this case, we must define a function of type
+    \item By induction on\/ $x$, it is enough to consider the case where\/ $x$ is a pair\/ $(a,b)$. In this case, we must define a function of type
     \[
         \prod_{y:A\times B}
-            \left( (a \eq A \fun{\pi}_1(y)) \times (b \eq B \fun{\pi}_2(y)) \right)
-            \to (a,b) \eq{A\times B} y.
+            \big(
+            (a\eq A\fun{\pi}_1(y))\times(b\eq B\fun{\pi}_2(y)) 
+            \big)
+            \to\big((a,b)\eq{A\times B}y\big).
     \]
-    \item Now, by induction on $y$, we reduce to the case where $y$ is a pair $(a',b')$. That is, we must define a function
+    \item Now, by induction on\/ $y$, we reduce to the case where\/ $y$ is a pair\/ $(a',b')$. That is, we must define a function of type
     \[
-        (a \eq A a') \times (b \eq B b') \to (a,b) \eq{A\times B} (a',b').
+        \big((a\eq Aa')\times(b\eq Bb')\big)
+        \to\big((a,b)\eq{A\times B}(a',b')\big).
     \]
-    \item Since the domain is a product type, we only need to consider inputs of the form $(p,q)$, where $p \colon a \eq A a'$ and $q \colon b \eq B b'$, and specify a function of type
+    \item Since the domain is a product type, we can curry the function. This means we need to specify a dependent function of type
     \[
-        \prod_{p\colon a\eq Aa'}
-        \;\prod_{q\colon b\eq Bb'}
-            (p,q)\to(a,b)\eq{A\times B}(a',b').
+        \prod_{p\colon a\eq Aa'}\;
+        \prod_{q\colon b\eq Bb'}
+            (a,b)\eq{A\times B}(a',b').
     \]
-    \item Path induction on $p$ allows us to reduce the definition to the case where $a'\equiv a$ and $p\equiv \fun{refl}_a$. Thus, we must define a map
+    \item Path induction on\/ $p$ allows us to reduce the definition to the case where\/ $a'\equiv a$ and\/ $p\equiv \fun{refl}_a$. Thus, we must define a dependent function of type
     \[
-        \prod_{q\colon b\eq Bb'}(\fun{refl}_a,q)
-            \to (a,b) \eq{A\times B} (a,b').
+        \prod_{q\colon b\eq Bb'}(a,b)\eq{A\times B}(a,b').
     \]
-    \item Finally, by induction on $q$, this reduces to the case where $b'\equiv b$ and $q\equiv\fun{refl}_a$. We are left with a map satisfying
+    \item Finally, by path induction on\/ $q$, this reduces to the case where\/ $b'\equiv b$ and\/ $q\equiv\fun{refl}_b$. We are left to define a single term of type
     \[
-        (\fun{refl}_a, \fun{refl}_b)\mapsto e
-            \colon(a,b)\eq{A\times B}(a,b).
+        (a,b)\eq{A\times B}(a,b).
     \]
-    \item This is accomplished by
+    \item This is accomplished by choosing the reflexivity path
     \[
-        (\fun{refl}_a, \fun{refl}_b) \mapsto \fun{refl}_{(a,b)}.
+        \fun{refl}_{(a,b)}.
     \]
 \end{enumerate}
 
@@ -1756,7 +1769,7 @@ It is defined by induction as follows:
         \times(b\eq Bb')}
         P((a,b),(a',b'),\zeta).
     \]
-    Decomposing the pair $\zeta$ into components $(p,q)$, we must find a section of:
+    The same reasoning allows us to decompose $\zeta$ into components $(p,q)$ and find a section of:
     \[
         \prod_{p\colon a\eq Aa'}\;\prod_{q\colon b\eq Bb'}
         P((a,b),(a',b'),(p,q)).
@@ -1781,8 +1794,8 @@ It is defined by induction as follows:
 \end{thm}
 
 \begin{proof}
-    We must show that\/ $\fun{pair}^\times$ and\/ $\fun{pair}^=$ are quasi-inverses.
-    \begin{enumerate}[a), font=\upshape]
+    We must show that $\fun{pair}^\times$ and $\fun{pair}^=$ are quasi-inverses.
+    \begin{enumerate}[a),font=\upshape]
         \item $\fun{pair}^=(x,y)\circ\fun{pair}^\times(x,y)\sim\id$.
          
         We have to prove that
@@ -1790,12 +1803,12 @@ It is defined by induction as follows:
             \prod_{x,y\colon A\times B}\;\prod_{p\colon x\eq{A\times B}y}
                 \bigl(\fun{pair}^=(x,y)\circ\fun{pair}^\times(x,y)\bigr)(p)\eq{x\eq{A\times B}y}p.
         \]
-        By path induction it suffices to consider the case where $y\equiv x$ and $p\equiv\fun{refl}_x$, which reduces us to prove
+        By path induction it suffices to consider the case where $y\equiv x$ and $p\equiv\fun{refl}_x$, which reduces the goal to
         \[
             \bigl(\fun{pair}^=(x,x)\circ\fun{pair}^\times(x,x)\bigr)(\fun{refl}_x)
                 \eq{x\eq{A\times B}x}\fun{refl}_x.
         \]
-        By the definitions of $f$ and $\fun{pair}^=$, we have
+        By the definitions of $\fun{pair}^\times$ and $\fun{pair}^=$, we have
         \begin{align*}
             \bigl(\fun{pair}^=(x,x)\circ\fun{pair}^\times(x,x)\bigr)(\fun{refl}_x)
                 &\equiv\fun{pair}^=(x,x,\fun{pair}^\times(x,x,\fun{refl}_x))\\
@@ -1804,9 +1817,10 @@ It is defined by induction as follows:
                     ,\fun{refl}_{\pi_2(x)}))\\
                 &\equiv \fun{refl}_{(\pi_1(x),\pi_2(x))}.
         \end{align*}
-        Applying the uniqueness principle $(\pi_1(x),\pi_2(x))\eq{A\times B}x$, we obtain
+        Let $\alpha\colon(\pi_1(x),\pi_2(x))\eq{A\times B}x$ be the path given by the uniqueness principle. The action on paths $\fun{ap}$ of the map $\fun{refl}\defeq z\mapsto\fun{refl}_z$ applied to $\alpha$ yields:
         \[
-            \fun{refl}_{(\pi_1(x),\pi_2(x))}
+            \fun{ap}_{\fun{refl}}(\alpha)
+                \colon\fun{refl}_{(\pi_1(x),\pi_2(x))}
                 \eq{x\eq{A\times B}x}\fun{refl}_x.
         \]
 
@@ -1923,15 +1937,14 @@ which are clearly well defined. Moreover
 \begin{prop}\label{prop:product-groupoid-functor}
     Let\/ $A,B\colon\univ$. Then, for all\/ $x,y,z\colon A\times B$, and paths
     \begin{alignat*}{2}
-        p&\colon\pi_1(x)\eq A\pi_1(y),\quad& p'&\colon\pi_1(y)\eq{A\times B}\pi_1(z),\\
-        q&\colon\pi_2(x)\eq A\pi_2(y),\quad& q'&\colon\pi_2(y)\eq{A\times B}\pi_2(z),
-        \end{alignat*}
+        p&\colon\pi_1(x)\eq A\pi_1(y),\quad& p'&\colon\pi_1(y)\eq A\pi_1(z),\\
+        q&\colon\pi_2(x)\eq B\pi_2(y),\quad& q'&\colon\pi_2(y)\eq B\pi_2(z),
+    \end{alignat*}
+    \needspace{2\baselineskip}
     we have
     \begin{enumerate}[a),font=\upshape]
         \item $\fun{pair}^=(\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})\equiv\fun{refl}_x$
-
         \item $\fun{pair}^=(p^{-1},q^{-1})\eq{A\times B}\fun{pair}^=(p,q)^{-1}$
-
         \item $\fun{pair}^=(p\ct p',q\ct q')\eq{A\times B}\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')$
     \end{enumerate}
 \end{prop}
@@ -1941,34 +1954,29 @@ which are clearly well defined. Moreover
 \end{proof}
     
 \begin{prop}\label{prop:pair-properties}
-    Let\/ $A,B\colon\univ$. Then, for all\/ $x,y,z\colon A\times B$, and paths
-    \begin{alignat*}{3}
-        p&\colon\pi_1(x)\eq A\pi_1(y),\quad & r&\colon x\eq{A\times B}y,\quad & p'&\colon\pi_1(y)\eq{A\times B}\pi_1(z),\\
-        q&\colon\pi_2(x)\eq A\pi_2(y),\quad & s&\colon y\eq{A\times B}z,\quad & q'&\colon\pi_2(y)\eq{A\times B}\pi_2(z),
-        \end{alignat*}
-        \needspace{2\baselineskip}
-        the following equality types are inhabited:
-        \begin{enumerate}[i), font=\upshape]
-        \item $\fun{ap}_{\pi_1}(\fun{pair}^=(p,q))\eq Ap$
+    Let\/ $A,B\colon\univ$. Then, for all\/ $x,y,z\colon A\times B$, the following equality types are inhabited:
+    \begin{enumerate}[a),font=\upshape]
+        \item For any\/ $p\colon\pi_1(x)\eq A\pi_1(y)$ and\/ $q\colon\pi_2(x)\eq B\pi_2(y)$,
+        \[ \fun{ap}_{\pi_1}(\fun{pair}^=(p,q))\eq A p \]
         
-        \item $\fun{ap}_{\pi_2}(\fun{pair}^=(p,q))\eq Bq$
+        \item For any\/ $p\colon\pi_1(x)\eq A\pi_1(y)$ and\/ $q\colon\pi_2(x)\eq B\pi_2(y)$,
+        \[ \fun{ap}_{\pi_2}(\fun{pair}^=(p,q))\eq B q \]
         
-        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r), \fun{ap}_{\pi_2}(r))\eq{A\times B}r$
+        \item For any\/ $r\colon x\eq{A\times B}y$,
+        \[ \fun{pair}^=(\fun{ap}_{\pi_1}(r), \fun{ap}_{\pi_2}(r))\eq{A\times B}r \]
         
-        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)^{-1}, \fun{ap}_{\pi_2}(r)^{-1})\eq{A\times B}r^{-1}$
+        \item For any\/ $r\colon x\eq{A\times B}y$,
+        \[ \fun{pair}^=(\fun{ap}_{\pi_1}(r)^{-1}, \fun{ap}_{\pi_2}(r)^{-1})\eq{A\times B}r^{-1} \]
         
-        \item $\fun{pair}^=(\fun{ap}_{\pi_1}(r)\ct\fun{ap}_{\pi_1}(s), \fun{ap}_{\pi_2}(r)\ct\fun{ap}_{\pi_2}(s))\eq{A\times B}r\ct s$
+        \item For any\/ $r\colon x\eq{A\times B}y$ and\/ $s\colon y\eq{A\times B}z$,
+        \[ \fun{pair}^=(\fun{ap}_{\pi_1}(r)\ct\fun{ap}_{\pi_1}(s), \fun{ap}_{\pi_2}(r)\ct\fun{ap}_{\pi_2}(s))\eq{A\times B}r\ct s \]
     \end{enumerate}
 \end{prop}
 
-\needspace{2\baselineskip}
+\needspace{3\baselineskip}
 \begin{proof}${}$
-    \begin{enumerate}[i), font=\upshape]
-        \item We must show that $\fun{ap}_{\pi_1}(\fun{pair}^=(\zeta))=\pi_1(\zeta)$, for any pair of paths
-        \[
-            \zeta\colon\fun{Code}(x,y),
-        \]
-        By Lemma~\ref{lem:AxB-goal-reduction}, it suffices to check the case where $x\equiv y \equiv (a,b)$ and $\zeta \equiv (\fun{refl}_a, \fun{refl}_b)$. The equality holds definitionally:
+    \begin{enumerate}[a),font=\upshape]
+        \item We must show that $\fun{ap}_{\pi_1}(\fun{pair}^=(p,q))\eq A p$. By Lemma~\ref{lem:AxB-goal-reduction}, it suffices to check the case where $x\equiv y \equiv (a,b)$, $p\equiv\fun{refl}_a$, and $q\equiv\fun{refl}_b$. The equality holds definitionally:
         \begin{align*}
             \fun{ap}_{\pi_1}(\fun{pair}^=(\fun{refl}_a,\fun{refl}_b))
             &\equiv\fun{ap}_{\pi_1}(\fun{refl}_{(a,b)})\\
@@ -1979,47 +1987,39 @@ which are clearly well defined. Moreover
         
         \item We proceed by path induction on $r$. It suffices to prove the case where $y\equiv x$ and $r\equiv\fun{refl}_x$:
         \[
-            \fun{pair}^=(\fun{ap}_{\pi_1}
-            (\fun{refl}_x),\fun{ap}_{\pi_2}
-            (\fun{refl}_x))=\fun{refl}_x.
+            \fun{pair}^=(\fun{ap}_{\pi_1}(\fun{refl}_x),\fun{ap}_{\pi_2}(\fun{refl}_x)) \eq{x\eq{A\times B}x} \fun{refl}_x.
         \]
         This reduces to
         \[
-            \fun{pair}^=
-            (\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)})
-            =\fun{refl}_x,
+            \fun{pair}^=(\fun{refl}_{\pi_1(x)},\fun{refl}_{\pi_2(x)}) \eq{x\eq{A\times B}x} \fun{refl}_x,
         \]
-        which is exactly property iii).
+        whose inhabitation is granted by part a) of Proposition~\ref{prop:product-groupoid-functor}.
         
-        \item This follows similarly to part iv) by path induction on $r$, using the fact that $\fun{refl}_x^{-1}\equiv\fun{refl}_x$.
+        \item This follows from part b) of Proposition~\ref{prop:product-groupoid-functor} by path induction on~$r$.
         
-        \item Path induction on $r$ reduces the problem to the case $r\equiv\fun{refl}_x$. The goal becomes
+        \item We proceed by path induction on both\/ $r$ and\/ $s$. It suffices to consider the base case where\/ $y\equiv x$ and\/ $z\equiv x$, and both paths are the reflexivity path\/ $\fun{refl}_x$. The goal reduces to proving
         \[
-            \fun{pair}^=
-            (\fun{refl}_{\pi_1(x)}\ct\fun{ap}_{\pi_1}(s),
-            \fun{refl}_{\pi_2(x)}\ct\fun{ap}_{\pi_2}(s))
-            =\fun{refl}_x\ct s.
+            \fun{pair}^=(\fun{ap}_{\pi_1}(\fun{refl}_x)\ct\fun{ap}_{\pi_1}(\fun{refl}_x), \fun{ap}_{\pi_2}(\fun{refl}_x)\ct\fun{ap}_{\pi_2}(\fun{refl}_x)) \eq{A\times B} \fun{refl}_x\ct\fun{refl}_x.
         \]
-        Since $\fun{refl}$ acts as the identity for concatenation, this simplifies to
+        By the definitional equalities for the action on paths and the concatenation of reflexivity paths, this simplifies to
         \[
-            \fun{pair}^=(\fun{ap}_{\pi_1}(s),\fun{ap}_{\pi_2}(s))
-            =s,
+            \fun{pair}^=(\fun{refl}_{\pi_1(x)}, \fun{refl}_{\pi_2(x)}) \eq{A\times B} \fun{refl}_x,
         \]
-        which holds by property iv).
+        whose inhabitation is granted by part a) of Proposition~\ref{prop:product-groupoid-functor}.
     \end{enumerate}
 \end{proof}
 
 \needspace{2\baselineskip}
 \begin{prop}\label{prop:lift-pair}
     Let\/ $A, B\colon\univ$.
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item If\/ $P\colon A\to\univ$ is the constant family\/ $P(x)\equiv B$, then for any\/ $b\colon B$ and\/ $p\colon a\eq A a'$, we have
         \[
             \fun{lift}(b,p) \eq{(a,b)\eq{A\times B}(a',b)} \fun{pair}^=(p,\fun{refl}_b).
         \]
-        \item For any\/ $y\colon A$ and\/ $\gamma\colon u\eq B v$, the fiber inclusion\/ $\fun{in}_y\colon B\to A\times B$ satisfies
+        \item For any\/ $x\colon A$ and\/ $\gamma\colon u\eq B v$, the fiber inclusion\/ $\fun{in}_x\colon B\to A\times B$ satisfies
         \[
-            \fun{ap}_{\fun{in}_y}(\gamma) \eq{(y,u)\eq{A\times B}(y,v)} \fun{pair}^=(\fun{refl}_y, \gamma).
+            \fun{ap}_{\fun{in}_x}(\gamma) \eq{(x,u)\eq{A\times B}(x,v)}\fun{pair}^=(\fun{refl}_x, \gamma).
         \]
     \end{enumerate}
 \end{prop}
@@ -2036,10 +2036,10 @@ which are clearly well defined. Moreover
 
         \item By induction on $\gamma$ it suffices to assume $v\equiv u$ and $\gamma\equiv\fun{refl}_u$.
         \begin{enumerate}[-]
-            \item \lhs: $\fun{ap}_{\fun{in}_y}(\fun{refl}_u)\equiv\fun{refl}_{\fun{in}_y(u)} \equiv \fun{refl}_{(y,u)}$.
-            \item \rhs: $\fun{pair}^=(\fun{refl}_y, \fun{refl}_u)\equiv\fun{refl}_{(y,u)}$.
+            \item \lhs: $\fun{ap}_{\fun{in}_x}(\fun{refl}_u)\equiv\fun{refl}_{\fun{in}_x(u)} \equiv \fun{refl}_{(x,u)}$.
+            \item \rhs: $\fun{pair}^=(\fun{refl}_x, \fun{refl}_u)\equiv\fun{refl}_{(x,u)}$.
         \end{enumerate}
-        Thus, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(y,u)}}$.
+        Thus, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(x,u)}}$.
     \end{enumerate}
 \end{proof}
 
@@ -2188,85 +2188,88 @@ We have to define a backward function
 \[
     g\colon\fun{Code}(\omega,\omega')\to(\omega\eq E\omega').
 \]
-Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the type of pairs $(q, \gamma)$ where $q\colon \pi_1(\omega) \eq A \pi_1(\omega')$ and $\gamma\colon q_*(u) \eq{P(\pi_1(\omega'))} v$.
+Let $u\defeq\pi_2(\omega)$ and $v\defeq\pi_2(\omega')$. The domain is the type of pairs $(q,\gamma)$ where $q\colon\pi_1(\omega)\eq A\pi_1(\omega')$ and $\gamma\colon q_*(u)\eq{P(\pi_1(\omega'))}v$.
+
+By induction on $\omega$ and $\omega'$, it suffices to consider the case where $\omega\equiv(x,u)$ and $\omega'\equiv(y,v)$. The domain is then the type of pairs $(q,\gamma)$ where $q\colon x\eq Ay$ and $\gamma\colon q_*(u)\eq{P(y)}v$.
     
-    We proceed in two steps:
-    \begin{enumerate}
-        \item By the Path Lifting Theorem~\ref{thm:path-lift}, we have
-        \[
-            \alpha \defeq \fun{lift}(u, q) \colon (\pi_1(\omega), u) \eq E (\pi_1(\omega'), q_*(u)).
-        \]
-        
-        \item We need to connect $(\pi_1(\omega'), q_*(u))$ to $(\pi_1(\omega'), v)$. Since these two points share the same first component, we can use the fiber inclusion function [cf.~Remark~\ref{rem:fiber-inclusion}] to obtain a vertical path:
-        \[
-            \beta\defeq\fun{ap}_{\fun{in}_{\pi_1(\omega')}}(\gamma)
-            \colon(\pi_1(\omega'),q_*(u))\eq E(\pi_1(\omega'),v).
-        \]
-    \end{enumerate}
-    We can now define $g$ by concatenating both paths:
+We proceed in two steps:
+\begin{enumerate}
+    \item By the Path Lifting Theorem~\ref{thm:path-lift}, we have
     \[
-        g(q,\gamma)\defeq\alpha\ct\beta.
+        \alpha\defeq\fun{lift}(u,q)\colon(x,u)
+            \eq E(y,q_*(u)).
     \]
-    Here is a picture illustrating the construction
+    
+    \item We need to connect $(y,q_*(u))$ to $(y,v)$. Since these two points share the same first component, we can use the fiber inclusion function [cf.~Remark~\ref{rem:fiber-inclusion}] to obtain a vertical path:
     \[
-        \begin{tikzpicture}[scale=1.2,>=stealth,font=\small]
-            \draw[thick,name path=A]
-                (0,0) to[out=10,in=170] (6,0)
-                node[right] {$A$};
-            
-            \draw[gray,thin,name path=Px]
-                (1,-0.5) -- (1,4.5)
-                node[above,black] {$P(x)$};
-            \draw[gray,thin,name path=Py]
-                (5,-0.5) -- (5,4.5)
-                node[above,black] {$P(y)$};
-        
-            \path [name intersections={of=A and Px,by=x}];
-            \fill (x) circle (1.5pt) node[below right] {};
-        
-            \path [name intersections={of=A and Py,by=y}];
-            \fill (y) circle (1.5pt) node[below right] {};
-            
-            \fill (x) circle (1.5pt)
-                node[above left] {$x\equiv\pi_1(\omega)$};
-            \fill (y) circle (1.5pt)
-                node[above right] {$y \equiv \pi_1(\omega')$};
-            
-            \draw[-latex]
-                (x) to[out=40,in=145]
-                node[midway,above] {$q$} (y);
-        
-            \coordinate (u) at (1,2);
-            \fill (u) circle (2pt)
-                node[left] {$\omega\equiv(x,u)$};
-        
-            \coordinate (qu) at (5,2.2);
-            \fill[gray] (qu) circle (1.5pt)
-                node[right,black] {$(y,q_*(u))$};
-        
-            \coordinate (v) at (5,3.8);
-            \fill (v) circle (2pt)
-                node[above right] {$\omega'\equiv(y,v)$};
-        
-            \draw[-latex,teal,thick,dashed]
-                (u) to[out=15,in=165] 
-                node[midway,above,sloped,black] 
-                    {$\alpha\defeq\fun{lift}(u,q)$} (qu);
-        
-            \draw[-latex,teal,thick]
-                (qu) -- 
-                node[midway,right,black]
-                    {$\beta\defeq\fun{ap}_{\fun{in}_y}(\gamma)$} (v);
-            
-            \draw[-latex,orange,thick]
-                (u) to[out=45,in=180] 
-                node[pos=0.70,above left,text=black]
-                    {$g(q,\gamma)\defeq\alpha\ct\beta$} (v);
-        \end{tikzpicture}
+        \beta\defeq\fun{ap}_{\fun{in}_{y}}(\gamma)
+            \colon(y,q_*(u))\eq E(y,v).
     \]
+\end{enumerate}
+We can now define $g$ by concatenating both paths:
+\[
+    g(q,\gamma)\defeq\alpha\ct\beta.
+\]
+Here is a picture illustrating the construction
+\[
+    \begin{tikzpicture}[scale=1.2,>=stealth,font=\small]
+        \draw[thick,name path=A]
+            (0,0) to[out=10,in=170] (6,0)
+            node[right] {$A$};
+        
+        \draw[gray,thin,name path=Px]
+            (1,-0.5) -- (1,4.5)
+            node[above,black] {$P(x)$};
+        \draw[gray,thin,name path=Py]
+            (5,-0.5) -- (5,4.5)
+            node[above,black] {$P(y)$};
+    
+        \path [name intersections={of=A and Px,by=x}];
+        \fill (x) circle (1.5pt) node[below right] {};
+    
+        \path [name intersections={of=A and Py,by=y}];
+        \fill (y) circle (1.5pt) node[below right] {};
+        
+        \fill (x) circle (1.5pt)
+            node[above left] {$x\equiv\pi_1(\omega)$};
+        \fill (y) circle (1.5pt)
+            node[above right] {$y \equiv \pi_1(\omega')$};
+        
+        \draw[-latex]
+            (x) to[out=40,in=145]
+            node[midway,above] {$q$} (y);
+    
+        \coordinate (u) at (1,2);
+        \fill (u) circle (2pt)
+            node[left] {$\omega\equiv(x,u)$};
+    
+        \coordinate (qu) at (5,2.2);
+        \fill[gray] (qu) circle (1.5pt)
+            node[right,black] {$(y,q_*(u))$};
+    
+        \coordinate (v) at (5,3.8);
+        \fill (v) circle (2pt)
+            node[above right] {$\omega'\equiv(y,v)$};
+    
+        \draw[-latex,teal,thick,dashed]
+            (u) to[out=15,in=165] 
+            node[midway,above,sloped,black] 
+                {$\alpha\defeq\fun{lift}(u,q)$} (qu);
+    
+        \draw[-latex,teal,thick]
+            (qu) -- 
+            node[midway,right,black]
+                {$\beta\defeq\fun{ap}_{\fun{in}_y}(\gamma)$} (v);
+        
+        \draw[-latex,orange,thick]
+            (u) to[out=45,in=180] 
+            node[pos=0.70,above left,text=black]
+                {$g(q,\gamma)\defeq\alpha\ct\beta$} (v);
+    \end{tikzpicture}
+\]
 
 \begin{thm}\label{thm:pair-equivalence}
-    Let\/ $A\colon\univ$ and let\/ $P\colon A\to\univ$ be a type family. Denote the total space\/ $\sum_{x\colon A}P(x)$ by\/ $E$. Then, for any\/ $\omega,\omega'\colon E$, there is an equivalence
+    Let\/ $A\colon\univ$ be a type and\/ $P\colon A\to\univ$ a type family. Denote the total space\/ $\sum_{x\colon A}P(x)$ by\/ $E$. Then, for any\/ $\omega,\omega'\colon E$, there is an equivalence
     \[
         (\omega\eq E\omega')\simeq\fun{Code}(\omega,\omega').
     \]
@@ -2281,9 +2284,9 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
         \begin{enumerate}[-]
             \item By induction on $\omega$, we set $\omega\equiv(x,u)$
             \item By induction on $\omega'$, we set $\omega'\equiv(y,v)$.
-            \item By based path induction on $x$, we set $y\equiv x$ and $q\equiv\fun{refl}_x$
+            \item By based path induction on $q$, we set $y\equiv x$ and $q\equiv\fun{refl}_x$
         \end{enumerate}
-        Then $q_*(u)\equiv u$. Now, based path induction on $\gamma\colon u=v$, reduces us to the case $v\equiv u$ and $\gamma\equiv\fun{refl}_u$. Thus,
+        Then $q_*(u)\equiv u$. Now, based path induction on $\gamma\colon u\eq{P(x)}v$, reduces us to the case $v\equiv u$ and $\gamma\equiv\fun{refl}_u$. Thus,
         \begin{align*}
             f\circ g((q,\gamma))
                 &\equiv f(\fun{lift}(u,\fun{refl}_x)
@@ -2303,14 +2306,14 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
         \needspace{2\baselineskip}
         \item $g\circ f\sim\id$.
 
-        By based path induction on the path\/ $p\colon\omega\eq E\omega'$, we set\/ $\omega'\equiv\omega$ and\/ $p\equiv\fun{refl}_\omega$. Then
+        Induction on $\omega$ reduces us to the case $\omega\equiv(x,y)$. By based path induction on $p\colon\omega\eq E\omega'$, we set $\omega'\equiv\omega$ and $p\equiv\fun{refl}_\omega$. Then
         \begin{align*}
-            g(f(\fun{refl}_\omega))
+            g(f(\fun{refl}_{(x,y)}))
                 &\equiv g((\fun{refl}_x,\fun{refl}_u))
-                    &&\text{; Def.~of }f\\
+                    &&\text{; Def.\ of }f\\
                 &\equiv \fun{lift}(u,\fun{refl}_x)
                     \ct\fun{ap}_{\fun{in}_x}(\fun{refl}_u)
-                    &&\text{; Def.~of }g\\
+                    &&\text{; Def.\ of }g\\
                 &\equiv \fun{refl}_{(x,u)}\ct\fun{refl}_{(x,u)}\\
                 &\equiv \fun{refl}_{(x,u)}.
         \end{align*}
@@ -2355,14 +2358,20 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
     which has the same signature as $\fun{pair}^=$. In fact, given $\omega,\omega'\colon A\times B$, we have
     \begin{align*}
         g(q,\gamma)
-            &\equiv \fun{lift}(\pi_2(\omega), q) \ct \fun{ap}_{\fun{in}_{\pi_1(\omega')}}(\gamma)
-                &&\text{; Def. of } g \\
-            &\eq{A\times B}\fun{pair}^=(q, \fun{refl}_{\pi_2(\omega)}) \ct \fun{pair}^=(\fun{refl}_{\pi_1(\omega')},\gamma)
-                &&\text{; Prop.~\ref{prop:lift-pair}}\\
-            &\eq{A\times B}\fun{pair}^=(q \ct \fun{refl}_{\pi_1(\omega')}, \fun{refl}_{\pi_2(\omega)} \ct \gamma)
-                &&\text{; Prop.~\ref{prop:product-groupoid-functor} c)}\\
-            &\eq{A\times B}\fun{pair}^=(q, \gamma)
-                &&\text{; Unit laws.}
+            &\equiv \fun{lift}(\pi_2(\omega),q)
+                \ct\fun{ap}_{\fun{in}_{\pi_1(\omega')}}(\gamma)
+                    &&\text{; Def.\ of }g \\
+            &\eq{A\times B}\fun{pair}^=
+                (q\fun{refl}_{\pi_2(\omega)})
+                \ct
+                \fun{pair}^=(\fun{refl}_{\pi_1(\omega')},\gamma)
+                    &&\text{; Prop.~\ref{prop:lift-pair}}\\
+            &\eq{A\times B}\fun{pair}^=(q
+                \ct \fun{refl}_{\pi_1(\omega')}, 
+                \fun{refl}_{\pi_2(\omega)}\ct\gamma)
+                    &&\text{; Prop.~\ref{prop:product-groupoid-functor} c)}\\
+            &\eq{A\times B}\fun{pair}^=(q,\gamma)
+                    &&\text{; Unit laws.}
     \end{align*}
     In consequence, for the general case, we introduce the following
 \end{rem}
@@ -2385,66 +2394,139 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
     \]
 \end{defn}
 
+\begin{rem}\label{rem:pair=-at-base-code}
+    By definition, when $\omega'\equiv\omega\equiv(x,u)$ and $p\equiv\fun{refl}_x$, we have
+    \begin{align*}
+        \fun{pair}^=(\fun{refl}_x,\gamma)
+            &\equiv\fun{lift}(u,\fun{refl}_x)
+                \ct\fun{ap}_{\fun{in}_x}(\gamma)\\
+            &\equiv\fun{refl}_{(a,u)}
+                \ct\fun{ap}_{\fun{in}_x}(\gamma)\\
+            &\equiv\fun{ap}_{\fun{in}_x}(\gamma).
+    \intertext{In particular, for $\gamma\equiv\fun{refl}_u\colon u\eq{P(x)}u$,}
+        \fun{pair}^=(\fun{refl}_x,\fun{refl}_u)
+            &\equiv\fun{refl}_{(x,u)}.
+\end{align*}
+\end{rem}
+
+\begin{prop}\label{prop:sigma-associativity} {\upshape[\textSigma-associativity]}
+    Let\/ $X\colon\univ$ be a type, $A\colon X\to\univ$ a type family over\/ $X$, and\/ $B\colon\Sigma_XA\to\univ$ a type family over the total space. Then, there is an equivalence
+    \[
+        \sum_{x\colon X\vphantom(}\sum_{u\colon A(x)}B((x,u))
+        \simeq
+        \sum_{\omega\colon\Sigma_XA}B(\omega).
+    \]
+\end{prop}
+
+\begin{proof}
+    We have to define functions in both directions and show that they are quasi-inverses.
+    
+    Define the forward map
+    \[
+        f\colon\Big(\sum_{x\colon X\vphantom(}\;
+            \sum_{u\colon A(x)}B((x,u))\Big)
+        \to
+        \sum_{\omega\colon\Sigma_XA}B(\omega)
+    \]
+    by induction on the nested\/ $\Sigma$-types:
+    \[
+        f((x,(u,z)))\defeq ((x,u),z).
+    \]
+    Conversely, define the backward map
+    \[
+        g\colon\Big(\sum_{\omega\colon\Sigma_XA}
+            B(\omega)\Big)
+        \to
+        \sum_{x\colon X\vphantom(}\sum_{u\colon A(x)}B((x,u))
+    \]
+    by induction on the\/ $\Sigma$-types:
+    \[
+        g(((x,u),z))\defeq(x,(u,z)).
+    \]
+    Verifying that\/ $f$ and\/ $g$ are quasi-inverses is straightforward:
+    \begin{align*}
+        g\circ f&\equiv(x,(u,z))\mapsto((x,u),z)\mapsto(x,(u,z))\\
+        f\circ g&\equiv((x,u),z)\mapsto(x,(u,z))\mapsto((x,u),z).
+    \end{align*}
+\end{proof}
+
 \newcommand{\explain}[2][]{\underbracket[0.5pt][2pt]{#2}_{#1}}
 \begin{thm}\label{thm:composite-transport}
-    Let\/ $A\colon X\to\univ$ be a type family and let\/ $\Sigma_XA\defeq\sum_{x\colon X}A(x)$ its total space. Given a second type family\/ $B\colon \Sigma_XA\to\univ$,
-    define the type family\/ $\Sigma_AB\colon X\to\univ$ by\/ $\Sigma_AB(x)\defeq\sum_{u\colon A(x)}B(x,u)$. Let\/ $\Sigma_{\Sigma_XA\,}B\defeq\sum_{\omega\colon \Sigma_XA}B(\omega)$ be the total space of the composite family. This forms a tower of fibrations:
-    \[
-        \begin{tikzcd}[column sep=4em,
-            row sep=3em,
-            font=\small,
-            scale=1.0]
-            & \Sigma_{\Sigma_XA}B
-                \arrow[d,"\pi_1^B"']
-                \arrow[dd,bend right=60, "\pi_1^{\Sigma_AB}"'] \\
-            & \Sigma_X A
-                \arrow[d,"\pi_1^A"']
-                \arrow[r,"B"]
-                &\univ \\
-            \univ
-                &X
-                \arrow[l,"\Sigma_AB"]
-                \arrow[r,"A"']
-                &\univ
-        \end{tikzcd}
-    \]
-    Then, for any path\/ $p\colon x\eq Xy$ and any\/ $(u,z)\colon \Sigma_AB(x)$, we have
-    \[
-        \fun{transport}^{\Sigma_AB}(p)(u,z)\eq{\Sigma_AB(y)}
+    Let\/ $A\colon X\to\univ$ be a type family and\/ $\Sigma_XA$ its total space. Given a second type family\/ $B\colon \Sigma_XA\to\univ$,
+    define the composite type family\/ $\Sigma_AB\colon X\to\univ$ by\/ $\Sigma_AB(x)\defeq\sum_{u\colon A(x)}B(x,u)$. Let\/ $\Sigma_{\Sigma_XA\,}B$ be the total space of\/ $B$. Then
+    \begin{enumerate}[a),font=\upshape]
+        \item By the associativity of\/ $\Sigma$-types, $\Sigma_{\Sigma_XA\,}B$ is equivalent to the total space of the composite family, forming a tower of fibrations:
+        \[
+            \begin{tikzcd}[row sep=large,font=\small]
+                \Sigma_X(\Sigma_AB)
+                        \arrow[rdd,"\pi_1^{\Sigma_AB}"']
+                    &\Sigma_{\Sigma_XA}B\arrow[d,"\pi_1^B"]
+                        \arrow[l,"\simeq"']\\
+                    &\Sigma_XA\arrow[d,"\pi_1^A"]
+                        \arrow[r,"B"]&\univ\\
+                \univ
+                    &X
+                        \arrow[l,"\Sigma_AB"]
+                        \arrow[r,"A"']&\univ
+            \end{tikzcd}
+        \]
+
+        \item For any path\/ $p\colon x\eq Xy$ and any\/ $(u,z)\colon \Sigma_AB(x)$, we have
+        \[
+            \fun{transport}^{\Sigma_AB}(p)(u,z)\eq{\Sigma_AB(y)}
+                \bigl(
+                p_*(u),\fun{transport}^B
+                    (\fun{pair}^=(p,\fun{refl}_{p_*(u)}))(z)
+            \bigr),
+        \]
+        where\/ $p_*(u) \equiv \fun{transport}^A(p)(u)$. In other words, with the component-wise definition
+        \[
+            \Sigma_p(u,z)\defeq
             \bigl(
-            p_*(u),\fun{transport}^B
-                (\fun{pair}^=(p,\fun{refl}_{p_*(u)}))(z)
-        \bigr),
-    \]
-    where\/ $p_*(u) \equiv \fun{transport}^A(p)(u)$. In other words, with the component-wise definition
-    \[
-        \Sigma_p(u,z)\defeq
-        \bigl(
-        p_*(u),
-        \fun{transport}^B(\fun{pair}^=
-        (p,\fun{refl}_{p_*(u)}))(z)
-        \bigr)
-    \]
-    the following diagram commutes propositionally
-    \[
-        \begin{tikzcd}[column sep=huge, row sep=large]
-            \Sigma_AB(x)
-                    \arrow[r,"\fun{transport}^{\Sigma_AB}(p)"]
-                    \arrow[d,equal,"\text{\upshape def\,}"']
-                &\Sigma_AB(y)
-                    \arrow[d,equal,"\text{\upshape\,def}"]\\
-            \displaystyle\sum_{u\colon A(x)}\!\!\!B(x,u)
-                    \arrow[r,"\Sigma_p"']
-                &\displaystyle\sum_{v\colon A(y)}
-                    \!\!\!B(y,v)
-        \end{tikzcd}
-    \]
+            p_*(u),
+            \fun{transport}^B(\fun{pair}^=
+            (p,\fun{refl}_{p_*(u)}))(z)
+            \bigr)
+        \]
+        the following diagram commutes propositionally:
+        \[
+            \begin{tikzcd}[column sep=huge, row sep=large]
+                \Sigma_AB(x)
+                        \arrow[r,"\fun{transport}^{\Sigma_AB}(p)"]
+                        \arrow[d,equal,"\text{\upshape def\,}"']
+                    &\Sigma_AB(y)
+                        \arrow[d,equal,"\text{\upshape\,def}"]\\
+                \displaystyle\sum_{u\colon A(x)}\!\!\!B(x,u)
+                        \arrow[r,"\Sigma_p"']
+                    &\displaystyle\sum_{v\colon A(y)}
+                        \!\!\!B(y,v)
+            \end{tikzcd}
+        \]
+    \end{enumerate}
 \end{thm}
 
-\begin{proof}${}$
+\begin{proof}
+    The commutativity of the triangle follows easily from Proposition~\ref{prop:sigma-associativity} and induction on the $\Sigma$-types:
+    \[
+        \begin{tikzcd}
+            {(x,(u,z))}
+                    \arrow[rdd,mapsto]
+                &{((x,u),z)}
+                    \arrow[l,mapsto]
+                    \arrow[d,mapsto]\\
+                &{(x,u)}\arrow[d,mapsto]\\
+                &x
+        \end{tikzcd}
+    \]
+    since, by definition,
+    \[
+        \Sigma_X(\Sigma_AB)\equiv\sum_{x\colon X\vphantom(}\;
+            \sum_{u\colon A(x)}B((x,u))
+    \]
+    The proof of b) has two parts:
     \begin{description}[font=\normalfont\scshape]
         \item[Type verification.]
-        Let\/ $\omega \defeq (x, u) \colon \Sigma_XA$ and\/ $\omega' \defeq (y, p_*(u)) \colon \Sigma_XA$.
+        Let $\omega\defeq(x,u)\colon\Sigma_XA$ and $\omega'\defeq(y,p_*(u))\colon\Sigma_XA$.
         Then, according to Definition~\ref{defn:Sigma-pair}, we have:
         \begin{itemize}
             \item $p\colon\pi_1(\omega)\eq X\pi_1(\omega')$,
@@ -2472,13 +2554,13 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
                 }
             \bigr),
         \end{align*}
-        which shows that both sides are elements of\/ $\Sigma_AB(y)$. In the case of the \rhs, this is because the first component lies in\/ $A(y)$ and the second in\/ $B(y, v)$ with\/ $v \defeq p_*(u)\colon A(y)$, as required.
+        which shows that both sides are elements of $\Sigma_AB(y)$. In the case of the \rhs, this is because the first component lies in $A(y)$ and the second in $B(y, v)$ with $v \defeq p_*(u)\colon A(y)$, as required.
 
-        \item[Inhabitation.] Since the statement holds for every path\/ $p\colon x\eq Xy$, by path induction, to prove that there is witness of
+        \item[Inhabitation.] Since the statement holds for every path $p\colon x\eq Xy$, by path induction, to prove that there is a witness of
         \[
             \lhs\eq{\Sigma_AB(y)}\rhs
         \]
-        it suffices to consider the case where\/ $y \equiv x$ and\/ $p \equiv \fun{refl}_x$. The goal reduces as follows:
+        it suffices to consider the case where $y \equiv x$ and $p \equiv \fun{refl}_x$. The goal reduces as follows:
         \begin{align*}
             \lhs
                 &\equiv\fun{transport}^{\Sigma_AB}(\fun{refl}_x)(u,z)\\
@@ -2504,7 +2586,7 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
             \bigr)\\
             &\equiv (u,z).
         \end{align*}
-        Thus, $\lhs\equiv\rhs$ definitionally.
+        Thus, $\lhs\equiv\rhs$ definitionally.\qedhere
     \end{description}
 \end{proof}
 
@@ -2526,13 +2608,14 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
 \end{lem}
 
 \begin{proof}
-    First, we observe that the expressions are well-typed. Given $u\colon P(x)$ and $v\colon P(y)$, we have:
+    The expressions are well-typed: given $u\colon P(x)$ and $v\colon P(y)$, we have
     \begin{alignat*}{2}
         p_*(u) &\colon P(y), &\qquad (p^{-1})_*(v) &\colon P(x).
     \end{alignat*}
-    We proceed by path induction on $p$. It suffices to assume $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case, definitionally, $p^{-1}\equiv\fun{refl}_x$. Since transport along reflexivity acts as the identity function, the left-hand sides reduce as follows:
+    
+    We can now proceed by path induction on $p$. It suffices to assume $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case, definitionally, $p^{-1}\equiv\fun{refl}_x$. Since transport along reflexivity acts as the identity function, the left-hand side of the first identity type reduces as follows:
     \[
-        (\fun{refl}_x)_*\bigl((\fun{refl}_x)_*(u)\bigr) \equiv (\fun{refl}_x)_*(u) \equiv u.
+        (\fun{refl}_x)_*\bigl((\fun{refl}_x)_*(u)\bigr) \equiv (\fun{refl}_x)_*(u) \equiv u,
     \]
     The calculation for $v$ is identical. Thus, in both cases, the goal is proved by $\fun{refl}$.
     %
@@ -2540,7 +2623,7 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
 \end{proof}
 
 \begin{rem}
-    Given $\omega,\omega'\colon E$, a canonical pair $(p,u)\colon\fun{Code}(\omega,\omega')$ is given by
+    For $\omega,\omega'\colon E$, a canonical pair $(p,u)\colon\fun{Code}(\omega,\omega')$ is given by
     \begin{alignat*}2
         p&\colon\pi_1(\omega)\eq A\pi_1(\omega'),
         &\quad q&\colon p_*(\pi_2(\omega))
@@ -2553,15 +2636,17 @@ Let $u \defeq \pi_2(\omega)$ and $v \defeq \pi_2(\omega')$. The domain is the ty
     \fun{inv}
         &\colon \fun{Code}(\omega,\omega')
             \to\fun{Code}(\omega',\omega)\nonumber\\
-    \fun{inv}(p,q)
-        &\defeq\bigl(p^{-1},(p^{-1})_*(q^{-1})
+    \fun{inv}(p,\gamma)
+        &\defeq\bigl(p^{-1},(p^{-1})_*(\gamma^{-1})
         \ct
-        \fun{transportinv}_l^P(p, \pi_2(\omega))\bigr).
-        \label{eq:Sigma-inv}\\
-\intertext{and}
-    \ect&\colon\fun{Code}(\omega,\omega')\to\fun{Code}(\omega',\omega'')
-        \to\fun{Code}(\omega,\omega'')\nonumber\\
-    (p,q)\ect(p',q')&\defeq(p\ct p', p'_*(q) \ct q').\nonumber
+        \fun{transportinv}_l^P(p,\pi_2(\omega))\bigr).
+        \label{eq:Sigma-inv}\\[1mm]
+    \ect
+        &\colon\fun{Code}(\omega,\omega')
+            \to\fun{Code}(\omega',\omega'')
+            \to\fun{Code}(\omega,\omega'')\nonumber\\
+    (p,\gamma)\ect(p',\gamma')
+        &\defeq(p\ct p',p'_*(\gamma)\ct\gamma').\nonumber
 \end{align}
 To verify the unit laws, observe that
 \begin{align*}
@@ -2572,39 +2657,39 @@ To verify the unit laws, observe that
             ,\fun{refl}_{\pi_2(\omega)})
             &&\text{; Lem.~\ref{lem:transportinv}}\\
         &\equiv c,\\
-    c\ect(p,q)
+    c\ect(p,\gamma)
         &\equiv(\fun{refl}_{\pi_1(\omega)}
-            ,\fun{refl}_{\pi_2(\omega)})\ect(p,q)\\
+            ,\fun{refl}_{\pi_2(\omega)})\ect(p,\gamma)\\
         &\equiv(\fun{refl}_{\pi_1(\omega)}\ct p
-            ,\fun{refl}_{\pi_2(\omega)}\ct q)\\
-        &\equiv(p,q).
+            ,\fun{refl}_{\pi_2(\omega)}\ct\gamma)\\
+        &\equiv(p,\gamma).
 \end{align*}
 
 \begin{prop}\label{prop:Sigma-pair=-properties}
     Given elements\/ $\omega,\omega',\omega''\colon E$ and paths
     \begin{alignat*}{4}
     p\phantom{'}
-        &\colon \pi_1(\omega)
-        &&\eq{A} \pi_1(\omega'),
-        &\quad q\phantom{'}
+        &\colon\pi_1(\omega)
+        &&\eq A\pi_1(\omega'),
+        &\quad \gamma\phantom{'}
         &\colon p_*(\pi_2(\omega))
         &&\eq{P(\pi_1(\omega'))} \pi_2(\omega'),\\
     p'
-        &\colon \pi_1(\omega')
-        &&\eq{A} \pi_2(\omega''),
-        &\quad q'
+        &\colon\pi_1(\omega')
+        &&\eq A\pi_2(\omega''),
+        &\quad\gamma'
         &\colon p'_*(\pi_2(\omega'))
-        &&\eq{P(\pi_1(\omega''))} \pi_2(\omega''),
+        &&\eq{P(\pi_1(\omega''))}\pi_2(\omega''),
     \end{alignat*}
     we have
     \begin{enumerate}[a),font=\upshape]
         \item $\fun{pair}^=(\fun{refl}_{\pi_1(\omega)},\fun{refl}_{\pi_2(\omega)})\equiv\fun{refl}_\omega$
 
-        \item $\fun{pair}^=(p^{-1},(p^{-1})_*(q^{-1})
+        \item $\fun{pair}^=(p^{-1},(p^{-1})_*(\gamma^{-1})
             \ct \fun{transportinv}_l^P(p, \pi_2(\omega)))
-            \eq E\fun{pair}^=(p,q)^{-1}$
+            \eq E\fun{pair}^=(p,\gamma)^{-1}$
             
-        \item $\fun{pair}^=(p\ct p',q\ct q')\eq E\fun{pair}^=(p,q)\ct\fun{pair}^=(p',q')$
+        \item $\fun{pair}^=(p\ct p',\gamma\ct\gamma')\eq E\fun{pair}^=(p,\gamma)\ct\fun{pair}^=(p',\gamma')$
     \end{enumerate}
 \end{prop}
 
@@ -2646,8 +2731,8 @@ To verify the unit laws, observe that
         \node[dot, label=below right:{$p_*(u)$}] (pu) at (4,1.5) {};
         \node[dot, label=above right:{$v$}] (v) at (4,3.0) {};
         
-        % Path q in fiber x'
-        \draw[thick,-latex] (pu) -- node[right] {$q$} (v);
+        % Path \gamma in fiber x'
+        \draw[thick,-latex] (pu) -- node[right] {$\gamma$} (v);
     
         % Fiber over x''
         \node[dot, label=right:{$(p\ct p')_*(u)$}] (ppu) at (8,1.3) {};
@@ -2670,23 +2755,23 @@ To verify the unit laws, observe that
         % The paths in the third fiber (The Sum)
         
         % 1. The Coherence (approximated as the gap/start)
-        % 2. The transported q
-        \draw[thick, -latex] (8,1.6) -- node[right] {$\fun{ap}_{p'_*}(q)$} (pv);
+        % 2. The transported \gamma
+        \draw[thick, -latex] (8,1.6) -- node[right] {$\fun{ap}_{p'_*}(\gamma)$} (pv);
         
-        % 3. The path q'
-        \draw[thick, -latex] (pv) -- node[right] {$q'$} (w);
+        % 3. The path \gamma'
+        \draw[thick, -latex] (pv) -- node[right] {$\gamma'$} (w);
     
         % Labels for the total paths
         \draw[teal,-latex](u) to[out=45,in=135]
             node[
                 pos=0.4,
                 below right,
-                black] {$\fun{pair}^=(p,q)$} (v);
+                black] {$\fun{pair}^=(p,\gamma)$} (v);
         \draw[teal,-latex] (v) to[out=70,in=155]
             node[
                 midway,
                 below right,
-                black] {$\fun{pair}^=(p',q')$} (w);
+                black] {$\fun{pair}^=(p',\gamma')$} (w);
     \end{tikzpicture}
     \]
 \end{proof}
@@ -2724,7 +2809,7 @@ To verify the unit laws, observe that
                 ,\fun{refl}_{\pi_2(\omega)})\\
             &\equiv\fun{refl}_\omega.
                 &&\text{; Prop.~\ref{prop:Sigma-pair=-properties}
-                    a)}\\
+                    a)}
     \end{align*}
 \end{proof}
 
@@ -2922,8 +3007,11 @@ we apply the framework~\ref{observational-framework}.
 \textsc{Code family:}
 \begin{align*}
     \fun{Code}&\colon\Gamma\to\Gamma\to\univ\\
+    \fun{Code}(f,g)&\defeq f\sim g
+\intertext{i.e.,}
     \fun{Code}(f,g)&\defeq\prod_{x\colon A} f(x)\eq{B(x)}g(x).
 \end{align*}
+
 
 \textsc{Base code:} For the reflexive case, we define the term\/ $c\colon\fun{Code}(f,f)$ pointwise by reflexivity:
 \[
@@ -2935,7 +3023,7 @@ we apply the framework~\ref{observational-framework}.
     \fun{encode}&\colon(f\eq\Gamma g)\to\fun{Code}(f,g)\\
     \fun{encode}(p)&\defeq\fun{transport}^{C_f}(p,c).
 \end{align*}
-Since\/ $C_f\defeq\fun{Code}(f,{}\cdot{})$, we can define the local family at a point\/ $x\colon A$ as
+Since\/ $C_f\defeq\fun{Code}(f,{}\cdot{})$, we introduce the local family at a point\/ $x\colon A$
 \[
     C_{f,x}\defeq\lambda h\colon\Gamma.\, f(x)\eq{B(x)}h(x).
 \]
@@ -2964,63 +3052,47 @@ We take the \rhs to define the standard name for the encode function \textsl{hom
 \end{equation}
 which can be illustrated by
 \[
-    % Left: Path in function space
-    \begin{tikzpicture}[
-        baseline=(current bounding box.center),
-        font=\small]
-        \node (A) at (0,2) {$\displaystyle{
-            \Gamma\equiv\prod_{x\colon A}B(x)}$};
-        \node (f) at (-1,0.5) {$f$};
-        \node (g) at (1,0.5) {$g$};
-        \draw[->, thick] (f) to[bend left=20] node[above] {$p$} (g);
-        \node at (0, -0.7) {\text{Path in function space}};
-    \end{tikzpicture}
-    \hspace{2cm}
-    % Right: Homotopy as a mapping
-    \begin{tikzpicture}[baseline=(current bounding box.center),
-        font=\small]
-        \node (A) at (0,2) {$A$};
-        \node (B) at (3,2) {$B(x)$};
-        \node (x) at (0,0.5) {$x$};
-        \node (fx) at (3,1.5) {$f(x)$};
-        \node (gx) at (3,-0.5) {$g(x)$};
-        
-        \draw[|->] (x) -- node[above, sloped] {} (fx);
-        \draw[|->] (x) -- node[below, sloped] {} (gx);
-        \draw[double, double distance=2pt] (fx) -- node[right] {$\fun{happly}(p)(x)$} (gx);
-        
-        \node at (1.5, -1.0) {\text{Pointwise function homotopy}};
-    \end{tikzpicture}
+\begin{tikzcd}[row sep=0.2cm,column sep=-0.3cm]
+        &\displaystyle\Gamma\equiv\prod_{x\colon A}B(x)
+        &&\qquad A
+        &&B(x)\\
+        &&&&&f(x)
+            \arrow[dd,"\fun{happly}(p)(x)"',equal]\\
+    f
+            \arrow[rr,"p",bend left]
+        &&g
+        &\qquad x
+            \arrow[rru,mapsto]
+            \arrow[rrd,mapsto]&&\\
+        &&&&&g(x)\\
+        &\text{\small Path in function space}
+        &&&\qquad\text{\small Function homotopy}
+\end{tikzcd}
 \]
-
-and introduce the following
+Since the basic rules of type theory do not provide a way to construct a quasi-inverse for\/ $\fun{happly}$, we introduce the Function Extensionality axiom to formally establish the equivalence between function equality and pointwise homotopy.
 
 \textbf{Axiom.} [Function Extensionality] The homotopy application function \eqref{eq:homotopy-application} is an equivalence.\footnote{We will see in later chapters that this axiom follows both from univalence and from the interval type.}
 
-Thus, the axiom asserts that\/ $\fun{happly}$ has a quasi-inverse
+The axiom asserts that\/ $\fun{happly}$ has a quasi-inverse
 \begin{align*}
     \fun{funext}&\colon\fun{Code}(f,g)\to(f\eq\Gamma g),
 \end{align*}
-which, by definition, satisfies the following homotopies for any path\/ $p\colon f\eq\Gamma g$ and any pointwise homotopy\/ $\alpha\colon\fun{Code}(f,g)$:
+which, by definition, satisfies the following homotopies for any path\/ $p\colon f\eq\Gamma g$ and any pointwise homotopy\/ $\eta\colon\fun{Code}(f,g)$:
 \begin{align*}
     \fun{funext}(\fun{happly}(p))
         &\eq{f\eq\Gamma g} p\\
-    \fun{happly}(\fun{funext}(\alpha))
-        &\eq{\fun{Code}(f,g)}\alpha.
+    \fun{happly}(\fun{funext}(\eta))
+        &\eq{\fun{Code}(f,g)}\eta.
 \end{align*}
 
-\begin{rem}
-    The $\fun{funext}$ function acts as the \textit{introduction rule} (or constructor) for the identity type of dependent functions, as it generates paths from homotopies. Consequently, the fact that it is an equivalence justifies the \textit{induction principle}: to prove a property for all paths, it suffices to check those constructed by $\fun{funext}$. More generally, every $\fun{decode}$ function acts as an introduction rule, while the $\fun{encode}$ functions can be seen as \textit{elimination rules}: they extract structural features from the path.
-\end{rem}
-
-\textbf{Extended framework.} To apply the framework~\ref{extended-framework}, we define
+\textbf{Extended framework.} To apply the framework~\ref{extended-framework}, we define\footnote{See Definitions~\ref{defn:homotopy-inverse-and-ct}.}
 \begin{align*}
     \fun{inv}&\colon\fun{Code}(f,g)\to\fun{Code}(g,f)\\
-    \fun{inv}(u)&\defeq\lambda x\colon A.\,u(x)^{-1}
+    \fun{inv}(\eta)&\defeq\eta^{-1}
 \intertext{and}
     \ect&\colon\fun{Code}(f,g)\to\fun{Code}(g,h)
         \to\fun{Code}(f,h)\\
-    u\ect v&\defeq\lambda x\colon A.\,u(x)\ct v(x).
+   \eta\ect\vartheta&\defeq\eta\ct\vartheta.
 \end{align*}
 The unit laws follow immediately from the definitional properties of path inversion and concatenation applied pointwise:
 \begin{align*}
@@ -3028,10 +3100,10 @@ The unit laws follow immediately from the definitional properties of path invers
         &\equiv\lambda x.\,\fun{refl}_{f(x)}\\
         &\equiv c,
 \intertext{and}
-    c\ect u&\equiv\lambda x.\,c(x)\ect u(x)\\
-        &\equiv\lambda x.\,\fun{refl}_{f(x)}\ct u(x)\\
-        &\equiv\lambda x.\, u(x)\\
-        &\equiv u.
+    c\ect\eta&\equiv(\lambda x.\,c(x))\ct\eta(x)\\
+        &\equiv\lambda x.\,\fun{refl}_{f(x)}\ct\eta(x)\\
+        &\equiv\lambda x.\,\eta(x)\\
+        &\equiv\eta.
 \end{align*}
 
 \begin{prop}
@@ -3039,15 +3111,15 @@ The unit laws follow immediately from the definitional properties of path invers
     \begin{enumerate}[a),font=\upshape]
         \item $\fun{funext}(f,f,\lambda x.\,\fun{refl}_{f(x)})\eq{f\eq\Gamma f}\fun{refl}_f$
 
-        \item For\/ $u\colon\prod_{x\colon A}f(x)\eq{B(x)}g(x)$, we have
+        \item For\/ $\eta\colon f\sim g$, we have
         \[
-            \fun{funext}(g,f,\lambda x.\,u(x)^{-1})\eq{g\eq\Gamma f}
-            \fun{funext}(f,g,u)^{-1}
+            \fun{funext}(g,f,\eta^{-1})\eq{g\eq\Gamma f}
+            \fun{funext}(f,g,\eta)^{-1}
         \]
 
-        \item Given\/ $h\colon\Gamma$ and\/ $v\colon\prod_{x\colon A}g(x)\eq{B(x)}h(x)$, we have
+        \item Given\/ $h\colon\Gamma$ and\/ $\vartheta\colon g\sim h$, we have
         \[
-            \fun{funext}(f,h,u\ect v)\eq{f\eq\Gamma h}\fun{funext}(f,g,u)\ct\fun{funext}(g,h,v)
+            \fun{funext}(f,h,\eta\ct\vartheta)\eq{f\eq\Gamma h}\fun{funext}(f,g,\eta)\ct\fun{funext}(g,h,\vartheta)
         \]
     \end{enumerate}
 \end{prop}
@@ -3058,14 +3130,22 @@ The unit laws follow immediately from the definitional properties of path invers
 
 \subsection*{Non-dependent Functions}
 
-The special case where $B\colon A\to\univ$ is constant refers to the non-dependent function type: $\Gamma\equiv A\to B$. Here the general case computes as follows, for $f,g\colon A\to B$ and $p\colon f\eq{A\to B}g$,
+The special case where\/ $B\colon A\to\univ$ is constant refers to the non-dependent function type: $\Gamma\equiv A\to B$. Here the general case computes as follows. For\/ $f,g\colon A\to B$ and\/ $p\colon f\eq{A\to B}g$, we have
 \begin{align*}
     C_{f,x}&\defeq\lambda g.\,f(x)\eq Bg(x)\\
     \fun{happly}(p)&\defeq\lambda x.\,
-                \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)})\\
-        \fun{funext}&\colon\fun{Code}(f,g)
-            \to(f\eq{A\to B}g).
+                \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)}).
 \end{align*}
+Furthermore, evaluating\/ $\fun{happly}(p)$ at a specific point\/ $x\colon A$ is propositionally equal to the action on paths of the evaluation functional\/ $\fun{ev}_x\colon (A\to B)\to B$, where\/ $\fun{ev}_x(h)\defeq h(x)$. That is, we have a path
+\begin{equation}\label{eq:happly-is-ap-ev}
+    \fun{happly}(p)(x) \eq{B} \fun{ap}_{\fun{ev}_x}(p),
+\end{equation}
+as it can be easily verified by path induction on $p$.
+
+Function extensionality provides the quasi-inverse to\/ $\fun{happly}$, mapping pointwise homotopies back to paths between functions:
+\[
+    \fun{funext}\colon (f\sim g) \to (f\eq{A\to B}g).
+\]
 
 \subsection*{Transport Decomposition}\label{subs:transport-decomposition}
 
@@ -3091,8 +3171,12 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 \begin{prop}
     The diagram~\eqref{tik-constant-transport-composition} propositionally commutes in the function type\/ $A(x)\to B(y)$. In particular,
     \[
-        \fun{transport}^{A\to B}(p, f) \eq{}
-            \fun{transport}^B(p) \circ f \circ \fun{transport}^A(p^{-1}).
+        \fun{transport}^{A\to B}(p, f)
+            \eq{A(x)\to B(y)}
+            \fun{transport}^B(p)
+                \circ f
+                \circ 
+                \fun{transport}^A(p^{-1}).
     \]
 \end{prop}
 
@@ -3115,7 +3199,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
             & B(x)
         \end{tikzcd}
     \]
-    which trivially (and definitionally) commutes because all transports of reflexivity reduce to the identity function.
+    which trivially (and definitionally) commutes because all transports of reflexivity reduce to identity functions.
 \end{proof}
 
 \paragraph{Dependent case.} To generalize the non-dependent case, we have to consider the situation where
@@ -3207,7 +3291,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 \end{proof}
 
 \begin{rem}
-    The previous theorem is to $\Pi$-types what Theorem~\ref{thm:composite-transport} is to $\Sigma$-types. To better visualize the analogy, let us rewrite the equality of Theorem~\ref{thm:composite-transport} using the path $\gamma$ in the total space
+    The previous theorem is to $\Pi$-types what Theorem~\ref{thm:composite-transport} is to $\Sigma$-types. To better visualize the analogy, let us rewrite the equality of Theorem~\ref{thm:composite-transport} using the path $\gamma\defeq\fun{pair}^=(p,\fun{refl}_{p_*(u)})$ in the total space
     \begin{align*}
         \explain[\text{transport }(u,z)\text{ along }p]
             {\fun{transport}^{\Sigma_AB}(p)(u,z)}
@@ -3261,16 +3345,29 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
         \[
             \fun{pair}^=\colon
                 \biggl(
-                \sum_{q\colon\pi_1(\omega)\eq X\pi_1(\omega')}
+                \sum_{q\colon\pi_1(\omega)\eq X\pi_1(\omega'))}
                 q_*(\pi_2(\omega)\eq{A(\pi_1(\omega'))}\pi_2(\omega')
                 \biggr)
                 \to(\omega\eq{\Sigma_XA}\omega').
         \]
-        In our case, $\omega\defeq(y,v)$, $\omega'\defeq(x,w)$ and $q\defeq p^{-1}$. Thus, we can apply $\fun{pair}^=$ to the dependent pair $(q,r)$, provided that $r\colon q_*(v)\eq{A(x)}w$. Since $q_*(v)\defeq(p^{-1})_*(v)\defeq w$, we deduce that $(p^{-1},(p^{-1})_*(v))\colon\dom(\fun{pair}^=)$. Moreover,
+        In our case, $\omega\defeq(y,v)$, $\omega'\defeq(x,w)$ and $q\defeq p^{-1}$. Therefore,
+        \[
+            \fun{pair}^=\colon
+                \biggl(
+                \sum_{q\colon y\eq Xx}
+                q_*(v)\eq{A(x)}w)
+                \biggr)
+                \to((y,v)\eq{\Sigma_XA}(x,w)).
+        \]
+        Thus, we can apply $\fun{pair}^=$ to the dependent pair $(q,r)$, provided that $r\colon q_*(v)\eq{A(x)}w$. Since $q_*(v)\defeq(p^{-1})_*(v)\defeq w$, we deduce that 
+        \[
+            (p^{-1},(p^{-1})_*(v))\colon\dom(\fun{pair}^=).
+        \]
+        Moreover,
         \[
             \delta\defeq
-                \fun{pair}^=(p^{-1},(p^{-1})_*(v))\colon(y,v)
-                \eq{\Sigma_XA}(x,(p^{-1})_*(v)).
+                \fun{pair}^=(p^{-1},w)\colon(y,v)
+                \eq{\Sigma_XA}(x,w).
         \]
         Therefore,
         \[
@@ -3282,34 +3379,73 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
             \fun{transport}^{\hat B}(\delta^{-1})\colon
             B(x,w)\to B(y,v).
         \]
-        Since $f(w)\colon B(x,w)$, 
+        Since $f\colon\Pi_AB(x)$, we have $f(w)\colon B(x,w)$. Hence,
         \[
             \rhs\equiv\fun{transport}^{\hat B}(\delta^{-1},f(w))
                 \colon B(y,v).
         \]
-        \item[Inhabitation:] By path induction on $p$, we reduce ourselves to the case $y\equiv x$ and $p\equiv\fun{refl}_x$. We obtain
+        \item[Inhabitation:] By path induction on $p$, the goal reduces to the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. We obtain
         \begin{align*}
             \lhs&\equiv
                 \fun{transport}^{\Pi_AB}(\fun{refl}_x,f)(v)\\
                 &\equiv f(v),\\
             \delta&\equiv\fun{pair}^=(\fun{refl}_x
-                ,\fun{refl}_{(\fun{refl}_x)_*(v)})
+                ,(\fun{refl}_x)_*(v))
                     &&;\ \fun{refl}_x^{-1}\equiv\fun{refl}_x\\
-                &\equiv\fun{refl}_{(\fun{refl}_x)_*(v)}\\
-                &\equiv\fun{refl}_v,\\
+                &\equiv\fun{refl}_{(x,v)}.
+                    &&\text{; Rem.~\ref{rem:pair=-at-base-code}}\\
             \rhs
             &\equiv
                 \fun{transport}^{\hat B}
-                \bigl(
-                    (
-                        \fun{refl}_v,
-                        f((\fun{refl}_x)_*(v))
-                \bigr)
+                    (\fun{refl}_{(x,v)},f((\fun{refl}_x)_*(v))
                 &&;\ \fun{refl}_x^{-1}\equiv\fun{refl}_x\\
             &\equiv f((\fun{refl}_x)_*(v))\\
             &\equiv f(v).
-        \end{align*}
+        \end{align*}\qedhere
     \end{description}
+\end{proof}
+
+\begin{rem}
+    Suppose we have two type families $A,B\colon X\to\univ$, a point $x\colon X$ and a function $f\colon A(x)\to B(x)$. Then, given a second point $y\colon X$ and a path $p\colon x\eq Xy$, to transport $f$ along $p$ for getting a new function 
+    \[
+        p_*(f)\colon A(y)\to B(y),
+    \]
+    we can specify
+    \[
+        \begin{tikzcd}[column sep=huge, row sep=large]
+            A(y)
+                    \arrow[r,dashed,"p_*(f)"]
+                    \arrow[d,"{(p^{-1})_*}"']
+                &B(y)\\
+            A(x)
+                    \arrow[r,"f"']
+                &B(x)
+                    \arrow[u,"p_*"']
+        \end{tikzcd}
+        \qquad
+        \begin{tikzcd}[column sep=large, row sep=large]
+            v
+                    \arrow[r,dashed,maps to]
+                    \arrow[d,maps to]
+                &{p_*\bigl(f((p^{-1})_*(v))\bigr)}\\
+            {(p^{-1})_*(v)}
+                    \arrow[r,maps to]
+                &{f((p^{-1})_*(v))}
+                    \arrow[u,maps to]
+        \end{tikzcd}
+    \]
+\end{rem}
+
+\begin{lem}
+    Let\/ $A, B\colon X\to\univ$ be type families, and consider the family of function types\/ $A\to B\colon X\to\univ$ defined by\/ $(A\to B)(x)\defeq A(x)\to B(x)$. For any path\/ $p\colon x\eq Xy$, function\/ $f\colon A(x)\to B(x)$, and element\/ $v\colon A(y)$, the transport of\/ $f$ along\/ $p$ evaluates as
+    \[
+        \fun{transport}^{A\to B}(p,f)(v) \eq{B(y)} p_*\bigl(f((p^{-1})_*(v))\bigr),
+    \]
+    where $p_*\equiv\fun{transport}^B(p,{}\cdot{})$ and $(p^{-1})_*\equiv\fun{transport}^A(p,{}\cdot{})$.
+\end{lem}
+
+\begin{proof}
+    By path induction on $p\colon x\eq Xy$, it suffices to consider the base case where $y\equiv x$ and $p\equiv\fun{refl}_x$. But in that case both sides are definitionally reduced to $f(v)$.
 \end{proof}
 
 \begin{lem}\label{lem:non-dependent-i-j-paths}
@@ -3339,7 +3475,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
         P(y,p)&\defeq \prod_{u\colon A(x)}
             \fun{Eq}_i(y,p,u) \times \fun{Eq}_j(y,p,u),
     \end{align*}
-    where $\fun{Eq}_i$ and $\fun{Eq}_j$ correspond to the identity types corresponding to $i(p,u)$ and $j(p,u)$.
+    where $\fun{Eq}_i$ and $\fun{Eq}_j$ are the identity types corresponding to $i(p,u)$ and $j(p,u)$.
     
     By based path induction, it suffices to construct an inhabitant of $P(x,\fun{refl}_x)$.
     In this case, given $u\colon A(x)$, both equalities reduce to $f(u)\eq{B(x)}f(u)$. Hence,
@@ -3353,8 +3489,12 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     Let\/ $A\colon X\to\univ$ be a type family and\/ $p\colon x\eq Xy$ a path in $X$. Then, given a second type family $B\colon X\to\univ$ and two functions\/ $f\colon A(x)\to B(x)$ and\/ $g\colon A(y)\to B(y)$, there is an equivalence
     \begin{align*}
         \bigl(p_*(f)\eq{A(y)\to B(y)}g\bigr)
-            &\simeq\prod_{u\colon A(x)}p_*(f(u))\eq{B(y)}g(p_*(u)).
+            &\simeq(p_*\circ f\sim g\circ p_*),
     \end{align*}
+    where $p_*\circ f$ and $g\circ p_*$ have signature
+    \[
+        p_*\circ f,\;g\circ p_*\colon A(x)\to B(y).
+    \]
     Moreover, if\/ $q\colon p_*(f)\eq{A\to B}g$ corresponds under this equivalence to\/ $\hat q$, then for any\/ $u\colon A(x)$, the path
     \[
         \fun{happly}(q,p_*(u))
@@ -3381,8 +3521,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
             \fun L(y,p,g)
                 &\defeq p_*(f)\eq{A(y)\to B(y)}g,\\
             \fun R(y,p,g)
-                &\defeq\prod_{u\colon A(x)}
-                p_*(f(u))\eq{B(y)} g(p_*(u)).
+                &\defeq p_*\circ f\sim g\circ p_*.
         \end{align*}
 
         \item Then define
@@ -3400,7 +3539,8 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
                     \eq{B(y)}
                     i(p,u)\ct j(p, u)\ct e(q)(u),
         \]
-        and $i(p,u)$ and $j(p,u)$ are the paths defined in \eqref{eq:non-dependent-i-j-paths}. The following diagram shows that $\fun E$ is well defined:
+        and $i(p,u)$ and $j(p,u)$ are the paths defined in \eqref{eq:non-dependent-i-j-paths}. The following diagram of path shows that $\fun E$ is well defined:
+        The following diagram, where the arrows represent paths, shows that $\fun E$ is well defined:
         \[
             \begin{tikzcd}[column sep=4em, row sep=3em]
                 p_*(f)(p_*(u))
@@ -3413,6 +3553,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
                         \arrow[u,"e(q)(u)"']
             \end{tikzcd}
         \]
+        To see this, recall from \eqref{eq:happly-is-ap-ev} that $\fun{happly}(q,v)\eq{B(y)}\fun{ap}_{\ev v}(p)$, which shows that the top arrow represents the resulting path. Moreover, since $e\colon\fun L\simeq\fun R$ and $q\colon p_*(f)\eq{A(y)\to B(y)}g$, by identifying $e$ with its first projection, we obtain $e(q)\colon\fun R$ and $e(q)(u)\colon p_*(f(u))\eq{B(y)}g(p_*(u))$.
     \end{enumerate}
     By based path induction, i.e., by equation \eqref{eq:ind'=A} applied to $P(y,p)$, we have to construct an inhabitant for the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case:
     \begin{enumerate}[-]
@@ -3501,18 +3642,21 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
             
             \item $\Phi(w)$ becomes $f(u)$.
     
-            \item $\fun{Tr}(\fun{refl}_x,f,u)$ becomes:
-            \[
-                \fun{transport}^{\hat B}
+            \item Finally,
+            \begin{align*}
+                \fun{Tr}(\fun{refl}_x,f,u)
+                &\equiv\fun{transport}^{\hat B}
                 \bigl(
                     \fun{pair}^=(\fun{refl}_x,\fun{refl}_u),
                     f(u)
-                \bigr),
-            \]
-            which is definitionally equal to $f(u)$.
+                \bigr)\\
+                &\equiv\fun{transport}^{\hat B}
+                    \big(\fun{refl}_{(x,u)},f(u)\big)
+                        &&\text{; Rem.~\ref{rem:pair=-at-base-code}}\\
+                &\equiv f(u).
+            \end{align*}
         \end{enumerate}
-    
-        Consequently, for any $u\colon A(x)$, the goals become:
+        In consequence, for any $u\colon A(x)$, the goals become:
         \begin{align*}
             i(\fun{refl}_x,u)&\colon f(u)\eq{B(x,u)}f(u),\\
             j(\fun{refl}_x,u) &\colon f(u)\eq{B(x,u)}f(u).
@@ -3522,7 +3666,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
         \[
             \lambda u.\,(\fun{refl}_{f(u)},\, \fun{refl}_{f(u)})
         \]
-        witnesses $P(x,\fun{refl}_x)$, completing the proof.
+        witnesses $P(x,\fun{refl}_x)$, completing the proof.\qedhere
     \end{description}
 \end{proof}
 
@@ -3531,10 +3675,8 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
     \[
         \bigl(p_*(f)\eq{\Pi_AB(y)}g\bigr)
         \simeq
-        \prod_{u\colon A(x)}
-        \fun{Tr}(p,f,u)
-        \eq{B(y,p_*(u))}
-        g(p_*(u)),
+        %\prod_{u\colon A(x)}\fun{Tr}(p,f,u)\eq{B(y,p_*(u))}g(p_*(u))
+        \bigl(\fun{Tr}(p,f)\sim g\circ p_*\bigr),
     \]
     where
     \[
@@ -3567,15 +3709,15 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
                     \arrow[u,"\hat q(u)"']
         \end{tikzcd}
     \]
-    where $\Phi$ is defined in\/ {\upshape Lemma~\ref{lem:dependent-i-j-path}}.
+    with $\Phi$ defined in\/ {\upshape Lemma~\ref{lem:dependent-i-j-path}}.
 \end{thm}
 
 \needspace{2\baselineskip}
 \begin{proof}${}$
     \begin{description}[font=\normalfont\scshape]
-        \item[Type verification:] We need to verify that both sides of the equivalence are well-formed elements of $\univ$.
+        \item[Type verification:] We need to verify that both sides of the equivalence are well-formed elements of\/ $\univ$.
         
-        For the \lhs, observe that $p_*(f)$ and $g$ both inhabit the function type $\Pi_AB(y)$; thus, the identity type $p_*(f)=g$ is well-formed.
+        For the \lhs, observe that $p_*(f)$ and $g$ both inhabit the function type $\Pi_AB(y)$; thus, the identity type $p_*(f)\eq{\Pi_AB(x)}g$ is well-formed.
 
         For the \rhs, we must ensure the terms inhabit the same fiber.
         \begin{enumerate}[-]
@@ -3596,8 +3738,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
                 \fun L(y,p,g)
                     &\defeq p_*(f)\eq{\Pi_AB(y)}g,\\
                 \fun R(y,p,g)
-                    &\defeq\prod_{u\colon A(x)}
-                    \fun{Tr}(p,f,u) \eq{B(y,v)} g(v).
+                    &\defeq\fun{Tr}(p,f)\sim g\circ p_*.
             \end{align*}
     
             \item Then define
@@ -3648,16 +3789,15 @@ To apply the observational framework~\ref{observational-framework} to the univer
     \item[Code family.]
     \begin{align*}
         \fun{Code}&\colon\univ\to\univ\to\univ\\
-        \fun{Code}(A,B)&\defeq(A\simeq B).
+        \fun{Code}(A,B)&\defeq A\simeq B.
     \end{align*}
     
     \item[Base code.]
-    We specify the base code \/$c \colon \fun{Code}(A,A)$ as \/$c \defeq \id_A$. This is an abuse of notation for the canonical equivalence
+    We specify the base code \/$c \colon \fun{Code}(A,A)$ as \/$c \defeq \id_A$. This is an abuse of notation  [cf.~Proposition~\ref{prop:equivalence-is-an-equivalence-relation}] for the canonical equivalence
     \[
-        (\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))\colon A\simeq A
+        (\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))\colon A\simeq A.
     \]
-    [cf.~Proposition~\ref{prop:equivalence-is-an-equivalence-relation}].
-    
+   
     \item[Encode function.]
     To define
     \begin{align*}
@@ -3757,15 +3897,16 @@ The groupoid structure corresponds to the groupoid structure of equivalences:
 \end{align*}
 with inverse and composition is defined in Proposition~\ref{prop:equivalence-is-an-equivalence-relation}.
 
-The unit laws hold trivially
+The first unit laws holds definitionally
 \begin{align*}
     \fun{inv}(c)
         &\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))^{-1}\\
         &\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))\\
-        &\equiv c\\
+        &\equiv c
+    \intertext{and the second propositionally, by Corollary~\ref{cor:propositional-qinv-composition-with-id}}
     c\ect d
         &\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))\circ d\\
-        &\equiv d.
+        &\eq{A\simeq B}d.
 \end{align*}
 
 \begin{prop}
@@ -3780,12 +3921,12 @@ The unit laws hold trivially
 \begin{proof}
     The equality between $t$ and $\fun{transport}^{\fun{Eq}_z}$ is clear. To see that it has a quasi-inverse, consider
     \begin{align*}
-        g&\colon(x\eq Az)\to(y\eq Az)\\
-        g(r)&\defeq p^{-1}\ct r.
+        s&\colon(x\eq Az)\to(y\eq Az)\\
+        s(r)&\defeq p^{-1}\ct r.
     \end{align*}
-    Then, $g\equiv\fun{transport}^{\fun{Eq}_z}(p^{-1})$. Moreover,
+    Then, $s\equiv\fun{transport}^{\fun{Eq}_z}(p^{-1})$. Moreover,
     \begin{align*}
-        g(t(q)) &\equiv g(p\ct q)\\
+        s(t(q)) &\equiv s(p\ct q)\\
             &\equiv p^{-1}\ct(p\ct q)\\
             &\eq{y\eq Az}(p^{-1}\ct p)\ct q
                 &&\text{; Lem.~\ref{lem:concat}}\\
@@ -3820,11 +3961,11 @@ The unit laws hold trivially
 \section{Pointed Types and Loop Spaces}
 
 \begin{defn}
-    A \textsl{pointed type} $(A,a)$ is a type $A\colon\univ$ together with a point $a\colon A$, called its \textsl{basepoint}. We write
+    A \textsl{pointed type}\/ $(A,a)$ is a type\/ $A\colon\univ$ together with a point\/ $a\colon A$, called its \textsl{basepoint}. We write
     \[
         \puniv\defeq\sum_{A:\,\univ}A
     \]
-    for the type of pointed types in the universe $\univ$.
+    for the type of pointed types in the universe\/ $\univ$.
 \end{defn}
 
 \begin{defn}
@@ -3833,18 +3974,31 @@ The unit laws hold trivially
         \Omega&\colon\puniv\to\puniv\\
         \Omega(A,a)&\defeq((a\eq Aa),\fun{refl}_a).        
     \end{align*}
-    An element of this type is called a \textsl{loop} at $a$. For $n\colon\N$, the \textsl{$n$-fold iterated loop space} $\Omega^n(A,a)$ of a pointed type $(A,a)$ is defined recursively by:
+    An element of the underlying type $a\eq Aa$ is called a \textsl{loop} at $a$.
+    
+    For $n\colon\N$, we define the iterated loop space operation $\Omega^n\colon\puniv\to\puniv$ by recursion as follows: 
     \begin{align*}
-        \Omega^0(A,a)&\defeq(A,a)\\
-        \Omega^{n+1}(A,a)&\defeq\Omega^n(\Omega(A,a)).
+        C&\defeq\puniv\to\puniv\\
+        c_0&\defeq\id_\puniv\\
+        c_s&\colon\N\to C\to C\\
+        c_s(n,f)&\defeq f\circ\Omega\\
+        \Omega^n&\defeq\fun{rec}_\N(C,c_0,c_s,n).
     \end{align*}
-    An element of this type is called an \textsl{$n$-loop} or an \textsl{$n$-dimensional loop} at $a$.
+    Then, using the definitional equation
+    \[
+        \fun{rec}_\N(C,c_0,c_s,\fun{succ}(n))
+        \equiv c_s(n,\fun{rec}_\N(C,c_0,c_s,n)),
+    \]
+    we obtain
+    \[
+        \Omega^{n+1}(A,a)\equiv\Omega^n(\Omega(A,a)).
+    \]
 \end{defn}
 
 \begin{rem}\label{rem:Omega-abuse}
     It is usual to sometimes abuse the notation and identify $\Omega(A,a)$ with $a\eq Aa$, i.e., as $\pi_1(a\eq Aa,\fun{refl}_a)$.
     
-    Note however that the reason to define $\Omega\colon\puniv\to\puniv$ and not from $\puniv$ to $\univ$, is to enable the definition of $\Omega^n$ for $n=0,1,\dots$.
+    Note however that the reason to define $\Omega\colon\puniv\to\puniv$ and not from $\puniv$ to $\univ$, is to enable the definition of $\Omega^n$ for $n\colon\N$.
 \end{rem}
 
 \begin{defn}
@@ -3852,7 +4006,7 @@ The unit laws hold trivially
     \[
         \Omega f\colon\Omega(A,a)\to\Omega(B,f(a))
     \]
-    defined by\footnote{As noted in Remark \ref{rem:Omega-abuse}, by abusing notation $\Omega(A,a)$ sometimes refers to $a\eq Aa$ rather than to the pointed type.}
+    defined by
     \[
         \Omega f(p)\defeq\fun{ap}_f(p).
     \]
@@ -3865,7 +4019,7 @@ The unit laws hold trivially
     \[
         \Omega^2(A)\times\Omega^2(A)\to\Omega^2(A)
     \]
-    is commutative: $\alpha\ct\beta=\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
+    is commutative: $\alpha\ct\beta\eq{\Omega^2(A)}\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
 \end{thm}
 
 \begin{proof}
