@@ -351,6 +351,128 @@
     Since both sides reduce to the same term $\fun{refl}_{p\ct r}$ in the base case, the path induction principle ensures they are equal in the general case.
 \end{proof}
 
+\section{Pointed Types and Loop Spaces}
+
+\begin{defn}
+    A \textsl{pointed type}\/ $(A,a)$ is a type\/ $A\colon\univ$ together with a point\/ $a\colon A$, called its \textsl{basepoint}. We write
+    \[
+        \puniv\defeq\sum_{A:\,\univ}A
+    \]
+    for the type of pointed types in the universe\/ $\univ$.
+\end{defn}
+
+\begin{defn}
+    Given a pointed type $(A,a)$, we define the \textsl{loop space} of $(A,a)$ as the following pointed type:
+    \begin{align*}
+        \Omega&\colon\puniv\to\puniv\\
+        \Omega(A,a)&\defeq((a\eq Aa),\fun{refl}_a).        
+    \end{align*}
+    An element of the underlying type $a\eq Aa$ is called a \textsl{loop} at $a$.
+    
+    For $n\colon\N$, we define the iterated loop space operation $\Omega^n\colon\puniv\to\puniv$ by recursion as follows: 
+    \begin{align*}
+        C&\defeq\puniv\to\puniv\\
+        c_0&\defeq\id_\puniv\\
+        c_s&\colon\N\to C\to C\\
+        c_s(n,f)&\defeq f\circ\Omega\\
+        \Omega^n&\defeq\fun{rec}_\N(C,c_0,c_s,n).
+    \end{align*}
+    Then, using the definitional equation
+    \[
+        \fun{rec}_\N(C,c_0,c_s,\fun{succ}(n))
+        \equiv c_s(n,\fun{rec}_\N(C,c_0,c_s,n)),
+    \]
+    we obtain
+    \[
+        \Omega^{n+1}(A,a)\equiv\Omega^n(\Omega(A,a)).
+    \]
+\end{defn}
+
+\begin{rem}\label{rem:Omega-abuse}
+    It is usual to sometimes abuse the notation and identify $\Omega(A,a)$ with $a\eq Aa$, i.e., as $\pi_1(a\eq Aa,\fun{refl}_a)$.
+    
+    Note however that the reason to define $\Omega\colon\puniv\to\puniv$ and not from $\puniv$ to $\univ$, is to enable the definition of $\Omega^n$ for $n\colon\N$.
+\end{rem}
+
+\begin{defn}
+    Given a function $f\colon A\to B$ and a point $a\colon A$, the \textsl{induced map on loops} is the function
+    \[
+        \Omega f\colon\Omega(A,a)\to\Omega(B,f(a))
+    \]
+    defined by
+    \[
+        \Omega f(p)\defeq\fun{ap}_f(p).
+    \]
+    Note that by part a) of Proposition~\ref{prop:ap-properties}, we have $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that $\Omega f$ preserves the basepoint definitionally.
+\end{defn}
+
+
+\begin{thm} {\upshape[Eckmann-Hilton]}
+    The composition operation on the second loop space
+    \[
+        \Omega^2(A)\times\Omega^2(A)\to\Omega^2(A)
+    \]
+    is commutative: $\alpha\ct\beta\eq{\Omega^2(A)}\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
+\end{thm}
+
+\begin{proof}
+    Introduce the $2$-loop
+    \[
+        e \defeq \fun{refl}_{\fun{refl}_a}
+        \colon \fun{refl}_a \eq{\Omega(A)} \fun{refl}_a,
+    \]
+    which is the identity element of the second loop space $\Omega^2(A)$.
+    
+    \begin{description}[font=\normalfont\scshape]
+        \item[Horizontal $=$ vertical:] Consider the expression
+        \[
+            (\alpha\hct e)\ct(e\hct\beta).
+        \]
+        Using the unit laws for horizontal composition (which hold propositionally by path induction), we have $\alpha\hct e \eq{a\eq Aa} \alpha$ and $e\hct\beta \eq{a\eq Aa} \beta$. Thus, we have a path:
+        \begin{equation}\label{eq:eckmann-1}
+            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} \alpha\ct\beta.
+        \end{equation}
+        On the other hand, applying the Interchange Law Lemma~\ref{lem:interchange-law} to the original expression yields:
+        \[
+            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} (\alpha\ct e)\hct(e\ct\beta).
+        \]
+        Using the unit laws for vertical composition, namely
+        \[
+            \alpha\ct e \eq{a\eq Aa} \alpha
+            \quad\text{and}\quad
+            e\ct\beta \eq{a\eq Aa} \beta,
+        \]
+        the right-hand side becomes $\alpha\hct\beta$. Comparing this result with \eqref{eq:eckmann-1}, we conclude:
+        \begin{equation}\label{eq:hct=ct}
+            \alpha\hct\beta\eq{a\eq Aa}\alpha\ct\beta.
+        \end{equation}
+        
+        \item[Commutativity:] Now consider the expression with terms swapped:
+        \[
+            (e\hct\beta)\ct(\alpha\hct e).
+        \]
+        Using the horizontal unit laws first:
+        \[
+            (e\hct\beta)\ct(\alpha\hct e)
+                \eq{a\eq Aa}\beta\ct\alpha.
+        \]
+        Alternatively, applying the Interchange Law first:
+        \[
+            (e\hct\beta)\ct(\alpha \hct e) 
+                \eq{a\eq Aa}(e\ct\alpha)\hct(\beta\ct e).
+        \]
+        Using the vertical unit laws on the right side, this reduces to $\alpha\hct\beta$. 
+        
+        Combining these chains of equalities with \eqref{eq:hct=ct}, we obtain:
+        \[
+            \beta\ct\alpha
+                \eq{a\eq Aa}\alpha\hct\beta
+                \eq{a\eq Aa}\alpha\ct\beta,
+        \]
+        as desired.
+    \end{description}
+\end{proof}
+
 \section{Fibrations and Transport}
 
 \label{rem:fibration}
@@ -649,6 +771,37 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     which is inhabited by $\lambda u,z,q.\,\fun{refl}_{q_*(u)}$.
 \end{proof}
 
+\begin{lem}\label{lem:transportinv}
+    Let\/ $P\colon A\to\univ$ be a type family. For any path\/ $p\colon x\eq{A}y$ and elements\/ $u\colon P(x)$ and\/ $v\colon P(y)$, there are paths
+    \begin{align*}
+        \fun{transportinv}_l^P(p,u) &\colon (p^{-1})_*(p_*(u)) \eq{P(x)} u, \\
+        \fun{transportinv}_r^P(p,v) &\colon p_*((p^{-1})_*(v)) \eq{P(y)} v.
+    \end{align*}
+    Moreover,
+    \begin{alignat*}2
+        \fun{transportinv}^P_l(\fun{refl}_x,u)
+            &\equiv\fun{refl}_u,
+        &\quad
+        \fun{transportinv}^P_r(\fun{refl}_x,v)
+            &\equiv\fun{refl}_v,
+    \end{alignat*}
+\end{lem}
+
+\begin{proof}
+    The expressions are well-typed: given $u\colon P(x)$ and $v\colon P(y)$, we have
+    \begin{alignat*}{2}
+        p_*(u) &\colon P(y), &\qquad (p^{-1})_*(v) &\colon P(x).
+    \end{alignat*}
+    
+    We can now proceed by path induction on $p$. It suffices to assume $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case, definitionally, $p^{-1}\equiv\fun{refl}_x$. Since transport along reflexivity acts as the identity function, the left-hand side of the first identity type reduces as follows:
+    \[
+        (\fun{refl}_x)_*\bigl((\fun{refl}_x)_*(u)\bigr) \equiv (\fun{refl}_x)_*(u) \equiv u,
+    \]
+    The calculation for $v$ is identical. Thus, in both cases, the goal is proved by $\fun{refl}$.
+    %
+    
+\end{proof}
+
 \begin{rem}
     In calculus, the \textit{Chain Rule} establishes how to compute the derivative of a composition $P\circ f$ in the direction of a vector $v$
     \[
@@ -700,7 +853,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \end{proof}
 
 \begin{lem}\label{lem:dependent-post-composition-transport}
-    Let\/ $P,Q\colon A\to\univ$ be type families and\/ $f\colon\prod_{x\colon A}(P(x)\to Q(x))$ a family map. For any path\/ $p\colon x\eq A y$ and term\/ $u\colon P(x)$, we have
+    Let\/ $P,Q\colon A\to\univ$ be type families and\/ $f\colon\prod_{x\colon A}P(x)\to Q(x)$ a family map. For any path\/ $p\colon x\eq A y$ and term\/ $u\colon P(x)$, we have
     \[
         \fun{transport}^Q(p,f_x(u)) \eq{Q(y)} f_y(\fun{transport}^P(p,u)).
     \]
@@ -1054,58 +1207,6 @@ Types admit different interpretations: depending on the circumstances, they can 
     which is exactly the type inhabited by the hypothesis.
 \end{proof}
 
-\begin{prop}
-    Let\/ $A$ and\/ $B$ be types. Then the maps
-    \begin{align*}
-        f&\colon(x\eq{A\times B}y)
-            \to
-            (\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)\eq B\pi_2(y))\\
-        &\quad p\mapsto(\fun{ap}_{\pi_1}(p),\fun{ap}_{\pi_2}(p)),
-            \\[1ex]
-        g&\colon(\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)
-            \eq B\pi_2(y))
-            \to(x\eq{A\times B}y)\\
-        &\quad(u,v)\mapsto\fun{uniq}_{A\times B}(x)^{-1}
-            \ct\fun{pair}^=(u,v)
-            \ct\fun{uniq}_{A\times B}(y)
-    \end{align*}
-    satisfy $g\circ f\sim\id$.
-\end{prop}
-
-\begin{proof}
-    By Lemma~\ref{lem:pre-composition-with-rho}, it suffices to verify that the functions agree upon pre-composition with the reflexivity section\/ $\rho_{A\times B}$. That is, for every\/ $z\colon A\times B$, we must show:
-    \[
-        (g\circ f)(\fun{refl}_z) \eq{} \fun{refl}_z.
-    \]
-    First, we compute the action of\/ $f$ on the reflexivity path:
-    \[
-        f(\fun{refl}_z)
-        \equiv(\fun{ap}_{\pi_1}(\fun{refl}_z),
-            \fun{ap}_{\pi_2}(\fun{refl}_z))
-        \equiv(\fun{refl}_{\pi_1(z)},\fun{refl}_{\pi_2(z)}).
-    \]
-    Next, we apply\/ $g$ to this pair. Note that since the starting path was a loop on\/ $z$, we have\/ $x \equiv y \equiv z$. The definition of\/ $g$ becomes a conjugation:
-    \[
-        g(\fun{refl}_{\pi_1(z)},\fun{refl}_{\pi_2(z)})
-        \equiv\fun{uniq}_{A\times B}(z)^{-1}
-            \ct\fun{pair}^=(\fun{refl}_{\pi_1(z)},
-                \fun{refl}_{\pi_2(z)})\ct\fun{uniq}_{A\times B}(z).
-    \]
-    The term\/ $\fun{pair}^=$ applied to reflexivities computes definitionally to the reflexivity of the pair:
-    \[
-        \fun{pair}^=(\fun{refl}_{\pi_1(z)}, \fun{refl}_{\pi_2(z)}) \equiv \fun{refl}_{(\pi_1(z), \pi_2(z))}.
-    \]
-    Substituting this back, the expression simplifies via the unit laws for path concatenation:
-    \begin{align*}
-        \fun{uniq}_{A\times B}(z)^{-1}
-            \ct\fun{refl}_{(\pi_1(z),
-                \pi_2(z))}\ct\fun{uniq}_{A\times B}(z)
-        &\equiv\fun{uniq}_{A\times B}(z)^{-1}
-            \ct\fun{uniq}_{A\times B}(z)\\
-        &\eq{z\eq{A\times B}z}\fun{refl}_z.
-    \end{align*}
-    Thus, the equality holds, completing the proof.
-\end{proof}
 
 \section{Equivalences}
 
@@ -1152,6 +1253,37 @@ Types admit different interpretations: depending on the circumstances, they can 
 \begin{ntn}\label{ntn:quasi-inverse}
     Given a quasi-invertible function\/ $f\colon A\to B$, we will write\/ $f^{-1}$ to refer to an arbitrary quasi-inverse of\/ $f$. By\/ {\upshape Lemma~\ref{lem:equivalence-of-quasi-inverses}}, this notation is unambiguous up to homotopy.
 \end{ntn}
+
+\begin{prop}
+    For any type\/ $A$ and\/ $x,y,z\colon A$, let\/ $p\colon x\eq Ay$. The function
+    \begin{align*}
+        t&\colon(y\eq Az)\to(x\eq Az)\\
+        t(q)&\defeq p\ct q
+    \end{align*}
+    is an equivalence propositionally equal to\/ $\fun{transport}^{\fun{Eq}_z}(p^{-1})$, where\/ $\fun{Eq}_z \colon A \to \univ$ is the type family\/ $\fun{Eq}_z(w)\defeq w\eq Az$.
+\end{prop}
+
+\begin{proof}
+    First observe that $t$ and $\fun{transport}^{\fun{Eq}_z}(p^{-1})$ have the same signature. Since both reduce to $\id_{x\eq Az}$ when $y\equiv x$ and $p\equiv\fun{refl}_x$, they are propositionally equal by path induction on~$p$.
+    
+    To see that $t$ has a quasi-inverse, consider
+    \begin{align*}
+        s&\colon(x\eq Az)\to(y\eq Az)\\
+        s(r)&\defeq p^{-1}\ct r.
+    \end{align*}
+    A similar argument yields $s\eq{}\fun{transport}^{\fun{Eq}_z}(p)$. Moreover,
+    \begin{align*}
+        s(t(q)) &\equiv s(p\ct q)\\
+            &\equiv p^{-1}\ct(p\ct q)\\
+            &\eq{y\eq Az}(p^{-1}\ct p)\ct q
+                &&\text{; Lem.~\ref{lem:concat}}\\
+            &\eq{y\eq Az}\fun{refl}_y\ct q
+                &&\text{; Idem}\\
+            &\equiv q.
+                &&\text{; Lem.~\ref{lem:path-concatenation}}
+    \end{align*}
+    Since the argument is symmetric, the proof is complete.
+\end{proof}
 
 \begin{lem}\label{lem:equivalence-composition}
     If\/ $f \colon A \to B$ and\/ $g \colon B \to C$ are equivalences with inhabitants
@@ -2009,39 +2141,6 @@ which are clearly well defined. Moreover
     \end{enumerate}
 \end{proof}
 
-\needspace{2\baselineskip}
-\begin{prop}\label{prop:lift-pair}
-    Let\/ $A, B\colon\univ$.
-    \begin{enumerate}[a),font=\upshape]
-        \item If\/ $P\colon A\to\univ$ is the constant family\/ $P(x)\equiv B$, then for any\/ $b\colon B$ and\/ $p\colon a\eq A a'$, we have
-        \[
-            \fun{lift}(b,p) \eq{(a,b)\eq{A\times B}(a',b)} \fun{pair}^=(p,\fun{refl}_b).
-        \]
-        \item For any\/ $x\colon A$ and\/ $\gamma\colon u\eq B v$, the fiber inclusion\/ $\fun{in}_x\colon B\to A\times B$ satisfies
-        \[
-            \fun{ap}_{\fun{in}_x}(\gamma) \eq{(x,u)\eq{A\times B}(x,v)}\fun{pair}^=(\fun{refl}_x, \gamma).
-        \]
-    \end{enumerate}
-\end{prop}
-
-\begin{proof}
-    We proceed by path induction in each case.
-    \begin{enumerate}[a),font=\upshape]
-        \item By induction on $p$ it suffices to assume $a'\equiv a$ and $p\equiv\fun{refl}_a$.
-        \begin{enumerate}[-]
-            \item \lhs: $\fun{lift}(b,\fun{refl}_a)\equiv\fun{refl}_{(a,b)}$.
-            \item \rhs: $\fun{pair}^=(\fun{refl}_a, \fun{refl}_b)\equiv\fun{refl}_{(a,b)}$.
-        \end{enumerate}
-        Thus, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(a,b)}}$.
-
-        \item By induction on $\gamma$ it suffices to assume $v\equiv u$ and $\gamma\equiv\fun{refl}_u$.
-        \begin{enumerate}[-]
-            \item \lhs: $\fun{ap}_{\fun{in}_x}(\fun{refl}_u)\equiv\fun{refl}_{\fun{in}_x(u)} \equiv \fun{refl}_{(x,u)}$.
-            \item \rhs: $\fun{pair}^=(\fun{refl}_x, \fun{refl}_u)\equiv\fun{refl}_{(x,u)}$.
-        \end{enumerate}
-        Thus, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(x,u)}}$.
-    \end{enumerate}
-\end{proof}
 
 \begin{ntn}
     Given type families\/ $A,B \colon Z\to\univ$, we denote by\/ $A\times B\colon Z\to\univ$ the type family defined by\/ $(A\times B)(z)\defeq A(z)\times B(z)$.
@@ -2340,6 +2439,39 @@ Here is a picture illustrating the construction
     
 \end{proof}
 
+\begin{prop}\label{prop:lift-pair}
+    Let\/ $A, B\colon\univ$.
+    \begin{enumerate}[a),font=\upshape]
+        \item If\/ $P\colon A\to\univ$ is the constant family\/ $P(x)\equiv B$, then for any\/ $b\colon B$ and\/ $p\colon a\eq A a'$, we have
+        \[
+            \fun{lift}(b,p) \eq{(a,b)\eq{A\times B}(a',b)} \fun{pair}^=(p,\fun{refl}_b).
+        \]
+        \item For any\/ $x\colon A$ and\/ $\gamma\colon u\eq B v$, the fiber inclusion\/ $\fun{in}_x\colon B\to A\times B$ satisfies
+        \[
+            \fun{ap}_{\fun{in}_x}(\gamma) \eq{(x,u)\eq{A\times B}(x,v)}\fun{pair}^=(\fun{refl}_x, \gamma).
+        \]
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    We proceed by path induction in each case.
+    \begin{enumerate}[a),font=\upshape]
+        \item By induction on $p$ it suffices to assume $a'\equiv a$ and $p\equiv\fun{refl}_a$.
+        \begin{enumerate}[-]
+            \item \lhs: $\fun{lift}(b,\fun{refl}_a)\equiv\fun{refl}_{(a,b)}$.
+            \item \rhs: $\fun{pair}^=(\fun{refl}_a, \fun{refl}_b)\equiv\fun{refl}_{(a,b)}$.
+        \end{enumerate}
+        Thus, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(a,b)}}$.
+
+        \item By induction on $\gamma$ it suffices to assume $v\equiv u$ and $\gamma\equiv\fun{refl}_u$.
+        \begin{enumerate}[-]
+            \item \lhs: $\fun{ap}_{\fun{in}_x}(\fun{refl}_u)\equiv\fun{refl}_{\fun{in}_x(u)} \equiv \fun{refl}_{(x,u)}$.
+            \item \rhs: $\fun{pair}^=(\fun{refl}_x, \fun{refl}_u)\equiv\fun{refl}_{(x,u)}$.
+        \end{enumerate}
+        Thus, the equality is witnessed by $\fun{refl}_{\fun{refl}_{(x,u)}}$.
+    \end{enumerate}
+\end{proof}
+
 \begin{rem}
     If the type family $P\colon A\to\univ$ is constant, say $P(x)\equiv B$ for all $x\colon A$, then the total space $E$ becomes $A\times B$ and, by Lemma~\ref{lem:constant-fibration}, we have $p_*(b)\eq Bb$ for $b\colon B$. Thus, the backward function of the equivalence reduces to
     \[
@@ -2588,38 +2720,6 @@ Here is a picture illustrating the construction
         \end{align*}
         Thus, $\lhs\equiv\rhs$ definitionally.\qedhere
     \end{description}
-\end{proof}
-
-
-\begin{lem}\label{lem:transportinv}
-    Let\/ $P\colon A\to\univ$ be a type family. For any path\/ $p\colon x\eq{A}y$ and elements\/ $u\colon P(x)$ and\/ $v\colon P(y)$, there are paths
-    \begin{align*}
-        \fun{transportinv}_l^P(p,u) &\colon (p^{-1})_*(p_*(u)) \eq{P(x)} u, \\
-        \fun{transportinv}_r^P(p,v) &\colon p_*((p^{-1})_*(v)) \eq{P(y)} v.
-    \end{align*}
-    Moreover,
-    \begin{alignat*}2
-        \fun{transportinv}^P_l(\fun{refl}_x,u)
-            &\equiv\fun{refl}_u,
-        &\quad
-        \fun{transportinv}^P_r(\fun{refl}_x,v)
-            &\equiv\fun{refl}_v,
-    \end{alignat*}
-\end{lem}
-
-\begin{proof}
-    The expressions are well-typed: given $u\colon P(x)$ and $v\colon P(y)$, we have
-    \begin{alignat*}{2}
-        p_*(u) &\colon P(y), &\qquad (p^{-1})_*(v) &\colon P(x).
-    \end{alignat*}
-    
-    We can now proceed by path induction on $p$. It suffices to assume $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case, definitionally, $p^{-1}\equiv\fun{refl}_x$. Since transport along reflexivity acts as the identity function, the left-hand side of the first identity type reduces as follows:
-    \[
-        (\fun{refl}_x)_*\bigl((\fun{refl}_x)_*(u)\bigr) \equiv (\fun{refl}_x)_*(u) \equiv u,
-    \]
-    The calculation for $v$ is identical. Thus, in both cases, the goal is proved by $\fun{refl}$.
-    %
-    
 \end{proof}
 
 \begin{rem}
@@ -3219,7 +3319,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 \end{align*}
 
 \begin{thm}\label{thm:dependent-transport-decomp}
-    Given\/ $x,y\colon X$, a path\/ $p\colon x\eq Xy$, and a function\/ $f\colon \Pi_A B(x)$, let\/ $u\colon A(x)$. Define
+    Let\/ $A,B\colon X\to\univ$ be type families, $x,y\colon X$ and\/ $p\colon x\eq Xy$. Given\/ $f\colon \Pi_A B(x)$ and \/ $u\colon A(x)$, define
     \begin{alignat*}2
         p_*&\defeq\fun{transport}^A(p),
         &\quad\gamma&\defeq\fun{pair}^=(p,\fun{refl}_{p_*(u)})
@@ -3403,6 +3503,25 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
             &\equiv f(v).
         \end{align*}\qedhere
     \end{description}
+\end{proof}
+
+\begin{prop}\label{prop:transport-function-codomain}
+    Let\/ $A$ be a type, $P\colon X\to\univ$ a type family, and\/ $p\colon x\eq Xy$ a path. For any function\/ $f\colon A\to P(x)$, we have
+    \[
+        \fun{transport}^{\lambda z.\,(A\to P(z))}(p,f)
+            \eq{A\to P(y)}\lambda a.\,\fun{transport}^P(p,f(a)).
+    \]
+\end{prop}
+
+\begin{proof}
+    The \lhs $\fun{transport}$ maps $p$ to a function $(A\to P(x))\to(A\to P(y))$. Therefore, the \lhs at $p$ maps $f\colon A\to P(x)$ to a function $A\to P(y)$.
+
+    The \rhs $\fun{transport}$ at $p$ is a map from $P(x)$ to $P(y)$. Thus, given $a\colon A$, its value at $f(a)\colon P(x)$ is an element of $P(y)$. In sum the \rhs is also a map from $A$ to $P(y)$.
+
+    To verify the propositional equality, by based path induction on $p$, it suffices to consider the case $y\equiv x$ and $p\equiv\fun{refl}_x$. In that case the \lhs reduces to $f$ and the \rhs to $\lambda a.\,f(a)$, which is definitionally equal to $f$.
+
+    %
+    
 \end{proof}
 
 \begin{rem}
@@ -3832,8 +3951,8 @@ To apply the observational framework~\ref{observational-framework} to the univer
             &&\text{; Lem.~\ref{lem:transportP}}
     \end{align*}
     
-    \begin{thm}
-        Given\/ $A,B\colon\univ$, there is a function
+    \begin{thm}\label{thm:idtoeqv-def}
+        Given\/ $A,B\colon\univ$, the encode function defined above is propositionally equal to the function
         \begin{align}\label{eq:idtoeqv}
             \fun{idtoeqv}&\colon(A\eq\univ B)\to(A\simeq B)
         \intertext{induced by}
@@ -3853,7 +3972,7 @@ To apply the observational framework~\ref{observational-framework} to the univer
     \end{proof}
     
     \begin{defn}
-        By the theorem, we can define $\fun{encode}\defeq\fun{idtoeqv}$.
+        The theorem allows us to take $\fun{idtoeqv}$ as our encode function.
     \end{defn}
     
     
@@ -3909,173 +4028,46 @@ The first unit laws holds definitionally
         &\eq{A\simeq B}d.
 \end{align*}
 
-\begin{prop}
-    For any type\/ $A$ and\/ $x,y,z\colon A$, let\/ $p\colon x\eq Ay$. The function
+
+\begin{prop}\label{prop:id-transport-and-ap}
+    Let\/ $B\colon A\to\univ$ be a type family  and\/ $x,y\colon A$. Given paths\/ $p\colon x\eq Ay$ and\/ $u\colon B(x)$, we have
     \begin{align*}
-        t&\colon(y\eq Az)\to(x\eq Az)\\
-        t(q)&\defeq p\ct q
+        \fun{transport}^B(p,u)
+            &\eq{B(y)}\fun{transport}^{\id_\univ}(\fun{ap}_B(p),u) \\
+            &\equiv\fun{idtoeqv}(\fun{ap}_B(p))(u).
     \end{align*}
-    is an equivalence definitionally equal to\/ $\fun{transport}^{\fun{Eq}_z}(p)$, where\/ $\fun{Eq}_z \colon A \to \univ$ is the type family\/ $\fun{Eq}_z(w)\defeq w\eq Az$.
 \end{prop}
 
 \begin{proof}
-    The equality between $t$ and $\fun{transport}^{\fun{Eq}_z}$ is clear. To see that it has a quasi-inverse, consider
+    The second equality is a direct consequence of the definition in Theorem~\ref{thm:idtoeqv-def} when $\fun{idtoeqv}\colon B(x)\simeq B(y)$ is identified with the map $B(x)\to B(y)$, as established in Notation~\ref{ntn:abuse-equivalence}.
+
+    The types of both sides of the first equality are:
     \begin{align*}
-        s&\colon(x\eq Az)\to(y\eq Az)\\
-        s(r)&\defeq p^{-1}\ct r.
+        \fun{transport}^B(p)\colon B(x)\to B(y),\;u\colon B(x)
+        &\implies\fun{transport}^B(p,u)\colon B(y)\\
+        \fun{ap}_B(p)\colon B(x)\to B(y),\;u\colon B(x)
+        &\implies\fun{transport}^{\id\univ}(\fun{ap}_B(p),u)
+            \colon B(y),
     \end{align*}
-    Then, $s\equiv\fun{transport}^{\fun{Eq}_z}(p^{-1})$. Moreover,
-    \begin{align*}
-        s(t(q)) &\equiv s(p\ct q)\\
-            &\equiv p^{-1}\ct(p\ct q)\\
-            &\eq{y\eq Az}(p^{-1}\ct p)\ct q
-                &&\text{; Lem.~\ref{lem:concat}}\\
-            &\eq{y\eq Az}\fun{refl}_y\ct q
-                &&\text{; Idem}\\
-            &\equiv q.
-                &&\text{; Lem.~\ref{lem:path-concatenation}}
-    \end{align*}
-    Since the argument is symmetric, the proof is complete.
-\end{proof}
-
-\begin{prop}\label{prop:transport-function-codomain}
-    Let\/ $A$ be a type, $P\colon X\to\univ$ a type family, and\/ $p\colon x\eq Xy$ a path. For any function\/ $f\colon A\to P(x)$, we have
-    \[
-        \fun{transport}^{\lambda z.\,(A\to P(z))}(p,f)
-            \eq{A\to P(y)}\lambda a.\,\fun{transport}^P(p,f(a)).
-    \]
-\end{prop}
-
-\begin{proof}
-    The \lhs $\fun{transport}$ maps $p$ to a function $(A\to P(x))\to(A\to P(y))$. Therefore, the \lhs at $p$ maps $f\colon A\to P(x)$ to a function $A\to P(y)$.
-
-    The \rhs $\fun{transport}$ at $p$ is a map from $P(x)$ to $P(y)$. Thus, given $a\colon A$, its value at $f(a)\colon P(x)$ is an element of $P(y)$. In sum the \rhs is also a map from $A$ to $P(y)$.
-
-    To verify the propositional equality, by based path induction on $p$, it suffices to consider the case $y\equiv x$ and $p\equiv\fun{refl}_x$. In that case the \lhs reduces to $f$ and the \rhs to $\lambda a.\,f(a)$, which is definitionally equal to $f$.
-
-    %
+    and the equality follows by path induction on $p$, since both sides reduce to $u$ when $y\equiv x$ and $p\equiv\fun{refl}_x$.
     
 \end{proof}
 
 
-\section{Pointed Types and Loop Spaces}
+\begin{rem}
+    The first equality of Proposition~\ref{prop:id-transport-and-ap} is a direct consequence of Lemma~\ref{lem:post-composition-transport}, for the case $f\equiv B$ and $P\equiv\id_\univ$.
 
-\begin{defn}
-    A \textsl{pointed type}\/ $(A,a)$ is a type\/ $A\colon\univ$ together with a point\/ $a\colon A$, called its \textsl{basepoint}. We write
-    \[
-        \puniv\defeq\sum_{A:\,\univ}A
-    \]
-    for the type of pointed types in the universe\/ $\univ$.
-\end{defn}
-
-\begin{defn}
-    Given a pointed type $(A,a)$, we define the \textsl{loop space} of $(A,a)$ as the following pointed type:
-    \begin{align*}
-        \Omega&\colon\puniv\to\puniv\\
-        \Omega(A,a)&\defeq((a\eq Aa),\fun{refl}_a).        
+    Conversely, Lemma~\ref{lem:post-composition-transport} can be derived from the proposition applying it twice in different contexts:
+        \begin{align*}
+        \fun{transport}^{P\circ f}(p,u) 
+            &\eq{P(f(y))} \fun{transport}^{\id_\univ}
+            (\fun{ap}_{P\circ f}(p),u)
+                &&;\ B\equiv P\circ f,\; P\equiv\id_\univ\\
+            &\eq{P(f(y))} \fun{transport}^{\id_\univ}(\fun{ap}_P(\fun{ap}_f(p)), u)
+                &&;\ \fun{ap}_{P\circ f}\eq{} \fun{ap}_P\circ\fun{ap}_f\\
+            &\eq{P(f(y))} \fun{transport}^P(\fun{ap}_f(p),u)
+                &&;\ B\equiv P,\; p\equiv\fun{ap}_f(p).
     \end{align*}
-    An element of the underlying type $a\eq Aa$ is called a \textsl{loop} at $a$.
-    
-    For $n\colon\N$, we define the iterated loop space operation $\Omega^n\colon\puniv\to\puniv$ by recursion as follows: 
-    \begin{align*}
-        C&\defeq\puniv\to\puniv\\
-        c_0&\defeq\id_\puniv\\
-        c_s&\colon\N\to C\to C\\
-        c_s(n,f)&\defeq f\circ\Omega\\
-        \Omega^n&\defeq\fun{rec}_\N(C,c_0,c_s,n).
-    \end{align*}
-    Then, using the definitional equation
-    \[
-        \fun{rec}_\N(C,c_0,c_s,\fun{succ}(n))
-        \equiv c_s(n,\fun{rec}_\N(C,c_0,c_s,n)),
-    \]
-    we obtain
-    \[
-        \Omega^{n+1}(A,a)\equiv\Omega^n(\Omega(A,a)).
-    \]
-\end{defn}
 
-\begin{rem}\label{rem:Omega-abuse}
-    It is usual to sometimes abuse the notation and identify $\Omega(A,a)$ with $a\eq Aa$, i.e., as $\pi_1(a\eq Aa,\fun{refl}_a)$.
-    
-    Note however that the reason to define $\Omega\colon\puniv\to\puniv$ and not from $\puniv$ to $\univ$, is to enable the definition of $\Omega^n$ for $n\colon\N$.
 \end{rem}
 
-\begin{defn}
-    Given a function $f\colon A\to B$ and a point $a\colon A$, the \textsl{induced map on loops} is the function
-    \[
-        \Omega f\colon\Omega(A,a)\to\Omega(B,f(a))
-    \]
-    defined by
-    \[
-        \Omega f(p)\defeq\fun{ap}_f(p).
-    \]
-    Note that by part a) of Proposition~\ref{prop:ap-properties}, we have $\Omega f(\fun{refl}_a) \equiv \fun{refl}_{f(a)}$, meaning that $\Omega f$ preserves the basepoint definitionally.
-\end{defn}
-
-
-\begin{thm} {\upshape[Eckmann-Hilton]}
-    The composition operation on the second loop space
-    \[
-        \Omega^2(A)\times\Omega^2(A)\to\Omega^2(A)
-    \]
-    is commutative: $\alpha\ct\beta\eq{\Omega^2(A)}\beta\ct\alpha$, for any\/ $\alpha,\beta\colon\Omega^2(A)$.
-\end{thm}
-
-\begin{proof}
-    Introduce the $2$-loop
-    \[
-        e \defeq \fun{refl}_{\fun{refl}_a}
-        \colon \fun{refl}_a \eq{\Omega(A)} \fun{refl}_a,
-    \]
-    which is the identity element of the second loop space $\Omega^2(A)$.
-    
-    \begin{description}[font=\normalfont\scshape]
-        \item[Horizontal $=$ vertical:] Consider the expression
-        \[
-            (\alpha\hct e)\ct(e\hct\beta).
-        \]
-        Using the unit laws for horizontal composition (which hold propositionally by path induction), we have $\alpha\hct e \eq{a\eq Aa} \alpha$ and $e\hct\beta \eq{a\eq Aa} \beta$. Thus, we have a path:
-        \begin{equation}\label{eq:eckmann-1}
-            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} \alpha\ct\beta.
-        \end{equation}
-        On the other hand, applying the Interchange Law Lemma~\ref{lem:interchange-law} to the original expression yields:
-        \[
-            (\alpha\hct e)\ct(e\hct\beta) \eq{a\eq Aa} (\alpha\ct e)\hct(e\ct\beta).
-        \]
-        Using the unit laws for vertical composition, namely
-        \[
-            \alpha\ct e \eq{a\eq Aa} \alpha
-            \quad\text{and}\quad
-            e\ct\beta \eq{a\eq Aa} \beta,
-        \]
-        the right-hand side becomes $\alpha\hct\beta$. Comparing this result with \eqref{eq:eckmann-1}, we conclude:
-        \begin{equation}\label{eq:hct=ct}
-            \alpha\hct\beta\eq{a\eq Aa}\alpha\ct\beta.
-        \end{equation}
-        
-        \item[Commutativity:] Now consider the expression with terms swapped:
-        \[
-            (e\hct\beta)\ct(\alpha\hct e).
-        \]
-        Using the horizontal unit laws first:
-        \[
-            (e\hct\beta)\ct(\alpha\hct e)
-                \eq{a\eq Aa}\beta\ct\alpha.
-        \]
-        Alternatively, applying the Interchange Law first:
-        \[
-            (e\hct\beta)\ct(\alpha \hct e) 
-                \eq{a\eq Aa}(e\ct\alpha)\hct(\beta\ct e).
-        \]
-        Using the vertical unit laws on the right side, this reduces to $\alpha\hct\beta$. 
-        
-        Combining these chains of equalities with \eqref{eq:hct=ct}, we obtain:
-        \[
-            \beta\ct\alpha
-                \eq{a\eq Aa}\alpha\hct\beta
-                \eq{a\eq Aa}\alpha\ct\beta,
-        \]
-        as desired.
-    \end{description}
-\end{proof}
