@@ -852,6 +852,75 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     which is inhabited by $\lambda u\colon P(f(x)).\,\fun{refl}_u$.
 \end{proof}
 
+\begin{rem}\label{rem:Pf-diagram}
+    The lemma is illustrated in the following diagram
+    \[
+        \begin{tikzpicture}[scale=1.2,>=stealth,font=\small]
+            \draw[thick,name path=A]
+                (0.5,0) node[left] {$A$} to[out=10,in=170] (6,0);
+                
+            \draw[thick,name path=B]
+                (0.5,2.0) node[left] {$B$} to[out=10,in=170] (6,2.0);
+                
+            \draw[gray,thin,name path=Pfx]
+                (1,2) -- (1,5.5)
+                node[above,black] {$P(f(x))$};
+                
+            \draw[gray,thin,name path=Pfy]
+                (5,2) -- (5,5.5)
+                node[above,black] {$P(f(y))$};
+                
+            \path[name path=Lx] (1,-0.5) -- (1,1);
+            \path[name path=Ly] (5,-0.5) -- (5,1);
+            
+            \path [name intersections={of=A and Lx,by=x}];
+            \fill (x) circle (1.5pt) node[below right] {$x$};
+            
+            \path [name intersections={of=A and Ly,by=y}];
+            \fill (y) circle (1.5pt) node[below right] {$y$};
+            
+            \path [name intersections={of=B and Pfx,by=fx}];
+            \fill (fx) circle (1.5pt) node[below right] {$f(x)$};
+            
+            \path [name intersections={of=B and Pfy,by=fy}];
+            \fill (fy) circle (1.5pt) node[below right] {$f(y)$};
+            
+            \draw[-latex,gray,dashed] 
+                (x) -- node[midway,left,black] {$f$} (fx);
+            \draw[-latex,gray,dashed] 
+                (y) -- node[midway,right,black] {$f$} (fy);
+                
+            \draw[-latex]
+                (x) to[out=30,in=150]
+                node[midway,above] {$p$} (y);
+                
+            \draw[-latex]
+                (fx) to[out=30,in=150]
+                node[midway,above] {$\fun{ap}_f(p)$} (fy);
+                
+            \coordinate (u) at (1, 3.7);
+            \fill (u) circle (1.5pt) node[left] {$u$};
+    
+            \coordinate (v) at (5, 4);
+            \fill (v) circle (1.5pt) node[right] {$(y,p_*(u))$};
+    
+            \draw[dashed,teal] (u) to[out=15,in=170]
+                node[midway,above,black] {$\fun{lift}(u,p)$} (v);
+    
+            \coordinate (tu) at (5, 5.0);
+            \fill (tu) circle (1.5pt) node[right,align=left] 
+                {$\fun{transport}^{P\circ f}(p,u)$\\ 
+                \quad$\eq{P(f(y))}
+                    \fun{transport}^P(\fun{ap}_f(p),u)$};
+
+            \draw[-latex,teal,thick] (v) -- (tu);
+            
+            \draw[-latex,orange,thick]
+                (u) to[out=35,in=165] (tu);
+        \end{tikzpicture}
+    \]
+\end{rem}
+
 \begin{lem}\label{lem:dependent-post-composition-transport}
     Let\/ $P,Q\colon A\to\univ$ be type families and\/ $f\colon\prod_{x\colon A}P(x)\to Q(x)$ a family map. For any path\/ $p\colon x\eq A y$ and term\/ $u\colon P(x)$, we have
     \[
@@ -1629,6 +1698,94 @@ Now we can establish the main
         (\id_A,(\id_A,\fun{refl},\id_A,\fun{refl}))^{-1}\equiv(\id_A,(\id_A,\fun{refl},\id_A,\fun{refl})).
     \]
 \end{rem}
+
+\begin{defn}
+    Let\/ $f\colon A\to B$ be a function. A \emph{coherent quasi-inverse} (a.k.a.~\textsl{half-adjoint equivalence}) of\/ $f$ consists of a quasi-inverse\/ $(f^{-1}, \eta, \vartheta)$ along with a higher homotopy
+    \[
+        \tau\colon\prod_{x\colon A}\fun{ap}_f(\vartheta(x))\eq{f(x)\eq Bf(x)}\eta_{f(x)}.
+    \]
+\end{defn}
+
+\begin{thm}\label{thm:coherent-quasi-inverse}
+    If\/ $f\colon A\to B$ is an equivalence, then it admits a coherent quasi-inverse.
+\end{thm}
+
+\begin{proof}
+    Since\/ $f$ is an equivalence, it has a quasi-inverse, say\/ $(g, \eta, \vartheta)$, where\/ $g\colon B\to A$,\/ $\eta\colon f\circ g\sim\id_B$, and\/ $\vartheta\colon g\circ f\sim\id_A$. 
+
+    Using the paths in the diagram
+    \begin{equation}\label{tikz:coherence-1}
+        \begin{tikzcd}[row sep=large,column sep=huge]
+            f(g(y))
+                    \arrow[r,dashed,"\eta'_y"]
+                &y\\
+            f(g(f(g(y))))
+                    \arrow[u,"{\eta_{f(g(y))}}"]
+                    \arrow[r,"\fun{ap}_f(\vartheta_{g(y)})"']
+                &f(g(y))
+                    \arrow[u,"\eta_y"']
+        \end{tikzcd}
+    \end{equation}
+    we define a new left homotopy\/ $\eta'\colon f\circ g\sim\id_B$.
+    To complete the proof we need to show:
+    \begin{equation}\label{eq:coherent-qinv-1}
+        \fun{ap}_f(\vartheta_x)
+        \eq{f(x)\eq Bf(x)}
+        \eta_{f(g(f(x)))}^{-1}
+            \ct\fun{ap}_f(\vartheta_{g(f(x))})
+            \ct\eta_{f(x)}.
+    \end{equation}
+    By the naturality of\/ $\eta$ (see \eqref{eq:nat-transformation}) applied to the path 
+    \begin{equation}\label{eq:coherence-qinv-2}
+        q\defeq\fun{ap}_f(\vartheta_x)
+            \colon f(g(f(x)))\eq Bf(x),
+    \end{equation}
+    we obtain the commuting square of paths in\/ $B$:
+    \begin{equation}\label{tikz:coherence-2}
+        \begin{tikzcd}[row sep=large,column sep=2.5cm]
+            f(g(f(g(f(x)))))
+                    \arrow[r,"\fun{ap}_{f\circ g}
+                        (\fun{ap}_f(\vartheta_x))"]
+                    \arrow[d,"\eta_{f(g(f(x)))}"']
+                &f(g(f(x)))
+                    \arrow[d,"\eta_{f(x)}"]\\
+            f(g(f(x)))
+                    \arrow[r,"\fun{ap}_f(\vartheta_x)"']
+                &f(x)
+        \end{tikzcd}
+    \end{equation}
+    The naturality of\/ $\vartheta$ yields
+    \begin{equation}\label{tikz:coherence-3}
+        \begin{tikzcd}[row sep=large,column sep=2.5cm]
+            g(f(g(f(x))))
+                    \arrow[r,
+                        "\fun{ap}_{g\circ f}(\vartheta_x)"]
+                    \arrow[d,"\vartheta_{g(f(x))}"']
+                &g(f(x))
+                    \arrow[d,"\vartheta_x"]\\
+            g(f(x))
+                    \arrow[r,"\vartheta_x"']
+                &x
+        \end{tikzcd}
+    \end{equation}
+    i.e., $\vartheta_{g(f(x))}\eq A\fun{ap}_{g\circ f}(\vartheta_x)$. 
+    
+    Therefore, we can walk \eqref{tikz:coherence-2} as follows:
+    \begin{align*}
+        \eta_{f(g(f(x)))}\ct\fun{ap}_f(\vartheta_x)
+            &\eq B\fun{ap}_{f\circ g}(\fun{ap}_f(\vartheta_x))
+                \ct\eta_{f(x)}
+                &&\text{; \eqref{tikz:coherence-2}}\\
+            &\eq B\fun{ap}_f(\fun{ap}_{g\circ f}(\vartheta_x))
+                \ct\eta_{f(x)}
+                &&\text{; Prop.~\ref{prop:ap-properties} d)}\\
+            &\eq B\fun{ap}_f(\vartheta_{g(f(x))})
+                \ct\eta_{f(x)}
+                &&\text{; \eqref{tikz:coherence-3}}.
+    \end{align*}
+    Concatenating\/ $\eta_{f(g(f(x)))}^{-1}$ on the left yields exactly \eqref{eq:coherent-qinv-1}.
+\end{proof}
+
 
 \section{Observational Equality Framework}
 In classical Type Theory, equality is often regarded as \textit{opaque}---essentially a mystery. It is defined as \emph{intensional} (not to be confused with intentional), meaning that for two objects to be equal, they must follow the exact same construction.
@@ -4039,7 +4196,7 @@ The first unit laws holds definitionally
 \end{prop}
 
 \begin{proof}
-    The second equality is a direct consequence of the definition in Theorem~\ref{thm:idtoeqv-def} when $\fun{idtoeqv}\colon B(x)\simeq B(y)$ is identified with the map $B(x)\to B(y)$, as established in Notation~\ref{ntn:abuse-equivalence}.
+    The second equality is a direct consequence of the definition given in Theorem~\ref{thm:idtoeqv-def}, when $\fun{idtoeqv}\colon B(x)\simeq B(y)$ is identified with $B(x)\to B(y)$, as established in Notation~\ref{ntn:abuse-equivalence}.
 
     The types of both sides of the first equality are:
     \begin{align*}
@@ -4068,6 +4225,152 @@ The first unit laws holds definitionally
             &\eq{P(f(y))} \fun{transport}^P(\fun{ap}_f(p),u)
                 &&;\ B\equiv P,\; p\equiv\fun{ap}_f(p).
     \end{align*}
+    Here is an illustration. Compare with Remark~\ref{rem:Pf-diagram}.
+    \[
+        \begin{tikzpicture}[scale=1.2,>=stealth,font=\small]
+            \draw[thick,name path=A]
+                (0.5,0) node[left] {$A$} to[out=10,in=170] (6,0);
+                
+            \draw[thick,name path=U]
+                (0.5,2.0) node[left] {$\univ$} to[out=10,in=170] (6,2.0);
+                
+            \draw[gray,thin,name path=Bx]
+                (1,2) -- (1,5.5)
+                node[above,black] {$B(x)$};
+                
+            \draw[gray,thin,name path=By]
+                (5,2) -- (5,5.5)
+                node[above,black] {$B(y)$};
+                
+            \path[name path=Lx] (1,-0.5) -- (1,1);
+            \path[name path=Ly] (5,-0.5) -- (5,1);
+            
+            \path [name intersections={of=A and Lx,by=x}];
+            \fill (x) circle (1.5pt) node[below right] {$x$};
+            
+            \path [name intersections={of=A and Ly,by=y}];
+            \fill (y) circle (1.5pt) node[below right] {$y$};
+            
+            \path [name intersections={of=U and Bx,by=ptBx}];
+            \fill (ptBx) circle (1.5pt) node[below right] {$B(x)$};
+            
+            \path [name intersections={of=U and By,by=ptBy}];
+            \fill (ptBy) circle (1.5pt) node[below right] {$B(y)$};
+            
+            \draw[-latex,gray,dashed] 
+                (x) -- node[midway,left,black] {$B$} (ptBx);
+            \draw[-latex,gray,dashed] 
+                (y) -- node[midway,right,black] {$B$} (ptBy);
+                
+            \draw[-latex]
+                (x) to[out=30,in=150]
+                node[midway,above] {$p$} (y);
+                
+            \draw[-latex]
+                (ptBx) to[out=30,in=150]
+                node[midway,above] {$\fun{ap}_B(p)$} (ptBy);
+                
+            \coordinate (u) at (1,3.7);
+            \fill (u) circle (1.5pt) node[left] {$u$};
 
+            \coordinate (v) at (5, 4);
+            \fill (v) circle (1.5pt) node[right] {$(y,p_*(u))$};
+
+            \draw[dashed,teal] (u) to[out=15,in=170]
+                node[midway,above,black] {$\fun{lift}(u,p)$} (v);
+            
+            \coordinate (tu) at (5, 5);
+            \fill (tu) circle (1.5pt) node[right,align=left] 
+                {$\fun{transport}^B(p,u)$\\
+                \quad$\eq{B(y)}\fun{transport}^{\id_\univ}(\fun{ap}_B(p),u)$};
+
+            \draw[-latex,teal,thick] (v) -- (tu);
+                
+            \draw[-latex,orange,thick]
+                (u) to[out=35,in=165] (tu);
+        \end{tikzpicture}
+    \]
 \end{rem}
 
+\section{Equality Identity Types}
+
+The Observational Equality Framework \ref{observational-framework} aims to implement \textsl{structural decomposition}: it characterizes the identity type of a compound type (such as $\Sigma$-types, Cartesian products, or $\Pi$-types) in terms of the identity types of its components. 
+
+The framework cannot be applied to an identity type itself. An identity type $a\eq Aa'$ presents no structural components to unpack. The type of paths between paths, $p\eq{a\eq Aa'}q$, is instead part of the higher homotopy structure of the base type $A$. 
+
+Even if we fix a generic base type $A$, there is no universal formula to characterize its $2$-paths. The complexity of these iterated identity types is precisely what gives the theory its rich homotopical character. We can only provide an observational characterization of $p\eq{a\eq Aa'}q$ when $A$ is instantiated with a concrete type constructor (such as $B\times C$ or $\univ$). In those cases, we simply re-apply the structural theorems already established for those specific types.
+
+\begin{thm}
+    If\/ $f\colon A\to B$ is an equivalence, then for any\/ $a,a'\colon A$, the function
+    \[
+        \fun{ap}_f\colon(a\eq Aa')\to(f(a)\eq Bf(a'))
+    \]
+    is also an equivalence.
+\end{thm}
+
+\begin{proof}
+    Let $(f^{-1},\eta,\vartheta)$ be a quasi-inverse of $f$. We have
+    \begin{alignat*}2
+        \eta\colon&\prod_{b\colon B}f\circ f^{-1}(b)\eq Bb,
+        &\qquad\vartheta\colon&\prod_{a\colon A}f^{-1}\circ f(a)\eq Aa.
+    \end{alignat*}
+    We need to construct an inverse function
+    \[
+        h\colon(f(a)\eq Bf(a'))\to(a\eq Aa'),
+    \]
+    and two new homotopies
+    \begin{align*}
+        \hat\eta\colon&\prod_{q\colon f(a)\eq Bf(a')}
+            \fun{ap}_f\circ h(q)\eq{f(a)\eq Bf(a')}q\\
+        \hat\vartheta\colon&\prod_{p\colon a\eq Aa'}
+            h\circ\fun{ap}_f(p)\eq{a\eq Aa'}p.
+    \end{align*}
+    Given $q\colon f(a)\eq Bf(a')$, we have
+    \[
+        \begin{tikzcd}[row sep=large, column sep=huge]
+            a
+                    \arrow[r,dashed,"h(q)"]
+                &a'\\
+            f^{-1}(f(a))
+                    \arrow[u,"\vartheta(a)"]
+                    \arrow[r,"\fun{ap}_{f^{-1}}(q)"']
+                &f^{-1}(f(a'))
+                    \arrow[u,"\vartheta(a')"']
+        \end{tikzcd}
+    \]
+    and we can define
+    \[
+        h(q)\defeq\vartheta(a)^{-1}\ct\fun{ap}_{f^{-1}}(q)\ct\vartheta(a').
+    \]
+    Then
+    \begin{align*}
+        \fun{ap}_f\circ h(q)
+            &\equiv\fun{ap}_f\bigl(\vartheta(a)^{-1}
+                \ct\fun{ap}_{f^{-1}}(q)
+                \ct\vartheta(a')\bigr)\\
+            &\eq B\fun{ap}_f(\vartheta(a))^{-1}
+                \ct\fun{ap}_{f\circ f^{-1}}(q)
+                \ct\fun{ap}_f(\vartheta(a')).
+    \end{align*}
+    Applying \eqref{eq:nat-transformation} to $\eta\colon f\circ f^{-1}\sim\id$, we obtain
+    \[
+        \begin{tikzcd}[column sep=huge,row sep=large]
+            f\circ f^{-1}(f(a))
+                    \arrow[r,"\fun{ap}_{f\circ f^{-1}}(q)"]
+                    \arrow[d,"\eta_{f(a)}"']
+                &f\circ f^{-1}(f(a'))
+                    \arrow[d,"\eta_{f(a')}"]\\
+            f(a)
+                    \arrow[r,"q"']
+                &f(a')
+        \end{tikzcd}
+    \]
+    Therefore,
+    \begin{align*}
+    \fun{ap}_f(h(q))
+        &\eq B\fun{ap}_f(\vartheta(a))^{-1}
+        \ct\eta_{f(a)}\ct q\ct\eta_{f(a')}^{-1}
+        \ct\fun{ap}_f(\vartheta(a'))
+\end{align*}
+To reduce this further, recall the coherence conditions of an equivalence (specifically, a half-adjoint equivalence). Consider how\/ $\fun{ap}_f(\vartheta(x))$ and\/ $\eta_{f(x)}$ are related.
+\end{proof}
