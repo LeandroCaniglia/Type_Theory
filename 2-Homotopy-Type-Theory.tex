@@ -1700,9 +1700,29 @@ Now we can establish the main
 \end{rem}
 
 \begin{defn}
-    Let\/ $f\colon A\to B$ be a function. A \emph{coherent quasi-inverse} (a.k.a.~\textsl{half-adjoint equivalence}) of\/ $f$ consists of a quasi-inverse\/ $(f^{-1}, \eta, \vartheta)$ along with a higher homotopy
+    Let\/ $f\colon A\to B$ be a function. A \emph{coherent quasi-inverse} (a.k.a.~\textsl{half-adjoint equivalence}) of\/ $f$ consists of a quasi-inverse\/ $(f^{-1},\eta,\vartheta)$ along with a higher homotopy
     \[
-        \tau\colon\prod_{x\colon A}\fun{ap}_f(\vartheta(x))\eq{f(x)\eq Bf(x)}\eta_{f(x)}.
+        \tau\colon\prod_{x\colon A}
+            \fun{ap}_f(\vartheta_x)\eq{f(f^{-1}(f(x)))
+                \eq Bf(x)}\eta_{f(x)}.
+    \]
+    as illustrated next
+    \[
+        \begin{tikzcd}[column sep=huge]
+            f(f^{-1}(f(x)))
+                    \arrow[r,
+                        bend left=45,
+                        "\fun{ap}_f(\vartheta_x)"{name=U,above}]
+                    \arrow[r,
+                        bend right=45,
+                        "\eta_{f(x)}"{name=D,below}]
+            &f(x)
+                    \arrow[Rightarrow,
+                        from=U,to=D,
+                        "\tau_x",
+                        shorten <=6pt,
+                        shorten >=6pt]
+        \end{tikzcd}
     \]
 \end{defn}
 
@@ -1727,19 +1747,20 @@ Now we can establish the main
         \end{tikzcd}
     \end{equation}
     we define a new left homotopy\/ $\eta'\colon f\circ g\sim\id_B$.
+    
     To complete the proof we need to show:
     \begin{equation}\label{eq:coherent-qinv-1}
         \fun{ap}_f(\vartheta_x)
-        \eq{f(x)\eq Bf(x)}
+        \eq{f(g(f(x)))\eq Bf(x)}
         \eta_{f(g(f(x)))}^{-1}
             \ct\fun{ap}_f(\vartheta_{g(f(x))})
             \ct\eta_{f(x)}.
     \end{equation}
     By the naturality of\/ $\eta$ (see \eqref{eq:nat-transformation}) applied to the path 
-    \begin{equation}\label{eq:coherence-qinv-2}
+    \[
         q\defeq\fun{ap}_f(\vartheta_x)
             \colon f(g(f(x)))\eq Bf(x),
-    \end{equation}
+    \]
     we obtain the commuting square of paths in\/ $B$:
     \begin{equation}\label{tikz:coherence-2}
         \begin{tikzcd}[row sep=large,column sep=2.5cm]
@@ -1758,8 +1779,7 @@ Now we can establish the main
     \begin{equation}\label{tikz:coherence-3}
         \begin{tikzcd}[row sep=large,column sep=2.5cm]
             g(f(g(f(x))))
-                    \arrow[r,
-                        "\fun{ap}_{g\circ f}(\vartheta_x)"]
+                    \arrow[r,"\fun{ap}_{g\circ f}(\vartheta_x)"]
                     \arrow[d,"\vartheta_{g(f(x))}"']
                 &g(f(x))
                     \arrow[d,"\vartheta_x"]\\
@@ -1768,9 +1788,9 @@ Now we can establish the main
                 &x
         \end{tikzcd}
     \end{equation}
-    i.e., $\vartheta_{g(f(x))}\eq A\fun{ap}_{g\circ f}(\vartheta_x)$. 
+    meaning\/ $\vartheta_{g(f(x))}\eq A\fun{ap}_{g\circ f}(\vartheta_x)$. 
     
-    Therefore, we can walk \eqref{tikz:coherence-2} as follows:
+    Therefore, we can evaluate the boundary of \eqref{tikz:coherence-2} as follows:
     \begin{align*}
         \eta_{f(g(f(x)))}\ct\fun{ap}_f(\vartheta_x)
             &\eq B\fun{ap}_{f\circ g}(\fun{ap}_f(\vartheta_x))
@@ -1786,6 +1806,121 @@ Now we can establish the main
     Concatenating\/ $\eta_{f(g(f(x)))}^{-1}$ on the left yields exactly \eqref{eq:coherent-qinv-1}.
 \end{proof}
 
+\begin{thm}\label{thm:f-equiv-implies-apf-equiv}
+    If\/ $f\colon A\to B$ is an equivalence, then for any\/ $a,a'\colon A$, the function
+    \[
+        \fun{ap}_f\colon(a\eq Aa')\to(f(a)\eq Bf(a'))
+    \]
+    is also an equivalence.
+\end{thm}
+
+\begin{proof}
+    Let\/ $(f^{-1},\eta,\vartheta)$ be a quasi-inverse of\/ $f$. We have
+    \begin{alignat*}2
+        \eta\colon&\prod_{b\colon B}
+            f\circ f^{-1}(b)\eq Bb,
+        &\qquad\vartheta\colon&\prod_{a\colon A}
+            f^{-1}\circ f(a)\eq Aa.
+    \end{alignat*}
+    We need to construct an inverse function
+    \[
+        h\colon(f(a)\eq Bf(a'))\to(a\eq Aa'),
+    \]
+    and two new homotopies
+    \begin{align*}
+        \hat\eta\colon&\prod_{q\colon f(a)\eq Bf(a')}
+            \fun{ap}_f\circ h(q)\eq{f(a)\eq Bf(a')}q\\
+        \hat\vartheta\colon&\prod_{p\colon a\eq Aa'}
+            h\circ\fun{ap}_f(p)\eq{a\eq Aa'}p.
+    \end{align*}
+    Given\/ $q\colon f(a)\eq Bf(a')$, we have 
+    \begin{equation}\label{tikz:h-def}
+        \begin{tikzcd}[row sep=large,column sep=huge]
+            a
+                    \arrow[r,dashed,"h(q)"]
+                &a'\\
+            f^{-1}(f(a))
+                    \arrow[u,"\vartheta_a"]
+                    \arrow[r,"\fun{ap}_{f^{-1}}(q)"']
+                &f^{-1}(f(a'))
+                    \arrow[u,"\vartheta_{a'}"']
+        \end{tikzcd}
+    \end{equation}
+    and we can define
+    \[
+        h(q)\defeq\vartheta_{a}^{-1}\ct\fun{ap}_{f^{-1}}(q)\ct\vartheta_{a'}.
+    \]
+    Then
+    \begin{align*}
+        \fun{ap}_f(h(q))
+            &\equiv\fun{ap}_f\bigl(\vartheta_a^{-1}
+                \ct\fun{ap}_{f^{-1}}(q)
+                \ct\vartheta_{a'}\bigr)\\
+            &\eq B\fun{ap}_f(\vartheta_a)^{-1}
+                \ct\fun{ap}_{f\circ f^{-1}}(q)
+                \ct\fun{ap}_f(\vartheta_{a'}).
+    \end{align*}
+    Applying \eqref{eq:nat-transformation} to\/ $\eta\colon f\circ f^{-1}\sim\id_B$, we obtain 
+    \[
+        \begin{tikzcd}[column sep=huge,row sep=large]
+            f\circ f^{-1}(f(a))
+                    \arrow[r,"\fun{ap}_{f\circ f^{-1}}(q)"]
+                    \arrow[d,"\eta_{f(a)}"']
+                &f\circ f^{-1}(f(a'))
+                    \arrow[d,"\eta_{f(a')}"]\\
+            f(a)
+                    \arrow[r,"q"']
+                &f(a')
+        \end{tikzcd}
+    \]
+    Therefore,
+    \begin{align}\label{eq:apf-is-equivalence}
+        \fun{ap}_f(h(q))
+            &\eq B\fun{ap}_f(\vartheta_a)^{-1}
+            \ct\eta_{f(a)}\ct q\ct\eta_{f(a')}^{-1}
+            \ct\fun{ap}_f(\vartheta_{a'})
+    \end{align}
+    By Theorem~\ref{thm:coherent-quasi-inverse}, we can further assume that the quasi-inverse is coherent, meaning it satisfies
+    \[
+        \fun{ap}_f(\vartheta_x)\eq{f(f^{-1}(f(x)))\eq Bf(x)}\eta_{f(x)}.
+    \]
+    Thus, evaluating this equation at\/ $x=a$ and\/ $x=a'$ and substituting into equation \eqref{eq:apf-is-equivalence}, we obtain
+    \[
+        \fun{ap}_f(h(q))\eq{f(a)\eq Bf(a')}q
+    \]
+    which defines the homotopy\/ $\hat\eta$.
+
+    For the left homotopy we have to compute\/ $h(\fun{ap}_f(p))$, where\/ $p\colon a\eq Aa'$.
+
+    Diagram \ref{tikz:h-def} above gives
+    \begin{align*}
+        \vartheta_a\ct h(\fun{ap}_f(p))
+            &\eq A\fun{ap}_{f^{-1}}(\fun{ap}_f(p))
+                \ct\vartheta_{a'}\\
+            &\eq A\fun{ap}_{f^{-1}\circ f}(p)\ct\vartheta_{a'}.
+    \end{align*}
+    Applying \eqref{eq:nat-transformation} to\/ $\vartheta\colon f^{-1}\circ f\sim\id_A$, we obtain 
+    \[
+        \begin{tikzcd}[column sep=huge,row sep=large]
+            f^{-1}\circ f(a)
+                    \arrow[r,"\fun{ap}_{f^{-1}\circ f}(p)"]
+                    \arrow[d,"\vartheta_a"']
+                &f^{-1}\circ f(a')
+                    \arrow[d,"\vartheta_{a'}"]\\
+            a
+                    \arrow[r,"p"']
+                &a'
+        \end{tikzcd}
+    \]
+    Hence,
+    \begin{align*}
+        \vartheta_a\ct h(\fun{ap}_f(p))
+            &\eq A\vartheta_a\ct p,
+    \end{align*}
+    and the conclusion follows by left-concatenating with\/ $\vartheta_a^{-1}$.
+    %
+    
+\end{proof}
 
 \section{Observational Equality Framework}
 In classical Type Theory, equality is often regarded as \textit{opaque}---essentially a mystery. It is defined as \emph{intensional} (not to be confused with intentional), meaning that for two objects to be equal, they must follow the exact same construction.
@@ -2362,7 +2497,7 @@ which are clearly well defined. Moreover
     Thus, $\fun{refl}_{\fun{refl}_{(f(a),g(b))}}$ is a witness of the target identity type.
 \end{proof}
 
-\section{Equality in \textSigma-Types}
+\section{Equality in \textSigma-Types}\label{equality-in-Sigma-types}
 
 Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Given a path $p\colon\omega\eq E\omega'$ between points $\omega$ and $\omega'$ in the total space $E\defeq\sum_{x\colon A}P(x)$, the behavior of the first and second projections is asymmetric. While $\pi_1$ yields a path $\fun{ap}_{\pi_1}(p)\colon\pi_1(\omega)\eq A\pi_1(\omega')$, the second components $\pi_2(\omega)$ and $\pi_2(\omega')$ cannot be compared because they inhabit the fibers $P(\pi_1(\omega))$ and $P(\pi_1(\omega'))$, which are not necessarily the same type.
 
@@ -4292,7 +4427,7 @@ The first unit laws holds definitionally
     \]
 \end{rem}
 
-\section{Equality Identity Types}
+\section{Equality in Identity Types}
 
 The Observational Equality Framework \ref{observational-framework} aims to implement \textsl{structural decomposition}: it characterizes the identity type of a compound type (such as $\Sigma$-types, Cartesian products, or $\Pi$-types) in terms of the identity types of its components. 
 
@@ -4300,77 +4435,224 @@ The framework cannot be applied to an identity type itself. An identity type $a\
 
 Even if we fix a generic base type $A$, there is no universal formula to characterize its $2$-paths. The complexity of these iterated identity types is precisely what gives the theory its rich homotopical character. We can only provide an observational characterization of $p\eq{a\eq Aa'}q$ when $A$ is instantiated with a concrete type constructor (such as $B\times C$ or $\univ$). In those cases, we simply re-apply the structural theorems already established for those specific types.
 
-\begin{thm}
-    If\/ $f\colon A\to B$ is an equivalence, then for any\/ $a,a'\colon A$, the function
+Nevertheless, we can use the Observational Equality Framework \ref{observational-framework} to make the following
+
+\begin{rem}\label{rem:characterization-of-2-paths}
+    Suppose that, for some type $A$, we have a full characterization of $a \eq A a'$ given by the equivalence
     \[
-        \fun{ap}_f\colon(a\eq Aa')\to(f(a)\eq Bf(a'))
+        \fun{encode}\colon(a\eq A a')\simeq\fun{Code}(a,a').
     \]
-    is also an equivalence.
+    Then, by Theorem~\ref{thm:f-equiv-implies-apf-equiv}, the function application
+    \[
+        \fun{ap}_{\fun{encode}}\colon(p\eq{a\eq A a'}q)\to(\fun{encode}(p)\eq{\fun{Code}(a,a')}\fun{encode}(q))
+    \]
+    is also an equivalence. Therefore, the equality $p\eq{a\eq Aa'}q$ between paths $p,q\colon a\eq Aa'$ is fully characterized by the equality of their encoded representations in the structurally simpler type $\fun{Code}(a,a')$.
+
+\bigskip
+
+Before working the details of this observation in concrete cases, we need two results.
+
+\begin{lem} {\upshape [Transport in Identity Types]}
+    \label{lem:transport-in-identity-types}
+    Let\/ $A$ and\/ $B$ be types, and\/ $f,g\colon A\to B$ functions. Consider the type family\/ $P(x)\defeq f(x)\eq B g(x)$. Then, for any path\/ $\gamma\colon x\eq A y$ and any path\/ $q\colon P(x)$, the transport of\/ $q$ along\/ $\gamma$ is given by
+    \[
+        \fun{transport}^P(\gamma,q)\eq{P(y)}
+        \fun{ap}_f(\gamma)^{-1}\ct q\ct\fun{ap}_g(\gamma).
+    \]
+\end{lem}
+
+\begin{proof}
+    The \lhs of the equality inhabits $P(y)$. This is also the case with the \rhs:
+    \[
+        \explain[f(y)\eq Bf(x)]{\fun{ap}_f(\gamma)^{-1}}
+        \ct\explain[f(x)\eq Bg(x)]{q\vphantom{{}_g(}}
+        \ct\explain[g(x)\eq Bg(y)]{\fun{ap}_g(\gamma)}\colon P(y).
+    \]    
+    Therefore, we can apply path induction on $\gamma$. It suffices to assume that $y\equiv x$ and $\gamma\equiv\fun{refl}_x$.
+    \begin{align*}
+        \lhs&\equiv\fun{transport}^P(\fun{refl}_x,q)\\
+            &\equiv q,\\[1mm]
+        \rhs&\equiv\fun{ap}_f(\fun{refl}_x)^{-1}
+            \ct q\ct\fun{ap}_g(\fun{refl}_x)\\
+            &\equiv\fun{refl}_{f(x)}\ct q\ct\fun{refl}_{g(x)}\\
+            &\eq{P(x)}q.
+    \end{align*}
+    Since $\fun{refl}_q$ inhabits the identity type, the proof is complete.
+\end{proof}
+
+\begin{thm}\label{thm:transport-in-Sigma-identity}
+    Let\/ $A$ be a type and\/ $B\colon A\to\univ$ a type family. For any two points\/ $\omega,\omega'\colon\Sigma_AB$ and any two paths\/ $p,q\colon\omega\eq{\Sigma_AB}\omega'$, let
+    \[
+        a\defeq\pi_1(\omega),\quad u\defeq\pi_2(\omega)
+        \quad\text{and}\quad
+        a'\defeq\pi_1(\omega'),\quad u'\defeq\pi_2(\omega').
+    \]
+    Then, there is an equivalence
+    \[
+        \varepsilon\colon
+        (p\eq{\omega\eq{\Sigma_AB}\omega'}q)
+            \simeq
+            \sum_{\alpha\colon p_1\eq{}q_1}
+                \fun{transport}^P(\alpha, p_2)\eq{P(q_1)} q_2,
+    \]
+    where
+    \[
+        p_1\defeq\fun{ap}_{\pi_1}(p),
+            \quad p_2\defeq\fun{apd}_{\pi_2}(p)
+        \quad\text{and}\quad
+        q_1\defeq\fun{ap}_{\pi_1}(q),
+        \quad q_2\defeq\fun{apd}_{\pi_2}(q),
+    \]
+    and the type family\/ $P\colon(a\eq Aa')\to\univ$ for\/ $r\colon a\eq Aa'$ is defined as
+    \[
+        P(r)\defeq T(r)\eq{B(a')}u',
+        \quad\text{with}\quad
+        T(r)\defeq\fun{transport}^B(r,u).
+    \]
 \end{thm}
 
 \begin{proof}
-    Let $(f^{-1},\eta,\vartheta)$ be a quasi-inverse of $f$. We have
-    \begin{alignat*}2
-        \eta\colon&\prod_{b\colon B}f\circ f^{-1}(b)\eq Bb,
-        &\qquad\vartheta\colon&\prod_{a\colon A}f^{-1}\circ f(a)\eq Aa.
-    \end{alignat*}
-    We need to construct an inverse function
+    Let us denote the total space of the encoded identity type as
     \[
-        h\colon(f(a)\eq Bf(a'))\to(a\eq Aa'),
+        E\defeq\sum_{r\colon a\eq Aa'}P(r).
     \]
-    and two new homotopies
-    \begin{align*}
-        \hat\eta\colon&\prod_{q\colon f(a)\eq Bf(a')}
-            \fun{ap}_f\circ h(q)\eq{f(a)\eq Bf(a')}q\\
-        \hat\vartheta\colon&\prod_{p\colon a\eq Aa'}
-            h\circ\fun{ap}_f(p)\eq{a\eq Aa'}p.
-    \end{align*}
-    Given $q\colon f(a)\eq Bf(a')$, we have
+    Section \ref{equality-in-Sigma-types}~\nameref{equality-in-Sigma-types} establishes an equivalence
     \[
-        \begin{tikzcd}[row sep=large, column sep=huge]
-            a
-                    \arrow[r,dashed,"h(q)"]
-                &a'\\
-            f^{-1}(f(a))
-                    \arrow[u,"\vartheta(a)"]
-                    \arrow[r,"\fun{ap}_{f^{-1}}(q)"']
-                &f^{-1}(f(a'))
-                    \arrow[u,"\vartheta(a')"']
+        \fun{encode}\colon(\omega\eq{\Sigma_AB}\omega')
+            \stackrel\simeq\to E.
+    \]
+    Theorem~\ref{thm:f-equiv-implies-apf-equiv} applied to $\fun{encode}$ yields an equivalence:
+    \[
+        \fun{ap}_{\fun{encode}}\colon(p\eq{\omega\eq{\Sigma_AB}\omega'}q)\stackrel\simeq\to(\fun{encode}(p)\eq E\fun{encode}(q)),
+    \]
+    where $\fun{encode}(p)\equiv(p_1,p_2)$ and $\fun{encode}(q)\equiv(q_1,q_2)$. Hence:
+    \[
+        \fun{ap}_{\fun{encode}}\colon
+            (p\eq{\omega\eq{\Sigma_AB}\omega'}q)
+            \stackrel\simeq\to((p_1,p_2)\eq E(q_1,q_2)).
+    \]
+    Applying the characterization of equality in $\Sigma$-types a second time, this time to the $\Sigma$-type $E$ itself, we obtain a second encoding:
+    \[
+        \fun{enc}\colon\bigl((p_1, p_2)\eq E(q_1,q_2)\bigr)
+        \simeq
+        \!\!\!
+        \sum_{\alpha\colon p_1\eq{a\eq Aa'}q_1}
+        \!\!\!\fun{transport}^P(\alpha,p_2)\eq{P(q_1)}q_2.
+    \]
+    Composing $\fun{ap}_{\fun{encode}}$ with $\fun{enc}$ yields the desired equivalence:
+    \[
+        \begin{tikzcd}[row sep=large]
+            p\eq{\omega\eq{\Sigma_AB}\omega'}q
+                    \arrow[r,"\fun{ap}_{\fun{encode}}"]
+                    \arrow[rd,dashed,"\varepsilon"']
+                &{(p_1,p_2)\eq E(q_1,q_2)}
+                    \arrow[d,"\fun{enc}"]\\
+                &{\displaystyle\sum_{\alpha\colon p_1\eq{}q_1}
+                    \fun{transport}^P(\alpha,p_2)\eq{P(q_1)}q_2}
         \end{tikzcd}
     \]
-    and we can define
-    \[
-        h(q)\defeq\vartheta(a)^{-1}\ct\fun{ap}_{f^{-1}}(q)\ct\vartheta(a').
-    \]
-    Then
-    \begin{align*}
-        \fun{ap}_f\circ h(q)
-            &\equiv\fun{ap}_f\bigl(\vartheta(a)^{-1}
-                \ct\fun{ap}_{f^{-1}}(q)
-                \ct\vartheta(a')\bigr)\\
-            &\eq B\fun{ap}_f(\vartheta(a))^{-1}
-                \ct\fun{ap}_{f\circ f^{-1}}(q)
-                \ct\fun{ap}_f(\vartheta(a')).
-    \end{align*}
-    Applying \eqref{eq:nat-transformation} to $\eta\colon f\circ f^{-1}\sim\id$, we obtain
-    \[
-        \begin{tikzcd}[column sep=huge,row sep=large]
-            f\circ f^{-1}(f(a))
-                    \arrow[r,"\fun{ap}_{f\circ f^{-1}}(q)"]
-                    \arrow[d,"\eta_{f(a)}"']
-                &f\circ f^{-1}(f(a'))
-                    \arrow[d,"\eta_{f(a')}"]\\
-            f(a)
-                    \arrow[r,"q"']
-                &f(a')
-        \end{tikzcd}
-    \]
-    Therefore,
-    \begin{align*}
-    \fun{ap}_f(h(q))
-        &\eq B\fun{ap}_f(\vartheta(a))^{-1}
-        \ct\eta_{f(a)}\ct q\ct\eta_{f(a')}^{-1}
-        \ct\fun{ap}_f(\vartheta(a'))
-\end{align*}
-To reduce this further, recall the coherence conditions of an equivalence (specifically, a half-adjoint equivalence). Consider how\/ $\fun{ap}_f(\vartheta(x))$ and\/ $\eta_{f(x)}$ are related.
 \end{proof}
+
+    Here are examples of Remark~\ref{rem:characterization-of-2-paths}.
+    \begin{enumerate}[a), font=\upshape]
+        \item \textbf{Product Types:} Consider two paths $p,q\colon\omega\eq{A\times B}\omega'$ in the product type $A\times B$. Since the identity type $\omega\eq{A\times B}\omega'$ is equivalent to the type of pairs of paths $(\pi_1(\omega)\eq A\pi_1(\omega'))\times(\pi_2(\omega)\eq B\pi_2(\omega'))$, the identity type $p\eq{\omega\eq{A\times B}\omega'}q$ is equivalent to the product of their respective identity types. Thus, an identity between $p$ and $q$ is equivalent to a pair of identities:
+        \[
+            \fun{ap}_{\pi_1}(p)\eq{\pi_1(\omega)\eq A\pi_1(\omega')}\fun{ap}_{\pi_1}(q)
+            \quad\text{and}\quad
+            \fun{ap}_{\pi_2}(p)\eq{\pi_2(\omega)\eq B\pi_2(\omega')}\fun{ap}_{\pi_2}(q).
+        \]
+
+        \item \textbf{Dependent Pair Types:} For a dependent pair type $\Sigma_AB$, consider two paths $p,q\colon\omega\eq{\Sigma_AB}\omega'$. Let us denote the projections of the endpoints as $a\defeq\pi_1(\omega)$, $u\defeq\pi_2(\omega)$ and $a'\defeq\pi_1(\omega')$, $u'\defeq\pi_2(\omega')$. For any path $r\colon a\eq Aa'$, let us define the transport function
+        \[
+            T(r)\defeq\fun{transport}^B(r,u).
+        \]
+        The projected paths of the endpoints are then given by $p_1,q_1\colon a\eq Aa'$ and $p_2\colon T(p_1)\eq{B(a')}u'$, $q_2\colon T(q_1)\eq{B(a')}u'$.
+
+        As Theorem~\ref{thm:transport-in-Sigma-identity} establishes, calculating the equality between paths $p$ and $q$ strictly reduces to providing a pair of identities $(\alpha, \beta)$, where
+        \[
+            \alpha\colon p_1\eq{a\eq Aa'}q_1
+            \quad\text{and}\quad
+            \beta\colon\fun{transport}^P(\alpha, p_2) \eq{P(q_1)} q_2,
+        \]
+        with the identity family $P$ defined for $r\colon a\eq Aa'$ as
+        \[
+            P(r)\defeq T(r)\eq{B(a')}u'.
+        \]
+        To understand the geometric meaning of $\beta$, we can compute the action of transport in the family $P$. Applying Lemma~\ref{lem:transport-in-identity-types} to our case with
+        \begin{align*}
+            x&\defeq p_1\\
+            y&\defeq q_1\\
+            \gamma&\defeq\alpha\colon p_1\eq{}q_1\\
+            q&\defeq p_2\colon T(p_1)\eq{}u'\\
+            f&\defeq T\colon(a\eq Aa')\to B(a')\\
+            g&\defeq (r\mapsto u')
+        \end{align*}
+        yields
+        \begin{align*}
+            \fun{transport}^P(\alpha,p_2)
+            &\eq{P(q_1)}\fun{ap}_T(\alpha)^{-1}\ct p_2\ct\fun{ap}_{r\mapsto u'}(\alpha)\\
+            &\eq{P(q_1)}\fun{ap}_T(\alpha)^{-1}\ct p_2\ct\fun{refl}_{u'}
+                &&\text{; Lem.~\ref{lem:ap-const}}\\
+            &\eq{P(q_1)}\fun{ap}_T(\alpha)^{-1}\ct p_2.
+        \end{align*}
+        Substituting this computation into the type of $\beta$, we see that providing $\beta$ is equivalent to providing a path
+        \[
+            \beta'\colon\fun{ap}_T(\alpha)^{-1}\ct p_2 \eq{P(q_1)} q_2.
+        \]
+        Concatenating the path $\fun{ap}_T(\alpha)$ to the left of both sides yields a structurally equivalent identity
+        \[
+            p_2 \eq{P(q_1)} \fun{ap}_T(\alpha)\ct q_2.
+        \]
+        We obtain a decomposition of the $2$-path $p\eq{\omega\eq{\Sigma_AB}\omega'}q$ into a $2$-path $\alpha$ in the base type $A$ and a $2$-path $\beta'$ in the target fiber $B(a')$, which mirrors the decomposition of $1$-paths in the base type.
+
+        The following picture illustrates this geometric construction. The direct path $p_2$ and the concatenated indirect path $\fun{ap}_T(\alpha)\ct q_2$ form a triangle within the target fiber, and $\beta'$ acts as the homotopy between them.
+        \[
+            \begin{tikzpicture}[font=\small]
+                % Base space A
+                \draw[thick, fill=gray!10] (0, 0) ellipse (4.5cm and 0.7cm);
+                \node at (-3.8, 0) {$A$};
+                
+                % Points in base
+                \node[circle, fill, inner sep=1.5pt, label=left:{$a$}] (x) at (-2.5, 0) {};
+                \node[circle, fill, inner sep=1.5pt, label=right:{$a'$}] (y) at (2.5, 0) {};
+                
+                % Paths p_1, q_1 in base
+                \draw[-latex, thick] (x) to[bend left=11] node[pos=0.3, above] {$p_1$} coordinate[pos=0.3] (p_pos) (y);
+                \draw[-latex, thick] (x) to[bend right=11] node[pos=0.73, below] {$q_1$} coordinate[pos=0.7] (q_pos) (y);
+                \draw[-latex, double, shorten >=10pt, shorten <=10pt] (p_pos) -- node[above right, inner sep=1pt] {$\alpha$} (q_pos);
+            
+                % Fibers
+                \draw[thick, dashed] (x) -- ++(0, 5.5) node[above] {$B(a)$};
+                \draw[thick, dashed] (y) -- ++(0, 5.5) node[above] {$B(a')$};
+            
+                % Point in source fiber
+                \node[circle, fill, inner sep=1.5pt, label=left:{$u$}] (u_node) at (-2.5, 2.5) {};
+            
+                % Points in target fiber
+                \node[circle, fill, inner sep=1.5pt, label=right:{$u'$}] (v_node) at (2.5, 1) {};
+                \node[circle, fill, inner sep=1.5pt, label=right:{$T(p_1)$}] (tp) at (2.5, 4.5) {};
+                \node[circle, fill, inner sep=1.5pt, label=right:{$T(q_1)$}] (tq) at (2.5, 2.8) {};
+            
+                % Transport paths mapping 
+                \draw[-latex, dashed, gray] (u_node) to[bend left=15] node[above, sloped] {\small transport along\/ $p_1$} (tp);
+                \draw[-latex, dashed, gray] (u_node) to[bend right=10] node[below, sloped] {\small transport along\/ $q_1$} (tq);
+            
+                % Path alpha's effect in the target fiber B(a')
+                \draw[-latex, thick] (tp) to node[right] {$\fun{ap}_T(\alpha)$} (tq);
+            
+                % Paths p_2, q_2
+                \draw[-latex, thick] (tp) to[bend right=60] node[pos=0.35,left] {$p_2$} coordinate[pos=0.4] (p2_pos) (v_node);
+                \draw[-latex, thick] (tq) to node[right] {$q_2$} coordinate[pos=0.5] (q2_pos) (v_node);
+                
+                % The double arrow for beta'
+                \draw[-latex, double, shorten >=4pt, shorten <=4pt] (p2_pos) -- node[xshift=2pt,yshift=8pt] {$\beta'$} (tq);
+            \end{tikzpicture}
+        \]
+            
+        \item \textbf{Function Types:} For a dependent function type $\Gamma\defeq\prod_{x\colon A}B(x)$, consider two paths $p,q\colon f\eq\Gamma g$. By function extensionality, the identity type $f\eq\Gamma g$ is equivalent to the homotopy type $\prod_{x\colon A}f(x)\eq{B(x)}g(x)$ via the function $\fun{happly}$. Therefore, an identity $p\eq{f\eq\Gamma g}q$ is equivalent to a second-order homotopy between their applications:
+        \[
+            \prod_{x\colon A}\fun{happly}(p)(x)\eq{f(x)\eq{B(x)}g(x)}\fun{happly}(q)(x).
+        \]
+    \end{enumerate}
+\end{rem}
+
