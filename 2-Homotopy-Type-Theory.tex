@@ -1323,37 +1323,6 @@ Types admit different interpretations: depending on the circumstances, they can 
     Given a quasi-invertible function\/ $f\colon A\to B$, we will write\/ $f^{-1}$ to refer to an arbitrary quasi-inverse of\/ $f$. By\/ {\upshape Lemma~\ref{lem:equivalence-of-quasi-inverses}}, this notation is unambiguous up to homotopy.
 \end{ntn}
 
-\begin{prop}
-    For any type\/ $A$ and\/ $x,y,z\colon A$, let\/ $p\colon x\eq Ay$. The function
-    \begin{align*}
-        t&\colon(y\eq Az)\to(x\eq Az)\\
-        t(q)&\defeq p\ct q
-    \end{align*}
-    is an equivalence propositionally equal to\/ $\fun{transport}^{\fun{Eq}_z}(p^{-1})$, where\/ $\fun{Eq}_z \colon A \to \univ$ is the type family\/ $\fun{Eq}_z(w)\defeq w\eq Az$.
-\end{prop}
-
-\begin{proof}
-    First observe that $t$ and $\fun{transport}^{\fun{Eq}_z}(p^{-1})$ have the same signature. Since both reduce to $\id_{x\eq Az}$ when $y\equiv x$ and $p\equiv\fun{refl}_x$, they are propositionally equal by path induction on~$p$.
-    
-    To see that $t$ has a quasi-inverse, consider
-    \begin{align*}
-        s&\colon(x\eq Az)\to(y\eq Az)\\
-        s(r)&\defeq p^{-1}\ct r.
-    \end{align*}
-    A similar argument yields $s\eq{}\fun{transport}^{\fun{Eq}_z}(p)$. Moreover,
-    \begin{align*}
-        s(t(q)) &\equiv s(p\ct q)\\
-            &\equiv p^{-1}\ct(p\ct q)\\
-            &\eq{y\eq Az}(p^{-1}\ct p)\ct q
-                &&\text{; Lem.~\ref{lem:concat}}\\
-            &\eq{y\eq Az}\fun{refl}_y\ct q
-                &&\text{; Idem}\\
-            &\equiv q.
-                &&\text{; Lem.~\ref{lem:path-concatenation}}
-    \end{align*}
-    Since the argument is symmetric, the proof is complete.
-\end{proof}
-
 \begin{lem}\label{lem:equivalence-composition}
     If\/ $f \colon A \to B$ and\/ $g \colon B \to C$ are equivalences with inhabitants
     \[
@@ -1804,6 +1773,43 @@ Now we can establish the main
                 &&\text{; \eqref{tikz:coherence-3}}.
     \end{align*}
     Concatenating\/ $\eta_{f(g(f(x)))}^{-1}$ on the left yields exactly \eqref{eq:coherent-qinv-1}.
+\end{proof}
+
+\begin{thm} {\upshape[Transport as a coherent equivalence]}
+    \label{thm:coherent-transport}
+    Let\/ $A$ be a type. Given a path\/ $p\colon x\eq Ay$ and a type family\/ $P\colon A\to\univ$, the transport function
+    \[
+        f\defeq\fun{transport}^P(p,{}\cdot{})\colon P(x)\to P(y)
+    \]
+    is a half-adjoint equivalence with quasi-inverse
+    \[
+        g\defeq\fun{transport}^P(p^{-1},{}\cdot{})\colon P(y)\to P(x)
+    \]
+    and homotopies
+    \begin{align*}
+        \eta&\colon\prod_{v\colon P(y)}f(g(v))\eq{P(y)}v\\
+        \vartheta&\colon\prod_{u\colon P(x)}g(f(u))\eq{P(x)}u.
+    \end{align*}
+    together with the coherence condition
+    \[
+        \tau\colon\prod_{u\colon P(x)}
+            \fun{ap}_f(\vartheta_u)\eq{f(g(f(u)))\eq{P(y)}f(u)}
+                \eta_{f(u)}.
+    \]
+\end{thm}
+
+\begin{proof}
+    By path induction on $p$, to construct $\eta$, $\vartheta$ and $\tau$, it suffices to assume that $y\equiv x$ and $p\equiv\fun{refl}_x$. Under this assumption, the inverse path $p^{-1}$ is also definitionally $\fun{refl}_x$. The functions $f$ and $g$ both reduce definitionally to $\id_{P(x)}$. Consequently, for any $u,v\colon P(x)$, the compositions $f\circ g$ and $g\circ f$ evaluate to $u$ and $v$ respectively, allowing us to define the homotopies as reflexivity:
+    \begin{align*}
+        \eta&\defeq v\mapsto\fun{refl}_v\\
+        \vartheta&\defeq u\mapsto\fun{refl}_u
+    \end{align*}
+    Substituting these into the coherence condition leads to the goal
+    \[
+        \fun{ap}_{\id_{P(x)}}(\fun{refl}_u)\eq{u\eq{P(x)}u}
+            \fun{refl}_{u}.
+    \]
+    Since $\fun{ap}_{\id_{P(x)}}(\fun{refl}_u)\equiv\fun{refl}_u$, this type reduces to $\fun{refl}_u\eq{u\eq{P(x)}u}\fun{refl}_u$, which is trivially inhabited by $\fun{refl}_{\fun{refl}_u}$. The conclusion follows.
 \end{proof}
 
 \begin{thm}\label{thm:f-equiv-implies-apf-equiv}
@@ -4568,7 +4574,7 @@ Before working the details of this observation in concrete cases, we need two re
         \]
         The projected paths of the endpoints are then given by $p_1,q_1\colon a\eq Aa'$ and $p_2\colon T(p_1)\eq{B(a')}u'$, $q_2\colon T(q_1)\eq{B(a')}u'$.
 
-        As Theorem~\ref{thm:transport-in-Sigma-identity} establishes, calculating the equality between paths $p$ and $q$ strictly reduces to providing a pair of identities $(\alpha, \beta)$, where
+        As Theorem~\ref{thm:transport-in-Sigma-identity} establishes, calculating the equality between paths $p$ and $q$ reduces to providing a pair of identities $(\alpha, \beta)$, where
         \[
             \alpha\colon p_1\eq{a\eq Aa'}q_1
             \quad\text{and}\quad
@@ -4595,15 +4601,15 @@ Before working the details of this observation in concrete cases, we need two re
                 &&\text{; Lem.~\ref{lem:ap-const}}\\
             &\eq{P(q_1)}\fun{ap}_T(\alpha)^{-1}\ct p_2.
         \end{align*}
-        Substituting this computation into the type of $\beta$, we see that providing $\beta$ is equivalent to providing a path
+        Concatenating the inverse of this computation with $\beta$ gives
         \[
             \beta'\colon\fun{ap}_T(\alpha)^{-1}\ct p_2 \eq{P(q_1)} q_2.
         \]
-        Concatenating the path $\fun{ap}_T(\alpha)$ to the left of both sides yields a structurally equivalent identity
+        Redefining $\beta'$ as $\fun{ap}_T(\alpha)\ct\beta'$ yields
         \[
-            p_2 \eq{P(q_1)} \fun{ap}_T(\alpha)\ct q_2.
+            \beta'\colon p_2 \eq{P(q_1)} \fun{ap}_T(\alpha)\ct q_2.
         \]
-        We obtain a decomposition of the $2$-path $p\eq{\omega\eq{\Sigma_AB}\omega'}q$ into a $2$-path $\alpha$ in the base type $A$ and a $2$-path $\beta'$ in the target fiber $B(a')$, which mirrors the decomposition of $1$-paths in the base type.
+        Since the composition $(\alpha,\beta)\mapsto(\alpha,\beta')$ is an equivalence, we obtain as result a decomposition of the $2$-path $p\eq{\omega\eq{\Sigma_AB}\omega'}q$ into a $2$-path $\alpha$ in the base type $A$ and a $2$-path $\beta'$ in the target fiber $B(a')$, mirroring the decomposition of $1$-paths in the total space.
 
         The following picture illustrates this geometric construction. The direct path $p_2$ and the concatenated indirect path $\fun{ap}_T(\alpha)\ct q_2$ form a triangle within the target fiber, and $\beta'$ acts as the homotopy between them.
         \[
@@ -4649,10 +4655,86 @@ Before working the details of this observation in concrete cases, we need two re
             \end{tikzpicture}
         \]
             
-        \item \textbf{Function Types:} For a dependent function type $\Gamma\defeq\prod_{x\colon A}B(x)$, consider two paths $p,q\colon f\eq\Gamma g$. By function extensionality, the identity type $f\eq\Gamma g$ is equivalent to the homotopy type $\prod_{x\colon A}f(x)\eq{B(x)}g(x)$ via the function $\fun{happly}$. Therefore, an identity $p\eq{f\eq\Gamma g}q$ is equivalent to a second-order homotopy between their applications:
+        \item \textbf{Function Types:} For a dependent function type\/ $\Gamma\defeq\prod_{x\colon A}B(x)$, consider two paths $p,q\colon f\eq\Gamma g$. By function extensionality, the identity type $f\eq\Gamma g$ is equivalent to the homotopy type $\prod_{x\colon A}f(x)\eq{B(x)}g(x)$ via the function $\fun{happly}$. Therefore, an identity $p\eq{f\eq\Gamma g}q$ is equivalent to a second-order homotopy between their applications:
         \[
             \prod_{x\colon A}\fun{happly}(p)(x)\eq{f(x)\eq{B(x)}g(x)}\fun{happly}(q)(x).
         \]
+
+        
     \end{enumerate}
 \end{rem}
 
+
+\subsection*{Transport in Identity Families}
+
+When the Observational Equality Framework encodes a path, it usually generates a type containing the transport operator. For instance, when encoding an equality in dependent pairs, the second coordinate is a $2$-path of type $\fun{transport}^P(\alpha,p_2)\eq{} q_2$. This expression is ``opaque'' because $\fun{transport}$ is a primitive. It asserts that a path is moved between fibers to match types, but it does not specify what the resulting path looks like in terms of simpler operations.
+
+To make sense of these abstract $2$-paths, we must evaluate how paths are transported within families of the form\/ $E(x) \defeq f(x) \eq{} g(x)$.
+
+The following results establish computational rules for these transport operations. Beginning with simple identity families where one or both endpoints are fixed, we then consider families defined by functions into a fixed codomain, and finally address the general case of dependent functions. These rules provide the computational engine that allows us to translate abstract transport terms into concrete path concatenations.
+
+\begin{lem}
+    Let\/ $A$ be a type, let\/ $a\colon A$, and consider a path\/ $p\colon x_1\eq{A}x_2$. Then, the following path operations are equivalences:
+    \begin{enumerate}[a), font=\upshape]
+        \item For the family\/ $E_1(x)\defeq a\eq{A}x$ and a path\/ $q\colon a\eq{A}x_1$,
+        \[
+            \fun{transport}^{E_1}(p,q)\eq{a\eq Ax_2}q\ct p
+        \]
+        and post-composition by $p$ is an equivalence\/ $(a\eq{A}x_1)\simeq(a\eq{A}x_2)$.
+        \item For the family\/ $E_2(x)\defeq x\eq{A}a$ and a path\/ $q\colon x_1\eq{A}a$,
+        \[
+            \fun{transport}^{E_2}(p,q)\eq{x_2\eq Aa}p^{-1}\ct q
+        \]
+        and pre-composition by\/ $p^{-1}$ is an equivalence\/ $(x_1\eq{A}a)\simeq(x_2\eq{A}a)$.
+        \item For the family\/ $E_3(x)\defeq x\eq{A}x$ and a path\/ $q\colon x_1\eq{A}x_1$,
+        \[
+            \fun{transport}^{E_3}(p,q)\eq{x_2\eq Ax_2}p^{-1}\ct q\ct p
+        \]
+        and conjugation by\/ $p$ is an equivalence\/ $(x_1\eq{A}x_1)\simeq(x_2\eq{A}x_2)$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    In the first case, both sides inhabit $a\eq Ax_2$. In the second, they inhabit $x_2\eq Aa$. In the third, $x_2\eq Ax_2$. Therefore, all types are verified.
+
+    By path induction on $p$ we can assume that $x_2\equiv x_1$ and $p\equiv\fun{refl}_{x_1}$. In this case, each of the transport operations on the left-hand sides evaluates definitionally to $q$. On the right-hand side, the expressions reduce propositionally (with the second case reducing definitionally) to $q$ by the unit laws for path concatenation.
+
+    Since the equations hold, the corresponding operations inherit the equivalence property of Theorem~\ref{thm:coherent-transport}.
+\end{proof}
+
+\begin{thm}
+    Let\/ $A$ and\/ $B$ be types, and\/ $f,g\colon A\to B$ functions. For any path\/ $p\colon a\eq Aa'$ and any path\/ $q\colon f(a)\eq Bg(a)$, transport in the identity family\/ $E(x)\defeq f(x)\eq{B}g(x)$ computes as
+    \[
+        \fun{transport}^E(p,q) \eq{f(a')\eq{B}g(a')} \fun{ap}_f(p)^{-1}\ct q\ct \fun{ap}_g(p).
+    \]
+\end{thm}
+
+
+\begin{proof}
+    Clearly, both sides of the equality are of the same type $f(a')\eq Bg(a')$.
+    
+    By path induction on $p$, we may assume that $a'\equiv a$ and $p\equiv\fun{refl}_a$. In this case, the transport operation on the \lhs evaluates definitionally to $q$. On the \rhs, the action of the functions on reflexivity yields $\fun{refl}_{f(a)}$ and $\fun{refl}_{g(a)}$. The expression reduces to $\fun{refl}_{f(a)}^{-1}\ct q\ct\fun{refl}_{g(a)}$, which propositionally reduces to $q$ by the unit laws for path concatenation.
+\end{proof}
+
+\begin{thm}
+    Let\/ $A$ be a type, $B\colon A\to\mathcal{U}$ a type family, and consider two dependent functions\/ $f,g\colon\prod_{x\colon A}B(x)$. For any path\/ $p\colon a\eq Aa'$ and any path\/ $q\colon f(a)\eq{B(a)}g(a)$, transport in the identity family\/ $E(x)\defeq f(x)\eq{B(x)}g(x)$ computes as
+    \[
+        \fun{transport}^E(p,q)
+            \eq{f(a')\eq{B(a')}g(a')} 
+            \fun{apd}_f(p)^{-1}
+                \ct\fun{ap}_{\fun{transport}^B(p)}(q)\ct\fun{apd}_g(p).
+    \]
+\end{thm}
+
+
+\begin{proof}
+    The type of the \lhs is clearly $f(a')\eq{B(a')}g(a')$. For the \rhs we have
+    \begin{align*}
+        \fun{apd}_f(p)^{-1}&\colon f(a')\eq{B(a')}p_*(f(a))\\
+        \fun{transport}^B(p)&\colon B(a)\to B(a')\\
+        \fun{ap}_{\fun{transport}^B(p)}(q)
+            &\colon p_*(f(a))\eq{B(a')}p_*(g(a))\\
+        \fun{apd}_g(p)&\colon p_*(g(a))\eq{B(a')}g(a').
+    \end{align*}
+    By path induction on $p$, we may assume that $a'\equiv a$ and $p\equiv\fun{refl}_a$. In this case, the transport operation on the \lhs evaluates definitionally to $q$. On the \rhs, the dependent action on paths $\fun{apd}$ for both $f$ and $g$ evaluates to $\fun{refl}_{f(a)}$ and $\fun{refl}_{g(a)}$, respectively. Furthermore, transport along $\fun{refl}_a$ in $B$ is definitionally the identity function, so its action on the path $q$ is simply $q$. The expression reduces to $\fun{refl}_{f(a)}^{-1}\ct q\ct\fun{refl}_{g(a)}$, which propositionally reduces to $q$ by the unit laws for path concatenation.
+\end{proof}
