@@ -628,7 +628,7 @@
 
     The equivalent notion in Type Theory is the \textsl{dependent pair type} (a.k.a.~\textsl{$\Sigma$-type}), which highlights the dependence of the second component on the first one. More precisely, given a type $A\colon\univ$ and a type family $B\colon A\to\univ$, the binder $\Sigma$ is used to define the \textsl{dependent pair} type
     \[
-        \sum_{x\colon A}B(x)\colon\univ.
+        \Bigl(\sum_{x\colon A}B(x)\Bigr)\colon\univ.
     \]
     As it is the case with $\lambda$ and $\Pi$, this binder also scopes over the rest of the expression, e.g.,
     \[
@@ -892,10 +892,17 @@
     where $\fun{rec}\defeq\fun{rec}_{A+B}(C,g_0,g_1)$.
 
     Additionally,
-    \[
+    \begin{equation}\label{eq:rec0}
         \fun{rec}_{\fun0}\colon\prod_{C\colon\univ}\fun0\to C
+    \end{equation}
+    constructs the unique function\/ $\fun0\to C$ for every\/ $C\colon\univ$.
+
+    \textbf{Digression.} In Gentzen-style notation, the empty coproduct is denoted by\/ $\bot$ and the\/ $\fun{rec}_{\fun0}$ function is called\/ $\fun{abort}$. In that framework, the rule corresponding to \eqref{eq:rec0} is the elimination rule, which is presented as an inference rule in fractional form:
+    \[
+        \frac{p\colon\bot}{\fun{abort}_A\,p\colon A}
+            \quad(\bot\text{\small\,Elim}).
     \]
-    constructs the unique function $\fun0\to C$ for every $C\colon\univ$.
+    This structural representation closely mirrors an Abstract Syntax Tree (AST). However, it may not properly scale with the complexity of the expressions.
 \end{lpar}
 
 \begin{lpar}{Coproduct induction.}\label{lpar:coproduct-induction}
@@ -2163,7 +2170,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     Second, since the signature of $\pi_2$ guarantees that $\pi_2(p)\colon B(\pi_1(p))$, we also see that $g(\pi_1(p))$ can be applied to $\pi_2(p)$ to get an element of $C$.
 
-    It remains to be seen that the recursion works as expected. To verify this we have to evaluate the function at canonical elements. In this case it suffices to compute the $\lambda$-expression when $p\equiv(a,b)$ with $b\colon B(a)$. Here we have
+    It remains to be shown that the recursion works as expected. To verify this we have to evaluate the function at canonical elements. In this case it suffices to compute the $\lambda$-expression when $p\equiv(a,b)$ with $b\colon B(a)$. Here we have
     \begin{align*}
         \fun{rec}_{\sum_{x\colon A}B(x)}(C,g)((a,b))
             &\equiv\bigl(\lambda p.\,g(\pi_1(p))(\pi_2(p))\bigr)((a,b))\\

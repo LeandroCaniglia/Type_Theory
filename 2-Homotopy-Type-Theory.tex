@@ -1972,6 +1972,29 @@ This approach consists of the following
     \]
 \end{description}
 
+\begin{rem}\label{rem:framework-qinv}
+    The requirement that the global dependent functions\/ $\fun{encode}$ and\/ $\fun{decode}$ are quasi-inverses is a fiberwise property. For fixed parameters $x,y\colon A$, the locally instantiated functions
+    \[
+        \fun{encode}(x,y)\colon(x\eq Ay)\to\fun{Code}(x,y)
+    \]
+    and
+    \[
+        \fun{decode}(x,y)\colon\fun{Code}(x,y)\to(x\eq Ay)
+    \]
+    we have to verify that their compositions are pointwise homotopic to the identity functions on their respective domains. That is, 
+    \begin{enumerate}[-]
+        \item for $p\colon x\eq Ay$, we have
+        \[
+            \fun{decode}(x,y,\fun{encode}(x,y,p))\eq{x\eq Ay}p
+        \]
+
+        \item and, for $d\colon\fun{Code}(x,y)$,
+        \[
+            \fun{encode}(x,y,\fun{decode}(x,y,d))\eq{\fun{Code}(x,y)}d.
+        \]
+    \end{enumerate}
+\end{rem}
+
 \begin{rem}
     The $\fun{decode}$ function acts as an \textit{introduction rule} (or constructor) for the identity type of points in the space $A$, as it generates paths from structured data. Establishing that $\fun{encode}$ and $\fun{decode}$ are quasi-inverses justifies an \textit{induction principle}: to prove a property for all paths, it suffices to consider those constructed by $\fun{decode}$. Conversely, the $\fun{encode}$ function serves as an \textit{elimination rule}, extracting structural features from a given path.
 \end{rem}
@@ -2079,7 +2102,7 @@ In this section we apply the observational framework \ref{observational-framewor
 
 \textsc{Code family:}
 \begin{align*}
-    \fun{Code}&\colon A\to A\to\univ\\
+    \fun{Code}&\colon(A\times B)\to(A\times B)\to\univ\\
     \fun{Code}(x,y)&\defeq
         (\pi_1(x)\eq A\pi_1(y))
         \times
@@ -4348,7 +4371,6 @@ The first unit laws holds definitionally
             \colon B(y),
     \end{align*}
     and the equality follows by path induction on $p$, since both sides reduce to $u$ when $y\equiv x$ and $p\equiv\fun{refl}_x$.
-    
 \end{proof}
 
 
@@ -4433,6 +4455,37 @@ The first unit laws holds definitionally
     \]
 \end{rem}
 
+\section*{Partial Summary}
+Before proceeding with other types, let us recap what we have seen so far.
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{llc}
+        \hline\small
+        \textbf{Type}
+            &\small\textbf{Interface}
+            &\small\textbf{Extensional Equality} \\
+        \hline
+        \small$A\times B$
+            &\small $\pi_1$ and $\pi_2$
+            &\small $(\pi_1(u)=\pi_1(v))\times(\pi_2(u)=\pi_2(v))$\\
+        \small$\displaystyle\prod_{x\colon A}B(x)$
+            &\small Application: $f(x)$
+            &\small$\displaystyle\prod_{x\colon A}f(x)=g(x)$\\
+        \small$\displaystyle\sum_{x\colon A}B(x)$
+            &\small$\pi_1$ and $\pi_2$
+            &\small$\displaystyle\sum_{p\colon\pi_1(u)=\pi_1(v)}
+                \!\!\!\!\!p_*\pi_2(u)=\pi_2(v)$
+            \\
+        \small$\fun1$
+            &\small None
+            &\small$x=\star$\\
+        \small$\univ$
+            &\small Equivalences
+            &\small $A\simeq B$\\
+        \hline
+    \end{tabular}
+\end{center}
+
 \section{Equality in Identity Types}
 
 The Observational Equality Framework \ref{observational-framework} aims to implement \textsl{structural decomposition}: it characterizes the identity type of a compound type (such as $\Sigma$-types, Cartesian products, or $\Pi$-types) in terms of the identity types of its components. 
@@ -4454,7 +4507,6 @@ Nevertheless, we can use the Observational Equality Framework \ref{observational
     \]
     is also an equivalence. Therefore, the equality $p\eq{a\eq Aa'}q$ between paths $p,q\colon a\eq Aa'$ is fully characterized by the equality of their encoded representations in the structurally simpler type $\fun{Code}(a,a')$.
 
-\bigskip
 
 Before working the details of this observation in concrete cases, we need two results.
 
@@ -4547,7 +4599,7 @@ Before working the details of this observation in concrete cases, we need two re
     \]
     Composing $\fun{ap}_{\fun{encode}}$ with $\fun{enc}$ yields the desired equivalence:
     \[
-        \begin{tikzcd}[row sep=large]
+        \begin{tikzcd}[row sep=huge]
             p\eq{\omega\eq{\Sigma_AB}\omega'}q
                     \arrow[r,"\fun{ap}_{\fun{encode}}"]
                     \arrow[rd,dashed,"\varepsilon"']
@@ -4591,7 +4643,7 @@ Before working the details of this observation in concrete cases, we need two re
             \gamma&\defeq\alpha\colon p_1\eq{}q_1\\
             q&\defeq p_2\colon T(p_1)\eq{}u'\\
             f&\defeq T\colon(a\eq Aa')\to B(a')\\
-            g&\defeq (r\mapsto u')
+            g&\defeq r\mapsto u'
         \end{align*}
         yields
         \begin{align*}
@@ -4737,4 +4789,584 @@ The following results establish computational rules for these transport operatio
         \fun{apd}_g(p)&\colon p_*(g(a))\eq{B(a')}g(a').
     \end{align*}
     By path induction on $p$, we may assume that $a'\equiv a$ and $p\equiv\fun{refl}_a$. In this case, the transport operation on the \lhs evaluates definitionally to $q$. On the \rhs, the dependent action on paths $\fun{apd}$ for both $f$ and $g$ evaluates to $\fun{refl}_{f(a)}$ and $\fun{refl}_{g(a)}$, respectively. Furthermore, transport along $\fun{refl}_a$ in $B$ is definitionally the identity function, so its action on the path $q$ is simply $q$. The expression reduces to $\fun{refl}_{f(a)}^{-1}\ct q\ct\fun{refl}_{g(a)}$, which propositionally reduces to $q$ by the unit laws for path concatenation.
+    \end{proof}
+
+\section{Equality in Coproducts}
+
+To apply the observational framework \ref{observational-framework} to the coproduct $A+B$, we proceed as follows:
+\begin{description}[font=\normalfont\scshape]
+    \item[Code family.] By nesting the recursion principle $\fun{rec}_{A+B}$, we obtain
+    \begin{align*}
+        g_{00}\colon A&\to A\to\univ & g_{10}\colon B&\to A\to\univ\\
+        a&\mapsto(a'\mapsto a\eq Aa') & b&\mapsto(a\mapsto\fun0)\\
+        g_{01}\colon A&\to B\to\univ & g_{11}\colon B&\to B\to\univ\\
+        a&\mapsto(b\mapsto\fun0) & b&\mapsto(b'\mapsto b\eq Bb')\\
+        g_0\colon A&\to(A+B)\to\univ & g_1\colon B&\to(A+B)\to\univ\\
+        a&\mapsto\fun{rec}_{A+B}(\univ,g_{00}(a),g_{01}(a)) & b&\mapsto\fun{rec}_{A+B}(\univ,g_{10}(b),g_{11}(b)).
+    \end{align*}
+    Then, we apply the recursion principle one final time to define the outer family:
+    \begin{align*}
+        \fun{Code}\colon(A+B)&\to(A+B)\to\univ\\
+        z&\mapsto\fun{rec}_{A+B}((A+B)\to\univ,g_0,g_1,z),
+    \end{align*}
+    which can be represented by:
+    \[
+        \begin{tikzcd}[row sep=large, font=\small]
+            & A \arrow[ld,"g_{00}"'] \arrow[d,"g_{01}"] \arrow[rrd,"g_0"] \\
+            A\to\univ & B\to\univ & (A+B) \arrow[r,"\fun{Code}"] & (A+B)\to\univ \\
+            & B \arrow[lu,"g_{10}"] \arrow[u,"g_{11}"'] \arrow[rru,"g_1"']
+        \end{tikzcd}
+    \]
+    More commonly in practice, the $\fun{Code}$ function can be defined using pattern matching on the four constructors of $A+B$:
+    \begin{align*}
+        \fun{Code}\colon(A+B)\to(A+B)&\to\univ\\
+        \fun{Code}(\fun{inl}(x),\fun{inl}(y))&\defeq x\eq Ay\\
+        \fun{Code}(\fun{inr}(x),\fun{inr}(y))&\defeq x\eq By\\
+        \fun{Code}(\fun{inl}(x),\fun{inr}(y))&\defeq\fun0\\
+        \fun{Code}(\fun{inr}(x),\fun{inl}(y))&\defeq\fun0.
+    \end{align*}
+
+    \item[Base code.] Define the dependent function 
+    \[
+        c\colon\prod_{z\colon A+B}\fun{Code}(z,z)
+    \]
+    by induction on $z$. The motive is the type-valued function 
+    \[
+        C\defeq w\mapsto\fun{Code}(w,w).
+    \]
+    For the base cases, specify:
+    \begin{align*}
+        f_0&\colon\prod_{x\colon A}
+            \fun{Code}(\fun{inl}(x),\fun{inl}(x)) 
+            &f_1&\colon\prod_{y\colon B}
+            \fun{Code}(\fun{inr}(y),\fun{inr}(y))\\
+        f_0(x)&\defeq\fun{refl}_x 
+            &f_1(y)&\defeq\fun{refl}_y.
+    \end{align*}
+    Then, define
+    \[
+        c(z)\defeq\fun{ind}_{A+B}(C,f_0,f_1,z).
+    \]
+    In other words,
+    \[
+        c(z)\defeq\begin{cases}
+            \fun{refl}_x    &\text{if }z\equiv\fun{inl}(x),\\
+            \fun{refl}_y    &\text{if }z\equiv\fun{inr}(y).
+        \end{cases}
+    \]
+
+    \item[Encode function.] We have to define
+    \[
+        \fun{encode}\colon\prod_{z,w\colon A+B}
+            (z\eq{A+B}w)\to\fun{Code}(z,w).
+    \]
+    Fix $z\colon A+B$. Then, $C_z\defeq\fun{Code}(z,{}\cdot{})$ and
+    \begin{align*}
+        \fun{encode}(z,w)\colon(z\eq{A+B}w)&\to\fun{Code}(z,w)\\
+        p&\mapsto\fun{transport}^{C_z}(p,c(z)).
+    \end{align*}
+    In the case where $w\equiv z$ and $p\equiv\fun{refl}_z$, we have
+    \[
+        \fun{encode}(z,w)(\fun{refl}_z)\equiv c(z).
+    \]
+    
+    \item[Decode function.] We have to define
+    \[
+        \fun{decode}\colon\prod_{z,w\colon A+B}
+            \fun{Code}(z,w)\to(z\eq{A+B}w)
+    \]
+
+    
+    By double induction on $z,w\colon A+B$, we define
+    \begin{align*}
+        \fun{decode}\colon&\prod_{z,w\colon A+B}\fun{Code}(z,w)
+            \to(z\eq{A+B}w)\\
+        &(\fun{inl}(x),\fun{inl}(u))
+            \mapsto\fun{ap}_{\fun{inl}}\\
+        &(\fun{inr}(y),\fun{inr}(v))
+            \mapsto\fun{ap}_{\fun{inr}}\\
+        &(\fun{inl}(x),\fun{inr}(v))\mapsto
+            \fun{rec}_{\fun0}(\fun{inl}(x)\eq{A+B}\fun{inr}(v))\\
+        &(\fun{inr}(y),\fun{inl}(u))\mapsto
+            \fun{rec}_{\fun0}(\fun{inr}(y)\eq{A+B}\fun{inl}(u)).
+    \end{align*}
+    
+    To verify that $\fun{decode}(z,w)$ is a right inverse of $\fun{encode}(z,w)$ for the left constructor, we must show that for any path $q\colon x\eq Au$,
+    \[
+        \fun{encode}(\fun{decode}(\fun{inl}(x),\fun{inl}(u),q))
+            \eq{x\eq Au}q.
+    \]
+    Since $\fun{ap}_{\fun{inl}}(q)\colon\fun{inl}(x)\eq{A+B}\fun{inl}(u)$, we have
+    \begin{align*}
+       \lhs&\equiv\fun{encode}(\fun{ap}_{\fun{inl}}(q))\\
+            &\equiv
+                \fun{transport}^{C_{\fun{inl}(x)}}
+                    (\fun{ap}_{\fun{inl}}(q),\fun{refl}_x).
+    \end{align*}
+    Based path induction on $q$ reduces us to the case $u\equiv x$, $q\equiv\fun{refl}_x$. Here the \lhs becomes $\fun{refl}_x$, which is definitionally equal to $q$.
+    
+    The verification for the right constructor is similar.
+
+    For the mixed case $z\equiv\fun{inl}(x)$ and $w\equiv\fun{inr}(v)$, the code $q$ inhabits the empty type, meaning $q\colon\fun0$. We must formally construct a term of type
+    \[
+        \fun{encode}(\fun{inl}(x),\fun{inr}(v),\fun{decode}(\fun{inl}(x),\fun{inr}(v),q)) = q.
+    \]
+    We proceed by induction on $q$ using the empty type eliminator $\fun{ind}_{\fun0}$. We define our motive $P\colon\fun0\to\univ$ as the identity family:
+    \[
+        P(q)\defeq
+            \fun{encode}(\fun{inl}(x),\fun{inr}
+            (v),\fun{decode}(\fun{inl}(x),\fun{inr}(v),q))
+            \eq{\fun0}
+            q.
+    \]
+    Applying the eliminator to our motive $P$ and our element $q\colon\fun0$ directly yields the required proof term:
+    \[
+        \fun{ind}_{\fun0}(P,q)\colon
+            \fun{encode}(\fun{inl}(x),
+                \fun{inr}(v),
+                \fun{decode}(\fun{inl}(x),
+                \fun{inr}(v)
+                ,q))
+            \eq{\fun0}q.
+    \]
+    The symmetric mixed case is proven similarly.
+\end{description}
+
+For the Extended framework~\ref{extended-framework} we have to consider
+\begin{description}[font=\normalfont\scshape]
+    \item[Inversion map:] Defined by
+    \begin{align*}
+        \fun{inv}\colon\fun{Code}(z,w)&\to\fun{Code}(w,z)\\
+        p&\mapsto p^{-1}
+    \end{align*}
+
+    \item[Concatenation:] Defined by
+    \begin{align*}
+        \ect\colon\fun{Code(x,y}\to\fun{Code}(y,z)
+            &\to\fun{Code}(x,z)\\
+        p\ect q&\defeq p\ct q.
+    \end{align*}
+
+    \item[Unit laws:] Since $c(z)$ is a reflection path, we have:
+    \[
+        \fun{inv}(c(z))\equiv c(z)
+    \]
+    and
+    \[
+        c(z)\ect q\equiv q.
+    \]
+\end{description}
+
+\begin{prop}
+    Let $A,B\colon\univ$ be types. Given $x,y,z\colon A+B$ we have
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun{decode}(x,x,c(x))\equiv c(z)$
+        \item $\fun{decode}(y,x,q^{-1})\eq{y\eq{A+B}x}\fun{decode}(x,y,q)^{-1}$
+        \item $\fun{decode}(x,z,q\ct r)\eq{x\eq{A+B}z}\fun{decode}(x,y,q)\ct\fun{decode}(y,z,r)$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    This is a direct consequence of Theorem~\ref{thm:extended-framework}.
 \end{proof}
+
+\begin{thm}
+    Let\/ $X$ be a type and\/ $A,B\colon X\to\univ$ type families. Then, given a path\/ $p\colon x_1\eq{X}x_2$, we have
+    \begin{align*}
+        \fun{transport}^{A+B}(p,\fun{inl}(a))
+            &\eq{A(x_2)+B(x_2)}\fun{inl}(\fun{transport}^A(p,a)),\\
+        \fun{transport}^{A+B}(p,\fun{inr}(b))
+            &\eq{A(x_2)+B(x_2)}\fun{inr}(\fun{transport}^B(p,b)),
+    \end{align*}
+    where $(A+B)(x)\defeq A(x)+B(x)$ for $x\colon X$.
+    
+\end{thm}
+
+\begin{proof}
+    Clearly both sides of both equalities are of typ $A(x_2)+B(x_2)$. Therefore, we can proceed by induction on $p$. This reduces ourselves to the case $x_2\equiv x_1$ and $p\equiv\fun{refl}_{x_1}$. Then all transport become identities and the equalities are trivially inhabited, the first by $\fun{refl}_{\fun{inl}(a)}$ and the second by $\fun{refl}_{\fun{inr}(b)}$.
+\end{proof}
+
+\section{Equality in Natural Numbers}
+
+In this section we apply the Observational Framework \ref{observational-framework} to the type of natural numbers.
+\begin{description}[font=\normalfont\scshape]
+    \item[Code family.] We define the family $\fun{Code}\colon\N\to\N\to\univ$ formally using nested recursion. 
+    
+    For the base case, we define
+    \[
+        e_0\colon\N\to\univ;\quad
+        e_0\defeq\fun{rec}_\N(\univ,e_{00},e_{0s}),
+    \]
+    where
+    \begin{align*}
+        e_{00}&\colon\univ
+        &e_{0s}\colon\N\to\univ&\to\univ\\
+        e_{00}&\defeq\fun1
+        &(m,X)&\mapsto\fun0.
+    \end{align*}
+    By definition, $e_0$ satisfies
+    \[
+        e_0(0)\equiv\fun1
+        \quad\text{and}\quad
+        e_0(\fun{succ}(m))\equiv\fun0.
+    \]
+    For the inductive step, we define the function
+    \[
+        e_s\colon\N\to(\N\to\univ)\to(\N\to\univ).
+    \]
+    Given $n\colon\N$ and a function $e\colon\N\to\univ$ (representing the recursive evaluation at $n$), we define the next function $e_s(n,e)$ by recursion on its argument:
+    \[
+        e_s(n,e)\defeq\fun{rec}_\N(\univ,e_{s0},e_{ss}),
+    \]
+    where
+    \begin{align*}
+        e_{s0}&\colon\univ
+        &e_{ss}\colon\N\to\univ&\to\univ\\
+        e_{s0}&\defeq\fun0
+        &(m,Y)&\mapsto e(m).
+    \end{align*}
+    By definition, we have $e_s(n,e)(0)\equiv\fun0$ and
+    \begin{align*}
+        e_s(n,e)(\fun{succ}(m))
+            &\equiv\fun{rec}_\N(\univ,e_{s0},e_{ss},\fun{succ}(m))\\
+            &\equiv e_{ss}(m,\fun{rec}_\N(\univ,e_{s0},e_{ss},m))\\
+            &\equiv e_{ss}(m,\underbrace{e_s(n,e)(m)}_Y)\\[-4.5mm]
+            &\equiv e(m).
+    \end{align*}
+    Finally, we define $\fun{Code}$ by applying the outer recursor with motive $\N\to\univ$:
+    \[
+        \fun{Code}\defeq\fun{rec}_\N(\N\to\univ,e_0,e_s).
+    \]
+    In particular, we have
+    \begin{align*}
+        \fun{Code}(0,0)
+            &\equiv e_0(0)\equiv\fun1\\
+        \fun{Code}(0,\fun{succ}(m))
+            &\equiv e_0(\fun{succ}(m))\equiv\fun0\\
+        \fun{Code}(\fun{succ}(n),0)
+            &\equiv e_s(n,\fun{Code}(n))(0)\\
+            &\equiv e_{s0}\\
+            &\equiv\fun0\\
+        \fun{Code}(\fun{succ}(n),\fun{succ}(m))
+            &\equiv e_s(n,\fun{Code}(n))(\fun{succ}(m))\\
+            &\equiv\fun{Code}(n)(m)\\
+            &\equiv\fun{Code}(n,m).
+    \end{align*}
+
+    \item[Base code.] To define the base code we need the following
+    
+    \begin{lem}
+        Given $n\colon\N$, the type $\fun{Code}(n,n)\eq\univ\fun1$ is inhabited.
+    \end{lem}
+    
+    \begin{proof}
+        We proceed by induction on $n$, with the motive $C\colon\N\to\univ$ specified as
+        \[
+            C(n)\defeq\fun{Code}(n,n)\eq\univ\fun1.
+        \]
+        For the base case we can take $\fun{refl}_{\fun1}$.
+        
+        Given a witness of $C(n)$, i.e., a path $h\colon\fun{Code}(n,n)\eq\univ\fun1$, we define the step function
+        \begin{align*}
+            e_s&\colon\prod_{n\colon\N}C(n)\to C(\fun{succ}(n))\\
+            e_s(n,h)&\defeq h,
+        \end{align*}
+        which is well defined as the following diagram of paths demonstrates
+        \[
+            \begin{tikzcd}
+                {\fun{Code}(n,n)}
+                        \arrow[d,"h"']
+                        \arrow[r,"\equiv"]
+                    &{\fun{Code}(\fun{succ}(n),\fun{succ}(n))}
+                        \arrow[ld,"h"]\\
+                \fun1
+            \end{tikzcd}
+        \]
+        Consequently, we have
+        \[
+            e(n)\defeq\fun{ind}_\N(C,\fun{refl}_{\fun1},e_s,n)
+                \colon\fun{Code}(n,n)\eq\univ\fun1.
+        \]
+    \end{proof}
+    Note that, given $n\colon\N$, to define the base code $c(n)\colon\fun{Code}(n,n)$, we cannot simply select $\fun\star\colon\fun1$ because that would not type-check. Instead, we need to transport $\fun\star$ as follows:
+    \[
+        c(n)\defeq\fun{transport}^{\id_\univ}(e(n)^{-1},\fun\star),
+    \]
+    where $e(n)\colon\fun{Code}(n,n)\eq\univ\fun1$ is the witness given by the lemma. In particular,
+    \[
+        e(0)\equiv\fun{refl}_{\fun1}
+        \quad\text{and}\quad
+        c(0)\equiv\fun\star.
+    \]
+    More generally,
+    \begin{align*}
+        e(\fun{succ}(n))
+            &\equiv\fun{ind}_\N(C,\fun{refl}_{\fun1},e_s,\fun{succ}(n))\\
+            &\equiv e_s(n,e(n))\\
+            &\equiv e(n),
+    \end{align*}
+    which implies that $c(\fun{succ}(n))\equiv c(n)$.
+
+    \item[Encode function.] Define
+    \begin{align*}
+        \fun{encode}&\colon\prod_{n,m\colon\N}
+            (n\eq{\N}m)\to\fun{Code}(n,m)\\
+        \fun{encode}(n,m,p)&\defeq\fun{transport}^{C_n}(p,c(n)).
+    \end{align*}
+    In particular, given $p\colon0\eq\N0$, since $C_0(0)\equiv\fun{Code}(0,0)\equiv\fun1$, we have
+    \[
+        \fun{transport}^{C_0}(p)\colon\fun1\to\fun1
+    \]
+    and so
+    \begin{align}\label{eq:case-0,0}
+        \fun{encode}(0,0,p)
+            &\equiv\fun{transport}^{C_0}(p,\fun\star)
+                \nonumber\\
+            &\eq{\fun1}\fun\star,
+    \end{align}
+    where the last propositional equality holds because every inhabitant of the unit type $\fun1$ is propositionally equal to $\fun\star$ via $\fun{uniq}_{\fun1}$.
+    
+
+    \item[Decode function.] To define
+    \begin{align*}
+        \fun{decode}&\colon\prod_{n,m\colon\N}
+            \fun{Code}(n,m)\to(n\eq\N m)
+    \end{align*}
+    we proceed by nested induction.
+
+    For the base case, we take the motive
+    \begin{align*}
+         D_0&\colon\N\to\univ\\
+         D_0(m)&\defeq\fun{Code}(0,m)\to(0\eq\N m),
+    \end{align*}
+    and define
+    \[
+        d_0\colon\prod_{m\colon\N}D_0(m);
+            \quad d_0\defeq\fun{ind}_\N(D_0,d_{00},d_{0s}),
+    \]
+    where
+    \begin{align*}
+        d_{00}\colon\fun{Code}(0,0)&\to(0\eq\N0)\\
+        \fun\star&\mapsto\fun{refl}_0\\
+        d_{0s}\colon\prod_{m\colon\N}D_0(m)&\to D_0(\fun{succ}(m))\\
+        (m,d)&\mapsto\fun{rec}_{\fun0}(0\eq\N\fun{succ}(m)).
+    \end{align*}
+    In particular,
+    \begin{equation}\label{eq:d0}
+        \begin{aligned}
+            d_0(0)
+                &\equiv\fun\star\mapsto\fun{refl}_0\\
+            d_0(\fun{succ}(m))
+                &\equiv d_{0s}(m,d_0(m))\\
+                &\equiv\fun{rec}_{\fun0}(0\eq\N\fun{succ}(m)).
+        \end{aligned}
+    \end{equation}
+    Now we introduce the motive, which fixes the variable $n$, by
+    \begin{align*}
+        D&\colon\N\to\univ\\
+        D(n)&\defeq\prod_{m\colon\N}\fun{Code}(n,m)\to(n\eq\N m),
+    \end{align*}
+    and define
+    \begin{align*}
+        d_s&\colon\prod_{n\colon\N}D(n)\to D(\fun{succ}(n))\\
+        d_s(n,h)&\defeq\fun{ind}_\N(D_{nh},d_{s0},d_{ss})
+    \end{align*}
+    where $h\colon D(n)$, $D_{nh}(m)\defeq\fun{Code}(\fun{succ}(n),m)\to(\fun{succ}(n)\eq\N m)$ and
+    \begin{align*}
+        d_{s0}&\colon D_{nh}(0)\\
+        d_{s0}&\defeq\fun{rec}_{\fun0}(\fun{succ}(n)\eq\N0)\\
+        d_{ss}&\colon\prod_{m\colon\N}D_{nh}(m)\to D_{nh}(\fun{succ}(m))\\
+        d_{ss}(m,\zeta,t)&\defeq\fun{ap}_{\fun{succ}}(h(m,t)),
+    \end{align*}
+    as illustrated in the following diagram
+    \[
+        \begin{tikzcd}[column sep=huge,row sep=large]
+            {\fun{Code}(\fun{succ}(n),\fun{succ}(m))}
+                    \arrow[r,"{d_{ss}(m,\zeta)}"]
+                &\fun{succ}(n)\eq\N\fun{succ}(m)\\
+            {\fun{Code}(n,m)}
+                    \arrow[r,"h(m)"']
+                    \arrow[u,"\equiv",no head]
+                &n\eq\N m
+                    \arrow[u,"\fun{ap}_{\fun{succ}}"']
+        \end{tikzcd}
+    \]
+    In particular,
+    \begin{equation}\label{eq:ds}
+        \begin{aligned}
+            d_s(n,h,0)
+                &\equiv\fun{rec}_{\fun0}(\fun{succ}(n)\eq\N0)\\
+            d_s(n,h,\fun{succ}(m),t)
+                &\equiv d_{ss}(m,d_s(n,h,m),t)\\
+                &\equiv\fun{ap}_{\fun{succ}}(h(m,t))
+        \end{aligned}
+    \end{equation}
+    This allows us to define
+    \[
+        \fun{decode}\defeq\fun{ind}_\N(D,d_0,d_s).
+    \]
+    From equations \eqref{eq:d0} and \eqref{eq:ds}, it follows
+    \begin{equation}\label{eq:decode}
+        \begin{aligned}
+            \fun{decode}(0,0,\fun\star)
+                &\equiv d_0(0,\fun\star)\\
+                &\equiv\fun{refl}_0.\\[1mm]
+            \fun{decode}(0,\fun{succ}(m))
+                &\equiv d_0(\fun{succ}(m))\\
+                &\equiv\fun{rec}_{\fun0}(0\eq\N\fun{succ}(m)).\\[1mm]
+            \fun{decode}(\fun{succ}(n),0)
+                &\equiv d_s(n,\fun{decode}(n),0)\\
+                &\equiv\fun{rec}_{\fun0}(\fun{succ}(n)\eq\N0).\\[1mm]
+            \fun{decode}(\fun{succ}(n),\fun{succ}(m),t)
+                &\equiv d_s(n,\fun{decode}(n),\fun{succ}(m),t)\\
+                &\equiv\fun{ap}_{\fun{succ}}(\fun{decode}(n,m,t)).
+        \end{aligned}
+    \end{equation}
+\end{description}
+
+\begin{thm}\label{thm:N-equality-encode-decode}
+    For\/ $n,m\colon\N$, we have
+    \[
+        \fun{encode}(n,m)\circ\fun{decode}(n,m)
+            \sim\id_{\fun{Code}(n,m)}.
+    \]
+\end{thm}
+
+\begin{proof}
+    We proceed by double induction, examining the distinct cases for the generic pair\/ $(n,m)$.
+    \begin{description}
+        \item[Case $(0,0)$:]
+        \begin{align*}
+            \fun{encode}(\fun{decode}(0,0,\fun\star))
+                &\equiv\fun{encode}(\fun{refl}_0)\\
+                &\equiv\fun{transport}^{C_0}(\fun{refl}_0,c(0))\\
+                &\equiv c(0)\\
+                &\equiv\fun\star.
+        \end{align*}
+        \item[Case $(0,\fun{succ}(m))$:] By \eqref{eq:decode} we know that $\dom(\fun{decode}(0,\fun{succ}(m)))\equiv\fun0$. Thus, for $c\colon\fun0$, we have
+        \begin{align*}
+            \fun{encode}(\fun{decode}(0,\fun{succ}(m),c))&\eq{\fun0}c,
+        \end{align*}
+        as it follows from $\fun{ind}_{\fun0}(E)\colon\prod_{x\colon\fun0}x\eq{\fun0}c$, where $E\colon\fun0\to\univ$ is given by $E(x)\defeq x\eq{\fun0}c$.
+
+        \item[Case $(0,m)$:] It follows by induction on $m$ from the two previous cases.
+
+        \item[Case $(\fun{succ}(n),0)$:] This is similar to the previous case because, by \eqref{eq:decode}, we know that $\dom(\fun{decode}(\fun{succ}(n),0))\equiv\fun0$.
+
+         \item[Case $(n,0)$:] It follows from the cases $(0,0)$ and $(\fun{succ}(n),0)$ by induction on~$n$.
+
+         \item[Case $(\fun{succ}(n),\fun{succ}(m))$:] By \eqref{eq:decode} and the definition of $\fun{encode}$, we have
+         \begin{align*}
+            \fun{encode}&(\fun{decode}(\fun{succ}(n),\fun{succ}(m),t))\\
+                &\equiv\fun{transport}^{C_{\fun{succ}(n)}}
+                    (\fun{ap}_{\fun{succ}}(\fun{decode}(n,m,t)),c(\fun{succ}(n)))\\
+                &\eq{\fun{Code}(n,m)}\fun{transport}^{C_{\fun{succ}(n)}\circ\fun{succ}}
+                    (\fun{decode}(n,m,t),c(n))\\
+                &\equiv\fun{transport}^{C_n}
+                    (\fun{decode}(n,m,t),c(n))\\
+                &\equiv\fun{encode}(\fun{decode}(n,m,t)),
+         \end{align*}
+         where we have used Lemma~\ref{lem:post-composition-transport} and the identities
+         \[
+            c(\fun{succ}(n))\equiv c(n)
+            \quad\text{and}\quad
+            C_{\fun{succ}(n)}\circ\fun{succ}\equiv C_n.
+        \]
+        \item[Case $(n,m)$:] We assemble the preceding cases into a single term using the induction principle for the natural numbers. The main motive is
+        \[
+            E(n)\defeq\prod_{m\colon\N}
+                \;\prod_{t\colon\fun{Code}(n,m)}\fun{encode}
+                    (\fun{decode}(n,m,t))\eq{\fun{Code}(n,m)}t.
+        \]
+        A section of this type family is $\fun{ind}_\N(E,d_0,d_s)$, where:
+        \begin{enumerate}[-]
+            \item The base case $d_0\colon E(0)$ is constructed by induction on $m$. Concretely, $d_0\defeq\fun{ind}_\N(E_0,d_{00},d_{0s})$, with motive $E_0\defeq E(0)$, i.e.,
+            \[
+                E_0(m)\defeq\prod_{t\colon\fun{Code}(0,m)}\fun{encode}(\fun{decode}(0,m,t))\eq{\fun{Code}(0,m)}t.
+            \]
+            The base term $d_{00}$ is the proof from Case $(0,0)$, and the step term $d_{0s}$ is the proof from Case $(0,\fun{succ}(m))$.
+            
+            \item The step function $d_s\colon\prod_{n\colon\N} E(n)\to E(\fun{succ}(n))$ binds an index $n$ and the inductive hypothesis $h\colon E(n)$. Then $d_s(n,h)$ is defined by another induction on $m$, using the motive $E_s\defeq E(\fun{succ}(n))$, i.e.,
+            \[
+                E_s(m)\defeq
+                    \prod_t
+                    \fun{encode}(\fun{decode}(\fun{succ}(n),m,t))\eq{\fun{Code}(\fun{succ}(n),m)}t,
+            \]
+            for $t\colon\fun{Code}(\fun{succ}(n),m)$.
+            
+            The base case is provided directly by Case $(\fun{succ}(n),0)$. The step function is given in Case $(\fun{succ}(n),\fun{succ}(m))$ that reduces the goal to proving that
+            \[
+                \fun{encode}(\fun{decode}(n,m,t))\eq{\fun{Code}(n,m)}t,
+            \]
+            which is inhabited by $h(m,t)$.
+        \end{enumerate}
+        Thus, the total application of $\fun{ind}_\N$ yields the required dependent function for all $n$ and $m$.
+
+    \end{description}
+\end{proof}
+
+\begin{thm}\label{thm:N-equality-decode-encode}
+    For all\/ $n,m\colon\N$, we have
+    \[
+        \fun{decode}(n,m)\circ\fun{encode}(n,m)\sim\id_{n\eq\N m}.
+    \]  
+\end{thm}
+
+\begin{proof}
+    Consider the motive
+    \[
+        \prod_{n,m\colon\N}\;
+        \prod_{p\colon n\eq\N m}
+            \fun{decode}(n,m,\fun{encode}(n,m,p))\eq{n\eq\N m}p.
+    \]
+    To show that it is inhabited we can use path induction and reduce it to the case $m\equiv n$ and $p\equiv\fun{refl}_n$. The goal becomes
+    \[
+        D\defeq\prod_{n\colon\N}
+            \fun{decode}
+                (n,
+                n,
+                \fun{encode}(n,n,\fun{refl}_n))
+            \eq{n\eq\N n}\fun{refl}_n.
+    \]
+    We can now proceed by induction on $n$.
+    \begin{description}
+        \item[Case $0$:]
+        \begin{align*}
+            \fun{decode}(0,0,\fun{encode}(0,0,\fun{refl}_0))
+                &\equiv\fun{decode}(0,0,\fun\star)
+                    &&;\ \eqref{eq:case-0,0}\\
+                &\equiv\fun{refl}_0.
+                    &&;\ \eqref{eq:decode}
+        \end{align*}
+        which is inhabited by $\fun{refl}_{\fun{refl}_0}\colon D(0)$.
+        
+        \item[Case $\fun{succ}(n)$:]
+        First observe that
+        \begin{align*}
+            \fun{encode}
+                    (\fun{succ}(n),
+                    \fun{succ}(n),
+                    \fun{refl}_{\fun{succ}(n)})
+                &\equiv\fun{transport}^{C_{\fun{succ}(n)}}
+                    (\fun{refl}_{\fun{succ}(n)},c(\fun{succ}(n)))\\
+                &\equiv c(\fun{succ}(n))\\
+                &\equiv c(n)\\
+                &\equiv\fun{transport}^{C_n}(\fun{refl}_n,c(n))\\
+                &\equiv\fun{encode}(n,n,\fun{refl}_n).
+        \end{align*}
+        Therefore,
+        \begin{align*}
+            D(\fun{succ}(n))
+                &\equiv\fun{decode}
+                    (\fun{succ}(n),
+                    \fun{succ}(n),
+                    \fun{encode}(n,n,\fun{refl}_n))\\
+                &\equiv\fun{ap}_{\fun{succ}}
+                    (\fun{decode}(n,n,\fun{encode}(n,n,\fun{refl}_n)))
+                    &&;\ \eqref{eq:decode}
+        \end{align*}
+        Hence, if $h\colon D(n)$, then $\fun{ap}_{\fun{ap}_{\fun{succ}}}(h)\colon D(\fun{succ}(n))$, which defines the step function $D(n)\to D(\fun{succ}(n)$.
+    \end{description}
+\end{proof}
+
+\section{Equality on Structures}
