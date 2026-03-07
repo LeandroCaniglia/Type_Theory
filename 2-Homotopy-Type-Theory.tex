@@ -2913,14 +2913,18 @@ Here is a picture illustrating the construction
             \begin{tikzcd}[row sep=large,font=\small]
                 \Sigma_X(\Sigma_AB)
                         \arrow[rdd,"\pi_1^{\Sigma_AB}"']
-                    &\Sigma_{\Sigma_XA}B\arrow[d,"\pi_1^B"]
+                    &\Sigma_{\Sigma_XA}B
+                        \arrow[d,"\pi_1^B"]
                         \arrow[l,"\simeq"']\\
-                    &\Sigma_XA\arrow[d,"\pi_1^A"]
-                        \arrow[r,"B"]&\univ\\
+                    &\Sigma_XA
+                        \arrow[d,"\pi_1^A"]
+                        \arrow[r,"B"]
+                    &\univ\\
                 \univ
                     &X
                         \arrow[l,"\Sigma_AB"]
-                        \arrow[r,"A"']&\univ
+                        \arrow[r,"A"']
+                    &\univ
             \end{tikzcd}
         \]
 
@@ -5369,4 +5373,155 @@ In this section we apply the Observational Framework \ref{observational-framewor
     \end{description}
 \end{proof}
 
-\section{Equality on Structures}
+\section{Equality in Semigroups}
+
+Let $A\colon\univ$ be a type. Using the type family
+\begin{align*}
+    M\colon\univ&\to\univ\\
+    X&\mapsto(X\to X\to X)
+\end{align*}
+we define an \textsl{operation} on $A$ as a function
+\[
+    m\colon M(A).
+\]
+The operation $m$ is \textsl{associative} if the type
+\[
+    \fun{Assoc}(A,m)\defeq\prod_{x,y,z\colon A}
+        m(x,m(y,z))\eq{A} m(m(x,y),z)
+\]
+is inhabited.
+
+With this we can define a \textsl{semigroup structure} type on $A$ as
+\begin{align*}
+    \fun{SemigroupStr}&\colon\univ\to\univ\\
+    \fun{SemigroupStr}(A)&\defeq\sum_{m\colon M(A)}
+        \fun{Assoc}(A,m).
+\end{align*}
+More generally, the \textsl{Semigroup} type is
+\[
+    \fun{Semigroup}\defeq\sum_{A\colon\univ}\fun{SemigroupStr}(A).
+\]
+By viewing associativity as the dependent function
+\[
+    \fun{Assoc}\colon\prod_{X\colon\univ}M(X)\to\univ,
+\]
+we can uncurry it to obtain the type family
+\begin{align*}
+    \fun{Assoc}_{\Sigma}\colon\Sigma_\univ M&\to\univ\\
+    (A,m)&\mapsto\fun{Assoc}(A,m),
+\end{align*}
+where $\Sigma_\univ M$ is the total space $\sum_{X\colon\univ}M(X)$. With this notation we have
+\[
+    \fun{SemigroupStr}(A)
+        \equiv\sum_{m\colon M(A)}\fun{Assoc}_\Sigma(A,m)
+        \equiv\Sigma_M\fun{Assoc}_\Sigma(A)
+\]
+and
+\[
+    \fun{Semigroup}\equiv\Sigma_\univ(\Sigma_M\fun{Assoc}_\Sigma).
+\]
+Now suppose we are given a path $p\colon A\eq{\univ} B$ between the types $A$ and $B$. Then we can transport the operation $m$ on $A$ to an operation $m'$ on $B$ by
+\[
+    m'\defeq\fun{transport}^M(p,m).
+\]
+By path induction on $p$ it is easy to see that $m'$ is associative whenever $m$ is. However, we can go deeper if we apply Theorem~\ref{thm:composite-transport} as follows:
+\[
+    \renewcommand{\arraystretch}{1.6}
+    \begin{tabular}{lll}
+        \hline
+        \textbf{Role}
+        &\textbf{Theorem}
+        &\textbf{Semigroup}\\
+        \hline
+        Base space
+        &$X$
+            &$\univ$\\
+        First family
+        &$A\colon X\to\univ$
+            &$M\colon\univ\to\univ$\\
+        Total space
+        &$\Sigma_XA$
+            &$\Sigma_\univ M$\\
+        Second family
+        &$B\colon\Sigma_XA\to\univ$ 
+            &$\fun{Assoc}_{\Sigma}$\\
+        Composite family
+        &$\Sigma_AB\colon X\to\univ$
+            &$\fun{SemigroupStr}$\\
+        Equivalent family
+        &$\Sigma_X(\Sigma_AB)$
+            &$\fun{Semigroup}$\\
+        \hline
+    \end{tabular}
+\]
+with diagram correspondence:
+\[
+    \begin{tikzcd}[row sep=large,font=\small]
+        \Sigma_X(\Sigma_AB)
+                \arrow[rdd,"\pi_1^{\Sigma_AB}"']
+            &\Sigma_{\Sigma_XA}B
+                \arrow[d,"\pi_1^B"]
+                \arrow[l,"\simeq"']\\
+            &\Sigma_XA
+                \arrow[d,"\pi_1^A"]
+                \arrow[r,"B"]
+            &\univ\\
+        \univ
+            &X
+                \arrow[l,"\Sigma_AB"]
+                \arrow[r,"A"']
+            &\univ
+    \end{tikzcd}
+    \quad
+    \begin{tikzcd}[row sep=large,font=\small]
+        \fun{Semigroup}
+                \arrow[rdd,"\pi_1^{\fun{SemigroupStr}}"']
+            &\Sigma_{\Sigma_\univ M}\fun{Assoc}_\Sigma
+                \arrow[d,"\pi_1^{\fun{Assoc}_\Sigma}"]
+                \arrow[l,"\simeq"']\\
+            &\Sigma_\univ M
+                \arrow[d,"\pi_1^M"]
+                \arrow[r,"\fun{Assoc}_\Sigma"]
+            &\univ\\
+        \univ
+            &\univ
+                \arrow[l,"\fun{SemigroupStr}"]
+                \arrow[r,"M"']
+            &\univ
+    \end{tikzcd}
+\]
+Given a path $p\colon A\eq{\univ} B$ between types, part b) of the theorem establishes the equality
+\[
+    \fun{transport}^{\Sigma_AB}(p)(u,z)\eq{\Sigma_AB(B)}
+        \bigl(
+        p_*(u),\fun{transport}^B
+            (\fun{pair}^=(p,\fun{refl}_{p_*(u)}))(z)
+    \bigr),
+\]
+which, according to our table above, translates into      
+\[
+    \fun{transport}^{\fun{SemigroupStr}}(p)(m,a)
+    \eq{\fun{SemigroupStr}(B)}
+    (m',a')
+\]
+where
+\begin{align*}
+    m'&\defeq\fun{transport}^M(p,m)\\
+    a'&\defeq\fun{transport}^{\fun{Assoc}_{\Sigma}}
+        \bigl(\fun{pair}^=(p,\fun{refl}_{m'}),a\bigr).
+\end{align*}
+Note that
+\[
+    \fun{pair}^=(p,\fun{refl}_{m'})\colon(A,m)\eq{\Sigma_\univ M}(B,m')
+\]
+serves as the base path to transport the associativity proof $a$ into its new fiber $\fun{Assoc}_{\Sigma}(B,m')$.
+
+We have proven the following
+\begin{thm}
+    Let\/ $A$ and\/ $B$ be types, and let\/ $(m,a)$ be a semigroup structure on\/ $A$. Given an equivalence\/ $e\colon A\simeq B$, the univalence axiom induces a semigroup structure\/ $(m',a')$ on\/ $B$ defined by
+    \begin{align*}
+        m'&\defeq\fun{transport}^M(\fun{ua}(e),m)\\
+        a'&\defeq\fun{transport}^{\fun{Assoc}_{\Sigma}}
+            \bigl(\fun{pair}^=(\fun{ua}(e),\fun{refl}_{m'}),a\bigr).
+    \end{align*}
+\end{thm}
