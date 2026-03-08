@@ -1537,50 +1537,6 @@ Let\/ $f\colon A\to B$. Then:
     \end{enumerate}
 \end{proof}
 
-\begin{lem}
-    Let\/ $f\colon A\to B$. Suppose that\/ $(f^{-1},(\eta,\vartheta))\colon\fun{qinv}(f)$. Then\/ $(f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A}))\colon\fun{qinv}(f)$ and both quasi-inverses are (propositionally) equal.
-\end{lem}
-
-\begin{proof}
-    We construct the path in $\fun{qinv}(f)$ by pairs.
-    \begin{enumerate}[1.]
-        \item The path between the functions is $\fun{refl}_{f^{-1}}$.
-        \item The path between the homotopy pairs is given component-wise:
-        \begin{itemize}
-            \item For the right homotopies: $\eta \equiv \eta$, so we use $\fun{refl}_\eta$.
-            \item For the left homotopies: we need to show that 
-            \[
-                \vartheta\ct\fun{refl}_{\id_A}\eq{f^{-1}\circ f\sim\id_A}\vartheta.
-            \]
-            By function extensionality, this follows from the right unit law for paths.\footnote{Lemma \ref{lem:right-unit-law}.} Therefore,
-            \[
-                \fun{ru}_{\vartheta}\defeq
-                    \fun{funext}(\lambda x.\,
-                        \fun{ru}(\vartheta(x))).
-            \]
-        \end{itemize}
-    \end{enumerate}
-    Thus, the total identity path is
-    \[
-        \fun{pair}^=(\fun{refl}_{f^{-1}}
-            ,\fun{pair}^=(\fun{refl}_\eta,\fun{ru}_{\vartheta}))
-            \colon(f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A}))
-            \eq{\fun{qinv}(f)}
-            (f^{-1},(\eta,\vartheta)).
-    \]
-\end{proof}
-
-Now we can establish the main
-
-\begin{cor}\label{cor:propositional-qinv-composition-with-id}
-    In the particular case where one of the functions is the identity, we have
-    \begin{enumerate}[a),font=\upshape]
-        \item $(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\circ(f^{-1},(\eta_f,\vartheta_f))\eq{\fun{qinv}(f)}(f^{-1}
-            ,(\eta_f,\vartheta_f))$
-
-        \item $(f^{-1},(\eta_f,\vartheta_f))\circ(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\eq{\fun{qinv}(f)}(f^{-1},(\eta_f,\vartheta_f))$
-    \end{enumerate}
-\end{cor}
 
 \begin{ntn}\label{ntn:abuse-equivalence}
     We will sometimes abbreviate the equivalence
@@ -2303,7 +2259,7 @@ It is defined as follows:
     
 \end{proof}
 
-\begin{cor}\label{cor:uniqueness}
+\begin{cor}\label{cor:cartesian-uniqueness}
     Given $x\colon A\times B$, we have
     \[
         x\eq{A\times B}(\pi_1(x),\pi_2(x)).
@@ -2481,7 +2437,7 @@ which are clearly well defined. Moreover
     \begin{align*}
         x\eq{A(z)\times B(z)}(\pi_1(x),\pi_2(x)).
     \end{align*}
-    Hence, the conclusion follows from Corollary~\ref{cor:uniqueness}.
+    Hence, the conclusion follows from Corollary~\ref{cor:cartesian-uniqueness}.
     %
     
 \end{proof}
@@ -2740,7 +2696,7 @@ Here is a picture illustrating the construction
     \end{enumerate}
 \end{proof}
 
-\begin{cor}
+\begin{cor}\label{cor:Sigma-uniqueness}
     With the precedent notation, given\/ $\omega\colon E$, we have
     \[
         \omega\eq E(\pi_1(\omega),\pi_2(\omega)).
@@ -3552,6 +3508,55 @@ The unit laws follow immediately from the definitional properties of path invers
 \begin{proof}
     This is an immediate consequence of Theorem~\ref{thm:extended-framework}.
 \end{proof}
+
+\subsection*{Composition of Quasi-inverses}
+
+Recall from Definition~\ref{defn:qinv-composition} that quasi-inverses can be composed.
+
+\begin{prop}
+    Let\/ $f\colon A\to B$. Suppose that\/ $(f^{-1},(\eta,\vartheta))\colon\fun{qinv}(f)$. Then\/ $(f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A}))\colon\fun{qinv}(f)$ and both quasi-inverses are (propositionally) equal.
+\end{prop}
+
+\begin{proof}
+    We construct the path in $\fun{qinv}(f)$ by pairs.
+    \begin{enumerate}[1.]
+        \item The path between the functions is $\fun{refl}_{f^{-1}}$.
+        \item The path between the homotopy pairs is given component-wise:
+        \begin{itemize}
+            \item For the right homotopies: $\eta \equiv \eta$, so we use $\fun{refl}_\eta$.
+            \item For the left homotopies: we need to show that 
+            \[
+                \vartheta\ct\fun{refl}_{\id_A}\eq{f^{-1}\circ f\sim\id_A}\vartheta.
+            \]
+            By function extensionality, this follows from the right unit law for paths.\footnote{Lemma \ref{lem:right-unit-law}.} Therefore,
+            \[
+                \fun{ru}_{\vartheta}\defeq
+                    \fun{funext}(\lambda x.\,
+                        \fun{ru}(\vartheta(x))).
+            \]
+        \end{itemize}
+    \end{enumerate}
+    Thus, the total identity path is
+    \[
+        \fun{pair}^=(\fun{refl}_{f^{-1}}
+            ,\fun{pair}^=(\fun{refl}_\eta,\fun{ru}_{\vartheta}))
+            \colon(f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A}))
+            \eq{\fun{qinv}(f)}
+            (f^{-1},(\eta,\vartheta)).
+    \]
+\end{proof}
+
+\begin{cor}\label{cor:propositional-qinv-composition-with-id}
+    In the particular case where one of the functions is the identity, we have
+    \begin{enumerate}[a),font=\upshape]
+        \item $(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\circ(f^{-1},(\eta_f,\vartheta_f))\eq{\fun{qinv}(f)}(f^{-1}
+            ,(\eta_f,\vartheta_f))$
+
+        \item $(f^{-1},(\eta_f,\vartheta_f))\circ(\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A}))\eq{\fun{qinv}(f)}(f^{-1},(\eta_f,\vartheta_f))$
+    \end{enumerate}
+\end{cor}
+
+
 
 \subsection*{Non-dependent Functions}
 
@@ -5525,3 +5530,189 @@ We have proven the following
             \bigl(\fun{pair}^=(\fun{ua}(e),\fun{refl}_{m'}),a\bigr).
     \end{align*}
 \end{thm}
+
+\section{Universal Properties}
+
+In category theory, universal properties are typically expressed by the unique existence of morphisms that complete commutative diagrams. In homotopy type theory, however, these properties are interpreted homotopically as equivalences between types. 
+
+These universal properties can generally be categorized by whether they characterize functions \emph{into} a type (reflecting its \textsl{introduction} rules) or functions \emph{out of} a type (reflecting its \textsl{elimination} or \textsl{induction} principles).
+
+As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\times B$ admits two characterizations: one by means of a function into $A\times B$, and another by means of a function out of $A\times B$. In each of these cases, the associated commutative diagram can be represented as an equivalence of types. In this section, we generalize this approach to different basic types.
+
+\begin{thm}
+    Let\/ $X,A,B\colon\univ$ be types. Then the function\footnote{By an abuse of notation, we omit irrelevant parentheses.}
+    \begin{align*}
+        \sigma\colon(X\to A\times B)&\to(X\to A)\times(X\to B)\\
+        f&\mapsto(\pi_1\circ f,\pi_2\circ f)
+    \end{align*}
+    is an equivalence.
+\end{thm}
+
+\begin{proof}
+    Define the map
+    \begin{align*}
+        \tau\colon(X\to A)\times(X\to B)&\to(X\to A\times B)\\
+        \tau(u,v)&\defeq\lambda x.\,\bigl(u(x),v(x)\bigr).
+    \end{align*}
+    Evaluating $\sigma$ at $\tau(u,v)$ yields
+    \begin{align*}
+        \sigma(\tau(u,v))
+            &\equiv\sigma\bigl(\lambda x.\,(u(x),v(x))\bigr)\\
+            &\equiv\bigl(\pi_1\circ(\lambda x.\,(u(x),v(x))),\pi_2\circ(\lambda x.\,(u(x),v(x)))\bigr)\\
+            &\equiv\bigl(\lambda x.\,\pi_1(u(x),v(x)),\lambda x.\,\pi_2(u(x),v(x))\bigr)\\
+            &\equiv\bigl(\lambda x.\,u(x),\lambda x.\,v(x)\bigr)\\
+            &\equiv(u,v).
+    \end{align*}
+    On the other hand, evaluating $\tau$ at $\sigma(f)$ yields
+    \begin{align*}
+        \tau(\sigma(f))
+            &\equiv\tau(\pi_1\circ f,\pi_2\circ f)\\
+            &\equiv\lambda x.\,\bigl(\pi_1(f(x)),\pi_2(f(x))\bigr).
+    \end{align*}
+    By Corollary~\ref{cor:cartesian-uniqueness}, there is a path in $(\pi_1(f(x)),\pi_2(f(x)))\eq{A\times B}f(x)$ for each $x\colon X$. Therefore, applying the function extensionality axiom to this pointwise equality yields the path
+    \[
+        \tau(\sigma(f))\eq{X\to A\times B}f,
+    \]
+    which completes the proof by showing that $\tau$ is a quasi-inverse of~$\sigma$.
+\end{proof}
+
+\begin{thm}
+    Let\/ $X\colon\univ$ be a type, and let\/ $A,B\colon X\to\univ$ be type families. Then the function
+    \begin{align*}
+        \sigma\colon
+                \biggl(
+                    \prod_{x\colon X}A(x)\times B(x)
+                \biggr)
+            &\to
+                \biggl(
+                    \prod_{x\colon X}
+                        A(x)\biggr)\times\biggl(\prod_{x\colon X}B(x)
+                \biggr)\\
+        f&\mapsto
+            \bigl(
+                \lambda x.\,\pi_1(f(x)),\lambda x.\,\pi_2(f(x))
+            \bigr)
+    \end{align*}
+    is an equivalence.
+\end{thm}
+
+\begin{proof}
+    Define the map
+    \begin{align*}
+        \tau\colon
+            \biggl(
+                    \prod_{x\colon X}
+                        A(x)\biggr)\times\biggl(\prod_{x\colon X}B(x)
+                \biggr)
+            &\to\prod_{x\colon X}A(x)\times B(x)\\
+            (u,v)&\mapsto
+                \lambda x.\,(u(x),v(x))          
+    \end{align*}
+    Evaluating $\sigma\circ\tau$ at $(u,v)$, we obtain
+    \begin{align*}
+        \sigma(\tau(u,v))
+            &\equiv\sigma\bigl(\lambda x.\,(u(x),v(x))\bigr)\\
+            &\equiv
+                \bigl(
+                    \lambda x.\,\pi_1(u(x),v(x)),
+                    \lambda x.\,\pi_2(u(x),v(x))
+                \bigr)\\
+            &\equiv\bigl(\lambda x.\,u(x),\lambda x.\,v(x)\bigr)\\
+            &\equiv(u,v).
+    \end{align*}
+    Evaluating $\tau\circ\sigma$ at $f$ yields
+    \begin{align*}
+        \tau(\sigma(f))
+            &\equiv\tau
+                \bigl(
+                    \lambda x.\,\pi_1(f(x)),\lambda x.\,\pi_2(f(x))
+                \bigr)\\
+            &\equiv\lambda x.\,
+                \bigl(\pi_1(f(x)),\pi_2(f(x))\bigr).
+    \end{align*}
+    By Corollary~\ref{cor:cartesian-uniqueness}, for each $x\colon X$, the type $(\pi_1(f(x)),\pi_2(f(x)))\eq{A(x)\times B(x)}f(x)$ is inhabited. Thus, function extensionality implies that
+    \[
+        \tau(\sigma(f))\eq\Gamma f,
+    \]
+    where
+    \[
+        \Gamma\defeq\prod_{x\colon X}A(x)\times B(x).
+    \]
+\end{proof}
+
+\begin{thm}{\upshape[Axiom of Choice]}\label{thm:ac-generalized}
+    Let\/ $X\colon\univ$ be a type, $A\colon X\to\univ$ a type family, and\/ $P\colon\prod_{x\colon X}A(x)\to\univ$ a dependent type family. Then the function
+    \begin{align*}
+        \fun{ac}\colon
+            \biggl(
+                \prod_{x\colon X}\;\sum_{y\colon A(x)}P(x,y)
+            \biggr)
+            &\to
+                \sum_{g\colon\prod_{x\colon X}A(x)}\;
+                    \prod_{x\colon X}P(x,g(x))\\
+        f&\mapsto
+            \bigl(
+                \lambda x.\,\pi_1(f(x)),\lambda x.\,\pi_2(f(x))
+            \bigr)
+    \end{align*}
+    is an equivalence.
+\end{thm}
+
+\begin{proof}
+    Consider the function
+    \begin{align*}
+        \fun{ac}^{-1}\colon
+            \Biggl(
+                \sum_{g\colon\prod_{x\colon X}A(x)}\;
+                    \prod_{x\colon X}P(x,g(x))
+            \Biggr)
+        &\to
+            \prod_{x\colon X}\;\sum_{y\colon A(x)}P(x,y)\\
+        (g,\varepsilon)
+            &\mapsto\lambda x.\,(g(x),\varepsilon(x)).
+    \end{align*}
+    Then,
+    \begin{align*}
+        \fun{ac}(\fun{ac}^{-1}(g,\varepsilon))
+            &\equiv\fun{ac}
+                \bigl(
+                    \lambda x.\,(g(x),\varepsilon(x))
+                \bigr)\\
+            &\equiv
+                \bigl(
+                    \lambda x.\,\pi_1(g(x),\varepsilon(x)),
+                    \lambda x.\,\pi_2(g(x),\varepsilon(x))
+                \bigr)\\
+            &\equiv
+                \bigl(
+                    \lambda x.\,g(x),\lambda x.\,\varepsilon(x)
+                \bigr)\\
+            &\equiv(g,\varepsilon).
+    \end{align*}
+    On the other hand,
+    \begin{align*}
+        \fun{ac}^{-1}(\fun{ac}(f))
+            &\equiv\fun{ac}^{-1}
+                \bigl(
+                    \overbrace{\lambda x.\,\pi_1(f(x))}^g,
+                    \overbrace{\lambda x.\,\pi_2(f(x))}^\varepsilon
+                \bigr)\\
+            &\equiv
+                \lambda x.\,
+                    \bigl(
+                        \pi_1(f(x)),\pi_2(f(x))
+                \bigr).
+    \end{align*}
+    By Corollary~\ref{cor:Sigma-uniqueness}, for each $x\colon X$, the type
+    \[
+        \bigl(
+            \pi_1(f(x)),\pi_2(f(x))
+        \bigr)
+        \eq{\sum_{y\colon A(x)}P(x,y)}f(x)
+    \]
+    is inhabited. Therefore, by function extensionality,
+    \[
+        \fun{ac}^{-1}(\fun{ac}(f))
+            \eq{\prod_{x\colon X}\sum_{y\colon A(x)}P(x,y)}f.
+    \]
+\end{proof}
