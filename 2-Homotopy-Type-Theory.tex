@@ -2154,8 +2154,8 @@ It is defined as follows:
     The type
     \[
         \prod_{x,y\colon A\times B}\;
-        \prod_{\zeta\colon\fun{Code}(x,y)}
-        P(x,y,\zeta)
+        \prod_{\omega\colon\fun{Code}(x,y)}
+        P(x,y,\omega)
     \]
     is inhabited if, and only if, for all\/ $a\colon A$ and\/ $b\colon B$, the term
     \[
@@ -2168,17 +2168,17 @@ It is defined as follows:
     By induction on $x$, it suffices to consider the case where $x\equiv(a,b)$. The goal becomes
     \[
         \prod_{y\colon A\times B}\;
-        \prod_{\zeta\colon(a\eq A\pi_1(y))
+        \prod_{\omega\colon(a\eq A\pi_1(y))
         \times(b\eq B\pi_2(y))}
-        P((a,b),y,\zeta).
+        P((a,b),y,\omega).
     \]
     Similarly, induction on $y$ reduces the goal to the case where $y\equiv(a',b')$
     \[
-        \prod_{\zeta\colon(a\eq Aa')
+        \prod_{\omega\colon(a\eq Aa')
         \times(b\eq Bb')}
-        P((a,b),(a',b'),\zeta).
+        P((a,b),(a',b'),\omega).
     \]
-    The same reasoning allows us to decompose $\zeta$ into components $(p,q)$ and find a section of:
+    The same reasoning allows us to decompose $\omega$ into components $(p,q)$ and find a section of:
     \[
         \prod_{p\colon a\eq Aa'}\;\prod_{q\colon b\eq Bb'}
         P((a,b),(a',b'),(p,q)).
@@ -2238,9 +2238,9 @@ It is defined as follows:
         We have to prove that
         \[
             \prod_{x,y\colon A\times B}\;
-            \prod_{\zeta\colon(\pi_1(x)\eq A\pi_1(y))\times (\pi_2(x)\eq B\pi_2(y))}
-                \bigl(\fun{pair}^\times(x,y)\circ\fun{pair}^=(x,y)\bigr)(\zeta)
-                \eq{}\zeta.
+            \prod_{\omega\colon(\pi_1(x)\eq A\pi_1(y))\times (\pi_2(x)\eq B\pi_2(y))}
+                \bigl(\fun{pair}^\times(x,y)\circ\fun{pair}^=(x,y)\bigr)(\omega)
+                \eq{}\omega.
         \]
         Applying Lemma~\ref{lem:AxB-goal-reduction}, the goal reduces to
         \begin{align*}
@@ -2458,16 +2458,16 @@ which are clearly well defined. Moreover
 
 \begin{thm}
     Let\/ $f\colon A\to A'$ and\/ $g\colon B\to B'$ be two functions.
-    Given\/ $x,y\colon A\times B$ and\/ $\zeta\colon(\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)\eq B\pi_2(y))$, we have
+    Given\/ $x,y\colon A\times B$ and\/ $\omega\colon(\pi_1(x)\eq A\pi_1(y))\times(\pi_2(x)\eq B\pi_2(y))$, we have
     \[
-        \fun{ap}_{f\times g}(\fun{pair}^=(\zeta))
+        \fun{ap}_{f\times g}(\fun{pair}^=(\omega))
         \eq{A'\times B'}
-        \fun{pair}^=(\fun{ap}_f(\pi_1(\zeta)),\fun{ap}_g(\pi_2(\zeta))).
+        \fun{pair}^=(\fun{ap}_f(\pi_1(\omega)),\fun{ap}_g(\pi_2(\omega))).
     \]
 \end{thm}
 
 \begin{proof}
-    By Lemma~\ref{lem:AxB-goal-reduction}, it suffices to consider the case where\/ $x\equiv y\equiv(a,b)$ and\/ $\zeta\equiv(\fun{refl}_a,\fun{refl}_b)$. In this case, the goal becomes
+    By Lemma~\ref{lem:AxB-goal-reduction}, it suffices to consider the case where\/ $x\equiv y\equiv(a,b)$ and\/ $\omega\equiv(\fun{refl}_a,\fun{refl}_b)$. In this case, the goal becomes
     \[
         \fun{ap}_{f\times g}(\fun{pair}^=
         (\fun{refl}_a,\fun{refl}_b))
@@ -3122,8 +3122,8 @@ To verify the unit laws, observe that
             inner sep=1.5pt,
             label={[yshift=4pt]right:{$p'_*(p_*(u))$}}] 
                 (pprimeu) at (8,1.6) {};
-        \draw[-latex] (ppu) to[out=200,in=200] node[midway, left] {$\zeta$} (8,1.6);
-        % Note: visually separating p'*(p*(u)) might be too cluttered, so we treat the coherence \zeta as the bottom anchor point or a tiny loop, but conceptually it starts here.
+        \draw[-latex] (ppu) to[out=200,in=200] node[midway, left] {$\omega$} (8,1.6);
+        % Note: visually separating p'*(p*(u)) might be too cluttered, so we treat the coherence \omega as the bottom anchor point or a tiny loop, but conceptually it starts here.
         
         \node[dot, label=right:{$p'_*(v)$}] (pv) at (8,3.0) {};
         \node[dot, label=right:{$\omega''\equiv(x'',w)$}] (w) at (8,4.5) {};
@@ -5185,13 +5185,13 @@ In this section we apply the Observational Framework \ref{observational-framewor
         d_{s0}&\colon D_{nh}(0)\\
         d_{s0}&\defeq\fun{rec}_{\fun0}(\fun{succ}(n)\eq\N0)\\
         d_{ss}&\colon\prod_{m\colon\N}D_{nh}(m)\to D_{nh}(\fun{succ}(m))\\
-        d_{ss}(m,\zeta,t)&\defeq\fun{ap}_{\fun{succ}}(h(m,t)),
+        d_{ss}(m,\omega,t)&\defeq\fun{ap}_{\fun{succ}}(h(m,t)),
     \end{align*}
     as illustrated in the following diagram
     \[
         \begin{tikzcd}[column sep=huge,row sep=large]
             {\fun{Code}(\fun{succ}(n),\fun{succ}(m))}
-                    \arrow[r,"{d_{ss}(m,\zeta)}"]
+                    \arrow[r,"{d_{ss}(m,\omega)}"]
                 &\fun{succ}(n)\eq\N\fun{succ}(m)\\
             {\fun{Code}(n,m)}
                     \arrow[r,"h(m)"']
@@ -5606,7 +5606,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
                 \biggr)
             &\to\prod_{x\colon X}A(x)\times B(x)\\
             (u,v)&\mapsto
-                \lambda x.\,(u(x),v(x))          
+                \lambda x.\,(u(x),v(x)).
     \end{align*}
     Evaluating $\sigma\circ\tau$ at $(u,v)$, we obtain
     \begin{align*}
@@ -5659,6 +5659,14 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
 \end{thm}
 
 \begin{proof}
+    First observe that $\fun{ac}$ is well defined:
+    \begin{align*}
+        f(x)&\colon\sum_{y\colon A(x)}P(x,y)\\
+    \intertext{and so}
+        \pi_1(f(x))&\colon A(x)\\
+        \pi_2(f(x))&\colon P(x,\pi_1(f(x)).
+    \end{align*}
+    
     Consider the function
     \begin{align*}
         \fun{ac}^{-1}\colon
@@ -5715,4 +5723,224 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         \fun{ac}^{-1}(\fun{ac}(f))
             \eq{\prod_{x\colon X}\sum_{y\colon A(x)}P(x,y)}f.
     \]
+\end{proof}
+
+\begin{thm}
+    Let\/ $A,B,C\colon\univ$ be types. Then the map
+    \begin{align*}
+        \fun{curry}\colon((A\times B)\to C)&\to(A\to(B\to C))\\
+        f&\mapsto\lambda x.\,\lambda y.\,f(x,y)
+    \end{align*}
+    is an equivalence.
+\end{thm}
+
+\begin{proof}
+    Consider the function
+    \begin{align*}
+        \fun{uncurry}\colon(A\to(B\to C))&\to((A\times B)\to C)\\
+        g&\mapsto\lambda\omega.\,g(\pi_1(\omega))(\pi_2(\omega)).
+    \end{align*}
+    Evaluating $\fun{curry}\circ\fun{uncurry}$ at $g$ yields
+    \begin{align*}
+        \fun{curry}(\fun{uncurry}(g))
+            &\equiv
+                \fun{curry}
+                    \bigl(\
+                        lambda \omega.\,g(\pi_1(\omega))(\pi_2(\omega))
+                    \bigr)\\
+            &\equiv\lambda x.\,\lambda y.\,
+                \bigl(
+                    \lambda \omega.\,g(\pi_1(\omega))(\pi_2(\omega))
+                \bigr)(x,y)\\
+            &\equiv\lambda x.\,\lambda y.\,g(\pi_1(x,y))(\pi_2(x,y))\\
+            &\equiv\lambda x.\,\lambda y.\,g(x)(y)\\
+            &\equiv\lambda x.\,g(x)\\
+            &\equiv g.
+    \end{align*}
+    Moreover, evaluating $\fun{uncurry}\circ\fun{curry}$ at $f$ yields
+    \begin{align*}
+        \fun{uncurry}(\fun{curry}(f))
+            &\equiv
+                \fun{uncurry}
+                \bigl(
+                    \lambda x.\,\lambda y.\,f(x,y)
+                \bigr)\\
+            &\equiv
+                \lambda \omega.\,
+                \bigl(
+                    \lambda x.\,\lambda y.\,f(x,y)
+                \bigr)
+                    (\pi_1(\omega))(\pi_2(\omega))\\
+            &\equiv
+                \lambda\omega.\,
+                \bigl(
+                    \lambda y.\,f(\pi_1(\omega)),y)
+                \bigr)(\pi_2(\omega))\\
+            &\equiv\lambda\omega.\,f(\pi_1(\omega),\pi_2(\omega)).
+    \end{align*}
+    By Corollary~\ref{cor:cartesian-uniqueness}, for each $\omega\colon A\times B$, there is a path $(\pi_1(\omega),\pi_2(\omega))\eq{A\times B}\omega$. Applying $\fun{ap}_f$, we obtain a path $f(\pi_1(\omega),\pi_2(\omega))\eq{C}f(\omega)$. Therefore, function extensionality implies that
+    \[
+        \fun{uncurry}(\fun{curry}(f))\eq{(A\times B)\to C}f,
+    \]
+    which completes the proof.
+\end{proof}
+
+\begin{thm}
+    Let\/ $A,B\colon\univ$ be types, and let\/ $C\colon A\times B\to\univ$ be a dependent type family. Then the map
+    \begin{align*}
+        \fun{curry}\colon\biggl(\prod_{\omega\colon A\times B}C(\omega)\biggr)&\to\prod_{x\colon A}\prod_{y\colon B}C((x,y))\\
+        f&\mapsto\lambda x.\,\lambda y.\,f((x,y))
+    \end{align*}
+    is an equivalence.
+\end{thm}
+
+\begin{proof}
+    Consider the function\footnote{This is none other than the induction principle for products.}
+    \begin{align*}
+        \fun{uncurry}&\colon
+            \biggl(
+                \prod_{x\colon A}\;\prod_{y\colon B}C((x,y))
+            \biggr)
+            \to\prod_{\omega\colon A\times B}C(\omega)\\
+        g(\omega)&\defeq\fun{transport}^C
+            \bigl(
+                \fun{uniq}_{A\times B}(\omega),
+                g(\pi_1(\omega))(\pi_2(\omega))
+            \bigr).
+    \end{align*}
+    Evaluating $\fun{curry}\circ\fun{uncurry}$ at $g$ yields
+    \begin{align*}
+        \fun{curry}(\fun{uncurry}(g))
+            &\equiv
+            \fun{curry}
+            \bigl(
+                \lambda\omega.\,\fun{transport}^C
+                    \bigl(
+                        \fun{uniq}_{A\times B}(\omega),
+                        g(\pi_1(\omega))(\pi_2(\omega))
+                    \bigr)
+            \bigr)\\
+            &\equiv\lambda x.\,\lambda y.\,g(x)(y)\\
+            &\equiv\lambda x.\,g(x)\\
+            &\equiv g,
+    \end{align*}
+    where the second definitional equality is justified by the definitional equality
+    \[
+        \fun{uniq}_{A\times B}((x,y))\equiv\fun{refl}_{(x,y)},
+    \]
+    which causes the transport to vanish.
+    
+    Moreover, evaluating $\fun{uncurry}\circ\fun{curry}$ at $f$ yields
+    \begin{align*}
+        \fun{uncurry}(\fun{curry}(f))
+            &\equiv\fun{uncurry}
+                \bigl(
+                    \lambda x.\,\lambda y.\,f((x,y))
+                \bigr)\\
+            &\equiv\lambda\omega.\,\fun{transport}^C
+                \bigl(
+                    \fun{uniq}_{A\times B}(\omega),
+                    f((\pi_1(\omega),\pi_2(\omega)))
+                \bigr).
+    \end{align*}
+    By Lemma~\ref{lem:dependent-map}, the dependent action on paths
+    \[
+        \fun{apd}_f
+            \bigl(
+            (\pi_1(\omega),\pi_2(\omega)),
+            \omega,
+            \fun{uniq}_{A\times B}(\omega)\bigr)
+    \]
+    is a witness of the identity type
+    \[
+        \fun{transport}^C
+            \bigl(
+                \fun{uniq}_{A\times B}(\omega),
+                f((\pi_1(\omega),\pi_2(\omega)))
+            \bigr)
+            \eq{C(\omega)}f(\omega).
+    \]
+    Hence, for each $\omega\colon A\times B$, there is a path
+    \[
+        \fun{uncurry}(\fun{curry}(f))(\omega)
+        \eq{C(\omega)}
+        f(\omega),
+    \]
+    and the result follows by function extensionality.
+\end{proof}
+
+\begin{thm}
+    Let\/ $A\colon\univ$ be a type and $B\colon A\to\univ$ a type family. Given a dependent type family\/ $C\colon\Sigma_AB\to\univ$ over the total space $\Sigma_AB$, the map
+    \begin{align*}
+        \fun{curry}\colon
+            \biggl(
+                \prod_{\omega\colon\Sigma_AB}C(\omega)
+            \biggr)
+            &\to
+            \prod_{x\colon A}\;\prod_{y\colon B(x)}C((x,y))\\
+        f&\mapsto\lambda x.\,\lambda y.\,f((x,y))
+    \end{align*}
+    is an equivalence.
+\end{thm}
+
+\begin{proof}
+    Consider the function\footnote{This is the induction principle for dependent pairs.}
+    \begin{align*}
+        \fun{uncurry}
+            &\colon
+                \biggl(
+                    \prod_{x\colon A}\prod_{y\colon B(x)}C((x,y))
+                \biggr)
+            \to\prod_{\omega\colon\Sigma_AB}C(\omega)\\
+            \fun{uncurry}(g)
+                &\defeq\lambda\omega.\,\fun{transport}^C
+                    \bigl(
+                        \fun{uniq}_{\Sigma_AB}(\omega),
+                        g(\pi_1(\omega))(\pi_2(\omega))
+                    \bigr),
+    \end{align*}
+    where the map
+    \begin{align*}
+        \fun{uniq}_{\Sigma_AB}\colon\prod_{\omega\colon\Sigma_AB}(\pi_1(\omega),\pi_2(\omega))\eq{\Sigma_AB}\omega
+    \end{align*}
+    is the uniqueness principle defined after Corollary~\ref{cor:Sigma-uniqueness}.
+
+    Evaluating\/ $\fun{curry}\circ\fun{uncurry}$ at\/ $g$ yields
+    \begin{align*}
+        \fun{curry}(\fun{uncurry}(g))
+            &\equiv\lambda x.\,\lambda y.\,\fun{uncurry}(g)((x,y))\\
+            &\equiv\lambda x.\,\lambda y.\,\fun{transport}^C\bigl(\fun{uniq}_{\Sigma_AB}((x,y)),g(\pi_1((x,y)))(\pi_2((x,y)))\bigr)\\
+            &\equiv\lambda x.\,\lambda y.\,g(x)(y)\\
+            &\equiv\lambda x.\,g(x)\\
+            &\equiv g,
+    \end{align*}
+    where the third definitional equality is justified by the fact that
+    \[
+        \fun{uniq}_{\Sigma_AB}((x,y))\equiv\fun{refl}_{(x,y)},
+    \]
+    which causes the transport to vanish.
+
+    Moreover, evaluating\/ $\fun{uncurry}\circ\fun{curry}$ at\/ $f$ yields
+    \begin{align*}
+        \fun{uncurry}(\fun{curry}(f))
+            &\equiv\fun{uncurry}\bigl(\lambda x.\,\lambda y.\,f((x,y))\bigr)\\
+            &\equiv\lambda\omega.\,\fun{transport}^C\bigl(\fun{uniq}_{\Sigma_AB}(\omega),f((\pi_1(\omega),\pi_2(\omega)))\bigr).
+    \end{align*}
+    By Lemma~\ref{lem:dependent-map}, the dependent action on paths
+    \[
+        \fun{apd}_f
+            (
+                \pi_1(\omega),\pi_2(\omega),
+                \fun{uniq}_{\Sigma_AB}(\omega)
+            )
+    \]
+    is a witness of the identity type
+    \[
+        \fun{transport}^C\bigl(\fun{uniq}_{\Sigma_AB}(\omega),f((\pi_1(\omega),\pi_2(\omega)))\bigr)\eq{C(\omega)}f(\omega).
+    \]
+    Hence, for each\/ $\omega\colon\Sigma_AB$, there is a path
+    \[
+        \fun{uncurry}(\fun{curry}(f))(\omega)\eq{C(\omega)}f(\omega),
+    \]
+    and the result follows by function extensionality.
 \end{proof}
