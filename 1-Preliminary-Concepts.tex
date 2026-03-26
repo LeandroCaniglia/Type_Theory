@@ -559,7 +559,7 @@
     \[
         \fun{ind}_{A\times B}(C,g,(a,b))\defeq g(a)(b).
     \]
-    \textbf{Interpretation.} The function\/ $\fun{ind}_{A\times B}$ transforms any proof that a proposition\/ $C$ holds for all canonical pairs\/ $(x,y)$ into a proof of\/ $C(z)$ for an arbitrary element\/ $z\colon A\times B$.
+    \textbf{Interpretation.} The function $\fun{ind}_{A\times B}$ transforms any proof that a proposition $C$ holds for all canonical pairs $(x,y)$ into a proof of $C(z)$ for an arbitrary element $z\colon A\times B$.
     
     When the family $C$ is constant we obtain
     \[
@@ -1465,6 +1465,20 @@ The witnesses of this type are regarded as \textit{paths in the space $A$ from t
 \]
 In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
+\begin{rem}\label{rem:paths-as-2-cells}
+    A point\/ $x\colon A$ can be interpreted as a function from the unit type, \/ $x\colon\fun1\to A$. Under this convention, a path\/ $p\colon x\eq Ay$ can be seen as a commutative diagram: a homotopy between the maps\/ $x$ and\/ $y$.
+    \[
+        \begin{tikzcd}
+            \fun1
+                    \arrow[r,"x",bend left=40]
+                    \arrow[r,"y"',bend right=40]
+                    \arrow[r,phantom,"\scriptstyle p",description]
+                &A
+        \end{tikzcd}
+    \]
+    This representation links the topological view with the algebraic one of higher categories, allowing us to consider points and paths under the standard notions of functor and natural transformation.
+\end{rem}
+
 \begin{lpar}{Path recursion.}
     Consider the type of \textsl{free} paths
     \[
@@ -1571,7 +1585,21 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \]
         written
         \[
-            p\mapsto q\mapsto p\ct q,
+            \qquad\qquad p\mapsto q\mapsto p\ct q
+        \qquad
+            \begin{tikzcd}[column sep=2cm]
+                \fun1
+                        \arrow[r,"x",bend left=50]
+                        \arrow[r,"y" description]
+                        \arrow[r,"z"',bend right=50]
+                        \arrow[r,phantom,"\scriptstyle p",description,bend left=25]
+                        \arrow[r,
+                            phantom,
+                            "\scriptstyle q",
+                            description,
+                            bend right=25]
+                    &A,
+            \end{tikzcd}
         \]
         such that\/ $\mathsf{refl}_x\ct q\equiv q$ for any\/ $x\colon A$ and $q\colon x\eq Az$.
     \end{lem}

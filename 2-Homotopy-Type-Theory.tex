@@ -9,16 +9,19 @@
     \[
         \fun{ap}_f(x,y,p)\colon f(x)\eq Bf(y),\quad\text{for }p\colon x\eq Ay,
     \]
-    where the notation $\fun{ap}_f(x,y,p)$ is usually simplified to $\fun{ap}_f(p)$ or $\tilde f(p)$.
-\if{false}    
-    Moreover,
+    where the notation $\fun{ap}_f(x,y,p)$ is usually simplified to $\fun{ap}_f(p)$ or $\tilde f(p)$. The following diagram illustrates the setting
     \[
-        \fun{ap}_f(\fun{refl}_x)\equiv\fun{refl}_{f(x)}
-        \quad\text{and}\quad
-        \fun{ap}_f(p\ct q)\eq{f(x)\eq Bf(z)}
-            \fun{ap}_f(p)\ct \fun{ap}_f(q).
+        \begin{tikzcd}[column sep=large]
+            \fun1
+                    \arrow[r,"x",bend left=40]
+                    \arrow[r,"y"',bend right=40]
+                    \arrow[r,phantom,"\scriptstyle p",description]
+                &A
+                    \arrow[r,"f"]
+                &B.
+        \end{tikzcd}
     \]
-\fi
+
 
 \begin{prop}\label{prop:ap-properties}
     Let $A,B,C\colon\univ$. Given functions\/ $f\colon A\to B$ and\/ $g\colon B\to C$ and paths\/ $p\colon x\eq Ay$ and\/ $q\colon y\eq Az$, we have:
@@ -31,6 +34,7 @@
     \end{enumerate}
 \end{prop}
 
+\needspace{2\baselineskip}
 \begin{proof}${}$
     \begin{enumerate}[a)]
         \item Exercise~\ref{exr:ap-application}.
@@ -3809,6 +3813,106 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     which trivially (and definitionally) commutes because all transports of reflexivity reduce to identity functions.
 \end{proof}
 
+\begin{prop}\label{prop:transport-decomposition-for-paths}
+    Let\/ $A\colon\univ$ be a type and\/ $a\colon A$ a term. Given\/ $p\colon x_1\eq Ax_2$, we have
+    \begin{align*}
+        1.\,&\fun{transport}^{x\mapsto(a\eq Ax)}(p,q)
+            \eq{}q\ct p
+            &&\text{for }q\colon a\eq Ax_1,\\
+        2.\,&\fun{transport}^{x\mapsto(x\eq Aa)}(p,q)
+            \eq{}p^{-1}\ct q
+            &&\text{for }q\colon x_1\eq Aa,\\
+        3.\,&\fun{transport}^{x\mapsto(x\eq Ax)}(p,q)
+            \eq{}p^{-1}\ct q\ct p
+            &&\text{for }q\colon x_1\eq Ax_1.
+    \end{align*}
+\end{prop}
+
+\begin{proof} For type verification, observe the following
+        \begin{align*}
+            \lhs(1)&\colon a\eq Ax_2.
+            &\lhs(2)&\colon x_2\eq Aa.
+            &\lhs(3)&\colon x_2\eq Ax_2.\\
+            \rhs(1)&\colon a\eq Ax_2.
+            &\rhs(2)&\colon x_2\eq Aa.
+            &\rhs(3)&\colon x_2\eq Ax_2.
+        \end{align*}
+    
+    By induction on $p$ it suffices to consider the case $x_2\equiv x_1$ and $p\equiv\fun{refl}_{x_1}$. In that case
+    \begin{align*}
+        \fun{transport}^{x\mapsto(a\eq Ax)}(\fun{refl}_{x_1},q)
+            &\equiv q
+            \equiv\fun{refl}_{x_1}\ct q.\\
+        \fun{transport}^{x\mapsto(x\eq Aa)}(\fun{refl}_{x_1},q)
+            &\equiv q
+            \equiv\fun{refl}_{x_1}^{-1}\ct q.\\
+        \fun{transport}^{x\mapsto(x\eq Ax)}(\fun{refl}_{x_1},q)
+            &\equiv q\\
+            &\eq{x\eq Ax}\fun{refl}_{x_1}^{-1}
+                \ct q
+                \ct\fun{refl}_{x_1}.
+    \end{align*}
+\end{proof}
+
+\begin{thm}\label{thm:transport-in-function-intersection}
+    Let\/ $f\colon A\to C$ and\/ $g\colon B\to C$ be two functions. Define the type family\/ $P\colon A\times B\to\univ$ by\/ $P(x,y)\defeq f(x)\eq{C}g(y)$. Then, given paths\/ $p\colon x_1\eq{A}x_2$,\/ $q\colon y_1\eq{B}y_2$, and an element\/ $r\colon f(x_1)\eq{C}g(y_1)$, as illustrated by the paths in\/ $C$ below
+    \[
+        \begin{tikzcd}
+            \fun1
+                    \arrow[rdd,"x_1"]
+                    \arrow[rrd,"y_1"']
+                    \arrow[rdd,"x_2"',bend right=40]
+                    \arrow[rrd,"y_2",bend left=36]
+                    \arrow[rrdd,
+                        "\scriptstyle r",
+                        phantom,
+                        description,
+                        pos=0.65]
+                    \arrow[rdd,
+                        "\scriptstyle p",
+                        phantom,
+                        description,
+                        bend right=20,
+                        pos=0.5]
+                    \arrow[rrd,
+                        "\scriptstyle q",
+                        phantom,
+                        description,
+                        bend left=18,
+                        pos=0.5]\\
+                &&B
+                    \arrow[d,"g"]\\
+                &A
+                    \arrow[r,"f"']
+                &C
+        \end{tikzcd}
+    \]
+    we have
+    \[
+        \fun{transport}^P\bigl(\fun{pair}^=(p,q),r\bigr)
+            \eq{}\fun{ap}_f(p)^{-1}\ct r\ct\fun{ap}_g(q).
+    \]
+\end{thm}
+
+\begin{proof}
+    The transport on the \lhs defines a map
+    \[
+        (f(x_1)\eq Cg(y_1))\to(f(x_2)\eq Cg(y_2)).
+    \]
+    Hence, the \lhs inhabits $f(x_2)\eq Cg(y_2)$. The \rhs is a concatenation of paths $f(x_2)\eq Cf(x_1)$, $f(x_1)\eq Cg(y_1)$, and $g(y_1)\eq Cg(y_2)$, which also computes to a path in $f(x_2)\eq Cg(y_2)$.
+
+    By path induction on $p$ and then on $q$, it suffices to assume $x_2\equiv x_1$, $p\equiv\fun{refl}_{x_1}$, $y_2\equiv y_1$ and $q\equiv\fun{refl}_{y_1}$. In this case the \lhs computes to $r$, as it does the \rhs:
+    \[
+        \fun{ap}_f(\fun{refl}_{x_1})^{-1}
+            \ct r
+            \ct\fun{ap}_g(\fun{refl}_{y_1})
+        \equiv\fun{refl}_{f(x_1)}^{-1}
+            \ct r
+            \ct\fun{refl}_{g(y_1)}
+        \eq{f(x_1)\eq Cg(y_1)}r.
+    \]
+\end{proof}
+
 \paragraph{Dependent case.} To generalize the non-dependent case, we have to consider the situation where
 \begin{align*}
     B&\colon\prod_{x\colon X}A(x)\to\univ.
@@ -3834,7 +3938,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     \end{alignat*}
     Then the following diagram of elements commutes propositionally:
     \[
-        \begin{tikzcd}[column sep=huge, row sep=large]
+        \begin{tikzcd}[column sep=huge,row sep=large]
             u
                 \arrow[r,mapsto,"p_*"]
                 \arrow[d,mapsto,"f"']
@@ -4239,7 +4343,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
             u&\colon A(x),&\quad p_*(u)&\colon A(y),
                 &\quad w\equiv(p^{-1})_*(p_*(u))&\colon A(x).
         \end{alignat*}
-        Thus, as shown in Corollary~\ref{cor:dependent-transport-decomp}, {\scshape type verification}, for $v\defeq p_*(u)$:
+        Thus, as shown in Corollary~\ref{cor:dependent-transport-decomp}, \textsc{type verification}, for $v\defeq p_*(u)$:
         \begin{alignat*}4
             \fun{pair}^=(p^{-1},\fun{refl}_w)^{-1}
                     &\colon(x,w)\eq{\Sigma_XA}(y,p_*(u)),
@@ -4296,7 +4400,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
 \end{proof}
 
 \begin{thm}\label{thm:dependent-function-equality-equivalence}
-    Given two families\/ $A\colon X\to\univ$ and\/ $B\colon\prod_{x\colon X}A(x)\to\univ$, a path\/ $p\colon x\eq Xy$, and functions\/ $f\colon\Pi_AB(x)$ and\/ $g\colon\Pi_AB(y)$, there is an equivalence
+    Let\/ $A\colon X\to\univ$ and\/ $B\colon\prod_{x\colon X}A(x)\to\univ$ be two type families. Given a path $p\colon x\eq Xy$ and two functions\/ $f\colon\Pi_AB(x)$ and\/ $g\colon\Pi_AB(y)$, there is an equivalence
     \[
         \bigl(p_*(f)\eq{\Pi_AB(y)}g\bigr)
         \simeq
@@ -4403,11 +4507,11 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
             g\mapsto(\fun{happly}
             ,\lambda q.\,\lambda u.\,\fun{refl}_{\fun{happly}(q,u)})
         \]
-        inhabits $P(x,\fun{refl}_x)$, which completes the proof.
+        inhabits $P(x,\fun{refl}_x)$, which completes the proof.\qedhere
     \end{description}
 \end{proof}
 
-\subsection*{Naturality of Function Extensionality}\label{naturality-of-funcext}
+\section{Naturality of Function Extensionality}\label{naturality-of-funcext}
 
 Let $f,g\colon A\to B$ be functions. Recall that a homotopy $\eta\colon f\sim g$ translates pointwise into a path $\eta(x)\colon f(x)\eq{B}g(x)$ for each $x\colon A$, whereas an identity path $p\colon f\eq{A\to B}g$ operates at the level of the function types. These two notions are related by the equivalence $\fun{happly}\colon(f\eq{}g)\simeq(f\sim g)$.
 
@@ -4419,16 +4523,31 @@ The left whiskering of a function $h\colon B\to C$ and a homotopy $\eta$ is defi
     h\lwct p&\defeq\fun{ap}_{h\circ-}(p)
         &&\text{(function identity whiskering)}
 \end{align*}
+\[
+    \begin{tikzcd}[every cell/.append style={font=\small},
+        scale=0.5]
+        A
+                \arrow[r,"f",bend left]
+                \arrow[r,"g"',bend right]
+                \arrow[rr,"h\circ f",dashed,bend left=55]
+                \arrow[rr,"h\circ f"',dashed,bend right=55]
+                \arrow[r,phantom,description,"\scriptstyle p"]
+            &B
+                \arrow[r,"h"]
+            &C
+    \end{tikzcd}
+\]
 
 \begin{lem}\label{lem:left-whiskering-naturality}
     Both notions of whiskering are related by
     \[
         \fun{happly}(h\lwct p)(x)\eq{C}(h\lwct\fun{happly}(p))(x),
     \]
-    where the\/ \lhs refers to function identity whiskering and the\/ {\upshape\rhs} to homotopy whiskering.     
 \end{lem}
 
 \begin{proof}
+    Note that $\fun{happly}$ maps $h\lwct p$ to a~homotopy. Furthermore, since $\fun{happly}(p)$ is already a homotopy, the whiskering on the \rhs\ is a homotopy whiskering.
+
     By based path induction on $p$, it suffices to consider $g\equiv f$ and $p\equiv\fun{refl}_f$:
     \begin{align*}
         \lhs&\equiv
@@ -4452,15 +4571,31 @@ The left whiskering of a function $h\colon B\to C$ and a homotopy $\eta$ is defi
     \end{align*}
 \end{proof}
 
-Analogously, right whiskering a path $p$ with a function $k\colon C\to A$ is defined as
+Analogously, based on the definition of right homotpy whiskering
+\begin{align*}
+    \eta\rwct h&\defeq\lambda z.\,\eta(h(z))
+        \colon f\circ h\sim g\circ h.
+    \intertext{we introduce right function identity whiskering of a path $p$ with a function $k\colon C\to A$ as}
+    p\rwct h&\defeq\fun{ap}_{-\circ h}(p),    
+\end{align*}
 \[
-    p\rwct k\defeq\fun{ap}_{-\circ k}(p).
+    \begin{tikzcd}
+        C
+                \arrow[r,"h"]
+                \arrow[rr,"f\circ h",dashed,bend left=55]
+                \arrow[rr,"g\circ h"',dashed,bend right=55]
+            &A
+                \arrow[r,"f",bend left]
+                \arrow[r,"g"',bend right]
+                \arrow[r,phantom,description,"\scriptstyle p"]
+            &B
+    \end{tikzcd}
 \]
 
 \begin{lem}\label{lem:right-whiskering-naturality}
     Given\/ $z\colon C$, we have
     \[
-        \fun{happly}(p\rwct k)(z)\eq{B}\fun{happly}(p)(k(z)).
+        \fun{happly}(p\rwct h)(z)\eq{B}\fun{happly}(p)(h(z)).
     \]
 \end{lem}
 
@@ -4468,27 +4603,28 @@ Analogously, right whiskering a path $p$ with a function $k\colon C\to A$ is def
     By based path induction on $p$, we can set $g\equiv f$ and $p\equiv\fun{refl}_f$:
     \begin{align*}
         \lhs&\equiv
-            \fun{happly}(\fun{refl}_f\rwct k)(z)\\
+            \fun{happly}(\fun{refl}_f\rwct h)(z)\\
                 &\equiv\fun{happly}
                     \bigl(
-                        \fun{ap}_{-\circ k}(\fun{refl}_f)
+                        \fun{ap}_{-\circ h}(\fun{refl}_f)
                     \bigr)(z)\\
-                &\equiv\fun{happly}(\fun{refl}_{f\circ k})(z)\\
-                &\equiv\fun{refl}_{f\circ k(z)}.\\[1mm]
+                &\equiv\fun{happly}(\fun{refl}_{f\circ h})(z)\\
+                &\equiv\fun{refl}_{f\circ h(z)}.\\[1mm]
         \rhs&\equiv
-            \fun{happly}(\fun{refl}_f)(k(z))\\
-            &\equiv\fun{refl}_{f(k(z))}.
+            \fun{happly}(\fun{refl}_f)(h(z))\\
+            &\equiv\fun{refl}_{f(h(z))}.
     \end{align*}
 \end{proof}
 
-\begin{prop}
+\begin{thm}\label{thm:funext-naturality}
+    {\upshape[Naturality of function extensionality]}
     With the preceding notation, given $\eta\colon f\sim g$, we have
     \begin{align*}
         \fun{funext}(h\lwct\eta)&\eq{}h\lwct\fun{funext}(\eta)
     \intertext{and}
         \fun{funext}(\eta\rwct k)&\eq{}\fun{funext}(\eta)\rwct k.
     \end{align*}
-\end{prop}
+\end{thm}
 
 \begin{proof}
     Using the homotopy $\fun{happly}\circ\fun{funext}\sim\fun{id}$, we deduce that
@@ -4563,7 +4699,114 @@ In categorical terms, the maps $(h \circ -)$ and $(-\circ k)$ act as functors, a
         h\lwct p\defeq\fun{ap}_{\fun{lct}_h}(p),
     \]
     for\/ $p\colon f\eq{A\to B}g$, where\/ $\fun{lct}_h\defeq x\mapsto h\ct x$. Interpreting concatenation analytically as function composition, we have\/ $h\ct x\equiv h\circ x$, so\/ $\fun{lct}_h\equiv h\circ -$ and\/ $h\lwct p\equiv\fun{ap}_{h\circ -}(p)$. Therefore, the definition of left whiskering introduced above matches precisely the general one.
+
+    Analogously, applying the general notion of right path whiskering yields
+    \[
+        p\rwct k\defeq\fun{ap}_{\fun{rct}_k}(p),
+    \]
+    where\/ $\fun{rct}_k\defeq x\mapsto x\ct k$. Under the same interpretation, we have\/ $x\ct k\equiv x\circ k$, so\/ $\fun{rct}_k\equiv -\circ k$ and\/ $p\rwct k\equiv\fun{ap}_{-\circ k}(p)$. Thus, the definition of right function identity whiskering also aligns perfectly with the general one.
 \end{rem}
+
+\begin{prop}\label{prop:function-path-whiskering-properties}
+    Let $h\colon B\to C$, $f,g\colon A\to B$, and $p\colon f\eq{A\to B}g$. Then
+    \begin{enumerate}[a),font=\upshape]
+        \item $h\lwct p^{-1}\eq{}(h\lwct p)^{-1}$
+    \end{enumerate}
+\end{prop}
+
+\begin{prop}\label{prop:transport-in-commutative-squares}
+    Let\/ $f\colon A\to C$ and\/ $g\colon B\to C$ be functions, and let\/ $X$ be a type. Define the family
+    \begin{align*}
+        W&\colon(X\to A)\times(X\to B)\to\univ\\
+        W(u,v)&\defeq f\circ u\eq{X\to C}g\circ v.
+    \end{align*}
+    Given paths\/ $p\colon u_1\eq{}u_2$ and\/ $q\colon v_1\eq{}v_2$, and a path\/ $r\colon f\circ u_1\eq{}g\circ v_1$, as illustrated below
+    \[
+        \begin{tikzcd}
+            X
+                    \arrow[rdd,"u_1"]
+                    \arrow[rrd,"v_1"']
+                    \arrow[rdd,"u_2"',bend right=40]
+                    \arrow[rrd,"v_2",bend left=36]
+                    \arrow[rrdd,
+                        "\scriptstyle r",
+                        phantom,
+                        description,
+                        pos=0.65]
+                    \arrow[rdd,
+                        "\scriptstyle p",
+                        phantom,
+                        description,
+                        bend right=20,
+                        pos=0.5]
+                    \arrow[rrd,
+                        "\scriptstyle q",
+                        phantom,
+                        description,
+                        bend left=18,
+                        pos=0.5]\\
+                &&B
+                    \arrow[d,"g"]\\
+                &A
+                    \arrow[r,"f"']
+                &C
+        \end{tikzcd}
+    \]
+    we have
+    \[
+        \fun{transport}^W\bigl(\fun{pair}^=(p,q),r\bigr)
+            \eq{}(f\lwct p)^{-1}\ct r\ct(g\lwct q).
+    \]
+\end{prop}
+
+\begin{proof}
+    This is a corollary of Theorem~\ref{thm:transport-in-function-intersection}.
+\end{proof}
+
+\begin{prop}\label{prop:path-interchange}
+    Let\/ $p\colon f\eq{Y\to Z}g$ be a path between functions\/ $f,g\colon Y\to Z$ and\/ $q\colon u\eq{X\to Y}v$ a path between functions\/ $u,v\colon X\to Y$
+    \[
+        \begin{tikzcd}[column sep=huge]
+            X
+                    \arrow[r,"u",bend left=35]
+                    \arrow[r,"v"',bend right=35]
+                    \arrow[r,"\scriptstyle q",phantom]
+                &Y
+                    \arrow[r,"f",bend left=35]
+                    \arrow[r,"g"',bend right=35]
+                    \arrow[r,"\scriptstyle p",phantom]
+                &Z
+        \end{tikzcd}
+    \]
+    Then, we have the canonical equality
+    \[
+        (f\lwct q)\ct(p\rwct v)
+        \eq{f\circ u\eq{X\to Z}g\circ v}
+        (p\rwct u)\ct(g\lwct q).
+    \]
+\end{prop}
+
+\begin{proof}
+    First observe that the path on the \lhs is a concatenation of a path $f\circ u\eq{X\to Z}f\circ v$ and a path $f\circ v\eq{X\to Z}g\circ v$, which computes to a path that inhabits $f\circ u\eq{X\to Z}g\circ v$.
+
+    In the \rhs the first path inhabits $f\circ u\eq{X\to Z}g\circ u$ while the second inhabits $g\circ u\eq{X\to Z}g\circ v$. Thus, their concatenation also computes to a path of type $f\circ u\eq{X\to Z}g\circ v$.
+
+    We proceed by path induction on both \/ $p$ and \/ $q$. It suffices to consider the case where \/ $f\equiv g$ with \/ $p\equiv\fun{refl}_f$, and \/ $u\equiv v$ with \/ $q\equiv\fun{refl}_u$.
+
+    Under these definitions, the left-hand side evaluates to
+    \[
+        (f\lwct\fun{refl}_u)\ct(\fun{refl}_f\rwct u)
+        \equiv\fun{refl}_{f\circ u}\ct\fun{refl}_{f\circ u}
+        \equiv\fun{refl}_{f\circ u}.
+    \]
+    Similarly, the right-hand side evaluates to
+    \[
+        (\fun{refl}_f\rwct u)\ct(f\lwct\fun{refl}_u)
+        \equiv\fun{refl}_{f\circ u}\ct\fun{refl}_{f\circ u}
+        \equiv\fun{refl}_{f\circ u}.
+    \]
+    Since both sides compute to the reflexivity path \/ $\fun{refl}_{f\circ u}$, they are judgmentally equal.
+\end{proof}
 
 \section{The Univalence Axiom}
 
@@ -6945,11 +7188,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \[
         X\to P
     \]
-    represents the type of functions $h$ realizing
-    \[
-        ((\pi_U,\pi_V),p)\colon \Sigma(P)
-    \]
-    as a pullback.
+    represents the type of functions $h$ such that the square induced by $h$ via precomposition with $((\pi_U,\pi_V),p)\colon \Sigma(P)$ is a pullback.
 
     Therefore, we can define a canonical map
     \begin{align*}
@@ -6957,27 +7196,44 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         h &\mapsto
             \bigl(
                 (\pi_U\circ h,\pi_V\circ h),
-                h\lwct p
+                p\rwct h
             \bigr),
     \end{align*}
-    where $h\lwct p$ denotes left whiskering.\footnote{As defined in \nameref{naturality-of-funcext}.}
+    where $p\rwct h$ denotes right whiskering.\footnote{As defined in \nameref{naturality-of-funcext}.}
     
     \textsl{Definition.} A commutative square $((\pi_U,\pi_V),p)\colon \Sigma(P)$ is a \textsl{pullback} if the canonical map $\varphi$ is an equivalence for every type $X\colon\univ$.
 
-    Since $\varphi$ is an embedding, from equality in Cartesian products and in $\Sigma$-types, we obtain
+    Suppose that $((\pi_U,\pi_V),p)$ is a pullback. Since $\varphi$ is an embedding, from equality in Cartesian products and in $\Sigma$-types, we obtain
     \begin{equation*}
         \left.\begin{aligned}
-            q_U\colon\pi_U\circ h'&\eq{X\to U}\pi_U\circ h\\
-            q_V\colon\pi_V\circ h'&\eq{X\to V}\pi_V\circ h\\
-            \fun{transport}^W
+            q_U&\colon\pi_U\circ h'\eq{X\to U}\pi_U\circ h\\
+            q_V&\colon\pi_V\circ h'\eq{X\to V}\pi_V\circ h\\
+            \tau_{UV}&\colon\fun{transport}^W
                 \big(
-                    \fun{pair}^=(q_U,q_V),
-                    h'\lwct p
+                    q_{UV},
+                    p\rwct h'
                 \big)
-                &\eq{W(\pi_U\circ h,\pi_V\circ h)}h\lwct p
+                \eq{W(\pi_U\circ h,\pi_V\circ h)}p\rwct h
         \end{aligned}\right\}
-        \implies h'\eq{X\to P}h.
+        \implies h'\eq{X\to P}h,
     \end{equation*}
+    where $q_{UV}\defeq\fun{pair}^=(q_U,q_V)$. By Proposition~\ref{prop:transport-in-commutative-squares}, the path $\tau_{UV}$ computes to
+    \[
+        \tau_{UV}\colon
+            (g_U\lwct q_U)^{-1}
+            \ct(p\rwct h')
+            \ct (g_V \lwct q_V)
+            \eq{W(\pi_U \circ h, \pi_V \circ h)}p\rwct h,
+    \]
+    or equivalently (recycling the notation)
+    \[
+        \tau_{UV}\colon
+            (p\rwct h')\ct(g_V\lwct q_V)
+            \eq{W(\pi_U\circ h',\pi_V\circ h)}
+            (g_U\lwct q_U)\ct(p\rwct h).
+    \]
+    To verify this last equality, note that the \lhs starts at $g_U\circ\pi_U\circ h'$ and ends at $g_V\circ v$. The \rhs also starts at $g_U\circ\pi_U\circ h'$ and ends at $g_V\circ v$. Therefore, the equality is between two paths of type $g_U\circ\pi_U\circ h'\eq{X\to Q}g_V\circ v$, which corresponds exactly to the definition of $W(\pi_U\circ h',v)$.
+    
     On the other hand, considering a quasi-inverse map
     \[
         \varphi^{-1}\colon \Sigma(X)\to(X\to P),
@@ -6988,21 +7244,35 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \]
     By definition of the canonical map, this equality expands to
     \[
-        \varepsilon\colon\bigl((\pi_U\circ h,\pi_V\circ h), h\lwct p\bigr)
+        \varepsilon\colon\bigl((\pi_U\circ h,\pi_V\circ h), p\rwct h\bigr)
             \eq{\Sigma(X)}
             \bigl((u,v), q\bigr).
     \]
     Unpacking this equality in the $\Sigma$-type $\Sigma(X)$ yields:
     \begin{align*}
-        r_U\colon\pi_U\circ h&\eq{X\to U}u,\\
-        r_V\colon\pi_V\circ h&\eq{X\to V}v,\\
-        \fun{transport}^W
+        r_U&\colon\pi_U\circ h\eq{X\to U}u,\\
+        r_V&\colon\pi_V\circ h\eq{X\to V}v,\\
+        \tau&\colon\fun{transport}^W
             \big(
-                \fun{pair}^=(r_U,r_V),
-                h\lwct p
+                r_{UV},
+                p\rwct h
             \big)
-            &\eq{W(u,v)}q.
+            \eq{W(u,v)}q,
         \end{align*}
+    where $r_{UV}\defeq\fun{pair}^=(r_U,r_V)$.
+
+    Proposition~\ref{prop:transport-in-commutative-squares} applied to this case computes the transport function above as
+    \[
+        \fun{transport}^W(r_{UV},p\rwct h)\eq{W(u,v)}
+            (g_U\lwct r_U)^{-1}\ct(p\rwct h)\ct(g_V\lwct r_V),
+    \]
+    and so we can express the third equality as
+    \[
+        \tau\colon(g_U\lwct r_U^{-1})\ct(p\rwct h)\ct(g_V\lwct r_V)
+        \eq{W(u,v)}q,
+    \]
+    by Proposition~\ref{prop:function-path-whiskering-properties}.
+    
 \end{solution}
 
 \begin{exr}
@@ -7060,17 +7330,25 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         \quad\text{and}\quad
         p_R\colon g_D\circ\pi_D\eq{C\to F}g_E\circ\pi_E.
     \]
-    We add subscripts $R$ and $L$ to adapt the notation of the previous exercise $\varphi$, $W$, and $\Sigma$ to the right and left squares, while dropping them for the outer rectangle. Thus, our setting defines
+    We add subscripts $R$ and $L$ to the notation of the previous exercise ($\varphi$, $W$, and $\Sigma$) to adapt it to the right and left squares, while dropping them for the outer rectangle. Thus, our setting defines
     \begin{align*}
         \varphi_R\colon(X\to C)&\to\Sigma_R(X)\\
-        h&\mapsto((\pi_D\circ h,\pi_E\circ h),h\lwct p_R),\\
+        h&\mapsto
+            \bigl(
+                (\pi_D\circ h,\pi_E\circ h),
+                p_R\rwct h
+            \bigr),\\
         \varphi_L\colon (X\to A)&\to\Sigma_L(X)\\
-        h&\mapsto((\pi_B\circ h,\pi_C\circ h),h\lwct p_L),\\
+        h&\mapsto
+            \bigl(
+                (\pi_B\circ h,\pi_C\circ h),
+                p_L\rwct h
+            \bigr),\\
         \varphi\colon(X\to A)&\to\Sigma(X)\\
         h&\mapsto
             \bigl(
                 (\pi_B\circ h,\pi_E\circ\pi_C\circ h),
-                h\lwct p
+                p\rwct h
             \bigr).
     \end{align*}
     The problem statement becomes:
@@ -7079,62 +7357,53 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \end{quote}
     From the previous exercise applied to the right-hand square we have
     \begin{equation}\label{eq:right-h'=h}
-        \left.\begin{aligned}
-            q_D\colon\pi_D\circ h'&\eq{X\to D}\pi_D\circ h\\
-            q_E\colon\pi_E\circ h'&\eq{X\to E}\pi_E\circ h\\
-            \fun{transport}^{W_R}
-                \big(
-                    \fun{pair}^=(q_D,q_E),
-                    h'\lwct p_R
-                \big)
-                &\eq{W_R(\pi_D\circ h,\pi_E\circ h)}h\lwct p_R
-        \end{aligned}\right\}
-        \implies h'\eq{X\to C}h.
+        \begin{aligned}
+            q_D&\colon\pi_D\circ h'\eq{X\to D}\pi_D\circ h\\
+            q_E&\colon\pi_E\circ h'\eq{X\to E}\pi_E\circ h\\
+            \tau_{DE}&\colon
+                (p_R\rwct h')\ct(g_E\lwct q_E)
+                \eq{W_R(\pi_D\circ h',\pi_E\circ h)}
+                (g_D\lwct q_D)\ct(p_R\rwct h),
+        \end{aligned}
     \end{equation}
-    and, for $((u,v),q)\colon\Sigma_R(X)$,
+    implies $h'\eq{X\to C}h$.
+    
+    For $((u,v),q)\colon\Sigma_R(X)$,
     \begin{equation}\label{eq:right-h-existence}
         \begin{aligned}
-            r_D\colon\pi_D\circ h&\eq{X\to D}u,\\
-            r_E\colon\pi_E\circ h&\eq{X\to E}v,\\
-            \fun{transport}^{W_R}
-                \big(
-                    \fun{pair}^=(r_D,r_E),
-                    h\lwct p_R
-                \big)
-                &\eq{W_R(u,v)}q.
+            r_D&\colon\pi_D\circ h\eq{X\to D}u,\\
+            r_E&\colon\pi_E\circ h\eq{X\to E}v,\\
+            \tau_R&\colon
+                (p_R\rwct h)\ct(g_E\lwct r_E)
+                \eq{W_R(\pi_D\circ h,v)}
+                (g_D\lwct r_D)\ct q.
         \end{aligned}
     \end{equation}
 
     \begin{description}[font=\normalfont]
-   
+    
         \item[\itshape Only if.] Suppose that the left-hand square is also a pullback. Then, $\varphi_L$ is an equivalence and we have
-        
-        \vspace{-1.5\baselineskip}
-        \small
         \begin{equation}\label{eq:left-h'=h}
-            \left.\begin{aligned}
-                q_B\colon\pi_B\circ h'&\eq{X\to A}\pi_B\circ h\\
-                q_C\colon\pi_C\circ h'&\eq{X\to A}\pi_C\circ h\\
-                \fun{transport}^{W_L}
-                    \big(
-                        \fun{pair}^=(q_B,q_C),
-                        h'\lwct p_L
-                    \big)
-                    &\eq{W_L(\pi_B\circ h,\pi_C\circ h)}h\lwct p_L
-            \end{aligned}\right\}
-            \implies h'\eq{X\to A}h
+            \begin{aligned}
+                q_B&\colon\pi_B\circ h'\eq{X\to B}\pi_B\circ h\\
+                q_C&\colon\pi_C\circ h'\eq{X\to C}\pi_C\circ h\\
+                \tau_{BC}&\colon
+                    (p_L\rwct h')\ct(\pi_D\lwct q_C)
+                    \eq{W_L(\pi_B\circ h',\pi_C\circ h)}
+                    (g_B\lwct q_B)\ct(p_L\rwct h),
+            \end{aligned}
         \end{equation}
-        and, for $((u,v),q)\colon\Sigma_L(X)$,
+        implies $h'\eq{X\to A}h$.
+        
+        For $((u,v),q)\colon\Sigma_L(X)$,
         \begin{equation}\label{eq:left-h-existence}
             \begin{aligned}
-                r_B\colon\pi_B\circ h&\eq{X\to B}u,\\
-                r_C\colon\pi_C\circ h&\eq{X\to C}v,\\
-                \fun{transport}^{W_L}
-                    \big(
-                        \fun{pair}^=(r_B,r_C),
-                        h\lwct p_L
-                    \big)
-                    &\eq{W_L(u,v)}q.
+                r_B&\colon\pi_B\circ h\eq{X\to B}u,\\
+                r_C&\colon\pi_C\circ h\eq{X\to C}v,\\
+                \tau_L&\colon
+                    (p_L\rwct h)\ct(\pi_D\lwct r_C)
+                    \eq{W_L(\pi_B\circ h,v)}
+                    (g_B\lwct r_B)\ct q.
             \end{aligned}
         \end{equation}
         \normalfont
@@ -7143,11 +7412,11 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
             \begin{align}\label{eq:rectangle-commutes}
                 g_D\circ g_B\circ\pi_B
                     &\eq{A\to F}g_D\circ\pi_D\circ\pi_C
-                        &&\text{; assoc.}+g_D\lwct p_L\nonumber\\
+                        &&\text{; }g_D\lwct p_L\nonumber\\
                     &\eq{A\to F}g_E\circ\pi_E\circ\pi_C
-                        &&\text{; assoc.}+\pi_C\lwct p_R,\nonumber
+                        &&\text{; }p_R\rwct\pi_C,\nonumber
             \intertext{producing}
-                p&\defeq(g_D\lwct p_L)\ct(\pi_C\lwct p_R).
+                p&\defeq(g_D\lwct p_L)\ct(p_R\rwct\pi_C).
             \end{align}
         We have to prove that the function $\varphi\colon(X\to A)\to \Sigma(X)$, defined above, is an equivalence.
 
@@ -7190,94 +7459,153 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
             \intertext{which comes equipped with the paths (see \eqref{eq:right-h-existence})}
                 r_D&\colon\pi_D\circ h_R\eq{X\to D}g_B\circ u,\\
                 r_E&\colon\pi_E\circ h_R\eq{X\to E}v,\\
-                \fun{transport}^{W_R}
-                    &\big(
-                        \fun{pair}^=(r_D,r_E),
-                        h_R\lwct p_R
-                    \big)
-                    \eq{W_R(g_B\circ u,v)}q.
+                \tau_R&\colon
+                    (p_R\rwct h_R)\ct(g_E\lwct r_E)
+                    \eq{W_R(\pi_D\circ h_R,v)}
+                    (g_D\lwct r_D)\ct q.
             \end{align*}
 
-            \item And we set $h\defeq\varphi_L^{-1}((u,h_R),r_D^{-1})$.
+            \item And we set $h\defeq\varphi_L^{-1}((u,h_R),r_D^{-1})$, which satisfies the following (see~\eqref{eq:left-h-existence})
+             \begin{align*}
+                r_B&\colon\pi_B\circ h\eq{X\to B}u,\\
+                r_C&\colon\pi_C\circ h\eq{X\to C}h_R,\\
+                \tau_L&\colon
+                    (p_L\rwct h)\ct(\pi_D\lwct r_C)
+                    \eq{W_L(\pi_B\circ h,h_R)}
+                    (g_B\lwct r_B)\ct r_D^{-1}.
+            \end{align*}
         \end{enumerate}
-        To confirm that both functions are quasi-inverses of each other, we first verify that\/ $\varphi(\varphi^{-1}((u,v),q)) \eq{\Sigma(X)} ((u,v),q)$.
-
-        By definition of $\varphi$ and $h$, we have
-        \[
-            \varphi(h)
-                \equiv
+        We have to verify that $\varphi$ and $\varphi^{-1}$ are quasi-inverses.
+        \begin{align*}
+            \varphi(\varphi^{-1}((u,v),q))
+                &\equiv\varphi(h)\\
+                &\equiv
                     \bigl(
                         (\pi_B\circ h,\pi_E\circ\pi_C\circ h),
-                        h\lwct p
+                        p\rwct h
+                    \bigr)\\
+                &\eq{}
+                    \bigl(
+                        (u,\pi_E\circ h_R),
+                        p\rwct h
+                    \bigr)\\
+                &\eq{}
+                    \bigl(
+                        (u,v),
+                        p\rwct h
                     \bigr).
-        \]
-        To establish the target equality in $\Sigma(X)$, applying \eqref{eq:left-h-existence} to $h$, we obtain
-        \begin{align*}
-            r_B&\colon\pi_B\circ h\eq{X\to B}u,\\
-            r_C&\colon\pi_C\circ h\eq{X\to C}h_R.
-        \intertext{Precomposing with $\pi_E$ and concatenating with $r_E$,}
-            \gamma_E&\defeq(r_C\rwct\pi_E)\ct r_E
-                \colon\pi_E\circ\pi_C\circ h\eq{X\to E}v,
         \end{align*}
-        where $r_C\rwct\pi_E$ is the right function whiskering.\footnote{As defined in \nameref{naturality-of-funcext}.} Hence,
+        On the other hand,
+        \begin{align*}
+            p\rwct h
+                &\eq{}((g_D\lwct p_L)\ct(p_R\rwct\pi_C))\rwct h\\
+                &\eq{}(g_D\lwct p_L\rwct h)
+                    \ct(p_R\rwct\pi_C\circ h)
+        \end{align*}
+        and
+        \begin{align*}
+            g_D\lwct p_L\rwct h
+                &\eq{}g_D\lwct
+                    \bigl(
+                        (g_B\lwct r_B)
+                        \ct r_D^{-1}
+                        \ct(\pi_D\lwct r_C)^{-1}
+                    \bigr)\\
+                &\eq{}(g_D\circ g_B\lwct r_B)
+                   \ct(g_D\lwct r_D^{-1})
+                    \ct(g_D\circ\pi_D\lwct r_C^{-1}).
+        \end{align*}
+        Applying the Interchange Law Proposition~\ref{prop:path-interchange} to the diagram
         \[
-            \gamma\defeq\fun{pair}^=(r_B,\gamma_E)
-                \colon(\pi_B\circ h,\pi_E\circ\pi_C\circ h)
-                \eq{X\to(B\times E)}
-                (u,v).
+            \begin{tikzcd}[column sep=huge]
+                X
+                        \arrow[r,"h_R",bend left=35]
+                        \arrow[r,"\pi_C\circ h"',bend right=35]
+                        \arrow[r,
+                            "\scriptstyle r_C^{-1}",
+                            phantom,
+                            description]
+                    &C
+                        \arrow[r,"g_D\circ\pi_D",bend left=35]
+                        \arrow[r,"g_E\circ\pi_E"',bend right=35]
+                        \arrow[r,
+                            "\scriptstyle p_R",
+                            phantom,
+                            description]
+                    &F
+            \end{tikzcd}
         \]
-        For the fiber component, we must show that
+        we obtain:
         \[
-            \fun{transport}^W(\gamma,h\lwct p)\eq{W(u,v)}q.
+            (g_D\circ\pi_D\lwct r_C^{-1})\ct(p_R\rwct\pi_C\circ h)
+            \eq{}
+            (p_R\rwct h_R)\ct(g_E\circ\pi_E\lwct r_C^{-1}).
         \]
-        From \eqref{eq:rectangle-commutes}, we deduce:
+        It follows that
+        \begin{align*}
+            p\rwct h
+                &\eq{}(g_D\circ g_B\lwct r_B)
+                    \ct(g_D\lwct r_D^{-1})
+                    \ct(g_D\circ\pi_D\lwct r_C^{-1})
+                    \ct(p_R\rwct\pi_C\circ h)\\
+                &\eq{}(g_D\circ g_B\lwct r_B)
+                    \ct(g_D\lwct r_D^{-1})
+                    \ct(p_R\rwct h_R)
+                    \ct(g_E\circ\pi_E\lwct r_C^{-1})\\
+                &\eq{}(g_D\circ g_B\lwct r_B)
+                    \ct q
+                    \ct(g_E\lwct r_E^{-1})
+                    \ct(g_E\circ\pi_E\lwct r_C^{-1}).
+        \end{align*}
+        By Proposition~\ref{prop:transport-in-commutative-squares}, to see that $\varphi(h)\eq{\Sigma(X)}((u,v),q)$, we have verify that
+        \begin{equation*}
+            (g_D\circ g_B\lwct r_B)^{-1}
+            \ct(p\rwct h)
+            \ct\alpha
+            \eq{W(u,v)}q.\tag{\dag}
+        \end{equation*}
+        for $\alpha\colon\pi_E\circ\pi_C\circ h\eq{X\to E}v$. To compute $\alpha$ observe that
         \[
-            h\lwct p \equiv (h\lwct g_D\lwct p_L) \ct (h\lwct \pi_C\lwct p_R).
+            r_C\colon\pi_C\circ h\eq{X\to C}h_R
+            \quad\text{and}\quad
+            r_E\colon\pi_E\circ h_R\eq{X\to E}v.
         \]
-        For the first part of $h\lwct p$, define the whiskered family
-        \begin{align*}
-            W'_L(u_B,v_C)&\defeq g_D\circ g_B\circ u_B
-                \eq{X\to F}g_D\circ \pi_D\circ v_C.
-        \end{align*}
-        With the whiskering function
-        \begin{align*}
-            f\colon\Bigl(\prod_{(u_B,v_C)}W_L(u_B,v_C)\Bigr)
-                &\to\prod_{(u_B,v_C)}W'_L(u_B,v_C)\\
-            s&\mapsto s\rwct g_D
-        \end{align*}
-        we are in the conditions of Lemma~\ref{lem:dependent-post-composition-transport} for $A\equiv X\to(B\times C)$, $P\equiv W_L$, and $Q\equiv W'_L$. In particular,
-        \begin{align*}
-            \fun{transport}^{W'_L}(\gamma,g_D\lwct p_L)
-            \eq{W'_L(u,v)}
-            g_D\lwct\fun{transport}^{W_L}(\gamma,p_L).
-        \end{align*}
-        
-        
-Applying the functoriality of transport with respect to post-composition by\/ $g_D$, we use the universal property of the left pullback \eqref{eq:left-h-existence}:
-\begin{align*}
-    \fun{transport}^{W'_L}\big(\fun{pair}^=(r_B, r_C), h\lwct g_D\lwct p_L\big)
-        &\eq{} g_D\lwct\fun{transport}^{W_L}\big(\fun{pair}^=(r_B, r_C), h\lwct p_L\big)\\
-        &\eq{} g_D\lwct r_D^{-1}.
-\end{align*}
+        Then
+        \[
+            \pi_E\lwct r_C\colon\pi_E\circ\pi_C\circ h
+            \eq{X\to E}
+            \pi_E\circ h_R
+            \quad\text{and}\quad
+            r_E\colon\pi_E\circ h_R
+            \eq{X\to E}v,
+        \]
+        which implies
+        \[
+            (\pi_E\lwct r_C)\ct r_E
+            \colon\pi_E\circ\pi_C\circ h\eq{X\to E}v.
+        \]
+        Hence, $\alpha\equiv(\pi_E\lwct r_C)\ct r_E$. Substituting in the \lhs of $(\dag)$, we obtain
+        \[
+            \lhs\eq{}q
+            \ct(g_E\lwct r_E^{-1})
+            \ct(g_E\circ\pi_E\lwct r_C^{-1})
+            \ct\bigl(g_E\lwct((\pi_E\lwct r_C)\ct r_E)\bigr)
+        \]
+        Distributing the left whiskering of $g_E$ over the concatenation yields:
+        \[
+            \lhs\eq{}q
+            \ct(g_E\lwct r_E^{-1})
+            \ct(g_E\circ\pi_E\lwct r_C^{-1})
+            \ct(g_E\circ\pi_E\lwct r_C)
+            \ct(g_E\lwct r_E),
+        \]
+        i.e.,
+        \[
+            \lhs\eq{}q
+            \ct(g_E\lwct r_E^{-1})
+            \ct(g_E\lwct r_E)\eq{}q,
+        \]
+        as desired.
 
-For the second half, transporting\/ $h\lwct \pi_C\lwct p_R$ along\/ $\gamma$ evaluates the homotopy along the base path. Since the first component of\/ $\gamma$ plays no role here, this reduces by naturality to the transport of the right square's data. However, because we concatenated\/ $r_C$ into the base path\/ $\gamma_E$, the starting point of this transport shifts from\/ $h$ to\/ $h_R$, yielding:
-\[
-    \fun{transport}\big(\gamma, h\lwct \pi_C\lwct p_R\big) \eq{} (g_D\lwct r_D) \ct \fun{transport}^{W_R}\big(\fun{pair}^=(r_D, r_E), h_R\lwct p_R\big).
-\]
-
-Concatenating these two evaluated transports, the inner terms\/ $g_D\lwct r_D^{-1}$ and\/ $g_D\lwct r_D$ cancel each other out:
-\begin{align*}
-    \fun{transport}^W(\gamma, h\lwct p)
-        &\eq{} (g_D\lwct r_D^{-1}) \ct (g_D\lwct r_D) \ct \fun{transport}^{W_R}\big(\fun{pair}^=(r_D, r_E), h_R\lwct p_R\big)\\
-        &\eq{} \fun{transport}^{W_R}\big(\fun{pair}^=(r_D, r_E), h_R\lwct p_R\big).
-\end{align*}
-
-Finally, by the universal property of the right pullback \eqref{eq:right-h-existence}, this expression evaluates exactly to\/ $q$. 
-
-Since both the base path and the transported fiber path match the components of the target test cone, the structural equality in\/ $\Sigma$-types gives us
-\[
-    \varphi\big(\varphi^{-1}((u,v),q)\big) \eq{\Sigma(X)} ((u,v),q),
-\]
-which completes the proof that\/ $\varphi$ is an equivalence.
     \end{description}
 \end{solution}
