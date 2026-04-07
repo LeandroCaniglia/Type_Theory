@@ -799,8 +799,10 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \begin{lem}\label{lem:transportinv}
     Let\/ $P\colon A\to\univ$ be a type family. For any path\/ $p\colon x\eq{A}y$ and elements\/ $u\colon P(x)$ and\/ $v\colon P(y)$, there are paths
     \begin{align*}
-        \fun{transportinv}_l^P(p,u) &\colon (p^{-1})_*(p_*(u)) \eq{P(x)} u, \\
-        \fun{transportinv}_r^P(p,v) &\colon p_*((p^{-1})_*(v)) \eq{P(y)} v.
+        \fun{transportinv}_l^P(p,u)
+            &\colon (p^{-1})_*(p_*(u)) \eq{P(x)}u,\\
+        \fun{transportinv}_r^P(p,v)
+            &\colon p_*((p^{-1})_*(v)) \eq{P(y)}v.
     \end{align*}
     Moreover,
     \begin{alignat*}2
@@ -808,7 +810,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
             &\equiv\fun{refl}_u,
         &\quad
         \fun{transportinv}^P_r(\fun{refl}_x,v)
-            &\equiv\fun{refl}_v,
+            &\equiv\fun{refl}_v.
     \end{alignat*}
 \end{lem}
 
@@ -3113,6 +3115,40 @@ Here is a picture illustrating the construction
     \end{description}
 \end{proof}
 
+\begin{cor}\label{cor:transport-in-dependent-second-component}
+    Let\/ $W$ and\/ $X$ be types, and let\/ $A\colon W\to\univ$ be the constant type family defined by\/ $A(w)\defeq X$. Let\/ $B\colon\Sigma_W A\to\univ$ be a second type family. Define the composite type family\/ $\Sigma_A B\colon W\to\univ$ by\/ $w\mapsto\sum_{x\colon X} B(w, x)$.
+    
+    For any path\/ $p\colon w_1 =_W w_2$ and any element\/ $(x, z)\colon\Sigma_A B(w_1)$, we have
+    \[
+        \fun{transport}^{\Sigma_A B}(p)(x, z) = \bigl(x, \fun{transport}^{w \mapsto B(w, x)}(p)(z)\bigr).
+    \]
+    The following diagram commutes propositionally:
+    \[
+        \begin{tikzcd}[column sep=huge, row sep=large]
+            \Sigma_AB(w_1)
+                    \arrow[r,"\fun{transport}^{\Sigma_A B}(p)"] 
+                    \arrow[d,"\text{\upshape def }"',equal,no head]
+                &\Sigma_AB(w_2)
+                    \arrow[d,"\text{\,\upshape def}",equal,no head]\\
+            \sum_{x\colon X}B(w_1,x)
+                    \arrow[r,"\Sigma_p"']
+                &\sum_{x\colon X}B(w_2,x)
+        \end{tikzcd}
+    \]
+    where the bottom map is defined component-wise as
+    \[
+        \Sigma_p(x, z) \defeq \bigl(x, \fun{transport}^{w \mapsto B(w, x)}(p)(z)\bigr).
+    \]
+\end{cor}
+
+\begin{proof}
+    We apply part b) of the theorem. Since $A$ is the constant family, by Exercise~\ref{exr:constant-fibration}, $p_*(x)\equiv\fun{transport}^A(p)(x)\eq Xx$. Substituting this into the \rhs of the theorem's formula, we obtain
+    \[
+        (x,\fun{transport}^B(\fun{pair}^=(p,\fun{refl}_x))(z)).
+    \]
+    The term $\fun{pair}^=(p,\fun{refl}_x)$ represents a path in the total space $\Sigma_WA$ from $(w_1,x)$ to $(w_2,x)$. Transporting $z$ along this path in the family $B$ is definitionally equivalent to transporting $z$ along $p$ in the partially applied family $w \mapsto B(w,x)$. This yields the desired equality. 
+\end{proof}
+
 \begin{rem}
     For $\omega,\omega'\colon E$, a canonical pair $(p,u)\colon\fun{Code}(\omega,\omega')$ is given by
     \begin{alignat*}2
@@ -3668,7 +3704,7 @@ The unit laws follow immediately from the definitional properties of path invers
         &\equiv\eta.
 \end{align*}
 
-\begin{prop}
+\begin{prop}\label{prop:funext-functoriality}
     Let\/ $A$,\/ $B$, and\/ $\Gamma$ be as above. If\/ $f, g\colon\Gamma$, then
     \begin{enumerate}[a),font=\upshape]
         \item $\fun{funext}(f,f,\lambda x.\,\fun{refl}_{f(x)})\eq{f\eq\Gamma f}\fun{refl}_f$
@@ -4764,7 +4800,7 @@ In categorical terms, the maps $(h \circ -)$ and $(-\circ k)$ act as functors, a
 \end{proof}
 
 \begin{prop}\label{prop:path-interchange}
-    Let\/ $p\colon f\eq{Y\to Z}g$ be a path between functions\/ $f,g\colon Y\to Z$ and\/ $q\colon u\eq{X\to Y}v$ a path between functions\/ $u,v\colon X\to Y$
+    Let\/ $X,Y,Z\colon\univ$ be types, $f,g\colon Y\to Z$ equal functions with $p\colon f\eq{Y\to Z}g$, and\/ $u,v\colon X\to Y$ equal functions with $q\colon u\eq{X\to Y}v$, as depicted below
     \[
         \begin{tikzcd}[column sep=huge]
             X
@@ -4775,7 +4811,7 @@ In categorical terms, the maps $(h \circ -)$ and $(-\circ k)$ act as functors, a
                     \arrow[r,"f",bend left=35]
                     \arrow[r,"g"',bend right=35]
                     \arrow[r,"\scriptstyle p",phantom]
-                &Z
+                &Z.
         \end{tikzcd}
     \]
     Then, we have the canonical equality
@@ -4806,6 +4842,52 @@ In categorical terms, the maps $(h \circ -)$ and $(-\circ k)$ act as functors, a
         \equiv\fun{refl}_{f\circ u}.
     \]
     Since both sides compute to the reflexivity path \/ $\fun{refl}_{f\circ u}$, they are judgmentally equal.
+\end{proof}
+
+\subsection*{Homotopy Whiskering}\label{homotopy-whiskering}
+Given equivalent functions $f,g\colon A\to B$ with $\alpha\colon f\sim g$, and $f',g'\colon B\to C$ with $\beta\colon f'\sim g'$,
+\[
+    \begin{tikzcd}[column sep=large]
+        A
+                \arrow[r,"f",bend left=49]
+                \arrow[r,"g\vphantom'"',bend right=49]
+                \arrow[r,"\scriptstyle\alpha",phantom]
+            &B
+                \arrow[r,"f'",bend left=49]
+                \arrow[r,"g'"',bend right=49]
+                \arrow[r,"\scriptstyle\beta",phantom]
+            &C
+    \end{tikzcd}
+\]
+the \textsl{horizontal composition} $\beta\hct\alpha$ is defined using whiskering and homotopy concatenation\footnote{See Definition~\ref{defn:homotopy-inverse-and-ct}.} as
+\[
+    \beta\hct\alpha\defeq(\beta\rwct f)\ct(g'\lwct\alpha)
+        \colon(f'\circ f)\sim(g'\circ g). 
+\]
+
+\begin{prop}\label{prop:homotopy-whiskering}
+    With the preceding notation,
+    \[
+        \beta\hct\alpha\eq{(f'\circ f)\sim(g'\circ g)}(f'\lwct\alpha)\ct(\beta\rwct g).
+    \]
+\end{prop}
+
+\begin{proof}
+    We have
+    \begin{align*}
+        \fun{funext}(\beta\hct\alpha)
+            &\eq{}\fun{funext}(\beta\rwct f)
+                \ct\fun{funext}(g'\lwct\alpha)
+                &&\text{; Prop.~\ref{prop:funext-functoriality}}\\
+            &\eq{}(\fun{funext}(\beta)\rwct f)
+                \ct(g'\lwct\fun{funext}(\alpha))
+                &&\text{; Thm.~\ref{thm:funext-naturality}}\\
+            &\eq{}(f'\lwct\fun{funext}(\alpha))
+                \ct(\fun{funext}(\beta)\rwct g)
+                &&\text{; Prop.~\ref{prop:funext-functoriality}}\\
+            &\eq{}\fun{funext}((f'\lwct\alpha)\ct(\beta\rwct g)),
+    \end{align*}
+    and the result follows by evaluation of $\fun{happly}$.
 \end{proof}
 
 \section{The Univalence Axiom}
@@ -4858,25 +4940,24 @@ To apply the observational framework~\ref{observational-framework} to the univer
             &&\text{; Lem.~\ref{lem:transportP}}
     \end{align*}
     
-    \begin{thm}\label{thm:idtoeqv-def}
-        Given\/ $A,B\colon\univ$, the encode function defined above is propositionally equal to the function
-        \begin{align}\label{eq:idtoeqv}
-            \fun{idtoeqv}&\colon(A\eq\univ B)\to(A\simeq B)
-        \intertext{induced by}
-            p&\mapsto\fun{transport}^{\id_\univ}(p),\nonumber
-            \end{align}
-        whose quasi-inverse is $p\mapsto\fun{transport}^{\id_\univ}(p^{-1})$.
-    \end{thm}
-    
-    \begin{proof}
-        Given $p\colon A\eq\univ B$, the map $\fun{transport}^{\id_\univ}(p^{-1})$ is a quasi-inverse of $\fun{transport}^{\id_\univ}(p)$, with the homotopies
-        \[
-            \fun{transportinv}_l^{\id_\univ}
-            \quad\text{and}\quad
-            \fun{transportinv}_r^{\id_\univ}
-        \]
-        given by Lemma~\ref{lem:transportinv}.
-    \end{proof}
+\begin{thm}\label{thm:idtoeqv-def}
+    Given\/ $A,B\colon\univ$, the encode function defined above is propositionally equal to the function
+    \begin{align}\label{eq:idtoeqv}
+        \fun{idtoeqv}&\colon(A\eq\univ B)\to(A\simeq B)
+    \intertext{induced by}
+        p&\mapsto\fun{transport}^{\id_\univ}(p),\nonumber
+    \end{align}
+    where for each path\/ $p$, the quasi-inverse of the map\/ $\fun{transport}^{\id_\univ}(p)$ is given by\/ $\fun{transport}^{\id_\univ}(p^{-1})$, with right and left homotopies respectively provided by
+    \[
+        \fun{transportinv}_r^{\id_\univ}(p)
+        \quad\text{and}\quad
+        \fun{transportinv}_l^{\id_\univ}(p).
+    \]
+\end{thm}
+
+\begin{proof}
+    For a given path\/ $p\colon A\eq\univ B$, the verification that\/ $\fun{transport}^{\id_\univ}(p^{-1})$ acts as a quasi-inverse for\/ $\fun{transport}^{\id_\univ}(p)$ via the stated homotopies follows directly from Lemma~\ref{lem:transportinv}.
+\end{proof}
     
     \begin{defn}
         The theorem allows us to take $\fun{idtoeqv}$ as our encode function.
@@ -7355,257 +7436,775 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \begin{quote}\itshape
         If $\varphi_R$ is an equivalence, $\varphi_L$ is an equivalence if, and only if, $\varphi$ is.
     \end{quote}
-    From the previous exercise applied to the right-hand square we have
-    \begin{equation}\label{eq:right-h'=h}
-        \begin{aligned}
-            q_D&\colon\pi_D\circ h'\eq{X\to D}\pi_D\circ h\\
-            q_E&\colon\pi_E\circ h'\eq{X\to E}\pi_E\circ h\\
-            \tau_{DE}&\colon
-                (p_R\rwct h')\ct(g_E\lwct q_E)
-                \eq{W_R(\pi_D\circ h',\pi_E\circ h)}
-                (g_D\lwct q_D)\ct(p_R\rwct h),
-        \end{aligned}
-    \end{equation}
-    implies $h'\eq{X\to C}h$.
-    
-    For $((u,v),q)\colon\Sigma_R(X)$,
-    \begin{equation}\label{eq:right-h-existence}
-        \begin{aligned}
-            r_D&\colon\pi_D\circ h\eq{X\to D}u,\\
-            r_E&\colon\pi_E\circ h\eq{X\to E}v,\\
-            \tau_R&\colon
-                (p_R\rwct h)\ct(g_E\lwct r_E)
-                \eq{W_R(\pi_D\circ h,v)}
-                (g_D\lwct r_D)\ct q.
-        \end{aligned}
-    \end{equation}
 
-    \begin{description}[font=\normalfont]
+    We will establish an equivalence
+    \[
+        \psi\colon\Sigma(X)\to\Sigma_L(X).
+    \]
+    Let $((u,v),q)\colon\Sigma(X)$. Since $((g_B\circ u,v),q)\colon\Sigma_R(X)$ and $\varphi_R$ is an equivalence, there exists a function $h_R\colon X\to C$, namely $\varphi_R^{-1}((g_B\circ u,v),q)$, such that
+    \[
+        \varphi_R(h_R)\eq{\Sigma_R(X)}((g_B\circ u,v),q),
+    \]
+    In particular, the first component of the equality is a path $r_D$ that witnesses the commutativity of the shaded subdiagram
+    \[
+        r_D\colon \pi_D\circ h_R\eq{X\to D}g_B\circ u
+    \qquad
+        \begin{tikzcd}[
+            execute at end picture=
+                {
+                \fill[blue,opacity=0.1]
+                  (\tikzcdmatrixname-1-1.center) to[bend right]
+                  (\tikzcdmatrixname-3-2.center) --
+                  (\tikzcdmatrixname-3-3.center) --
+                  (\tikzcdmatrixname-2-3.center) to[bend right] cycle;
+                }]
+            X
+                    \arrow[rd,"r_D",phantom,description]
+                    \arrow[rdd,"u"',bend right]
+                    \arrow[rrrd,"v",bend left]
+                    \arrow[rrd,"h_R"',bend left,dashed]\\
+                &A
+                    \arrow[r,"\pi_C"]
+                    \arrow[d,"\pi_B"']
+                &C
+                    \arrow[r,"\pi_E"]
+                    \arrow[d,"\pi_D"']
+                    \arrow[rd,
+                        "\lrcorner",
+                        phantom,
+                        very near start]
+                &E
+                    \arrow[d,"g_E"]\\
+                &B
+                    \arrow[r,"g_B"']
+                &D
+                    \arrow[r,"g_D"']
+                &F
+        \end{tikzcd}
+    \]
+    We define
+    \[
+        \psi((u,v),q)\defeq((u,h_R),r_D^{-1}).
+    \]
+    For the backward function, we set
+    \begin{align*}
+        \phi\colon\Sigma_L(X)&\to\Sigma(X)\\
+        ((u,k),r)&\mapsto
+            \bigl(
+                (u,\pi_E\circ k),
+                (g_D\lwct r)\ct(p_R\rwct k)
+            \bigr),
+    \end{align*}
+    where $r\colon g_B\circ u\eq{X\to D}\pi_D\circ k$.
     
-        \item[\itshape Only if.] Suppose that the left-hand square is also a pullback. Then, $\varphi_L$ is an equivalence and we have
-        \begin{equation}\label{eq:left-h'=h}
-            \begin{aligned}
-                q_B&\colon\pi_B\circ h'\eq{X\to B}\pi_B\circ h\\
-                q_C&\colon\pi_C\circ h'\eq{X\to C}\pi_C\circ h\\
-                \tau_{BC}&\colon
-                    (p_L\rwct h')\ct(\pi_D\lwct q_C)
-                    \eq{W_L(\pi_B\circ h',\pi_C\circ h)}
-                    (g_B\lwct q_B)\ct(p_L\rwct h),
-            \end{aligned}
-        \end{equation}
-        implies $h'\eq{X\to A}h$.
-        
-        For $((u,v),q)\colon\Sigma_L(X)$,
-        \begin{equation}\label{eq:left-h-existence}
-            \begin{aligned}
-                r_B&\colon\pi_B\circ h\eq{X\to B}u,\\
-                r_C&\colon\pi_C\circ h\eq{X\to C}v,\\
-                \tau_L&\colon
-                    (p_L\rwct h)\ct(\pi_D\lwct r_C)
-                    \eq{W_L(\pi_B\circ h,v)}
-                    (g_B\lwct r_B)\ct q.
-            \end{aligned}
-        \end{equation}
-        \normalfont
-        
-        To show that the full rectangle is a pullback, first note that it commutes:
-            \begin{align}\label{eq:rectangle-commutes}
-                g_D\circ g_B\circ\pi_B
-                    &\eq{A\to F}g_D\circ\pi_D\circ\pi_C
-                        &&\text{; }g_D\lwct p_L\nonumber\\
-                    &\eq{A\to F}g_E\circ\pi_E\circ\pi_C
-                        &&\text{; }p_R\rwct\pi_C,\nonumber
-            \intertext{producing}
-                p&\defeq(g_D\lwct p_L)\ct(p_R\rwct\pi_C).
-            \end{align}
-        We have to prove that the function $\varphi\colon(X\to A)\to \Sigma(X)$, defined above, is an equivalence.
+    We claim that $\psi$ and $\phi$ are quasi-inverses.
+    
+    Using $r^{-1}$ for the first coordinate of the pair and $\fun{refl}_{\pi_E\circ k}$ for the second, we obtain
+    \begin{align*}
+        \bigl(
+            (\pi_D\circ k,\pi_E\circ k),
+            p_R\rwct k
+        \bigr)
+        &\eq{\Sigma_R(X)}
+        \bigl(
+            (g_B\circ u,\pi_E\circ k),
+            \fun{transport}^{W_R}(\gamma,p_R\rwct k)
+        \bigr),
+    \end{align*}
+    where
+    \[
+        \gamma\defeq\fun{pair}^=(r^{-1},\fun{refl}_{\pi_E\circ k}).
+    \]
+    Proposition~\ref{prop:transport-in-commutative-squares} yields:
+    \begin{align*}
+        \fun{transport}^{W_R}&\bigl(\gamma, p_R\rwct k\bigr)\\
+            &\eq{W_R(g_B\circ u,\pi_E\circ k)}
+                (g_D\lwct r^{-1})^{-1}
+                \ct(p_R\rwct k)
+                \ct(g_E\lwct\fun{refl}_{\pi_E\circ k})\\
+            &\eq{W_R(g_B\circ u,\pi_E\circ k)}
+                (g_D\lwct r)
+                \ct(p_R\rwct k),
+    \end{align*}
+    since $(g_E\lwct\fun{refl}_{\pi_E\circ k})\eq{g_E\circ\pi_E\circ k\eq{X\to F}g_E\circ\pi_E\circ k}\fun{refl}_{g_E\circ\pi_E\circ k}$. Therefore,
+    \begin{align*}
+        \varphi_R(k)
+            &\equiv
+                \bigl(
+                    (\pi_D\circ k,\pi_E\circ k),
+                    p_R\rwct k
+                \bigr)\\
+            &\eq{\Sigma_R(X)}
+                \bigl(
+                    (g_B\circ u,\pi_E\circ k),
+                    (g_D\lwct r)\ct(p_R\rwct k)
+                \bigr).
+    \end{align*}
+    
+    Let us first compute the composition $\psi\circ\phi$. Let $s\defeq\phi((u,k),r)$. By definition,
+    \begin{align*}
+        \psi(s)&\equiv\psi
+            \bigl(
+                (u,\pi_E\circ k),
+                (g_D\lwct r)\ct(p_R\rwct k)
+            \bigr)\\
+        &\equiv((u,h_R),r_D^{-1}),
+    \end{align*}
+    where $h_R$ is defined by the equation
+    \[
+        e_1\colon\varphi_R(h_R)\eq{\Sigma_R(X)}((g_B\circ u,\pi_E\circ k),(g_D\lwct r)\ct(p_R\rwct k)),
+    \]
+    and $r_D\colon\pi_D\circ h_R\eq{}g_B\circ u$ is extracted from the first component of the base path of $e_1$.
 
-        To define the quasi-inverse of $\varphi$
-        \begin{align*}
-            \varphi^{-1}\colon\Sigma(X)&\to(X\to A)\\
-            ((u,v),q)&\mapsto h,
-        \end{align*}
-        we proceed as indicated in the following diagram
+    From our previous derivation, we also have an explicit equality
+    \[
+        e_2\colon\varphi_R(k)\eq{\Sigma_R(X)}((g_B\circ u,\pi_E\circ k),(g_D\lwct r)\ct(p_R\rwct k)),
+    \]
+    whose base path is $\gamma\defeq\fun{pair}^=(r^{-1},\fun{refl}_{\pi_E\circ k})$.
+
+    Concatenating these paths yields $e_1\ct e_2^{-1}\colon\varphi_R(h_R)\eq{\Sigma_R(X)}\varphi_R(k)$. Because $\varphi_R$ is an equivalence, there is a path $\alpha\colon h_R\eq{X\to C}k$ such that $\varphi_R\lwct\alpha\eq{}e_1\ct e_2^{-1}$.
+
+
+    Concatenating these paths yields\/ $e_1\ct e_2^{-1}\colon\varphi_R(h_R)\eq{\Sigma_R(X)}\varphi_R(k)$. Because\/ $\varphi_R$ is an equivalence, it is an embedding, which implies there is a unique path\/ $\alpha\colon h_R\eq{X\to C}k$ such that\/ $\varphi_R\lwct\alpha\eq{}e_1\ct e_2^{-1}$.
+
+    By the definition of $\varphi_R$, the base path of $\varphi_R\lwct\alpha$ equals $(\pi_D\lwct\alpha,\pi_E\lwct\alpha)$. Since the first component of $e_1\ct e_2^{-1}$ is $r_D\ct(r^{-1})^{-1}$, we deduce that
+    \[
+        \pi_D\lwct\alpha\eq{}r_D\ct r.
+    \]
+    To establish the equality $((u,h_R),r_D^{-1})\eq{\Sigma_L(X)}((u,k),r)$, we use the base path $\fun{pair}^=(\fun{refl}_u,\alpha)$ and compute the transport of $r_D^{-1}$ in the family $W_L$. By Proposition~\ref{prop:transport-in-commutative-squares},
+    \begin{align*}
+        \fun{transport}^{W_L}&\bigl(\fun{pair}^=(\fun{refl}_u,\alpha), r_D^{-1}\bigr)\\
+            &\eq{}(g_B\lwct\fun{refl}_u)^{-1}\ct r_D^{-1}\ct(\pi_D\lwct\alpha)\\
+            &\eq{}\fun{refl}_{g_B\circ u}^{-1}\ct r_D^{-1}\ct(r_D\ct r)\\
+            &\eq{}r.
+    \end{align*}
+
+    For the other composition, we have
+    \begin{align*}
+        \phi(\psi((u,v),q))
+            &\equiv\phi((u,h_R),r_D^{-1})\\
+            &\equiv(
+                    (u,\pi_E\circ h_R),
+                    (g_D\lwct r_D^{-1})\ct(p_R\rwct h_R)
+                ).
+    \end{align*}
+    By the definition of $h_R$, we have a witness
+    \[
+        r_E\colon\pi_E\circ h_R\eq{X\to E}v.
+    \]
+    Thus, with $\varepsilon\defeq\fun{pair}^=(\fun{refl}_u,r_E)$, the question reduces to proving that
+    \[
+        \fun{transport}^W(
+            \varepsilon,(
+                g_D\lwct r_D^{-1})\ct(p_R\rwct h_R)
+            )\eq{}q.
+    \]
+    By Proposition~\ref{prop:transport-in-commutative-squares}, we have
+    \begin{align*}
+        \fun{transport}^W&\bigl(
+            \varepsilon,
+            (g_D\lwct r_D^{-1})\ct(p_R\rwct h_R)
+        \bigr)\\
+            &\eq{}(g_D\circ g_B\lwct\fun{refl}_u)^{-1}
+                \ct\bigl((g_D\lwct r_D^{-1})\ct(p_R\rwct h_R)\bigr)
+                \ct(g_E\lwct r_E)\\
+            &\eq{}\fun{refl}_{g_D\circ g_B\circ u}^{-1}
+                \ct(g_D\lwct r_D^{-1})\ct(p_R\rwct h_R)
+                \ct(g_E\lwct r_E)\\
+            &\eq{}(g_D\lwct r_D^{-1})\ct(p_R\rwct h_R)\ct(g_E\lwct r_E).
+    \end{align*}
+    By the definition of $h_R\defeq\varphi_R^{-1}((g_B\circ u,v),q)$, we have
+    \[
+        \varphi_R(h_R)\eq{\Sigma_R(X)}((g_B\circ u,v),q)
+    \]
+    and
+    \[
+        r_D\colon\pi_D\circ h_R\eq{X\to D}g_B\circ u.
+    \]
+    Therefore,
+    \[
+        q\eq{}\fun{transport}^{W_R}
+            \bigl(
+                \fun{pair}^=(r_D,r_E),p_R\rwct h_R
+            \bigr).
+    \]
+    Using Proposition~\ref{prop:transport-in-commutative-squares} again, we obtain
+    \[
+        q\eq{}(g_D\lwct r_D)^{-1}\ct(p_R\rwct h_R)\ct(g_E\lwct r_E),
+    \]
+    as desired.
+
+\end{solution}
+
+\begin{exr}
+    Show that\/ $(\fun2\simeq\fun2)\simeq\fun2$.
+\end{exr}
+
+\begin{solution}
+    We will need the following lemma:
+
+    \textbf{Lemma.}\quad\textit{There is a function $\fun{neq}\colon(1_{\fun2}\eq{\fun2}0_{\fun2})\to\fun0$.}
+
+    \textit{Proof.}
+        Let $P\colon\fun2\to\univ$ be the type family defined by $P(1_{\fun2})\defeq\fun1$ and $P(0_{\fun2})\defeq\fun0$. Then, we define
         \[
-            \begin{tikzcd}
-                X
-                        \arrow[rd,"h",dashed]
-                        \arrow[rdd,"u"',bend right]
-                        \arrow[rrrd,"v",bend left]
-                        \arrow[rrd,"h_R"',bend left,dashed]\\
-                    &A
-                        \arrow[r,"\pi_C"]
-                        \arrow[d,"\pi_B"']
-                    &C
-                        \arrow[r,"\pi_E"]
-                        \arrow[d,"\pi_D"']
-                        \arrow[rd,
-                            "\lrcorner",
-                            phantom,
-                            very near start]
-                    &E
-                        \arrow[d,"g_E"]\\
-                    &B
-                        \arrow[r,"g_B"']
-                    &D
-                        \arrow[r,"g_D"']
-                    &F
-            \end{tikzcd}
+            \fun{neq}\defeq\lambda x\colon1_{\fun2}\eq{\fun2}0_{\fun2}.\,
+                \fun{transport}^P(x,\star_{\fun1}).
         \]
-        \begin{enumerate}[-]
-            \item We obtain
-            \begin{align*}
-                h_R&\defeq\varphi_R^{-1}((g_B\circ u,v),q),
-            \intertext{which comes equipped with the paths (see \eqref{eq:right-h-existence})}
-                r_D&\colon\pi_D\circ h_R\eq{X\to D}g_B\circ u,\\
-                r_E&\colon\pi_E\circ h_R\eq{X\to E}v,\\
-                \tau_R&\colon
-                    (p_R\rwct h_R)\ct(g_E\lwct r_E)
-                    \eq{W_R(\pi_D\circ h_R,v)}
-                    (g_D\lwct r_D)\ct q.
-            \end{align*}
+        $\blacksquare$
+    
+    By \nref{lpar:exactly-two-booleans}, there is a witness
+    \[
+        \varepsilon\colon\prod_{x\colon\fun2}
+            (x\eq{\fun2}0_{\fun2})+(x\eq{\fun2}1_{\fun2}).
+    \]
+    In particular,
+    \[
+        \varepsilon(f(1_{\fun2}))\colon
+            (f(1_{\fun2})\eq{\fun2}0_{\fun2})
+            +(f(1_{\fun2})\eq{\fun2}1_{\fun2}).
+    \]
+    Fix $f\colon\fun2\simeq\fun2$. Suppose that $f(0_{\fun2})\eq{\fun2}1_{\fun2}$, and let $p$ witness this identity. We want to prove that $f(1_{\fun2})\eq{\fun2}0_{\fun2}$. Consider the diagram
+    \[
+        \begin{tikzcd}[column sep=2cm]
+            f(1_{\fun2})\eq{\fun2}0_{\fun2}
+                    \arrow[rd,"\id"]
+                    \arrow[d,"\fun{inl}"']\\
+            (f(1_{\fun2})\eq{\fun2}0_{\fun2})+(f(1_{\fun2})\eq{\fun2}1_{\fun2})
+                    \arrow[r,"\gamma_p",near start,dashed]
+                &f(1_{\fun2})\eq{\fun2}0_{\fun2}\\
+            f(1_{\fun2})\eq{\fun2}1_{\fun2}
+                    \arrow[ru,"g"']
+                    \arrow[u,"\fun{inr}"]
+        \end{tikzcd}
+    \]
+    where $g$ is defined as follows. Given $r\colon f(1_{\fun2})\eq{\fun2}1_{\fun2}$, we have
+    \[
+        p\ct r^{-1}\colon f(0_{\fun2})\eq{\fun2}f(1_{\fun2}).
+    \]
+    Hence, $\fun{ap}_{f^{-1}}(p\ct r^{-1})\colon0_{\fun2}\eq{\fun2}1_{\fun2}$, and we can use the lemma to set
+    \[
+        g(r)\defeq\fun{rec}_{\fun0}
+            \bigl(
+                f(1_{\fun2})\eq{\fun2}0_{\fun2},
+                \fun{neq}(\fun{ap}_{f^{-1}}(p\ct r^{-1}))
+            \bigr).
+    \]
+    As the diagram shows, we obtain
+    \[
+        \gamma_p\defeq
+        \fun{rec}_+\bigl(f(1_{\fun2})\eq{\fun2}0_{\fun2},\id,g\bigr).
+    \]
+    It follows that
+    \[
+        \gamma_p(\varepsilon(f(1_{\fun2})))
+            \colon f(1_{\fun2})\eq{\fun2}0_{\fun2},
+    \]
+    which constructs a function 
+    \begin{align*}
+        \bigl(\lambda p.\,\gamma_p(\varepsilon(f(1_{\fun2})))\bigr)
+        \colon
+        \bigl(f(0_{\fun2})\eq{\fun2}1_{\fun2}\bigr)
+        \to
+        \bigl(f(1_{\fun2})\eq{\fun2}0_{\fun2}\bigr).        
+    \end{align*}
+    Since $\fun{not}$ is characterized by its evaluation at $0_{\fun2}$ and $1_{\fun2}$, the function extensionality axiom yields a function
+    \[
+        (f(0_{\fun2})\eq{\fun2}1_{\fun2})
+            \to(f\eq{\fun2\simeq\fun2}\fun{not}).
+    \]
+    A similar argument yields a function
+    \[
+        (f(0_{\fun2})\eq{\fun2}0_{\fun2})
+            \to(f\eq{\fun2\simeq\fun2}\id).
+    \]
+    These functions combine to construct a map
+    \[
+        (f(0_{\fun2})\eq{\fun2}0_{\fun2})
+        +
+        (f(0_{\fun2})\eq{\fun2}1_{\fun2})
+        \to
+        (f\eq{\fun2\simeq\fun2}\id)
+        +
+        (f\eq{\fun2\simeq\fun2}\fun{not}).
+    \]
+    Since
+    \[
+        \varepsilon(f(0_{\fun2}))\colon
+            (f(0_{\fun2})\eq{\fun2}0_{\fun2})
+            +(f(0_{\fun2})\eq{\fun2}1_{\fun2}),
+    \]
+    we deduce the existence of a dependent function
+    \[
+        \phi\colon\prod_{f\colon\fun2\simeq\fun2}
+            (f\eq{\fun2\simeq\fun2}\id)
+            +
+            (f\eq{\fun2\simeq\fun2}\fun{not}).
+    \]
+    Let us now define $\psi_f$ as illustrated in the diagram:
+    \[
+        \begin{tikzcd}[column sep=2cm]
+            f\eq{\fun2\simeq\fun2}\id
+                    \arrow[d,"\fun{inl}"']
+                    \arrow[rd,"p\mapsto1_{\fun2}"]\\
+            (f\eq{\fun2\simeq\fun2}\id)+(f\eq{\fun2\simeq\fun2}\fun{not})
+                    \arrow[r,"\psi_f",near start]
+                &\fun2\\
+            f\eq{\fun2\simeq\fun2}\fun{not}
+                    \arrow[u,"\fun{inr}"]
+                    \arrow[ru,"q\mapsto0_{\fun2}"']
+        \end{tikzcd}
+    \]
+    We can define the functions $\alpha$ and $\beta$ as follows:
+    \begin{align*}
+        \alpha&\colon(\fun2\simeq\fun2)\to\fun2,
+        &\beta&\colon\fun2\to(\fun2\simeq\fun2),\\
+        \alpha(f)&\defeq\psi_f(\phi(f)),
+        &\beta(1_{\fun2})&\defeq\id,\\
+        &&\beta(0_{\fun2})&\defeq\fun{not}.
+    \end{align*}
+    In addition,
+    \begin{align*}
+        \beta(\psi_f(\fun{inl}(p)))
+            &\eq{\fun2\simeq\fun2}\beta(1_{\fun2})
+            \equiv\id,\\
+        \beta(\psi_f(\fun{inr}(q)))
+            &\eq{\fun2\simeq\fun2}\beta(0_{\fun2})
+            \equiv\fun{not}.
+    \end{align*}
+    To prove that $\beta(\alpha(f))\eq{\fun2\simeq\fun2}f$, we need to show that
+    \[
+        \beta(\psi_f(\phi(f)))\eq{\fun2\simeq\fun2}f.
+    \]
+    To do this, we define the motive $P\colon(f\eq{\fun2\simeq\fun2}\id)+(f\eq{\fun2\simeq\fun2}\fun{not})\to\univ$ as
+    \[
+        P(x)\defeq\beta(\psi_f(x))\eq{\fun2\simeq\fun2}f.
+    \]
+    By the induction principle, the goal reduces to proving the cases for $\fun{inl}$ and $\fun{inr}$. Using the calculations above for $\beta\circ\psi_f$, we obtain the equalities
+    \begin{align*}
+        P(\fun{inl}(p))&\eq{}(\id\eq{\fun2\simeq\fun2}f),\\
+        P(\fun{inr}(q))&\eq{}(\fun{not}\eq{\fun2\simeq\fun2}f).
+    \end{align*}
+    In the first case, $p\colon f\eq{\fun2\simeq\fun2}\id$; in the second, $q\colon f\eq{\fun2\simeq\fun2}\fun{not}$. Therefore, their inverses inhabit the respective types:
+    \[
+        p^{-1}\colon P(\fun{inl}(p))
+        \quad\text{and}\quad
+        q^{-1}\colon P(\fun{inr}(q)).
+    \]
+    For the backward composition, observe that
+    \begin{align*}
+        \alpha(\beta(1_{\fun2}))
+            &\equiv\alpha(\id)\\
+            &\equiv\psi_\id(\phi(\id))\\
+            &\equiv\psi_\id(\fun{inl}(\fun{refl}_\id))\\
+            &\equiv1_{\fun2},\\[1mm]
+        \alpha(\beta(0_{\fun2}))
+            &\equiv\alpha(\fun{not})\\
+            &\equiv\psi_{\fun{not}}(\phi(\fun{not}))\\
+            &\equiv
+                \psi_{\fun{not}}(\fun{inr}(\fun{refl}_{\fun{not}}))\\
+            &\equiv0_{\fun2}.
+    \end{align*}
+\end{solution}
 
-            \item And we set $h\defeq\varphi_L^{-1}((u,h_R),r_D^{-1})$, which satisfies the following (see~\eqref{eq:left-h-existence})
-             \begin{align*}
-                r_B&\colon\pi_B\circ h\eq{X\to B}u,\\
-                r_C&\colon\pi_C\circ h\eq{X\to C}h_R,\\
-                \tau_L&\colon
-                    (p_L\rwct h)\ct(\pi_D\lwct r_C)
-                    \eq{W_L(\pi_B\circ h,h_R)}
-                    (g_B\lwct r_B)\ct r_D^{-1}.
+\begin{exr}
+    Suppose we add to type theory the equality reflection rule which says that if there is an element\/ $p\colon x=y$, then in fact\/ $x\equiv y$. Prove that for any\/ $p\colon x=x$ we have\/ $p\equiv\fun{refl}_x$.
+\end{exr}
+
+\begin{solution}
+    Under the stated conditions, it suffices to prove that if $p\colon x\eq{}x$, then $p\eq{}\fun{refl}_x$. In other words, we have to prove that the type
+    \[
+        \prod_{x\colon A}\;\prod_{p\colon x\eq{A}x}p\eq{}\fun{refl}_x
+    \]
+    is inhabited. More generally, we consider the type
+    \[
+        \prod_{x,y\colon A}\;\prod_{p\colon x\eq{A}y}p\eq{}\fun{refl}_x.
+    \]
+    By path induction on $p$, we can restrict ourselves to the case where $y\equiv x$ and $p\equiv\fun{refl}_x$, in which case the goal becomes trivial.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that\/ {\upshape Proposition~\ref{prop:id-transport-and-ap}} can be strengthened to
+    \[
+        \fun{transport}^B(p,-)\eq{B(x)\to B(y)}\fun{idtoeqv}(\fun{ap}_B(p))
+    \]
+    without using function extensionality. (In this and other similar cases, the apparently weaker formulation has been chosen for readability and consistency.)
+\end{exr}
+
+\begin{solution}
+    The implicit assumptions here are that $B\colon A\to\univ$ is a type family, and that $p\colon x\eq{A}y$.
+
+    The \rhs denotes the equivalence $\fun{idtoeqv}(\fun{ap}_B(p))$ of type $B(x)\simeq B(y)$. By abuse of notation, it is identified with its underlying function $f\colon B(x)\to B(y)$, which computes exactly as $\fun{transport}^{\id_\univ}(\fun{ap}_B(p),-)$.
+
+    Therefore, the goal is to show that the type
+    \[
+        \fun{transport}^B(p,-)
+        \eq{B(x)\to B(y)}
+        \fun{transport}^{\id_\univ}(\fun{ap}_B(p),-)
+    \]
+    is inhabited.
+
+    Since both sides are clearly of the same type $B(x)\to B(y)$, to prove the equality we can apply path induction on $p$. Hence, it suffices to consider the case $y\equiv x$ and $p\equiv\fun{refl}_x$. In this case, we have
+    \begin{align*}
+        \lhs
+            &\equiv\fun{transport}^B(\fun{refl}_x,-)\\
+            &\equiv\id_{B(x)}.\\[1mm]
+        \rhs
+            &\equiv\fun{transport}^{\id_\univ}(\fun{refl}_{B(x)},-)\\
+            &\equiv\id_{B(x)}.
+    \end{align*}
+    Thus, both sides are definitionally equal in the base case, meaning $\fun{refl}_{\id_{B(x)}}$ inhabits the goal type. Path induction then yields the equality in the general case.
+    %
+    
+\end{solution}
+
+
+\begin{exr}${}$
+    \begin{enumerate}[a),font=\upshape]
+        \item Show that if\/ $A\simeq B$ and\/ $A'\simeq B'$, then\/ $(A\times A')\simeq(B\times B')$.
+        \item Give two proofs of this fact, one using univalence and one not using it, and show that the two proofs are equal.
+        \item Formulate and prove analogous results for the other type formers:\/ $\Sigma$, $\to$, $\Pi$, and\/ $+$.
+    \end{enumerate}
+\end{exr}
+
+\needspace{2\baselineskip}
+\begin{solution}${}$
+    \begin{enumerate}[a), font=\upshape]
+        \item Let $(f,(\eta,\vartheta))\colon A\simeq B$ and $(g,(\eta',\vartheta'))\colon A'\simeq B'$. Consider the function
+        \begin{align*}
+            (f\times g)\colon(A\times A')&\to(B\times B')\\
+            (a,a')&\mapsto(f(a),g(a')).
+        \end{align*}
+        Let $f^{-1}$ and $g^{-1}$ be the respective quasi-inverses of $f$ and $g$. Then,
+        \begin{align*}
+            (f\times g)\circ(f^{-1}\times g^{-1})(b,b')
+            &\equiv
+            \bigl(
+                f(f^{-1}(b)),g(g^{-1}(b'))
+            \bigr).
+        \end{align*}
+        Since $\eta(b)\colon f(f^{-1}(b))\eq{B}b$ and $\eta'(b')\colon g(g^{-1}(b'))\eq{B'}b'$, we define
+        \[
+            (\eta\wedge\eta')(b,b')
+                \defeq\fun{pair}^=\bigl(\eta(b),\eta'(b')\bigr),
+        \]
+        which provides the first homotopy
+        \[
+            (\eta\wedge\eta')\colon(f\times g)\circ(f^{-1}\times g^{-1})
+                \sim\id_{B\times B'}.
+        \]
+        By symmetry we obtain
+        \[
+            (\vartheta\wedge\vartheta')\colon
+                (f^{-1}\times g^{-1})\circ(f\times g)
+                \sim\id_{A\times A'}.
+        \]
+        Note that this defines the product of equivalences:
+        \begin{equation}\label{eq:eqv-product}
+            (f,(\eta,\vartheta))\times(g,(\eta',\vartheta'))
+                \defeq
+                    \bigl(
+                        f\times g,
+                        (
+                            \eta\wedge\eta',
+                            \vartheta\wedge\vartheta'
+                        )
+                    \bigr).
+        \end{equation}
+
+        \item By univalence, we can apply the $\fun{ua}$ function to the equivalences $(f,(\eta,\vartheta))$ and $(g,(\eta',\vartheta'))$ to obtain paths $\phi\colon A\eq{\univ}B$ and $\psi\colon A'\eq{\univ}B'$.
+
+        This transforms the question into proving that $(A\times A')\eq{\univ}(B\times B')$ is inhabited.
+    
+        By based path induction, first on $\phi$ and then on $\psi$, the goal reduces to the base case where $B\equiv A$ with $\phi\equiv\fun{refl}_A$, and $B'\equiv A'$ with $\psi\equiv\fun{refl}_{A'}$. In this case, the target equality is trivially witnessed by $\fun{refl}_{A\times A'}$.
+
+        Applying $\fun{idtoeqv}$ yields the required equivalence.
+        
+        To show that both proofs are the same, we need to be more precise.
+        \begin{enumerate}[-]
+            \item Fix $B\equiv A$ and $\phi\equiv\fun{refl}_A$. Consider the motive
+            \begin{align*}
+                E&\colon\prod_{X\colon\univ}(A'\eq{\univ}X)\to\univ\\
+                E(X)&\defeq\lambda z.\,
+                    (A\times A')\eq\univ(A\times X),
+            \end{align*}
+            where $E(X)$ is constant (it does not depend on $z$).
+            
+            For the base case $c_{\fun{refl}}\colon E(A',\fun{refl}_{A'})$, we take reflexivity:
+            \[
+                c_{\fun{refl}}\defeq\fun{refl}_{A\times A'}.
+            \]
+            The induction principle yields:
+            \[
+                \gamma_\psi\defeq
+                    \fun{ind}_=(E,\fun{refl}_{A\times A'},B',\psi)
+                        \colon(A\times A')\eq\univ(A\times B').
+            \]
+        
+            \item To complete the based induction on $\phi$, we fix $\psi\colon A'\eq{\univ}B'$ and introduce the motive
+            \begin{align*}
+                F_\psi&\colon\prod_{Y\colon\univ}
+                    (A\eq{\univ}Y)\to\univ\\
+                F_\psi(Y)&\defeq\lambda z.\,
+                    (A\times A')
+                    \eq{\univ}(Y\times B'),
+            \end{align*}
+            where, as before, $F_\psi(Y)$ is constant on $z$. For the base case where $Y\equiv A$, we take $\gamma_\psi$. Thus, we can define
+            \[
+                \gamma\defeq\fun{ind}_=(F_\psi,\gamma_\psi,B,\phi)
+                    \colon(A\times A')\eq{\univ}(B\times B').
+            \]
+            Consider the goal type
+            \begin{align*}
+                \prod_{\phi\colon A\eq\univ B}\;
+                \prod_{\psi\colon A'\eq\univ B'}
+                    \fun{idtoeqv}(\gamma)
+                    \eq{}
+                    \fun{idtoeqv}(\phi)\times\fun{idtoeqv}(\psi),
+            \end{align*}
+            where the product on the \rhs is the one defined in \eqref{eq:eqv-product}.
+            
+            Since both sides of the equation inhabit the type $(A\times A')\simeq(B\times B')$, to prove that it is inhabited we may proceed by path induction on $\phi$ and $\psi$. Thus, we assume $B\equiv A$ with $\phi\equiv\fun{refl}_A$, and $B'\equiv A'$ with $\psi\equiv\fun{refl}_{A'}$. Then,
+            \begin{align*}
+                \gamma_\psi
+                    &\equiv\fun{refl}_{A\times A'},\\
+                \gamma
+                    &\equiv\gamma_\psi
+                        \equiv\fun{refl}_{A\times A'},\\
+                \fun{idtoeqv}(\gamma)
+                    &\equiv(\id_{A\times A'},(\fun{refl},\fun{refl})),\\
+                \fun{idtoeqv}(\phi)
+                    &\equiv(\id_A,(\fun{refl},\fun{refl})),\\
+                \fun{idtoeqv}(\psi)
+                    &\equiv(\id_{A'},(\fun{refl},\fun{refl})),\\
+                \fun{idtoeqv}(\phi)\times\fun{idtoeqv}(\psi)
+                    &\equiv
+                        \bigl(
+                            \id_A\times\id_{A'},
+                            (
+                                \fun{refl}\wedge\fun{refl},
+                                \fun{refl}\wedge\fun{refl}
+                            )
+                        \bigr).
+            \intertext{Consequently, we need to verify that}
+                \id_{A\times A'}
+                    &\eq{}\id_A\times\id_{A'}
+            \intertext{and}
+                \fun{refl}\wedge\fun{refl}
+                    &\eq{}\fun{refl}.
+            \end{align*}
+            The first equality is actually definitional, modulo abuse of notation. The second follows from function extensionality because
+            \begin{align*}
+                \fun{refl}(x)&\defeq\fun{refl}_x,\\
+                (\fun{refl}\wedge\fun{refl})(x,y)
+                    &\equiv\fun{pair}^=(\fun{refl}_x,\fun{refl}_y)\\
+                    &\equiv\fun{refl}_{(x,y)}\\
+                    &\equiv\fun{refl}(x,y).
+            \end{align*}       
+        \end{enumerate}
+
+        \item We proceed by type former
+        \begin{enumerate}
+            \item[$\Sigma$)] Let\/ $X\colon\univ$ be a type and\/ $A,B\colon X\to\univ$ be type families. Suppose that for each\/ $x\colon X$, there is an equivalence\/ $(f_x,(\eta_x,\vartheta_x))\colon A(x)\simeq B(x)$. Consider the function
+            \begin{align*}
+                f\colon\Bigl(\sum_{x\colon X}A(x)\Bigr)
+                    &\to\Bigl(\sum_{x\colon X}B(x)\Bigr)\\
+                (x,a)&\mapsto(x,f_x(a)).
+            \end{align*}
+            For each\/ $x\colon X$, let\/ $f_x^{-1}\colon B(x)\to A(x)$ denote the quasi-inverse of\/ $f_x$. Set
+            \begin{align*}
+                f^{-1}\colon\Bigl(\sum_{x\colon X}B(x)\Bigr)
+                    &\to\Bigl(\sum_{x\colon X}A(x)\Bigr)\\
+                (x,b)&\mapsto(x,f_x^{-1}(b)).
+            \intertext{Then,}
+                (f\circ f^{-1})(x,b)
+                    &\equiv f(x,f_x^{-1}(b))\\
+                    &\equiv(x,f_x(f_x^{-1}(b)))\\
+                    &\eq{\Sigma_XB}(x,b)
+                    &&\text{; by\/ }\eta_x(b)\text{}.
+            \end{align*}
+            By symmetry,\/ $(f^{-1}\circ f)(x,a)\eq{\Sigma_XA}(x,a)$. Thus, we can define
+            \begin{align*}
+                \eta&\colon f\circ f^{-1}\sim\id_{\Sigma_XB}\\
+                \eta(x,b)&\defeq\fun{pair}^=(\fun{refl}_x,\eta_x(b)),
+            \end{align*}
+            which provides the required homotopy.
+            
+            Similarly, we obtain
+            \begin{align*}
+                \vartheta&\colon f^{-1}\circ f\sim\id_{\Sigma_XA}\\
+                \vartheta(x,a)&\defeq
+                    \fun{pair}^=(\fun{refl}_x,\vartheta_x(a)).
+            \end{align*}
+            Note that this defines the equivalence over the\/ $\Sigma$-type:
+            \begin{equation}\label{eq:eqv-Sigma}
+                \sum_{x\colon X}(f_x,(\eta_x,\vartheta_x))
+                    \defeq(f,(\eta,\vartheta)).
+            \end{equation}
+
+            Using the univalence axiom function $\fun{ua}$, we may transform, for each $x\colon X$, the equivalence $f_x$ into a path $p_x\colon A(x)\eq\univ B(x)$. This allows us to define the homotopy
+            \begin{align*}
+                \varepsilon&\colon A\sim B\\
+                \varepsilon(x)&\defeq p_x.
+            \end{align*}
+            We obtain $\fun{funext}(\varepsilon)\colon A\eq\univ B$. In particular, using equality~\eqref{eq:happly-is-ap-ev},
+            \[
+                \fun{funext}(\varepsilon)(x)
+                    \eq{A(x)\eq\univ B(x)}\fun{happly}(\fun{funext}(\varepsilon))(x)
+                    \equiv\varepsilon(x)
+                    \equiv\fun{ua}(f_x).
+            \]
+            Now consider
+            \begin{align*}
+                \sigma\colon(X\to\univ)&\to\univ\\
+                P&\mapsto\sum_{x\colon X}P(x).
+            \end{align*}
+            Then, $\fun{ap}_\sigma(\fun{funext}(\varepsilon))\colon\Sigma_XA\eq\univ\Sigma_XB$, as desired.
+            
+            \bigskip
+
+            To verify that both proofs are actually the same, we introduce the goal
+            \begin{equation}\label{eq:Sigma-goal}
+                \fun{idtoeqv}
+                    \bigl(
+                        \fun{ap}_\sigma(p)
+                    \bigr)
+                \eq{\Sigma_XA\simeq\Sigma_XB}
+                (f,(\eta,\vartheta)),
+            \end{equation}
+            where $p\defeq\fun{funext}(\varepsilon)\colon A\eq\univ B$.
+            
+            To use based path induction to prove the goal, we must first generalize it to an arbitrary path $p\colon A\eq\univ B$. For an arbitrary $p$, we define $\varepsilon_p\defeq\fun{happly}(p)$, and for each $x\colon X$, the following equivalence between $A(x)$ and $B(x)$:
+            \begin{align*}
+                f_{p,x}
+                    &\defeq\fun{transport}^{\id_\univ}
+                        (\varepsilon_p(x))\\
+                \eta_{p,x}
+                    &\defeq\fun{transportinv}_r^{\id_\univ}
+                        (\varepsilon_p(x))\\
+                \vartheta_{p,x}
+                    &\defeq\fun{transportinv}_l^{\id_\univ}
+                        (\varepsilon_p(x)).
+            \end{align*}
+            
+            Let $(f_p, (\eta_p, \vartheta_p))$ denote the total equivalence between the $\Sigma$-types induced by this family of equivalences.
+            
+            We can now apply based path induction on $p$, assuming $B\equiv A$ and $p\equiv\fun{refl}_A$. In this base case, the components of the \lhs of \eqref{eq:Sigma-goal} evaluate to
+            \begin{align*}
+                \fun{transport}^{\id_\univ}
+                    &(\fun{ap}_\sigma(p))
+                    \equiv\id_{\Sigma_XA}\\
+                \fun{transportinv}_r^{\id_\univ}
+                    &(\fun{ap}_\sigma(p))
+                    \equiv\fun{refl}\\
+                \fun{transportinv}_l^{\id_\univ}
+                    &(\fun{ap}_\sigma(p))
+                    \equiv\fun{refl}.
+            \end{align*}
+            For the \rhs of \eqref{eq:Sigma-goal}, the assumption $p\equiv\fun{refl}_A$ implies that
+            \[
+                \varepsilon_p
+                    \equiv\fun{happly}(\fun{refl}_A)
+                    \equiv\lambda x.\,\fun{refl}_{A(x)},
+            \]
+            so that $\varepsilon_p(x)\equiv\fun{refl}_{A(x)}$. Therefore, by definition of the induced components,
+            \begin{align*}
+                f_{p,x}&\equiv\id_{A(x)}\\
+                \eta_{p,x}&\equiv\fun{refl}\\
+                \vartheta_{p,x}&\equiv\fun{refl}.
+            \end{align*}
+            Thus, the total function $f_p(x,a)\defeq(x,f_{p,x}(a))$ reduces to $(x,a)$, and the global homotopies $\eta_p$ and $\vartheta_p$, which are constructed component-wise using $\fun{pair}^=$, satisfy
+            \begin{align*}
+                \eta_p(x,a)
+                    &\equiv\fun{pair}^=(\fun{refl}_x,\eta_{p,x}(a))\\
+                    &\equiv\fun{pair}^=(\fun{refl}_x,\fun{refl}_a)\\
+                    &\equiv\fun{refl}_{(x,a)},
+            \intertext{and}
+                    \vartheta_p(x,a)
+                    &\equiv\fun{pair}^=(\fun{refl}_x,\vartheta_{p,x}(a))\\
+                    &\equiv\fun{pair}^=(\fun{refl}_x,\fun{refl}_a)\\
+                    &\equiv\fun{refl}_{(x,a)}.
+            \end{align*}
+            Since both sides evaluate to the identity equivalence in the base case, the equality
+            \[
+                \fun{idtoeqv}
+                    \bigl(
+                        \fun{ap}_\sigma(p)
+                    \bigr)
+                \eq{\Sigma_XA\simeq\Sigma_XB}
+                (f_p,(\eta_p,\vartheta_p))
+            \]
+            holds for an arbitrary path $p$.
+            
+            Applying this equality to $p\defeq\fun{funext}(\varepsilon)$ yields
+            \begin{align*}
+                (f_{p,x},(\eta_{p,x},\vartheta_{p,x}))
+                    &\equiv\fun{idtoeqv}(\fun{happly}
+                        (\fun{funext}(\varepsilon))(x))\\
+                    &\equiv\fun{idtoeqv}
+                        (\fun{ua}(f_x,(\eta_x,\vartheta_x)))\\
+                    &\eq{}(f_x,(\eta_x,\vartheta_x)).
+            \end{align*}
+            Thus, the generalized equivalence $(f_p, (\eta_p, \vartheta_p))$ evaluates precisely to the arbitrarily chosen equivalence $(f, (\eta, \vartheta))$, completing the proof.
+
+            \item[$\to$)] Here we have to prove that, given equivalences $(f,(\eta,\vartheta))\colon A\simeq B$ and $(g,(\eta',\vartheta'))\colon A'\simeq B'$, the type $(A\to A')\simeq(B\to B')$ is inhabited.
+
+            Consider the function
+            \begin{align*}
+                (f\to g)\colon(A\to A')&\to(B\to B')\\
+                u&\mapsto v,
+            \end{align*}
+            where $v$ is defined by the commutativity of the diagram
+            \[
+                \begin{tikzcd}[row sep=large]
+                    A
+                        \arrow[r,"u"]
+                        \arrow[d,"f"']
+                    &A'
+                        \arrow[d,"g"]\\
+                    B
+                        \arrow[r,"v"',dashed]
+                        \arrow[u,"f^{-1}",bend left=50]
+                    &B'
+                \end{tikzcd}
+            \]
+            That is, $(f\to g)\defeq\lambda u.\,g\circ u\circ f^{-1}$. We define the quasi-inverse as
+            \[
+                 (f\to g)^{-1}\defeq\lambda v.\,g^{-1}\circ v\circ f.
+            \]
+            Note that, for $b\colon B$, we have
+            \begin{align*}
+                (f\to g)\circ(f\to&g)^{-1}(v)(b)\\
+                    &\equiv(f\to g)(g^{-1}\circ v\circ f)(b)\\
+                    &\equiv(g\circ g^{-1}\circ v)(f(f^{-1}(b)))\\
+                    &\eq{B'}(g\circ g^{-1})(v(b))
+                        &&\text{; }((g\circ g^{-1}\circ v)\lwct\eta)(b)\\
+                    &\eq{B'}v(b)
+                        &&\text{; }(\eta'\rwct v)(b).
+            \end{align*}
+            Thus,
+            \[
+                ((g\circ g^{-1}\circ v)\lwct\eta)\ct(\eta'\rwct v)
+                \colon(f\to g)\circ(f\to g)^{-1}(v)\sim v.
+            \]
+            Since Proposition~\ref{prop:homotopy-whiskering} implies
+            \begin{align*}
+                ((g\circ g^{-1}\circ v)\lwct\eta)\ct(\eta'\rwct v)
+                \eq{}\eta'\hct(v\lwct\eta),
+            \end{align*}
+            we can express the global right homotopy as
+            \begin{align*}
+                (f\to g)\circ(f\to g)^{-1}&\sim\id_{B\to B'}\\
+                v&\mapsto\eta'\hct(v\lwct\eta).
+            \end{align*}
+            By symmetry, we deduce
+            \begin{align*}
+                (f\to g)^{-1}\circ(f\to g)&\sim\id_{A\to A'}\\
+                u&\mapsto\vartheta'\hct(u\lwct\vartheta).
             \end{align*}
         \end{enumerate}
-        We have to verify that $\varphi$ and $\varphi^{-1}$ are quasi-inverses.
-        \begin{align*}
-            \varphi(\varphi^{-1}((u,v),q))
-                &\equiv\varphi(h)\\
-                &\equiv
-                    \bigl(
-                        (\pi_B\circ h,\pi_E\circ\pi_C\circ h),
-                        p\rwct h
-                    \bigr)\\
-                &\eq{}
-                    \bigl(
-                        (u,\pi_E\circ h_R),
-                        p\rwct h
-                    \bigr)\\
-                &\eq{}
-                    \bigl(
-                        (u,v),
-                        p\rwct h
-                    \bigr).
-        \end{align*}
-        On the other hand,
-        \begin{align*}
-            p\rwct h
-                &\eq{}((g_D\lwct p_L)\ct(p_R\rwct\pi_C))\rwct h\\
-                &\eq{}(g_D\lwct p_L\rwct h)
-                    \ct(p_R\rwct\pi_C\circ h)
-        \end{align*}
-        and
-        \begin{align*}
-            g_D\lwct p_L\rwct h
-                &\eq{}g_D\lwct
-                    \bigl(
-                        (g_B\lwct r_B)
-                        \ct r_D^{-1}
-                        \ct(\pi_D\lwct r_C)^{-1}
-                    \bigr)\\
-                &\eq{}(g_D\circ g_B\lwct r_B)
-                   \ct(g_D\lwct r_D^{-1})
-                    \ct(g_D\circ\pi_D\lwct r_C^{-1}).
-        \end{align*}
-        Applying the Interchange Law Proposition~\ref{prop:path-interchange} to the diagram
-        \[
-            \begin{tikzcd}[column sep=huge]
-                X
-                        \arrow[r,"h_R",bend left=35]
-                        \arrow[r,"\pi_C\circ h"',bend right=35]
-                        \arrow[r,
-                            "\scriptstyle r_C^{-1}",
-                            phantom,
-                            description]
-                    &C
-                        \arrow[r,"g_D\circ\pi_D",bend left=35]
-                        \arrow[r,"g_E\circ\pi_E"',bend right=35]
-                        \arrow[r,
-                            "\scriptstyle p_R",
-                            phantom,
-                            description]
-                    &F
-            \end{tikzcd}
-        \]
-        we obtain:
-        \[
-            (g_D\circ\pi_D\lwct r_C^{-1})\ct(p_R\rwct\pi_C\circ h)
-            \eq{}
-            (p_R\rwct h_R)\ct(g_E\circ\pi_E\lwct r_C^{-1}).
-        \]
-        It follows that
-        \begin{align*}
-            p\rwct h
-                &\eq{}(g_D\circ g_B\lwct r_B)
-                    \ct(g_D\lwct r_D^{-1})
-                    \ct(g_D\circ\pi_D\lwct r_C^{-1})
-                    \ct(p_R\rwct\pi_C\circ h)\\
-                &\eq{}(g_D\circ g_B\lwct r_B)
-                    \ct(g_D\lwct r_D^{-1})
-                    \ct(p_R\rwct h_R)
-                    \ct(g_E\circ\pi_E\lwct r_C^{-1})\\
-                &\eq{}(g_D\circ g_B\lwct r_B)
-                    \ct q
-                    \ct(g_E\lwct r_E^{-1})
-                    \ct(g_E\circ\pi_E\lwct r_C^{-1}).
-        \end{align*}
-        By Proposition~\ref{prop:transport-in-commutative-squares}, to see that $\varphi(h)\eq{\Sigma(X)}((u,v),q)$, we have verify that
-        \begin{equation*}
-            (g_D\circ g_B\lwct r_B)^{-1}
-            \ct(p\rwct h)
-            \ct\alpha
-            \eq{W(u,v)}q.\tag{\dag}
-        \end{equation*}
-        for $\alpha\colon\pi_E\circ\pi_C\circ h\eq{X\to E}v$. To compute $\alpha$ observe that
-        \[
-            r_C\colon\pi_C\circ h\eq{X\to C}h_R
-            \quad\text{and}\quad
-            r_E\colon\pi_E\circ h_R\eq{X\to E}v.
-        \]
-        Then
-        \[
-            \pi_E\lwct r_C\colon\pi_E\circ\pi_C\circ h
-            \eq{X\to E}
-            \pi_E\circ h_R
-            \quad\text{and}\quad
-            r_E\colon\pi_E\circ h_R
-            \eq{X\to E}v,
-        \]
-        which implies
-        \[
-            (\pi_E\lwct r_C)\ct r_E
-            \colon\pi_E\circ\pi_C\circ h\eq{X\to E}v.
-        \]
-        Hence, $\alpha\equiv(\pi_E\lwct r_C)\ct r_E$. Substituting in the \lhs of $(\dag)$, we obtain
-        \[
-            \lhs\eq{}q
-            \ct(g_E\lwct r_E^{-1})
-            \ct(g_E\circ\pi_E\lwct r_C^{-1})
-            \ct\bigl(g_E\lwct((\pi_E\lwct r_C)\ct r_E)\bigr)
-        \]
-        Distributing the left whiskering of $g_E$ over the concatenation yields:
-        \[
-            \lhs\eq{}q
-            \ct(g_E\lwct r_E^{-1})
-            \ct(g_E\circ\pi_E\lwct r_C^{-1})
-            \ct(g_E\circ\pi_E\lwct r_C)
-            \ct(g_E\lwct r_E),
-        \]
-        i.e.,
-        \[
-            \lhs\eq{}q
-            \ct(g_E\lwct r_E^{-1})
-            \ct(g_E\lwct r_E)\eq{}q,
-        \]
-        as desired.
-
-    \end{description}
+    \end{enumerate}
 \end{solution}
+
