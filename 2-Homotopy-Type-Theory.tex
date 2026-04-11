@@ -1078,7 +1078,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     \end{itemize}
 \end{defns}
 
-\subsection{Types as Categories}
+\subsection{Types as Categories}\label{types-as-categories}
 
 \label{rem:types-as-categories}
 Types admit different interpretations: depending on the circumstances, they can be viewed as sets, propositions, or spaces. Another way to think of types is as categories. In this analogy we have
@@ -1114,7 +1114,7 @@ Types admit different interpretations: depending on the circumstances, they can 
     \end{center}
 
     \item[Natural transformations.] These are the homotopies: given $f,g\colon A\to B$, a natural transformation between them is an inhabitant of the homotopy type $\eta\colon f\sim g$. To see this we need to show the (propositional) commutativity of the square
-    \begin{equation}\label{eq:nat-transformation}
+    \begin{equation}\label{tik:nat-transformation}
         \begin{tikzcd}
             f(x)
                     \arrow[r,"\tilde f(p)"]
@@ -1127,9 +1127,9 @@ Types admit different interpretations: depending on the circumstances, they can 
         \end{tikzcd}
     \end{equation}
     i.e., for every $p\colon x\eq Ay$, the type
-    \begin{align*}
-        \tilde f(p)\ct\eta_y\eq B\eta_x\ct\tilde g(p)
-    \end{align*}
+    \begin{align}\label{eq:nat-transformation}
+        \fun{ap}_f(p)\ct\eta_y\eq B\eta_x\ct\fun{ap}_g(p)
+    \end{align}
     is inhabited. This follows by based path induction on $p$ using the motive $C\colon\prod_{y\colon A}(x\eq Ay)\to\univ$ defined by
     \[
         C(y,p)\defeq
@@ -1155,7 +1155,7 @@ Types admit different interpretations: depending on the circumstances, they can 
 \end{prop}
 
 \begin{proof}
-    By \eqref{eq:nat-transformation}, we have a commutative path diagram
+    By \eqref{tik:nat-transformation}, we have a commutative path diagram
     \[
         \begin{tikzcd}
         f(f(x))
@@ -1735,7 +1735,7 @@ Let\/ $f\colon A\to B$. Then:
             \ct\fun{ap}_f(\vartheta_{g(f(x))})
             \ct\eta_{f(x)}.
     \end{equation}
-    By the naturality of\/ $\eta$ (see \eqref{eq:nat-transformation}) applied to the path 
+    By the naturality of\/ $\eta$ (see \eqref{tik:nat-transformation}) applied to the path 
     \[
         q\defeq\fun{ap}_f(\vartheta_x)
             \colon f(g(f(x)))\eq Bf(x),
@@ -1876,7 +1876,7 @@ Let\/ $f\colon A\to B$. Then:
                 \ct\fun{ap}_{f\circ f^{-1}}(q)
                 \ct\fun{ap}_f(\vartheta_{a'}).
     \end{align*}
-    Applying \eqref{eq:nat-transformation} to\/ $\eta\colon f\circ f^{-1}\sim\id_B$, we obtain 
+    Applying \eqref{tik:nat-transformation} to\/ $\eta\colon f\circ f^{-1}\sim\id_B$, we obtain 
     \[
         \begin{tikzcd}[column sep=huge,row sep=large]
             f\circ f^{-1}(f(a))
@@ -1915,7 +1915,7 @@ Let\/ $f\colon A\to B$. Then:
                 \ct\vartheta_{a'}\\
             &\eq A\fun{ap}_{f^{-1}\circ f}(p)\ct\vartheta_{a'}.
     \end{align*}
-    Applying \eqref{eq:nat-transformation} to\/ $\vartheta\colon f^{-1}\circ f\sim\id_A$, we obtain 
+    Applying \eqref{tik:nat-transformation} to\/ $\vartheta\colon f^{-1}\circ f\sim\id_A$, we obtain 
     \[
         \begin{tikzcd}[column sep=huge,row sep=large]
             f^{-1}\circ f(a)
@@ -3612,9 +3612,9 @@ we apply the framework~\ref{observational-framework}.
 
 
 \textsc{Base code:} For the reflexive case, we define the term\/ $c\colon\fun{Code}(f,f)$ pointwise by reflexivity:
-\[
+\begin{equation}\label{eq:happly-basecode}
     c \defeq \lambda x\colon A.\, \fun{refl}_{f(x)}.
-\]
+\end{equation}
 
 \textsc{Encode function:}
 \begin{align*}
@@ -3667,6 +3667,11 @@ which can be illustrated by
         &&&\qquad\text{\small Function homotopy}
 \end{tikzcd}
 \]
+Because of the base code we defined in \eqref{eq:happly-basecode}, we have
+\begin{equation}\label{eq:happly-refl}
+    \fun{happly}(\fun{refl}_f)\equiv\lambda x.\,\fun{refl}_{f(x)}.
+\end{equation}
+
 Since the basic rules of type theory do not provide a way to construct a quasi-inverse for\/ $\fun{happly}$, we introduce the Function Extensionality axiom to formally establish the equivalence between function equality and pointwise homotopy.
 
 \textbf{Axiom.} [Function Extensionality] The homotopy application function \eqref{eq:homotopy-application} is an equivalence.\footnote{We will see in later chapters that this axiom follows both from univalence and from the interval type.}
@@ -4867,13 +4872,15 @@ the \textsl{horizontal composition} $\beta\hct\alpha$ is defined using whiskerin
 
 \begin{prop}\label{prop:homotopy-whiskering}
     With the preceding notation,
-    \[
-        \beta\hct\alpha\eq{(f'\circ f)\sim(g'\circ g)}(f'\lwct\alpha)\ct(\beta\rwct g).
-    \]
+    \begin{enumerate}[a),font=\upshape]
+        \item $\beta\hct\alpha\eq{(f'\circ f)\sim(g'\circ g)}(f'\lwct\alpha)\ct(\beta\rwct g)$
+    \item $\beta\hct\fun{refl}_f\eq{}\beta\rwct f$
+    \item $\fun{refl}_{f'}\lwct\alpha\equiv g'\lwct\alpha$
+    \end{enumerate}
 \end{prop}
 
-\begin{proof}
-    We have
+\begin{proof}${}$
+    For part a) we have
     \begin{align*}
         \fun{funext}(\beta\hct\alpha)
             &\eq{}\fun{funext}(\beta\rwct f)
@@ -4888,6 +4895,8 @@ the \textsl{horizontal composition} $\beta\hct\alpha$ is defined using whiskerin
             &\eq{}\fun{funext}((f'\lwct\alpha)\ct(\beta\rwct g)),
     \end{align*}
     and the result follows by evaluation of $\fun{happly}$.
+
+    Parts b) and c) are direct consequences of Remark~\ref{rem:whiskering-with-id}.
 \end{proof}
 
 \section{The Univalence Axiom}
@@ -7636,7 +7645,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
 
 \end{solution}
 
-\begin{exr}
+\begin{exr}\label{exr:2-simeq-2-simeq-2}
     Show that\/ $(\fun2\simeq\fun2)\simeq\fun2$.
 \end{exr}
 
@@ -7921,6 +7930,8 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         By based path induction, first on $\phi$ and then on $\psi$, the goal reduces to the base case where $B\equiv A$ with $\phi\equiv\fun{refl}_A$, and $B'\equiv A'$ with $\psi\equiv\fun{refl}_{A'}$. In this case, the target equality is trivially witnessed by $\fun{refl}_{A\times A'}$.
 
         Applying $\fun{idtoeqv}$ yields the required equivalence.
+
+        \bigskip
         
         To show that both proofs are the same, we need to be more precise.
         \begin{enumerate}[-]
@@ -8204,7 +8215,445 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
                 (f\to g)^{-1}\circ(f\to g)&\sim\id_{A\to A'}\\
                 u&\mapsto\vartheta'\hct(u\lwct\vartheta).
             \end{align*}
+            
+            \bigskip
+
+            Using the univalence axiom, we can transform the equivalences into equalities:
+            \[
+                \fun{ua}(f,(\eta,\vartheta))\colon A\eq\univ B
+                \quad\text{and}\quad
+                \fun{ua}(g,(\eta',\vartheta'))\colon A'\eq\univ B'.
+            \]
+            Now suppose we have generic paths $p\colon A\eq\univ B$ and $q\colon A'\eq\univ B'$. To prove that
+            \[
+                (A\to A')\eq\univ(B\to B'),
+            \]
+            by based path induction on $p$, we can assume $B\equiv A$ and $p\equiv\fun{refl}_A$. The goal becomes
+            \[
+                (A\to A')\eq\univ(A\to B').
+            \]
+            Thus, we may further assume $B'\equiv A'$ and $q\equiv\fun{refl}_{A'}$. In this case, the goal becomes 
+            \[
+                (A\to A')\eq\univ(A\to A'),
+            \]
+            which is inhabited by $\fun{refl}_{A\to A'}$. Combining both inductions we obtain
+            \[
+                \fun{rec}_{=_\univ}
+                    \bigl(
+                        A'\to B',
+                        \fun{rec}_{=_\univ}
+                            (
+                                A\to B',
+                                \fun{refl}_{A\to A'},
+                                A\to A'
+                            ),
+                        A'\to B'
+                    \bigr)
+            \]
+            as a witness of our goal.
+            
+            Let $\varepsilon(p,q)\colon(A\to A')\eq\univ(B\to B')$ denote the path obtained by our double recursion. Applying $\fun{idtoeqv}$ to the equivalences we have yields:
+            \[
+                \fun{idtoeqv}\bigl(\varepsilon(\fun{ua}(f,(\eta,\vartheta)), \fun{ua}(g,(\eta',\vartheta')))\bigr)
+                    \colon (A\to A') \simeq (B\to B').
+            \]
+
+            \bigskip
+
+            To verify that both proofs are equivalent, we have to show that
+            \begin{align*}
+                \fun{transport}^{\id_\univ}(\epsilon)
+                    &\eq{}(f\to g)\\
+                \fun{transportinv}_r^{\id_\univ}(\epsilon)
+                    &\eq{}\lambda v.\,\eta'\hct(v\lwct\eta)\\
+                \fun{transportinv}_l^{\id_\univ}(\epsilon)
+                    &\eq{}\lambda u.\,\vartheta'\hct(u\lwct\vartheta),
+            \end{align*}
+            where
+            \[
+                \epsilon\defeq
+                    \varepsilon
+                        \bigl(
+                            \fun{ua}(f,(\eta,\vartheta)),
+                            \fun{ua}(g,(\eta',\vartheta'))
+                        \bigr).
+            \]
+            If we generalize to $\epsilon_{p,q}\defeq\varepsilon(p,q)$, as we defined it above, we can introduce
+            \begin{align*}
+                (f_p,(\eta_p,\vartheta_p))
+                    &\defeq\fun{idtoeqv}(p)\\
+                (g_q,(\eta'_q,\vartheta'_q))
+                    &\defeq\fun{idtoeqv}(q).
+            \end{align*}
+            We claim that
+            \begin{equation}\label{eq:p-q-claim}
+                \begin{aligned}
+                    \fun{transport}^{\id_\univ}(\epsilon_{p,q})
+                        &\eq{}(f_p\to g_q)\\
+                    \fun{transportinv}_r^{\id_\univ}(\epsilon_{p,q})
+                        &\eq{}\lambda v.\,\eta'_q\hct(v\lwct\eta_p)\\
+                    \fun{transportinv}_l^{\id_\univ}(\epsilon_{p,q})
+                        &\eq{}\lambda u.\,
+                            \vartheta'_q\hct(u\lwct\vartheta_p).
+                \end{aligned}
+            \end{equation}
+            In fact, by based path induction first on $p$ and then on $q$, we only need to consider the case $B\equiv A$, $p\equiv\fun{refl}_A$ and $B'\equiv A'$, $q\equiv\fun{refl}_{A'}$. In that case, $\epsilon_{p,q}$ becomes $\fun{refl}_{A\to A'}$, $(f_p,(\eta_p,\vartheta_p))\equiv(\id_A,(\fun{refl},\fun{refl}))$, and $(g_q,(\eta'_q,\vartheta'_q))\equiv(\id_{A'},(\fun{refl},\fun{refl}))$. Consequently,
+            \begin{align*}
+                \fun{transport}^{\id_\univ}(\epsilon_{p,q})
+                    &\equiv\id_{A\to A'},\\
+                (f_p\to g_q)&\equiv\id_{A\to A'};
+            \intertext{moreover, Lemma~\ref{lem:transportinv} and Proposition~\ref{prop:homotopy-whiskering} yield}
+                \fun{transportinv}_r^{\id_\univ}(\epsilon_{p,q})
+                    &\equiv\fun{refl}\\
+                \lambda v.\,\eta'_q\hct(v\lwct\eta_p)
+                    &\eq{}\fun{refl}\\
+                \fun{transportinv}_l^{\id_\univ}(\epsilon_{p,q})
+                    &\equiv\fun{refl}\\
+                \lambda u.\,
+                        \vartheta'_q\hct(u\lwct\vartheta_p)
+                    &\eq{}\fun{refl},
+            \end{align*}
+            proving the claim.
+            
+            Specializing \eqref{eq:p-q-claim} to $p\equiv\fun{ua}(f,(\eta,\vartheta))$ and $q\equiv\fun{ua}(g,(\eta',\vartheta'))$ reduces the question to proving that the $p$- and $q$-equivalences equal the original ones. But
+            \begin{align*}
+                (f_p,(\eta_p,\vartheta_p)) 
+                    &\equiv \fun{idtoeqv}(\fun{ua}(f,(\eta,\vartheta)))\\
+                    &\eq{A\simeq B} (f,(\eta,\vartheta))
+            \intertext{and}
+                (g_q,(\eta'_q,\vartheta'_q)) 
+                    &\equiv \fun{idtoeqv}(\fun{ua}(g,(\eta',\vartheta')))\\
+                    &\eq{A'\simeq B'} (g,(\eta',\vartheta')),
+            \end{align*}
+            which complete the proof.
+
+            \item[$\Pi$)] Suppose that there are equivalences $(f_x,(\eta_x,\vartheta_x))\colon A(x)\simeq B(x)$. We have to prove that $\Pi_XA\simeq\Pi_XB$. Consider the function
+            \begin{align*}
+                f\colon\Bigl(\prod_{x\colon X}A(x)\Bigr)
+                    &\to\prod_{x\colon X}B(x)\\
+                    u&\mapsto\lambda x.\,f_x(u(x)).
+            \intertext{For the back function we define}
+                f^{-1}\colon\Bigl(\prod_{x\colon X}B(x)\Bigr)
+                    &\to\prod_{x\colon X}A(x)\\
+                    v&\mapsto\lambda x.\,f_x^{-1}(v(x)).
+            \end{align*}
+            Clearly, these functions are mutual quasi-inverses. To construct the required homotopies, we apply function extensionality:
+            \begin{align*}
+                \eta&\colon f\circ f^{-1}\sim\id_{\Pi_XB}\\
+                \eta(v)&\defeq\fun{funext}(\lambda x.\,\eta_x(v(x))),
+            \intertext{and}
+                \vartheta&\colon f^{-1}\circ f\sim\id_{\Pi_XA}\\
+                \vartheta(u)&\defeq\fun{funext}(\lambda x.\,\vartheta_x(u(x))).
+            \end{align*}
+
+            \bigskip
+
+            Applying the univalence axiom to the point-wise equivalences yields
+            \[
+                \fun{ua}(f_x,(\eta_x,\vartheta_x))
+                    \colon A(x)\eq\univ B(x).
+            \]
+            Let $\varepsilon(x)\defeq\fun{ua}(f_x,(\eta_x,\vartheta_x))$. This means that $\varepsilon\colon A\sim B$ and so, $\fun{funext}(\varepsilon)\colon A\eq{X\to\univ}B$.
+            
+            Define the function
+            \begin{align*}
+                \Pi_X\colon(X\to\univ)&\to\univ\\
+                P&\mapsto\Pi_xP.
+            \end{align*}
+            Using the path above, we obtain
+            \[
+                \fun{ap}_{\Pi_X}(\fun{funext}(\varepsilon))
+                    \colon \Pi_XA\eq\univ\Pi_XB.
+            \]
+            The conclusion follows by applying $\fun{idtoeqv}$ to the resulting path.
+
+            \bigskip
+
+            To verify that both proofs are equivalent, we have to show that
+            \[
+                \fun{idtoeqv}(\fun{ap}_{\Pi_X}(\fun{funext}(\varepsilon)))
+                    \eq{}(f,(\eta,\vartheta)).
+            \]
+            Fix a generic path $p\colon A\eq{X\to\univ}B$. For each $x\colon X$, define
+            \[
+                (f^p_x,(\eta^p_x,\vartheta^p_x))
+                    \defeq\fun{idtoeqv}
+                        \bigl(
+                            \fun{happly}(p)(x)
+                        \bigr)
+                        \colon A(x)\simeq B(x).
+            \]
+            We can then construct a global equivalence with functions
+            \begin{alignat*}2
+                f^p\colon\Pi_XA&\to\Pi_XB
+                &g^p\colon\Pi_XB&\to\Pi_XA\\
+                u&\mapsto\lambda x.\,f^p_x(u(x))
+                &v&\mapsto\lambda x.\,(f^p_x)^{-1}(v(x))
+            \intertext{and homotopies}
+                \eta^p&\colon f^p\circ g^p\sim\id_{\Pi_XB}
+                &\vartheta^p&\colon g^p\circ f^p\sim\id_{\Pi_XA}\\
+                v&\mapsto\fun{funext}(\lambda x.\,\eta^p_x(v(x)))
+                &u&\mapsto \fun{funext}
+                    (\lambda x.\,\vartheta^p_x(u(x))).
+            \end{alignat*}
+            Thus, the global equivalence $E(p)$ is defined as
+            \[
+                E(p)\defeq(f^p,(\eta^p,\vartheta^p)).
+            \]
+            We claim that
+            \[
+                \fun{idtoeqv}(\fun{ap}_{\Pi_X}(p))\eq{}E(p).
+            \]
+            By based path induction on $p$, it suffices to consider $B\equiv A$ and $p\equiv\fun{refl}_A$. In this case, we have
+            \begin{align*}
+                \lhs 
+                    &\equiv \fun{idtoeqv}(\fun{ap}_{\Pi_X}(\fun{refl}_A)) \\
+                    &\equiv \fun{idtoeqv}(\fun{refl}_{\Pi_XA}) \\
+                    &\equiv (\id_{\Pi_XA}, (\fun{refl}_{\id_{\Pi_XA}}, \fun{refl}_{\id_{\Pi_XA}})).
+            \intertext{On the other hand, given $x\colon X$, by equation \eqref{eq:happly-refl}}
+                    \fun{happly}(\fun{refl}_A)(x)
+                        &\equiv\fun{refl}_{A(x)}.
+            \intertext{Then}
+                (f^{\fun{refl}_A}_x, (\eta^{\fun{refl}_A}_x, \vartheta^{\fun{refl}_A}_x))
+                    &\equiv(\id_{A(x)},(\fun{refl}_{\id_{A(x)}}, \fun{refl}_{\id_{A(x)}})).
+            \end{align*}
+            Substituting these into the definitions of our global functions $f^{\fun{refl}_A}$ and $g^{\fun{refl}_A}$ yields
+            \begin{align*}
+                f^{\fun{refl}_A}(u) 
+                    &\equiv \lambda x.\, \id_{A(x)}(u(x)) \equiv \lambda x.\, u(x) \equiv u, \\
+                g^{\fun{refl}_A}(v) 
+                    &\equiv \lambda x.\, \id_{A(x)}(v(x)) \equiv \lambda x.\, v(x) \equiv v.
+            \end{align*}
+            Thus, both global functions reduce definitionally to the identity function on the $\Pi$-type. Substituting the pointwise homotopies into the global ones yields
+            \begin{align*}
+                \eta^{\fun{refl}_A}(v) 
+                    &\equiv \fun{funext}(\lambda x.\, \fun{refl}_{v(x)}), \\
+                \vartheta^{\fun{refl}_A}(u) 
+                    &\equiv \fun{funext}(\lambda x.\, \fun{refl}_{u(x)}).
+            \end{align*}
+            Hence,
+            \begin{align*}
+                \eta^{\fun{refl}_A}(v) &\equiv \fun{refl}_v, \\
+                \vartheta^{\fun{refl}_A}(u) &\equiv \fun{refl}_u,
+            \end{align*}
+            which implies $\eta^{\fun{refl}_A} \equiv \fun{refl}_{\id_{\Pi_XA}}$ and $\vartheta^{\fun{refl}_A} \equiv \fun{refl}_{\id_{\Pi_XA}}$. It follows that
+            \begin{align*}
+                \rhs
+                    &\equiv E(\fun{refl}_A)\\
+                    &\equiv(f^{\fun{refl}_A},
+                        (\eta^{\fun{refl}_A}, \vartheta^{\fun{refl}_A}))\\
+                    &\equiv
+                        (
+                            \id_{\Pi_XA},
+                                (
+                                    \fun{refl}_{\id_{\Pi_XA}}, 
+                                    \fun{refl}_{\id_{\Pi_XA}}
+                                )
+                        ).
+            \end{align*}
+            In conclusion, $\lhs\equiv\rhs$, and the claimed equality follows. Specializing it to the path $p\defeq\fun{funext}(\varepsilon)$ yields the desired equality because, for each $x\colon X$,
+            \begin{align*}
+                \fun{idtoeqv}
+                    \bigl(
+                        \fun{happly}(\fun{funext}(\varepsilon))(x)
+                    \bigr)
+                    &\eq{}\fun{idtoeqv}(\varepsilon(x))\\
+                    &\equiv\fun{idtoeqv}
+                        \bigl(
+                            \fun{ua}(f_x,(\eta_x,\vartheta_x))
+                        \bigr)\\
+                    &\eq{}(f_x,(\eta_x,\vartheta_x)).
+            \end{align*}
+            Since the pointwise components defining $E(\fun{funext}(\varepsilon))$ are propositionally equal to the original point-wise equivalences, the assembled global equivalence is equal to $(f,(\eta,\vartheta))$.
+
+            \item[$+$)] In this case, we are given two equivalences\/ $(f,(\eta,\vartheta))\colon A\simeq B$ and\/ $(g,(\eta',\vartheta'))\colon A'\simeq B'$, and we have to construct an equivalence between\/ $(A+A')$ and\/ $(B+B')$. To do that, we define
+            \begin{align*}
+                (f+g)\colon(A+A')&\to(B+B')\\
+                \fun{inl}(a)&\mapsto\fun{inl}(f(a))\\
+                \fun{inr}(a')&\mapsto\fun{inr}(g(a')).
+            \intertext{For the inverse, we introduce}
+                (f+g)^{-1}&\defeq(f^{-1}+g^{-1}),
+            \intertext{and for the homotopies,}
+                (\eta+\eta')(\fun{inl}(b))
+                    &\defeq\fun{inl}(\eta(b))\\
+                (\eta+\eta')(\fun{inr}(b'))
+                    &\defeq\fun{inr}(\eta'(b'))\\
+                (\vartheta+\vartheta')(\fun{inl}(a))
+                    &\defeq\fun{inl}(\vartheta(a))\\
+                (\vartheta+\vartheta')(\fun{inr}(a'))
+                    &\defeq\fun{inr}(\vartheta'(a')).           
+            \end{align*}
+            It is clear that
+            \begin{equation}\label{eq:eqv-coproduct}
+                (f,(\eta,\vartheta))+(g,(\eta',\vartheta'))
+                    \defeq(f+g,(\eta+\eta',\vartheta+\vartheta'))
+            \end{equation}
+            is the desired equivalence.
+
+            \bigskip
+        
+            Using the univalence axiom, we obtain paths $\fun{ua}(f,(\eta,\vartheta))\colon A\eq\univ B$ and $\fun{ua}(g,(\eta',\vartheta'))\colon A'\eq\univ B'$. Suppose we have generic paths $p\colon A\eq\univ B$ and $q\colon A'\eq\univ B'$. We can construct a path
+            \[
+                p+q\colon(A+A')\eq\univ(B+B')
+            \]
+            by based path induction, first on $p$, and then on $q$, as follows: considering the case where $B\equiv A$ and $p\equiv\fun{refl}_A$, and $B'\equiv A'$ and $q\equiv\fun{refl}_{A'}$, we can simply define $p+q\defeq\fun{refl}_{A+A'}$.
+            
+            Thus, specializing this construction to the paths $p\defeq\fun{ua}(f,(\eta,\vartheta))$ and $q\defeq\fun{ua}(g,(\eta',\vartheta'))$, and then applying $\fun{idtoeqv}$ to the resulting path, we arrive at the desired equivalence.
+
+            \bigskip
+
+            To show that both proofs are the same, we need to be more precise about the second one.
+            \begin{enumerate}[-]
+                \item Fix $B\equiv A$ and $p\equiv\fun{refl}_A$. Consider the motive
+                \begin{align*}
+                    E&\colon\prod_{X\colon\univ}(A'\eq{\univ}X)\to\univ\\
+                    E(X)&\defeq\lambda z.\,
+                        (A+A')\eq\univ(A+X),
+                \end{align*}
+                where $E(X)$ is constant (it does not depend on $z$).
+                
+                For the base case $c_{\fun{refl}}\colon E(A',\fun{refl}_{A'})$, we take reflexivity:
+                \[
+                    c_{\fun{refl}}\defeq\fun{refl}_{A+A'}.
+                \]
+                The induction principle yields:
+                \[
+                    \gamma_q\defeq
+                        \fun{ind}_=(E,\fun{refl}_{A+A'},B',q)
+                            \colon(A+A')\eq\univ(A+B').
+                \]
+            
+                \item To complete the based induction on $p$, we fix $q\colon A'\eq{\univ}B'$ and introduce the motive
+                \begin{align*}
+                    F_q&\colon\prod_{Y\colon\univ}
+                        (A\eq{\univ}Y)\to\univ\\
+                    F_q(Y)&\defeq\lambda z.\,
+                        (A+A')
+                        \eq{\univ}(Y+B'),
+                \end{align*}
+                where, as before, $F_q(Y)$ is constant on $z$. For the base case where $Y\equiv A$, we take $\gamma_q$. Thus, we can define
+                \[
+                    \gamma\defeq\fun{ind}_=(F_q,\gamma_q,B,p)
+                        \colon(A+A')\eq{\univ}(B+B').
+                \]
+                Consider the goal type
+                \begin{align*}
+                    \prod_{p\colon A\eq\univ B}\;
+                    \prod_{q\colon A'\eq\univ B'}
+                        \fun{idtoeqv}(\gamma)
+                        \eq{}
+                        \bigl(
+                            \fun{idtoeqv}(p)+\fun{idtoeqv}(q)
+                        \bigr),
+                \end{align*}
+                where the coproduct on the \rhs is the one defined in \eqref{eq:eqv-coproduct}.
+            
+                Since both sides of the equation are terms of type $(A+A')\simeq(B+B')$, to prove that the identity type is inhabited, we may proceed by path induction on $p$ and $q$. Thus, we assume $B\equiv A$ with $p\equiv\fun{refl}_A$, and $B'\equiv A'$ with $q\equiv\fun{refl}_{A'}$. Then,
+                \begin{align*}
+                    \gamma_q
+                        &\equiv\fun{refl}_{A+A'},\\
+                    \gamma
+                        &\equiv\gamma_q
+                            \equiv\fun{refl}_{A+A'},\\
+                    \fun{idtoeqv}(\gamma)
+                        &\equiv(\id_{A+A'},(\fun{refl},\fun{refl})),\\
+                    \fun{idtoeqv}(p)
+                        &\equiv(\id_A,(\fun{refl},\fun{refl})),\\
+                    \fun{idtoeqv}(q)
+                        &\equiv(\id_{A'},(\fun{refl},\fun{refl})),\\
+                    \fun{idtoeqv}(p)+\fun{idtoeqv}(q)
+                        &\equiv
+                            \bigl(
+                                \id_A+\id_{A'},
+                                (
+                                    \fun{refl}+\fun{refl},
+                                    \fun{refl}+\fun{refl}
+                                )
+                            \bigr).
+                \intertext{Consequently, we need to verify that}
+                    \id_{A+A'}
+                        &\eq{}\id_A+\id_{A'}
+                \intertext{and}
+                    \fun{refl}+\fun{refl}
+                        &\eq{}\fun{refl}.
+                \end{align*}
+                The first equality is true by coproduct induction. Therefore, it holds by function extensionality. The second also follows from function extensionality because
+                \begin{align*}
+                    \fun{refl}(x)&\defeq\fun{refl}_x,\\
+                    (\fun{refl}+\fun{refl})(\fun{inl}(x))
+                        &\equiv\fun{refl}(\fun{inl}(x)),\\
+                    (\fun{refl}+\fun{refl})(\fun{inr}(y))
+                        &\equiv\fun{refl}(\fun{inr}(y)).
+                \end{align*}
+            \end{enumerate}
         \end{enumerate}
     \end{enumerate}
 \end{solution}
 
+\begin{exr}
+    State and prove a version of Equation~{\upshape\eqref{eq:nat-transformation}} from Section~{\upshape\nameref{types-as-categories}} for dependent functions.
+\end{exr}
+
+\begin{solution}
+    Let\/ $P\colon X\to\univ$ be a type family. Given two dependent functions\/ $f,g\colon\prod_{x\colon X}P(x)$, a homotopy\/ $\eta\colon f\sim g$, and a path\/ $p\colon x\eq{X}y$, we have
+    \[
+       \fun{apd}_f(p)\ct\eta(y)\eq{P(y)}p_*(\eta(x))\ct\fun{apd}_g(p).
+    \]
+    To prove this, first observe that the types match:
+    \[
+       \explain[p_*(f(x))\eq{}f(y)]{\fun{apd}_f(p)}
+       \ct
+       \explain[f(y)\eq{}g(y)]{\eta(y)}
+       \eq{P(y)}
+       \explain[p_*(f(x))\eq{}p_*(g(x))]
+       {{\fun{ap}_{p_*}(\explain[f(x)\eq{}g(x)]{\eta(x)})}}
+       \ct
+       \explain[p_*(g(x))\eq{}g(y)]{\fun{apd}_g(p)},
+    \]
+    where
+    \[
+        p_*\defeq\fun{transport}^P(p)\colon P(x)\to P(y).
+    \]
+    Therefore, to complete the proof, we may apply based path induction on\/ $p$ and assume that\/ $y\equiv x$ and\/ $p\equiv\fun{refl}_x$. In that case, the expression reduces to
+    \[
+        \fun{refl}_{f(x)}\ct\eta(x)
+            \eq{P(x)}\eta(x)\ct\fun{refl}_{g(x)},
+    \]
+    which is trivially inhabited because
+    \[
+        \fun{refl}_{f(x)}\ct\eta(x)\equiv\eta(x)
+        \quad\text{and}\quad
+        \fun{ru}(\eta(x))^{-1}\colon\eta(x)
+            \eq{P(x)}\eta(x)\ct\fun{refl}_{g(x)}.
+    \]
+\end{solution}
+
+\begin{exr}
+    The lemma in {\upshape Exercise~\ref{exr:2-simeq-2-simeq-2}} shows that $0_{\fun2}\ne_{\fun2}1_{\fun2}$. Show that, nevertheless, 
+    \[
+        (\fun2,0_{\fun2})\eq{\sum_{A\colon\univ}A}(\fun2,1_{\fun2}).
+    \]
+\end{exr}
+
+\begin{solution}
+    Recall that $0_{\fun2}\ne_{\fun2}1_{\fun2}$ is a notation for $\neg(0_{\fun2}\eq{\fun2}1_{\fun2})$, which in turn is a notation for $(0_{\fun2}\eq{\fun2}1_{\fun2})\to\fun0$.
+
+    By Theorem~\ref{thm:pair-equivalence},
+    \begin{align*}
+        \Bigl(
+            (\fun2,0_{\fun2})\eq{\sum_{A\colon\univ}A}(\fun2,1_{\fun2})
+        \Bigr)
+            \simeq\sum_{p\colon\fun2\eq\univ\fun2}
+                \fun{transport}^{\id_\univ}(p,0_{\fun2})\eq{\fun2}1_{\fun2}.
+    \end{align*}
+    By Exercise~\ref{exr:2-simeq-2-simeq-2}, we know that $\fun{not}\colon\fun2\to\fun2$ defines an equivalence. Therefore, $\fun{ua}(\fun{not})$ is a path in $\fun2\eq\univ\fun2$. Hence,
+    \begin{align*}
+        \fun{transport}^{\id_\univ}(\fun{ua}(\fun{not}))(0_{\fun2})
+            &\eq{\fun2}\fun{idtoeqv}(\fun{ua}(\fun{not}))(0_{\fun2})
+                &&\text{; Thm.~\ref{thm:idtoeqv-def}}\\
+            &\eq{\fun2}\fun{not}(0_{\fun2})\\
+            &\equiv1_{\fun2},
+    \end{align*}
+    which shows that the \rhs of the equivalence is inhabited by $(\fun{ua}(\fun{not}),\fun{refl}_{1_{\fun2}})$. Thus, the \lhs is inhabited as well.
+    
+\end{solution}
