@@ -1,1 +1,392 @@
-\chapter{Sets \& Logic}
+\chapter{Sets \texorpdfstring{\&}{and} Logic}
+
+\section{Sets and \texorpdfstring{$n$}{n}-types}
+
+\begin{defn}
+    A type $A$ is a \textsl{set} if
+    \[
+        \fun{isSet}(A)\defeq\prod_{x,y\colon A}\;\prod_{p,q\colon x\eq Ay}
+            p\eq{x\eq Ay}q
+    \]
+    is inhabited.
+\end{defn}
+
+\begin{xmpl}${}$
+    \begin{enumerate}[a),font=\upshape]
+        \item The empty product $\fun1$ is a set. This is a direct consequence of Theorem~\ref{thm:1-equivalence}: for any paths $p,q\colon x\eq{\fun1}y$, we have $\fun{encode}(p)\eq{\fun1}\fun{encode}(q)$ because all elements of $\fun1$ are propositionally equal to $\star$. Since $\fun{encode}$ is an equivalence, it is an embedding, which implies that $p\eq{x\eq Ay}q$.
+
+        \item The empty coproduct $\fun0$ is a set:
+        \[
+            \lambda x.\,
+                \fun{rec}_{\fun0}
+                    \Bigl(
+                        \prod_{y\colon\fun0}\;
+                        \prod_{p,q\colon x\eq{\fun0}y}
+                            p\eq{x\eq{\fun0}y}q
+                    \Bigr)\colon\fun{isSet}(\fun0).
+        \]
+
+        \item The type $\N$ of natural numbers is a set. To construct a proof, it suffices to define a witness of the motive
+        \[
+            E(x)\defeq
+                \prod_{y\colon\N}\;
+                \prod_{c,d\colon\fun{Code}(x,y)}c\eq{\fun{Code}(x,y)}d.
+        \]
+        This requires establishing a base case and an inductive step.
+        
+        In the base case $x\equiv0$, the motive becomes
+        \[
+            E(0)\defeq
+                \prod_{y\colon\N}\;\prod_{c,d\colon\fun{Code}(0,y)}
+                    c\eq{\fun{Code}(0,y)}d.
+        \]
+        We proceed by induction on $y$ using the motive 
+        \[
+            E_0(y)\defeq\prod_{c,d\colon\fun{Code}(0,y)}c\eq{\fun{Code}(0,y)}d.
+        \]
+        
+        \begin{enumerate}[-]
+            \item If $y\equiv0$, then $\fun{Code}(0,0)\equiv\fun1$. Thus, given $c,d\colon\fun1$, we have $c\eq{\fun1}d$, as both equal $\star$.
+            
+            \item If $y\equiv\fun{succ}(m)$, then $\fun{Code}(0,\fun{succ}(m))\equiv\fun0$. Hence, given an inhabitant $c\colon\fun0$, we have
+            \[
+                \fun{rec}_{\fun0}
+                    \Bigl(
+                        \prod_{d\colon\fun0}c\eq{\fun0}d
+                    \Bigr)(c)
+                        \colon \prod_{d\colon\fun0}c\eq{\fun0}d.
+            \]
+        \end{enumerate}
+        
+        For the inductive step, we assume the hypothesis $h\colon E(n)$ for a given $n\colon\N$. We must construct a term of type
+        \[
+            E(\fun{succ}(n))\equiv
+            \prod_{y\colon\N}\;\prod_{c,d\colon\fun{Code}(\fun{succ}(n),y)}
+                c\eq{\fun{Code}(\fun{succ}(n),y)}d.
+        \]
+        We proceed by induction on $y$ with the motive
+        \[
+            E_{\fun{succ}(n)}(y)
+                \defeq\prod_{c,d\colon\fun{Code}(\fun{succ}(n),y)}
+                    c\eq{\fun{Code}(\fun{succ}(n),y)}d.
+        \]
+        
+        \begin{enumerate}[-]
+            \item If $y\equiv0$, then $\fun{Code}(\fun{succ}(n),0)\equiv\fun0$. As before, applying the induction principle of the empty type to $c\colon\fun0$ trivially yields the required path.
+            
+            \item If $y\equiv\fun{succ}(m)$, then $\fun{Code}(\fun{succ}(n),\fun{succ}(m))\equiv\fun{Code}(n,m)$. Then, $h(m)(c,d)$ yields the required path of type $c\eq{\fun{Code}(n,m)}d$.
+        \end{enumerate}
+
+        \item If $A$ and $B$ are sets, then $A\times B$ is also a set. This is a generalization of part~a).
+        
+        Let $p,q\colon x\eq{A\times B}y$. As shown in \nameref{equality-in-cartesian-products}, we have path codifications
+        \[
+            \fun{pair}^\times(p)
+                \equiv(\fun{ap}_{\pi_1}(p),\fun{ap}_{\pi_2}(p))
+            \quad\text{and}\quad
+            \fun{pair}^\times(q)
+                \equiv(\fun{ap}_{\pi_1}(q),\fun{ap}_{\pi_2}(q)).
+        \]
+        Set
+        \[
+            p_1\defeq\fun{ap}_{\pi_1}(p),\quad
+            p_2\defeq\fun{ap}_{\pi_2}(p),\quad
+            q_1\defeq\fun{ap}_{\pi_1}(q),\quad
+            q_2\defeq\fun{ap}_{\pi_2}(q)
+        \]
+        and
+        \[
+            x_1\defeq\pi_1(x),\quad x_2\defeq\pi_2(x),\quad
+            y_1\defeq\pi_1(y),\quad y_2\defeq\pi_2(y).
+        \]
+        Since the hypothesis implies
+        \[
+            p_1\eq{A}q_1
+            \quad\text{and}\quad
+            p_2\eq{B}q_2,
+        \]
+        by using the functions $\fun{in}_b\defeq a\mapsto(a,b)$ and $\fun{in}_a\defeq b\mapsto(a,b)$ and applying the action on paths, we obtain
+        \begin{align*}
+            (p_1,p_2)
+                &\eq{(x_1\eq{A}y_1)\times(x_2\eq{B}y_2)}
+                    (p_1,q_2)\\
+                &\eq{(x_1\eq{A}y_1)\times(x_2\eq{B}y_2)}
+                    (q_1,q_2).
+        \end{align*}
+        Thus, $\fun{pair}^\times(p)\eq{(x_1\eq{A}y_1)\times(x_2\eq{B}y_2)}\fun{pair}^\times(q)$, and the result follows by decoding with $\fun{pair}^=$.
+        
+        \item Let $A\colon\univ$ be a set and $P\colon A\to\univ$ a type family with total space $\Sigma_AP$ such that $P(a)$ is a set for all $a\colon A$. The codification of a path $p\colon\omega\eq{\Sigma_AP}\omega'$ is defined as
+        \[
+            \fun{encode}(p)\equiv(\fun{ap}_{\pi_1}(p),\fun{apd}_{\pi_2}(p)).
+        \]
+        If $q$ is another path with the same ends,
+        \[
+            \fun{encode}(q)\equiv(\fun{ap}_{\pi_1}(q),\fun{apd}_{\pi_2}(q)).
+        \]
+        Introduce
+        \[
+            x\defeq\pi_1(\omega),\quad y\defeq\pi_2(\omega),\quad
+            x'\defeq\pi_1(\omega'),\quad y'\defeq\pi_2(\omega').
+        \]
+        Given that
+        \[
+            \fun{ap}_{\pi_1}(p),\,\fun{ap}_{\pi_1}(q)\colon x\eq Ax',
+        \]
+        the hypothesis on $A$ implies the existence of a witness
+        \[
+            \epsilon\colon\fun{ap}_{\pi_1}(p)
+                \eq{x\eq Ax'}
+                \fun{ap}_{\pi_1}(q).
+        \]
+        Set
+        \[
+            p_1\defeq\fun{ap}_{\pi_1}(p),\quad p_2\defeq\fun{apd}_{\pi_2}(p),
+            \quad
+            q_1\defeq\fun{ap}_{\pi_1}(q),\quad q_2\defeq\fun{apd}_{\pi_2}(q).
+        \]
+        Then,
+        \[
+            p_2\colon(p_1)_*(y)\eq{P(x')}y'
+            \quad\text{and}\quad
+            q_2\colon(q_1)_*(y)\eq{P(x')}y'.
+        \]
+        If we define
+        \begin{align*}
+            R&\colon(x\eq Ax')\to\univ\\
+            R(r)&\defeq r_*(y)\eq{P(x')}y',
+        \end{align*}
+        then, $p_2\colon R(p_1)$ and $q_2\colon R(q_1)$.
+        
+        Since $\epsilon\colon p_1\eq{x\eq Ax'}q_1$, it follows that  $\epsilon_*\colon R(p_1)\to R(q_1)$ satisfies
+        \[
+            \epsilon_*(p_2)
+                \colon(q_1)_*(y)\eq{P(x')}y'.
+        \]
+        Thus, the hypothesis on $P(x')$ implies the existence of a witness
+        \[
+            \rho\colon\epsilon_*(p_2)\eq{R(q_1)}q_2.
+        \]
+        Therefore, the pair of paths $(\epsilon,\rho)$ constructs a path
+        \[
+            (p_1,p_2)
+            \eq{\Sigma_{x\eq Ax'}R}
+            (q_1,q_2),
+        \]
+        which definitionally means that $\fun{encode}(p)\eq{}\fun{encode}(q)$. Since $\fun{encode}$ is an equivalence, we conclude that $\Sigma_AP$ is a set.
+
+        \item If $A$ is any type and $B\colon A\to\univ$ is such that each $B(x)$ is a set, then the type $\Gamma\defeq\prod_{x\colon A}B(x)$ is a set.
+
+        To see this, consider two paths $p,q\colon f\eq{\Gamma}g$. Then,
+        \[
+            \fun{happly}(p),\,\fun{happly}(q)
+                \colon\prod_{x\colon A}f(x)\eq{B(x)}g(x).
+        \]
+        Hence, for any $x\colon A$, we have
+        \[
+            \fun{happly}(p)(x),\,\fun{happly}(q)(x)\colon f(x)\eq{B(x)}g(x).
+        \]
+        Since $B(x)$ is a set, any two paths in it are equal, so we obtain a path
+        \[
+            \eta(x)\colon\fun{happly}(p)(x)
+                \eq{f(x)\eq{B(x)}g(x)}\fun{happly}(q)(x)
+        \]
+        that defines a homotopy $\eta\colon\fun{happly}(p)\sim\fun{happly}(q)$. Thus, by function extensionality, we obtain a path
+        \[
+            \fun{funext}(\eta)\colon\fun{happly}(p)\eq{f\sim g}\fun{happly}(q).
+        \]
+        Applying the action on paths of $\fun{funext}$ yields
+        \[
+            \fun{ap}_{\fun{funext}}(\fun{funext}(\eta))\colon
+                \fun{funext}(\fun{happly}(p))
+                \eq{f\eq{\Gamma}g}
+                \fun{funext}(\fun{happly}(q)).
+        \]
+        Since $\fun{funext}$ is the quasi-inverse of $\fun{happly}$, this directly decodes to a path $p\eq{f\eq{\Gamma}g}q$, proving that $\Gamma$ is a set.
+  
+    \end{enumerate}
+\end{xmpl}
+
+\begin{defn}
+    A type $A$ is a \textsl{$1$-type} if for all $x,y\colon A$, $p,q\colon x\eq Ay$, and $r,s\colon p\eq{x\eq Ay}q$, we have $r\eq{p\eq{x\eq Ay}q}s$.
+\end{defn}
+
+\begin{rem}
+    Equivalently, the definition means that $A$ is a $1$-type when the identity type $x\eq Ay$ is a set for all $x,y\colon A$.
+\end{rem}
+
+\begin{lem}\label{lem:set-implies-id-types-are-sets}
+    Every set is a\/ $1$-type.
+\end{lem}
+
+\begin{proof}
+    Let $A$ be a set. We have to prove that, given $x,y\colon A$ and $p,q\colon x\eq Ay$, any two paths $r,s\colon p\eq{x\eq Ay}q$ are equal.
+    
+    By definition, there is a dependent function
+    \begin{align*}
+        f&\colon\prod_{x,y\colon A}\;\prod_{p,q\colon x\eq Ay}
+            p\eq{x\eq Ay}q.\\
+    \intertext{Fix $x,y\colon A$ and $p\colon x\eq Ay$ and define}
+        g&\colon\prod_{q\colon x\eq Ay}p\eq{x\eq Ay}q\\
+        g(q)&\defeq f(x,y,p,q).
+    \end{align*}
+    Suppose that $q\colon x\eq Ay$ and that $r\colon p\eq{x\eq Ay}q$. By Lemma~\ref{lem:dependent-map} applied to $x\eq Ay$, $g$, and $P(\zeta)\defeq p\eq{x\eq Ay}\zeta$, we obtain
+    \[
+        \fun{apd}_g(r)\colon r_*(g(p))\eq{p\eq{x\eq Ay}q}g(q),
+    \]
+    where
+    \[
+        r_*\defeq\fun{transport}^P(r)\equiv\fun{transport}^{\zeta\mapsto (p\eq{x\eq Ay}\zeta)}(r).
+    \]
+    By Proposition~\ref{prop:transport-decomposition-for-paths}, we have
+    \[
+        r_*(g(p))\eq{p\eq{x\eq Ay}q}g(p)\ct r,
+    \]
+    which implies that
+    \[
+        g(p)\ct r\eq{p\eq{x\eq Ay}q}g(q)
+    \]
+    is inhabited. Since this conclusion is also valid for $s$, we deduce that
+    \[
+        g(p)\ct r\eq{p\eq{x\eq Ay}q}g(q)
+        \quad\text{and}\quad
+        g(p)\ct s\eq{p\eq{x\eq Ay}q}g(q)
+    \]
+    are inhabited. It follows that
+    \[
+        g(p)\ct r\eq{p\eq{x\eq Ay}q}g(p)\ct s,
+    \]
+    is inhabited, which implies that $r\eq{p\eq{x\eq Ay}q}s$ is inhabited as well.
+    
+\end{proof}
+
+\begin{xmpl}
+    The universe is not a set.
+    
+    To see this, consider the Boolean type $\fun2$. As shown in Exercise~\ref{exr:2-simeq-2-simeq-2}, we have an equivalence $(\fun2\simeq\fun2)\simeq\fun2$. Since the lemma in that exercise shows that $0_{\fun2}\ne1_{\fun2}$, we deduce that there are two distinct equivalences from $\fun2$ to $\fun2$ (namely, the identity and the swap function). By the univalence axiom, these two equivalences correspond to two distinct paths in the identity type $\fun2\eq{\univ}\fun2$, contradicting the definition of a set.
+\end{xmpl}
+
+\begin{thm}
+    It is not the case that for all\/ $A\colon\univ$ we have\/ $\neg\neg A\to A$.
+\end{thm}
+
+\begin{proof}
+    The statement means that
+    \begin{equation}\label{eq:notnotA-to-A}
+        \Bigl(\prod_{A\colon\univ}\neg\neg A\to A\Bigr)\to\fun0
+    \end{equation}
+    is inhabited. Consider the type family
+    \begin{align*}
+        P&\colon\univ\to\univ\\
+        P(A)&\defeq\neg\neg A\to A
+    \end{align*}
+    and the function
+    \begin{align*}
+        \fun{not}\colon\fun2&\to\fun2\\
+        0_{\fun2}&\mapsto1_{\fun2}\\
+        1_{\fun2}&\mapsto0_{\fun2},
+    \end{align*}
+    introduced in Exercise~\ref{exr:not}.
+     
+    Being an involution, $\fun{not}$ defines an equivalence $\fun2\simeq\fun2$. Hence, by the univalence axiom, we obtain $p\defeq\fun{ua}(\fun{not})\colon\fun2\eq{\univ}\fun2$.
+
+    Given $f\colon\prod_{A\colon\univ}\neg\neg A\to A\equiv\prod_{A\colon\univ}P(A)$, we have $f(\fun2)\colon P(\fun2)\equiv\neg\neg\fun2\to\fun2$ and
+    \begin{equation}\label{eq:f(2)}
+        \fun{apd}_f(p)\colon\fun{transport}^P(p,f(\fun2))\eq{P(\fun2)}f(\fun2).
+    \end{equation}
+    By Proposition~\ref{prop:non-dependent-transport-composition} for $A(X)\defeq\neg\neg X$, $B\defeq\id_\univ$, and $g\equiv f(\fun2)$, we have $P\equiv A\to B$, and so
+    \begin{align*}
+        \fun{transport}^P(p,f(\fun2))
+            &\eq{P(\fun2)}
+                \fun{transport}^{\id_\univ}(p)
+                    \circ f(\fun2)
+                    \circ 
+                    \fun{transport}^{X\mapsto\neg\neg X}(p^{-1}).
+    \end{align*}
+    Evaluating this equality at any $\zeta\colon\neg\neg\fun2$, we obtain
+    \begin{align*}
+        \fun{transport}^P\bigl(p,f(\fun2)\bigr)(\zeta)
+            \eq{\fun2}
+            \fun{transport}^{\id_\univ}\bigl(p,f(\fun2)(\xi)\bigr),
+    \end{align*}
+    where
+    \[
+        \xi\defeq\fun{transport}^{X\mapsto\neg\neg X}(p^{-1},\zeta).
+    \]
+    We claim that $\xi\eq{\neg\neg\fun2}\zeta$. To see this, note that for any $c\colon\neg\fun2$, both $\xi(c)$ and $\zeta(c)$ are elements of $\fun0$. Applying $\fun{rec}_{\fun0}$ we deduce that $\xi(c)\eq{\fun0}\zeta(c)$. By function extensionality, $\xi\eq{\neg\neg\fun2}\zeta$. 
+
+    Applying $\fun{happly}$ to \eqref{eq:f(2)} and evaluating at $\zeta$, we also know that
+    \[
+        \fun{transport}^P\bigl(p,f(\fun2)\bigr)(\zeta)\eq{\fun2}f(\fun2)(\zeta).
+    \]
+    Combining these paths yields
+    \[
+        \fun{transport}^{\id_\univ}
+            \bigl(p,f(\fun2)(\zeta)\bigr)\eq{\fun2}f(\fun2)(\zeta).
+    \]
+    By Theorem~\ref{thm:idtoeqv-def}, we deduce that
+    \[
+        \fun{not}\bigl(f(\fun2)(\zeta)\bigr)\eq{\fun2}f(\fun2)(\zeta).
+    \]
+    Take $u\colon\neg\fun2$. Then $u\colon\fun2\to\fun0$ and we can evaluate $u$ at $0_{\fun2}$, i.e., we can define
+    \[
+        e\colon\neg\neg\fun2,\quad e\defeq\lambda u.\,u(0_{\fun2}).
+    \]
+    Then $b\defeq f(\fun2)(e)$ is an element of $\fun2$. The equality above constructs a path
+    \[
+        \epsilon\colon\fun{not}(b)\eq{\fun2}b.
+    \]
+    We can define
+    \begin{align*}
+        &\psi\colon\prod_{x\colon\fun2}(\fun{not}(x)\eq{\fun2}x)\to\fun0\\
+        &\psi(0_{\fun2})\defeq\fun{neq}\\
+        &\psi(1_{\fun2})\defeq\lambda p.\,\fun{neq}(p^{-1}),
+    \end{align*}
+    where $\fun{neq}\colon(1_{\fun2}\eq{\fun2}0_{\fun2})\to\fun0$ is the function defined in the lemma of Exercise~\ref{exr:2-simeq-2-simeq-2}.
+    
+    In consequence, the function
+    \[
+        f\mapsto\psi(b,\epsilon)
+    \]
+    is a witness of the type given in \eqref{eq:notnotA-to-A}.
+
+\end{proof}
+
+\begin{cor}
+    It is not the case that for all\/ $A\colon\univ$ we have\/ $A+\neg A$.
+\end{cor}
+
+\begin{proof}
+    The statement means that
+    \[
+        \Bigl(\prod_{A\colon\univ}A+\neg A\Bigr)\to\fun0
+    \]
+    is inhabited. Let $A\colon\univ$. To construct a map from $A+\neg A$ to $\neg\neg A\to A$, we first define the constant function
+    \begin{align*}
+        c\colon A&\to(\neg\neg A\to A)\\
+        a&\mapsto(\beta\mapsto a).
+    \end{align*}
+    Second, fix $b\colon\neg A$. Using recursion, we obtain
+    \begin{align*}
+        \rho_b\colon\neg\neg A&\to A\\
+        \beta&\mapsto\fun{rec}_{\fun0}(A)(\beta(b)).
+    \end{align*}
+    This yields a function
+    \begin{align*}
+        \rho\colon\neg A&\to(\neg\neg A\to A)\\
+        b&\mapsto\rho_b.
+    \end{align*}
+    By recursion on $A+\neg A$, we can further define
+    \begin{align*}
+        \varphi_A&\colon(A+\neg A)\to(\neg\neg A\to A)\\
+        \varphi_A(x)&\defeq\fun{rec}_{A+\neg A}(\neg\neg A\to A,c,\rho,x).
+    \end{align*}
+    This family of functions leads to
+    \begin{align*}
+        \Phi\colon\Bigl(\prod_{A\colon\univ}A+\neg A\Bigr)
+            &\to\prod_{A\colon\univ}\neg\neg A\to A\\
+        g&\mapsto\lambda A.\,\varphi_A(g(A)).
+    \end{align*}
+    The conclusion follows by composing $\Phi$ with the function given in \eqref{eq:notnotA-to-A}.
+\end{proof}
+
+\section{Mere Propositions}

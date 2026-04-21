@@ -775,8 +775,9 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 
     The motive of the induction is the family of types $D\colon \prod_{y\colon A} (x\eq A y)\to \univ$ defined by
     \[
-        D(y, p) \defeq \prod_{u\colon P(x)}\; \prod_{z\colon A}\; \prod_{q\colon y\eq A z}
-            q_*(p_*(u)) \eq{P(z)} (p\ct q)_*(u).
+        D(y, p)\defeq\prod_{u\colon P(x)}\;
+        \prod_{z\colon A}\;\prod_{q\colon y\eq Az}
+            q_*(p_*(u))\eq{P(z)}(p\ct q)_*(u).
     \]
     We must construct a term of type $D(x, \fun{refl}_x)$. Substituting $y$ with $x$ and $p$ with $\fun{refl}_x$, the goal becomes
     \[
@@ -2106,7 +2107,7 @@ where $c\colon\fun{Code}(x,x)$ is the base code and the unit laws hold for $d\co
     \end{description}
 \end{proof}
 
-\section{Equality in Cartesian Products}
+\section{Equality in Cartesian Products}\label{equality-in-cartesian-products}
 
 In this section we apply the observational framework \ref{observational-framework} to the product $A\times B$.
 
@@ -3806,7 +3807,7 @@ Function extensionality provides the quasi-inverse to\/ $\fun{happly}$, mapping 
     (A\to B)(x)\defeq A(x)\to B(x).
 \]
 Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we have the following diagram:
-\begin{equation}\label{tik-constant-transport-composition}
+\begin{equation}\label{tik:non-dependent-transport-composition}
     \begin{tikzcd}[column sep=2.5cm]
         A(x) 
             \arrow[r, "f"] 
@@ -3820,10 +3821,10 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     \end{tikzcd}
 \end{equation}
 
-\begin{prop}
-    The diagram~\eqref{tik-constant-transport-composition} propositionally commutes in the function type\/ $A(x)\to B(y)$. In particular,
+\begin{prop}\label{prop:non-dependent-transport-composition}
+    The diagram~\eqref{tik:non-dependent-transport-composition} propositionally commutes in the function type\/ $A(x)\to B(y)$. In particular,
     \[
-        \fun{transport}^{A\to B}(p, f)
+        \fun{transport}^{A\to B}(p,f)
             \eq{A(x)\to B(y)}
             \fun{transport}^B(p)
                 \circ f
@@ -5154,7 +5155,7 @@ Before proceeding with other types, let us recap what we have seen so far.
             \\
         \small$\fun1$
             &\small None
-            &\small$x=\star$\\
+            &\small$x=\fun\star$\\
         \small$\univ$
             &\small Equivalences
             &\small $A\simeq B$\\
@@ -7658,7 +7659,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         Let $P\colon\fun2\to\univ$ be the type family defined by $P(1_{\fun2})\defeq\fun1$ and $P(0_{\fun2})\defeq\fun0$. Then, we define
         \[
             \fun{neq}\defeq\lambda x\colon1_{\fun2}\eq{\fun2}0_{\fun2}.\,
-                \fun{transport}^P(x,\star_{\fun1}).
+                \fun{transport}^P(x,\fun\star).
         \]
         $\blacksquare$
     
@@ -7717,7 +7718,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         \to
         \bigl(f(1_{\fun2})\eq{\fun2}0_{\fun2}\bigr).        
     \end{align*}
-    Since $\fun{not}$ is characterized by its evaluation at $0_{\fun2}$ and $1_{\fun2}$, the function extensionality axiom yields a function
+    Since $\fun{not}$\footnote{See Exercise~\ref{exr:not}.} is characterized by its evaluation at $0_{\fun2}$ and $1_{\fun2}$, the function extensionality axiom yields a function
     \[
         (f(0_{\fun2})\eq{\fun2}1_{\fun2})
             \to(f\eq{\fun2\simeq\fun2}\fun{not}).
