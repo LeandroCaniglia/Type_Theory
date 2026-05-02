@@ -11,11 +11,24 @@
     is inhabited.
 \end{defn}
 
-\begin{xmpl}${}$
-    \begin{enumerate}[a),font=\upshape]
-        \item The empty product $\fun1$ is a set. This is a direct consequence of Theorem~\ref{thm:1-equivalence}: for any paths $p,q\colon x\eq{\fun1}y$, we have $\fun{encode}(p)\eq{\fun1}\fun{encode}(q)$ because all elements of $\fun1$ are propositionally equal to $\star$. Since $\fun{encode}$ is an equivalence, it is an embedding, which implies that $p\eq{x\eq Ay}q$.
 
-        \item The empty coproduct $\fun0$ is a set:
+\begin{thm}\label{thm:sets}
+    The following closure properties of sets hold:
+    \begin{enumerate}[a),font=\upshape]
+        \item The empty product\/ $\fun1$ is a set.
+        \item The empty coproduct\/ $\fun0$ is a set.
+        \item The type\/ $\N$ of natural numbers is a set.
+        \item If\/ $A$ and\/ $B$ are sets, then\/ $A\times B$ is a set.
+        \item If\/ $A\colon\univ$ is a set and\/ $P\colon A\to\univ$ is a type family such that\/ $P(a)$ is a set for all\/ $a\colon A$, then\/ $\Sigma_AP$ is a set.
+        \item If\/ $A$ is any type and\/ $B\colon A\to\univ$ is a type family such that each\/ $B(x)$ is a set, then\/ $\prod_{x\colon A}B(x)$ is a set.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}${}$
+    \begin{enumerate}[a),font=\upshape]
+        \item This is a direct consequence of Theorem~\ref{thm:1-equivalence}: for any paths $p,q\colon x\eq{\fun1}y$, we have $\fun{encode}(p)\eq{\fun1}\fun{encode}(q)$ because all elements of $\fun1$ are propositionally equal to $\star$. Since $\fun{encode}$ is an equivalence, it is an embedding, which implies that $p\eq{x\eq{\fun1}y}q$.
+
+        \item A witness for $\fun{isSet}(\fun0)$ is given by:
         \[
             \lambda x.\,
                 \fun{rec}_{\fun0}
@@ -26,7 +39,7 @@
                     \Bigr)\colon\fun{isSet}(\fun0).
         \]
 
-        \item The type $\N$ of natural numbers is a set. To construct a proof, it suffices to define a witness of the motive
+        \item To construct a proof, it suffices to define a witness of the motive
         \[
             E(x)\defeq
                 \prod_{y\colon\N}\;
@@ -77,9 +90,7 @@
             \item If $y\equiv\fun{succ}(m)$, then $\fun{Code}(\fun{succ}(n),\fun{succ}(m))\equiv\fun{Code}(n,m)$. Then, $h(m)(c,d)$ yields the required path of type $c\eq{\fun{Code}(n,m)}d$.
         \end{enumerate}
 
-        \item If $A$ and $B$ are sets, then $A\times B$ is also a set. This is a generalization of part~a).
-        
-        Let $p,q\colon x\eq{A\times B}y$. As shown in \nameref{equality-in-cartesian-products}, we have path codifications
+        \item This is a generalization of part~a). Let $p,q\colon x\eq{A\times B}y$. As shown in \nameref{equality-in-cartesian-products}, we have path codifications
         \[
             \fun{pair}^\times(p)
                 \equiv(\fun{ap}_{\pi_1}(p),\fun{ap}_{\pi_2}(p))
@@ -115,7 +126,7 @@
         \end{align*}
         Thus, $\fun{pair}^\times(p)\eq{(x_1\eq{A}y_1)\times(x_2\eq{B}y_2)}\fun{pair}^\times(q)$, and the result follows by decoding with $\fun{pair}^=$.
         
-        \item Let $A\colon\univ$ be a set and $P\colon A\to\univ$ a type family with total space $\Sigma_AP$ such that $P(a)$ is a set for all $a\colon A$. The codification of a path $p\colon\omega\eq{\Sigma_AP}\omega'$ is defined as
+        \item Let $\omega,\omega'\colon\Sigma_AP$. The codification of a path $p\colon\omega\eq{\Sigma_AP}\omega'$ is defined as
         \[
             \fun{encode}(p)\equiv(\fun{ap}_{\pi_1}(p),\fun{apd}_{\pi_2}(p)).
         \]
@@ -174,9 +185,7 @@
         \]
         which definitionally means that $\fun{encode}(p)\eq{}\fun{encode}(q)$. Since $\fun{encode}$ is an equivalence, we conclude that $\Sigma_AP$ is a set.
 
-        \item If $A$ is any type and $B\colon A\to\univ$ is such that each $B(x)$ is a set, then the type $\Gamma\defeq\prod_{x\colon A}B(x)$ is a set.
-
-        To see this, consider two paths $p,q\colon f\eq{\Gamma}g$. Then,
+        \item Set $\Gamma\defeq\prod_{x\colon A}B(x)$ and consider two paths $p,q\colon f\eq{\Gamma}g$. Then,
         \[
             \fun{happly}(p),\,\fun{happly}(q)
                 \colon\prod_{x\colon A}f(x)\eq{B(x)}g(x).
@@ -202,9 +211,8 @@
                 \fun{funext}(\fun{happly}(q)).
         \]
         Since $\fun{funext}$ is the quasi-inverse of $\fun{happly}$, this directly decodes to a path $p\eq{f\eq{\Gamma}g}q$, proving that $\Gamma$ is a set.
-  
     \end{enumerate}
-\end{xmpl}
+\end{proof}
 
 \begin{defn}
     A type $A$ is a \textsl{$1$-type} if for all $x,y\colon A$, $p,q\colon x\eq Ay$, and $r,s\colon p\eq{x\eq Ay}q$, we have $r\eq{p\eq{x\eq Ay}q}s$.
@@ -389,4 +397,643 @@
     The conclusion follows by composing $\Phi$ with the function given in \eqref{eq:notnotA-to-A}.
 \end{proof}
 
-\section{Mere Propositions}
+\section{Subsingletons}
+
+\begin{defn}
+    A type $P$ is a \textsl{subsingleton} (a.k.a.~\textsl{mere proposition}, a.k.a.~\textsl{h-proposition}) if the type
+    \[
+        \fun{isProp}(P)\defeq\prod_{x,y\colon P}x\eq Py
+    \]
+    is inhabited.\footnote{We have adopted the function name given in \citep{hottbook}.}
+\end{defn}
+
+\begin{rem}\label{rem:ids-in-a-set-are-subsingletons}
+    If $A$ is a set, then $x\eq Ay$ is a subsingleton for all $x,y\colon A$.
+\end{rem}
+
+\begin{lem}\label{lem:mere-prop-and-1}
+    Every inhabited subsingleton is equivalent to the unit type\/~$\fun1$.
+\end{lem}
+
+\begin{proof}
+    Fix $\pi\colon\fun{isProp}(P)$ and $a\colon P$. Define
+    \begin{align*}
+        \phi\colon P&\to\fun1 & \psi\colon\fun1&\to P\\
+        x&\mapsto\fun\star & \fun\star&\mapsto a.
+    \end{align*}
+    Then,
+    \[
+        \phi(\psi(\fun\star))\equiv\phi(a)\equiv\fun\star,
+    \]
+    which implies by induction on $\fun1$ that $\phi(\psi(z))\eq{\fun1}z$ for all\/ $z\colon\fun1$. Conversely, for any $x\colon P$,
+    \[
+        \psi(\phi(x))\equiv\psi(\fun\star)\equiv a \stackrel{\pi(a,x)}{\eq{P}} x,
+    \]
+    showing that $\lambda x.\,\pi(a,x)\colon\psi\circ\phi\sim\id_P$.
+\end{proof}
+
+\begin{lem}\label{lem:subsingleton-equivalence}
+    Let\/ $P$ and\/ $Q$ be subsingletons. Then any pair of functions\/ $P\to Q$ and\/ $Q\to P$ yields an equivalence\/ $P\simeq Q$.
+\end{lem}
+
+\begin{proof}
+    Let $\phi\colon P\to Q$ and $\psi\colon Q\to P$, and fix two witnesses $\pi\colon\fun{isProp}(P)$ and $\sigma\colon\fun{isProp}(Q)$. 
+
+    To show that $\phi$ is an equivalence, we must provide homotopies $\eta\colon\phi\circ\psi\sim\id_Q$ and $\vartheta\colon\psi\circ\phi\sim\id_P$.
+
+    Given any $y\colon Q$, by hypothesis, 
+    \[
+        \sigma(\phi(\psi(y)),y)\colon\phi(\psi(y))\eq Qy,
+    \]
+    and we can define the  homotopy~$\eta$.
+
+    Similarly,
+    \[
+        \pi(\psi(\phi(x)),x)\colon\psi(\phi(x))\eq Px,
+    \]
+    which yields the homotopy $\vartheta$.
+\end{proof}
+
+\begin{rem}
+    Lemma \ref{lem:mere-prop-and-1} could have been proved as a consequence of Lemma~\ref{lem:subsingleton-equivalence}.
+\end{rem}
+
+\begin{lem}\label{lem:subsingletons-are-sets}
+    Every subsingleton is a set.
+\end{lem}
+
+\begin{proof}
+    Let $A$ be a subsingleton. Fix $\pi\colon\fun{isProp}(A)$, two points $x,y\colon A$, and paths $p,q\colon x\eq{A}y$. 
+    
+    Consider the dependent function
+    \[
+        f\defeq\lambda z.\,\pi(x,z)\colon\prod_{z\colon A}P(z),
+    \]
+    where $P\colon A\to\univ$ is given by $P(z)\defeq x\eq{A}z$. We obtain
+    \[
+        \fun{apd}_f(p)\colon\fun{transport}^P\bigl(p,\pi(x,x)\bigr)\eq{x\eq{A}y}\pi(x,y).
+    \]
+    By Proposition~\ref{prop:transport-decomposition-for-paths}, we have
+    \[
+        \fun{transport}^P\bigl(p,\pi(x,x)\bigr)\eq{x\eq{A}y}\pi(x,x)\ct p.
+    \]
+    Therefore, by path concatenation, we have
+    \[
+        \pi(x,x)\ct p\eq{x\eq{A}y}\pi(x,y).
+    \]
+    By symmetry, we also obtain
+    \[
+        \pi(x,x)\ct q\eq{x\eq{A}y}\pi(x,y).
+    \]
+    Therefore,
+    \begin{align*}
+        p &\eq{x\eq{A}y} \pi(x,x)^{-1}\ct\pi(x,y) \\
+          &\eq{x\eq{A}y} q.
+    \end{align*}
+\end{proof}
+
+\begin{rem}\label{rem:ids-in-subsingletons-are-singletons}
+    Combining the lemma with Remark~\ref{rem:ids-in-a-set-are-subsingletons}, we deduce that, if $P$ is a subsingleton, $x\eq Py$ is also a subsingleton for all $x,y\colon P$.
+\end{rem}
+
+\begin{thm}
+    The boolean type\/ $\fun2$ is a set.
+\end{thm}
+
+\begin{proof}
+    Let $x,y\colon\fun2$ and consider two paths $p,q\colon x\eq{\fun2}y$. 
+    
+    By Theorem~\ref{thm:bool-equality}, the map $\fun{encode}(x,y)$ is an equivalence, and therefore an embedding. Thus, to prove $p\eq{x\eq{\fun2}y}q$, it suffices to show that $\fun{Code}(x,y)$ is a subsingleton for any $x$ and $y$; that is, we need to construct an inhabitant of
+    \[
+        \prod_{x,y\colon\fun2}\fun{isProp}(\fun{Code}(x,y)).
+    \]
+    We proceed to construct this witness by double induction on $x$ and $y$:
+    \begin{enumerate}[-]
+        \item If $x\equiv0_{\fun2}$ and $y\equiv0_{\fun2}$, or $x\equiv1_{\fun2}$ and $y\equiv1_{\fun2}$, the type $\fun{Code}(x,y)$ is definitionally equal to $\fun1$, which is a subsingleton.
+        
+        \item If $x\equiv0_{\fun2}$ and $y\equiv1_{\fun2}$, or $x\equiv1_{\fun2}$ and $y\equiv0_{\fun2}$, the type $\fun{Code}(x,y)$ is definitionally equal to $\fun0$, which is trivially a subsingleton.
+    \end{enumerate}
+\end{proof}
+
+\begin{prop}\label{prop:isSet-and-isProp-are-subsingletons}
+    For any type\/ $A$, the types\/ $\fun{isProp}(A)$ and\/ $\fun{isSet}(A)$ are subsingletons.
+\end{prop}
+
+\begin{proof}
+    Consider $f,g\colon\fun{isProp}(A)$. To show that $\fun{isProp}(A)$ is a subsingleton, we must show that $f\eq{\fun{isProp}(A)}g$. By function extensionality, it suffices to fix $x,y\colon A$ and show that $f(x,y)\eq{x\eq{A}y}g(x,y)$. The terms evaluate as
+    \[
+        f(x,y)\colon x\eq{A}y
+        \quad\text{and}\quad
+        g(x,y)\colon x\eq{A}y.
+    \]
+    Since $f$ is a witness that $A$ is a subsingleton, Lemma~\ref{lem:subsingletons-are-sets} implies that $A$ is a set. Therefore, $x\eq{A}y$ is a subsingleton and so $f(x,y)\eq{x\eq{A}y}g(x,y)$, as desired.
+
+    In the case where $f,g\colon\fun{isSet}(A)$, fix $x,y\colon A$ and $p,q\colon x\eq{A}y$. Then,
+    \[
+        f(x,y,p,q),\,g(x,y,p,q)\colon p\eq{x\eq{A}y}q.
+    \]
+    The existence of $f$ implies that $A$ is a set. So, by Lemma~\ref{lem:set-implies-id-types-are-sets}, $x\eq{A}y$ is a set. Thus, $p\eq{x\eq{A}y}q$ is a subsingleton. Therefore, $f(x,y,p,q)\eq{p\eq{x\eq{A}y}q}g(x,y,p,q)$. The proof concludes by function extensionality.
+\end{proof}
+
+%\section{Law of Excluded Middle}
+
+\begin{defn}
+    The \textsl{law of excluded middle} is the type
+    \[
+        \fun{lem}\defeq\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
+    \]
+\end{defn}
+
+\begin{lem}\label{lem:total-space-with-subsigleton-fibers}
+    Let\/ $P\colon A\to\univ$ be a type family such that\/ $P(x)$ is a subsingleton for all\/ $x\colon A$. For any\/ $u,v\colon\Sigma_AP$, if\/ $\pi_1(u)\eq{A}\pi_1(v)$, then\/ $u\eq{\Sigma_AP}v$.
+\end{lem}
+
+\begin{proof}
+    Let $p\colon\pi_1(u)\eq A\pi_1(v)$. To verify that $u\eq{\Sigma_AP}v$, we need to show that $p_*(\pi_2(u))\eq{P(\pi_1(v))}\pi_2(v)$, which holds trivially because $P(\pi_1(v))$ is a subsingleton.
+\end{proof}
+
+\begin{ntn}
+    When\/ $P\colon A\to\univ$ is a family of subsingletons, an alternative notation for\/ $\Sigma_AP$ will be
+    \begin{equation}\label{eq:set-notation}
+        \set{x\colon A\mid P(x)}.
+    \end{equation}
+    If ---in addition--- $A$ is a set, we will say that \eqref{eq:set-notation} is a \textsl{subset} of\/ $A$. In the general case, we will refer to this type as a \textsl{subtype} of\/ $A$.
+
+    By\/ {\upshape Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}} we can use this notation to introduce
+    \begin{align*}
+        \fun{Set}_\univ&\defeq\set{A\colon\univ\mid\fun{isSet}(A)}\\
+        \fun{Prop}_\univ&\defeq\set{A\colon\univ\mid\fun{isProp}(A)}
+    \intertext{In particular, we can define subsingleton families, a.k.a.~\textsl{predicates} of\/ $A$ by}
+        \fun{Pred}(A)&\defeq A\to\fun{Prop}_\univ.
+    \end{align*}
+    
+\end{ntn}
+
+\begin{thm}\label{thm:closure-subsingletons}
+    Subsingletons are closed under the following type-theoretic constructions:
+    \begin{enumerate}[a),font=\upshape]
+        \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of subsingletons\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is a subsingleton. 
+        
+        \item \textsc{\upshape Functions \& Negation:} If\/ $Q$ is a subsingleton, the type\/ $A\to Q$ is a subsingleton for any arbitrary type\/ $A$. In particular, the negation\/ $\neg A$ is always a subsingleton.
+        
+        \item \textsc{\upshape Products:} If\/ $P$ and\/ $Q$ are subsingletons, then their Cartesian product\/ $P\times Q$ is a subsingleton.
+        
+        \item \textsc{\upshape Dependent Pairs:} If\/ $A$ is a subsingleton and\/ $P\colon A\to\univ$ is a family of subsingletons, then the total space\/ $\Sigma_AP$ is a subsingleton.
+        
+        \item \textsc{\upshape Mutually Exclusive Coproducts:} If\/ $P$ and\/ $Q$ are subsingletons, and they are \textsl{mutually exclusive} (i.e., we have a function\/ $P\to\neg Q$), then the coproduct\/ $P+Q$ is a subsingleton.
+        
+        \item \textsc{\upshape Equivalences \& Identity:} If\/ $P$ and\/ $Q$ are subsingletons, the type of equivalences\/ $P\simeq Q$ and their propositional equality\/ $P\eq{\fun{Prop}_\univ}Q$ are subsingletons.
+
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item Let $f,g\colon\prod_{x\colon A}P(x)$. Given $x\colon A$, since $P(x)$ is a subsingleton, we have $f(x)\eq{P(x)}g(x)$. Thus, the conclusion follows by function extensionality.
+
+        \item This is a direct consequence of part a) for the particular case where $P(x)\equiv Q$ for all $x\colon A$. Since $\fun0$ is clearly a subsingleton (witnessed by $\fun{ind}_{\fun0}(\prod_{x\colon\fun0}\,\prod_{y\colon\fun0}x\eq{\fun0}y)$), we deduce that $\neg A\equiv A\to\fun0$ is a subsingleton.
+
+        \item Let $(a,b),(c,d)\colon P\times Q$. Then $a\eq Pc$ and $b\eq Qd$ and so $(a,b)\eq{P\times Q}(c,b)\eq{P\times Q}(c,d)$. The conclusion follows because, for all $x\colon P\times Q$, we have $x\eq{P\times Q}(\pi_1(x),\pi_2(x))$.
+
+        
+        \item This is a direct consequence of Lemma~\ref{lem:total-space-with-subsigleton-fibers}.
+
+        \item Fix $f\colon P\to\neg Q$, and let $\epsilon\colon\fun{isProp}(P)$ and $\delta\colon\fun{isProp}(Q)$. To construct a dependent function of type
+        \[
+            \fun{isProp}(P+Q)\equiv\prod_{u,v\colon P+Q}u\eq{P+Q}v,
+        \]
+        we proceed by double induction on $u,v\colon P+Q$.
+
+        For the cross-cases, given $x\colon P$ and $y\colon Q$, define:
+        \begin{align*}
+            g&\colon(P\times Q)\to\fun0\\
+            g&(x,y)\defeq f(x)(y),\\[2mm]
+            \fun{rec}&\colon\prod_{x\colon P}\;\prod_{y\colon Q}
+                \fun0\to(\fun{inl}(x)\eq{P+Q}\fun{inr}(y))\\
+            \fun{rec}&(x,y)\defeq\fun{rec}_{\fun0}(\fun{inl}(x)\eq{P+Q}\fun{inr}(y)),\\[2mm]
+            \zeta&\colon\prod_{x\colon P}\;\prod_{y\colon Q}
+                \fun{inl}(x)\eq{P+Q}\fun{inr}(y)\\
+            \zeta&(x,y)\defeq\fun{rec}(x,y)(g(x,y)).
+        \end{align*}
+    
+        Take $x,x'\colon P$. We have $\epsilon(x,x')\colon x\eq{P}x'$ and so
+        \[
+            \epsilon_x\colon\prod_{x'\colon P}
+                \fun{inl}(x)\eq{P+Q}\fun{inl}(x'),
+                \quad\epsilon_x(x')\defeq\fun{ap}_{\fun{inl}}(\epsilon(x,x')).
+        \]
+        Let the target family for the inner induction be
+        \[
+            C_x(v)\defeq\fun{inl}(x)\eq{P+Q}v.
+        \]
+        Then
+        \[
+            \epsilon_x\colon\prod_{x'\colon P}C_x(\fun{inl}(x')).
+        \]
+        Moreover,
+        \begin{align*}
+            \zeta(x,-)\colon&\prod_{y\colon Q}
+                \fun{inl}(x)\eq{P+Q}\fun{inr}(y)\\
+                \equiv&\prod_{y\colon Q}C_x(\fun{inr}(y)).
+        \end{align*}
+        Thus, when $u\equiv\fun{inl}(x)$, induction on $v\colon P+Q$ yields
+        \[
+            c_{\fun{inl}}(x)\defeq\fun{ind}_{P+Q}
+            \bigl(
+                C_x,
+                \epsilon_x,
+                \zeta(x,-)
+            \bigr)\colon\prod_{v\colon P+Q} \fun{inl}(x)\eq{P+Q}v.
+        \]
+        Similarly, given $y\colon Q$, define the family
+        \[
+            D_y(v)\defeq\fun{inr}(y)\eq{P+Q}v.
+        \]
+        Then,
+        \begin{align*}
+            \delta_y\colon\prod_{y'\colon Q}D_y(\fun{inr}(y')),
+            \quad\delta_y(y')\defeq\fun{ap}_{\fun{inr}}(\delta(y,y')).
+        \end{align*}
+        and
+        \begin{align*}
+            \zeta(-,y)^{-1}\colon&\prod_{x\colon P}
+                \fun{inr}(y)\eq{P+Q}\fun{inl}(x)\\
+                \equiv&\prod_{x\colon P}D_y(\fun{inl}(x)).
+        \end{align*}
+        Thus, when $u\equiv\fun{inr}(y)$, induction on $v\colon P+Q$ yields
+        \[
+            c_{\fun{inr}}(y)\defeq\fun{ind}_{P+Q}
+            \bigl(
+                D_y,
+                \zeta(-,y)^{-1},
+                \delta_y
+            \bigr)\colon\prod_{v\colon P+Q} \fun{inr}(y)\eq{P+Q}v.
+        \]
+        Finally, define the family for the outer induction as
+        \[
+            E(u)\defeq\prod_{v\colon P+Q}u\eq{P+Q}v.
+        \]
+        By induction on $u\colon P+Q$, we obtain
+        \[
+            \fun{ind}_{P+Q}
+            \bigl(
+                E,
+                c_{\fun{inl}},
+                c_{\fun{inr}}
+            \bigr)\colon\prod_{u,v\colon P+Q}u\eq{P+Q}v,
+        \]
+        which is a witness of $\fun{isProp}(P+Q)$.
+
+        \item By definition,
+        \[
+            P\simeq Q\equiv\sum_{f\colon P\to Q}\fun{isequiv}(f).
+        \]
+        By part b), the base type $P\to Q$ is a subsingleton. By part d), to prove that the total space $P\simeq Q$ is a subsingleton, it suffices to show that the fiber $\fun{isequiv}(f)$ is a subsingleton for all $f\colon P\to Q$.
+        
+        Fix $f\colon P\to Q$. Recall that $\fun{isequiv}(f)$ is the product of two $\Sigma$-types:
+        \[
+            \Bigl(\sum_{h\colon Q\to P}f\circ h\sim\id_Q\Bigr)
+            \times
+            \Bigl(\sum_{k\colon Q\to P}k\circ f\sim\id_P\Bigr).
+        \]
+        By part c), we need only show that each factor is a subsingleton. Consider the first factor. By part b), the base type $Q\to P$ is a subsingleton. Hence, any two elements in this factor have equal first components. Furthermore, the fiber family is given by
+        \[
+            (f\circ h\sim\id_Q)\equiv\prod_{y\colon Q}f(h(y))\eq{Q}\id_Q(y).
+        \]
+        Because $Q$ is a subsingleton, Remark~\ref{rem:ids-in-subsingletons-are-singletons} ensures that the identity type $f(h(y))\eq{Q}\id_Q(y)$ is a subsingleton. Part a) then guarantees that the homotopy is a subsingleton. Since the fibers are subsingletons and the base components are necessarily equal, Lemma~\ref{lem:total-space-with-subsigleton-fibers} implies that any two elements in this first factor are equal.
+        
+        A symmetric argument applies to the second factor. Hence, $\fun{isequiv}(f)$ is a subsingleton, which concludes the first claim.
+
+        \bigskip
+
+        For the second claim, let $P\equiv(P_0,f)$ and $Q\equiv(Q_0,g)$ be two types in $\fun{Prop}_\univ\equiv\sum_{A\colon\univ}\fun{isProp}(A)$. By the characterization of paths in $\Sigma$-types, we have an equivalence
+        \[
+            (P\eq{\fun{Prop}_\univ}Q)\simeq\sum_{h\colon P_0\eq{\univ}Q_0}h_*(f)\eq{\fun{isProp}(Q_0)}g.
+        \]
+        By the Univalence Axiom, $(P_0\eq{\univ}Q_0)\simeq(P_0\simeq Q_0)$. Since $P_0$ and $Q_0$ are subsingletons, the first claim of this part implies that $P_0\simeq Q_0$ is a subsingleton. Thus, its equivalent type $P_0\eq{\univ}Q_0$ is also a subsingleton.
+        
+        Furthermore, by Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, $\fun{isProp}(Q_0)$ is a subsingleton, which implies by Remark~\ref{rem:ids-in-subsingletons-are-singletons} that the identity type $h_*(f)\eq{\fun{isProp}(Q_0)}g$ is a subsingleton for any $h$.
+        
+        Since both the base type and the fibers of this $\Sigma$-type are subsingletons, part d) dictates that the total space is a subsingleton. Because the property of being a subsingleton is preserved under equivalence, we conclude that the identity type $P\eq{\fun{Prop}_\univ}Q$ is a subsingleton.\qedhere
+        
+
+    \end{enumerate}
+    
+\end{proof}
+
+\begin{rem}
+    The double induction on $u,v\colon P+Q$ in the proof of part~(e) is geometrically analogous to integrating over the two-dimensional space
+    \[
+        (P+Q)\times(P+Q).
+    \]
+    The induction principle naturally partitions this space into four distinct \textit{quadrants}:
+    \[
+        P\times P,\quad P\times Q,\quad Q\times P,\quad \text{and}\quad Q\times Q.
+    \]
+    The proof effectively \textit{integrated} over the cross-quadrants $P\times Q$ and $Q\times P$ using $\zeta$ and $\zeta^{-1}$, and over the squares $P\times P$ and $Q\times Q$ using the internal subsingleton witnesses $\epsilon$ and $\delta$.
+\end{rem}
+
+\begin{cor}
+    Let\/ $f,g\colon A\to P$ be two functions. If\/ $P$ is a subsingleton, then\/ $f\sim g$ is a subsingleton as well.
+\end{cor}
+
+\begin{proof}
+    This is actually contained in the proof of the last part of the theorem. Take two inhabitants
+    \[
+        \eta,\vartheta\colon f\sim g\equiv\prod_{x\colon A}f(x)\eq Pg(x).
+    \]
+    By Remark~\ref{rem:ids-in-subsingletons-are-singletons}, we deduce that $\eta(x)\eq{f(x)\eq Pg(x)}\vartheta(x)$ for all\/ $x\colon A$. Then, function extensionality yields $\eta\eq{f\sim g}\vartheta$. The conclusion follows.
+\end{proof}
+
+
+
+\section{Propositional Truncation}
+We can define a new type former that converts any type $A\colon\univ$ into $\|A\|\colon\univ$, whose canonical terms are of the form $|a|$ for $a\colon A$. The distinguishing characteristic of $\|A\|$ is that it is a subsingleton; that is, for any $x,y\colon\|A\|$, we have $x\eq{\|A\|}y$. More precisely, there exists a dependent function
+\[
+    \fun{squash}\colon\prod_{x,y\colon\|A\|}x\eq{\|A\|}y.
+\]
+The induction principle, which can be applied to subsingleton families, is given by:
+\begin{equation}\label{eq:ind-truncation}
+    \fun{ind}_{\|A\|}\colon
+        \prod_{C\colon\fun{Pred}(\|A\|)}
+        \Bigl(\prod_{a\colon A} C(|a|)\Bigr)
+        \to
+        \prod_{z\colon\|A\|} C(z),
+\end{equation}
+satisfying $\fun{ind}_{\|A\|}(C,f,|a|)\defeq f(a)$ for $a\colon A$.
+
+In the case of non-dependent subsingleton families, we have the recursion principle
+\begin{align}\label{eq:rec-truncation}
+    \fun{rec}_{\|A\|}\colon
+        &\prod_{B\colon\fun{Prop}_\univ}(A\to B)\to(\|A\|\to B)\\
+    \fun{rec}_{\|A\|}&(B,f)\defeq\fun{ind}_{\|A\|}(a\mapsto B,f).
+\end{align}
+
+\begin{rem}
+    One might be tempted to simplify the defining requirement $x\eq{\|A\|}y$ for all $x,y\colon\|A\|$, to merely $|a|\eq{\|A\|}|b|$ for all $a,b\colon A$, and then attempt to use induction on $\|A\|$ to deduce the former. However, to apply the induction principle, we must first show that the target family $C(x,y)\defeq x\eq{\|A\|}y$ is a predicate. This requires already knowing that the identity type $x\eq{\|A\|}y$ is a subsingleton, which is equivalent to knowing that $\|A\|$ is a set. Because we do not yet know this, we are trapped in a circular reasoning.
+
+    Imposing paths only on canonical elements fails to define a set. For instance, consider the type $\fun{1}+\fun{2}$. This type has exactly three discrete elements, say $x,y,z$, derived from injecting $\fun\star$ on the left, and $0_{\fun{2}}$ and $1_{\fun{2}}$ on the right. If we explicitly adjoin paths $p_{xy}\colon x\eq{}y$, $p_{yz}\colon y\eq{}z$, and $p_{xz}\colon x\eq{}z$, we obtain a hollow triangle. In this space, there are two distinct ways to travel from $x$ to $z$: the path $p_{xz}$, and the concatenation $p_{xy}\ct p_{yz}$. Because we have not explicitly stated that $p_{xz}\eq{}p_{xy}\ct p_{yz}$, these two paths are not equal. Consequently, the identity type $x\eq{}z$ is not a subsingleton, and the resulting type is not a set.
+\end{rem}
+
+\begin{lem}\label{lem:truncation-functor}
+    Truncation is a functorial operation. That is,
+    \begin{enumerate}[a),font=\upshape]
+        \item Every map\/ $f\colon A\to B$ produces a map\/ $\|f\|\colon\|A\|\to\|B\|$.
+        \item For any type\/ $A$, we have\/ $\|\id_A\|\sim\id_{\|A\|}$.
+        \item For any\/ $f\colon A\to B$ and\/ $g\colon B\to C$, we have\/ $\|g\circ f\|\sim\|g\|\circ\|f\|$.
+    \end{enumerate}
+    Consequently, if\/ $A\simeq B$, then\/ $\|A\|\simeq\|B\|$.
+\end{lem}
+
+\begin{proof}
+    Given $f\colon A\to B$, we define the map $\|f\|$ using the recursion principle $\fun{rec}_{\|A\|}$. Since the target $\|B\|$ is a subsingleton, it suffices to define its action on the canonical constructor:
+    \[
+        \|f\|\defeq\fun{rec}_{\|A\|}(\|B\|,a\mapsto|f(a)|).
+    \]
+    
+    To prove the identity and composition laws, observe that in both cases the codomains $\|A\|$ and $\|C\|$ are subsingletons. By Theorem~\ref{thm:closure-subsingletons}~b), the function spaces $\|A\|\to\|A\|$ and $\|A\|\to\|C\|$ are also subsingletons. Because any two inhabitants of a subsingleton are equal, the homotopies $\|\id_A\|\sim\id_{\|A\|}$ and $\|g\circ f\|\sim\|g\|\circ\|f\|$ are trivially inhabited.
+
+    Finally, suppose $f\colon A\to B$ is an equivalence with quasi-inverse $f^{-1}\colon B\to A$. Functoriality gives us maps $\|f\|\colon\|A\|\to\|B\|$ and $\|f^{-1}\|\colon\|B\|\to\|A\|$. Since the target spaces are subsingletons, the compositions $\|f^{-1}\|\circ\|f\|$ and $\|f\|\circ\|f^{-1}\|$ are homotopic to $\id_{\|A\|}$ and $\id_{\|B\|}$, respectively. Thus, $\|f\|$ is an equivalence.
+    
+\end{proof}
+
+\begin{lem}
+    If $A$ is a subsingleton, then $A\eq{\univ}\|A\|$.
+\end{lem}
+
+\begin{proof}
+    Since $A$ is a subsingleton, recursion yields a function
+    \[
+        \fun{rec}_{\|A\|}(A,\id_A)\colon\|A\|\to A.
+    \]
+    Conversely, the canonical constructor gives:
+    \[
+        |{-}|\colon A\to\|A\|,\quad a\mapsto|a|.
+    \]
+    The conclusion follows from Lemma~\ref{lem:subsingleton-equivalence} and the univalence axiom.
+\end{proof}
+
+\begin{ntn}
+    Truncation allows us to interpret traditional logical notation via the following type-theoretic operations. Although we will not adopt this notation extensively ---reserving it primarily for contexts strictly focused on sets and propositions--- it establishes a precise dictionary between classical logic and type theory. Here, $P$ and\/ $Q$ denote subsingletons (or subsingleton families), and\/ $A$ is an arbitrary type. 
+    
+    For operations that inherently preserve subsingletons, no truncation is necessary:
+    \begin{align*}
+        \top\defeq\fun1&\text{\upshape\ \& }\bot\defeq\fun0
+            &\neg P&\defeq P\to\fun0\\[1.9mm]
+        P\land Q&\defeq P\times Q\qquad
+            &\forall(x\colon A).\,P(x)&\defeq\prod_{x\colon A}P(x)\\[1.9mm]
+        P\Rightarrow Q&\defeq P\to Q
+            &P\Leftrightarrow Q&\defeq P\eq\univ Q
+    \end{align*}
+    For operations that can construct spaces with multiple distinct points, we must apply propositional truncation to strictly yield a subsingleton:
+    \begin{align*}
+        P\lor Q&\defeq\|P+Q\|\\
+        \exists(x\colon A).\,P(x)&\defeq\Bigl\|\sum_{x\colon A}P(x)\Bigr\|
+    \end{align*}
+\end{ntn}
+
+\section{Contractibility}
+
+\begin{defn}
+    A type $A$ is \textsl{contractible} if there is an element $a\colon A$, called the \textsl{center of contraction}, such that every element in $A$ is equal to $a$. We define the type of such witnesses as
+    \[
+        \fun{isContr}(A)\defeq\sum_{a\colon A}\;\prod_{x\colon A}a\eq{A}x.
+    \]
+\end{defn}
+
+\begin{lem}\label{lem:transport-prod-id}
+    Let\/ $A$ be a type, $a,b\colon A$, and define the type family
+    \[
+        P\colon A\to\univ,\quad P(z)\defeq\prod_{x\colon A}z\eq{A}x.
+    \]
+    Given\/ $p\colon P(a)$ and\/ $\gamma\colon a\eq{A}b$, we have for any\/ $x\colon A$
+    \[
+        \fun{transport}^P(\gamma,p)(x)\eq{b\eq{A}x}\gamma^{-1}\ct p(x).
+    \]
+\end{lem}
+
+\begin{proof}
+    The transport on the \lhs is an element of $P(b)$. Its evaluation at $x$ yields a path in $b\eq{A}x$. On the other hand, the \rhs concatenates a path from $b$ to $a$ with a path from $a$ to $x$, yielding a path from $b$ to $x$. Thus, both sides inhabit the type $b\eq{A}x$.
+
+    By based path induction on $\gamma\colon a\eq{A}b$ it suffices to assume that $b\equiv a$ and $\gamma\equiv\fun{refl}_a$. Under this assumption, the \lhs reduces trivially:
+    \[
+        \fun{transport}^P(\fun{refl}_a,p)(x)\equiv p(x).
+    \]
+    For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $p(x)$ follows.
+\end{proof}
+
+\begin{lem}\label{lem:isContr-is-a-subsingletion}
+    For any type\/ $A$, the type\/ $\fun{isContr}(A)$ is a subsingleton.
+\end{lem}
+
+\begin{proof}
+    Let $c,d\colon\fun{isContr}(A)$. Set
+    \[
+        a\defeq\pi_1(c),\quad p\defeq\pi_2(c)
+        \quad\text{and}\quad
+        b\defeq\pi_1(d),\quad q\defeq\pi_2(d).
+    \]
+    Then,
+    \[
+        p\colon\prod_{x\colon A}a\eq{A}x
+        \quad\text{and}\quad
+        q\colon\prod_{x\colon A}b\eq{A}x.
+    \]
+    Evaluating $p$ at $b$ yields a path $p(b)\colon a\eq{A}b$, which provides the equality of the first components. 
+
+    Let
+    \[
+        P\colon A\to\univ,
+        \quad P(z)\defeq\prod_{x\colon A}z\eq{A}x.
+    \]
+    To prove $c\eq{\fun{isContr}(A)}d$ we need to show that
+    \[
+        \fun{transport}^P(p(b),p)\eq{P(b)}q.
+    \]
+    By Lemma~\ref{lem:transport-prod-id} the transport in the \lhs satisfies
+    \[
+        \fun{transport}^P(p(b),p)(x)\eq{b\eq Ax}p(b)^{-1}\ct p(x),
+    \]
+    for $x\colon A$.
+        
+    Thus, by function extensionality, the goal reduces to showing
+    \[
+        p(b)^{-1}\ct p(x)\eq{b\eq{A}x}q(x).
+    \]
+    Since $c$ witnesses that $A$ is contractible, $A$ is a subsingleton. By Remark~\ref{rem:ids-in-subsingletons-are-singletons}, $b\eq{A}x$ is a subsingleton. Since both $p(b)^{-1}\ct p(x)$ and $q(x)$ are elements of $b\eq{A}x$, they are necessarily equal. This completes the proof.
+\end{proof}
+
+\begin{defns}
+    Let $f\colon A\to B$ be a function.
+    \begin{enumerate}[-]
+        \item Given a point $y\colon B$, the \textsl{fiber of\/ $f$ over\/ $y$} is the type
+        \[
+            \fun{fib}_f(y)\defeq\sum_{x\colon A}f(x)\eq By.
+        \]
+        \item The function $f$ is \textsl{contractible} if, for every\/ $y\colon B$, the fiber of\/ $f$ over\/ $y$ is contractible. In other words, the type
+        \begin{equation}\label{eq:isContrMap}
+            \fun{isContrMap}(f)
+                \defeq\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y))
+        \end{equation}
+        is inhabited.
+    \end{enumerate}
+\end{defns}
+
+\begin{lem}
+    For any function\/ $f\colon A\to B$, the type\/ $\fun{isContrMap}(f)$ is a subsingleton.
+\end{lem}
+
+\begin{proof}
+    By definition, the type of contractible maps is the dependent type given in \eqref{eq:isContrMap}.
+
+    By Lemma~\ref{lem:isContr-is-a-subsingletion}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a subsingleton for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:closure-subsingletons}.
+    
+\end{proof}
+
+
+\section{The Axiom of Choice}
+
+\begin{rem}
+    A consequence of part~d) of Theorem~\ref{thm:closure-subsingletons} applies to the universes of sets and subsingletons, $\fun{Set}_\univ$ and $\fun{Prop}_\univ$. By definition, elements of these universes are dependent pairs consisting of a base type and a witness to its particular characteristic. 
+    
+    Because the types $\fun{isSet}(A)$ and $\fun{isProp}(P)$ are themselves subsingletons, part~d) guarantees that the second coordinates of these pairs add no new information. In the language of type theory, being a set or a subsingleton is a \textit{property} of a type, rather than an additional \textit{structure} placed upon it. 
+
+    Consequently, the first projections from $\fun{Set}_\univ$ and $\fun{Prop}_\univ$ into $\univ$ are embeddings. This rigorously justifies a standard, ubiquitous abuse of notation: it is perfectly valid to systematically identify pairs $A\colon\fun{Set}_\univ$ and $P\colon\fun{Prop}_\univ$ with their first coordinates, safely treating them as plain types, e.g., writing $x\colon A$ instead of $x\colon\pi_1(A)$.
+
+    In particular, a type family $A\colon X\to\univ$ such that $\fun{isSet}(A(x))$ is inhabited for every $x\colon X$, will often be denoted as a family $A\colon X\to\fun{Set}_\univ$. Similarly, the notation $P\colon X\to\fun{Prop}_\univ$ refers to a subsingleton family, i.e., a family such that $P(x)$ is a subsingleton for all $x\colon X$.
+\end{rem}
+
+\separator
+
+As we have seen in \nref{lpar:axiom-of-choice}, the ``naive'' extraction of a choice function from a dependent pair is a direct consequence of the rules for $\Pi$- and $\Sigma$-types, requiring no axioms. However, this relies on having the explicit data of the elements. 
+
+To formulate the classical Axiom of Choice, we must express the proposition that a choice function exists even when the specific witnesses have been truncated into subsingletons. 
+
+\begin{defn}\label{defn:tac}
+    Let $X$ be a set, $A\colon X\to\fun{Set}_\univ$ be a family of sets, and $P\colon\prod_{x\colon X} A(x)\to\fun{Prop}_\univ$ be a family of subsingletons. The \textsl{axiom of choice} is the following inhabitancy assertion:
+    \begin{equation}\label{eq:tac}
+        \tac\colon
+            \Bigl(
+                \prod_{x\colon X}\;\Bigl\|\sum_{a\colon A(x)}P(x,a)\Bigr\|
+            \Bigr)
+            \to
+            \Bigl\|
+                \sum_{f\colon\prod_{x\colon X}A(x)}\;\prod_{x\colon X}P(x,f(x))
+            \Bigr\|.
+    \end{equation}
+\end{defn}
+
+\begin{lem}
+    The axiom of choice is equivalent to the statement that for any set\/ $X$ and any family of sets\/ $C\colon X\to\fun{Set}_\univ$, the function type
+    \begin{equation}\label{eq:traditional-tac}
+        \Bigl(\prod_{x\colon X}\|C(x)\|\Bigr)
+        \to
+        \Bigl\|\prod_{x\colon X}C(x)\Bigr\|
+    \end{equation}
+    is inhabited.
+\end{lem}
+
+\begin{proof}
+    Let $X,A,P$ be as in Definition~\ref{defn:tac}. By Theorem~\ref{thm:ac-generalized}, the \rhs of \eqref{eq:tac} is equivalent to
+    \begin{equation}\label{eq:tac-codomain-equivalent}
+        \Bigl\|
+            \prod_{x\colon X}\;\sum_{y\colon A(x)}P(x,y)
+        \Bigr\|.
+    \end{equation}
+    Let
+    \[
+        C(x)\defeq\sum_{y\colon A(x)}P(x,y).
+    \]
+    By Theorem~\ref{thm:sets}~e), $C(x)$ is a set for $x\colon X$. Hence, if \eqref{eq:traditional-tac} holds, applying it to $C$ yields a map to \eqref{eq:tac-codomain-equivalent}. Since the equivalence of Theorem~\ref{thm:ac-generalized} lifts through propositional truncation, composing these maps yields a witness for \eqref{eq:tac}.
+
+    To show that \eqref{eq:tac} yields \eqref{eq:traditional-tac}, take $A(x)\defeq C(x)$ and $P(x,y)\defeq\fun1$. Then
+    \[
+        \sum_{a\colon A(x)}P(x,a)
+            \equiv\Bigl(\sum_{a\colon C(x)}\fun1\Bigr)
+            \simeq C(x)
+    \]
+    where the equivalence is given by $\pi_1$ and $c\mapsto(c,\fun\star)$. 
+
+    On the other hand,
+    \[
+        \prod_{x\colon X}P(x,f(x))
+            \equiv\Bigl(\prod_{x\colon X}\fun1\Bigr)
+            \equiv(X\to\fun1)
+            \simeq\fun1,
+    \]
+    where the equivalence follows from Lemma~\ref{lem:mere-prop-and-1} because $X\to\fun1$ is inhabited by $x\mapsto\fun\star$.
+    
+    Consequently, the total space inside the truncation on the \rhs of \eqref{eq:tac} reduces to
+    \[
+        \Bigl(
+            \sum_{f\colon\prod_{x\colon X}C(x)}\;\prod_{x\colon X}P(x,f(x))
+        \Bigr)
+        \simeq
+        \Bigl(
+            \sum_{f\colon\prod_{x\colon X}C(x)}\fun1
+        \Bigr)
+        \simeq
+        \Bigl(
+            \prod_{x\colon X}C(x)
+        \Bigr).
+    \]
+    Because equivalences are preserved under truncation [cf.~Lemma~\ref{lem:truncation-functor}], the map provided by \eqref{eq:tac} constructs an inhabitant of \eqref{eq:traditional-tac}.
+    
+\end{proof}
+
+\begin{lem}
+    The following type is inhabited:
+    \[
+        \sum_{X\colon\univ}\;\sum_{C\colon X\to\fun{Set}_\univ}
+        \biggl(
+            \Bigl(\prod_{x\colon X}\|C(x)\|\Bigr)
+            \to
+            \Bigl\|\prod_{x\colon X}C(x)\Bigr\|
+        \biggr) \to \fun0.
+    \]
+    In other words, there exists a type\/ $X$ and a family\/ $C\colon X\to\fun{Set}_\univ$ such that\/ {\upshape\eqref{eq:traditional-tac}} is false.
+\end{lem}
+
+\begin{proof}
+    
+\end{proof}

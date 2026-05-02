@@ -921,14 +921,15 @@
         f(\fun{inr}(b))\equiv g_1(b).
     \]
     As a result, we obtain the \textsl{induction principle for coproducts}
-    \[
+    \begin{equation}\label{eq:coproduct-ind}
         \fun{ind}_{A+B}\colon\prod_{C\colon(A+B)\to\univ}\;
             \prod_{x\colon A}C(\fun{inl}(x))
             \to
             \prod_{y\colon B}C(\fun{inr}(y))
             \to
             \prod_{s\colon A+B}C(s).
-    \]
+    \end{equation}
+        
     In the case of the empty type $\fun0$ (the nullary coproduct), there are no constructors to handle. Thus, the induction principle for the empty type (a.k.a.~eliminator) reduces to
     \[
         \fun{ind}_{\fun0}\colon\prod_{C\colon\fun0\to\univ}\;

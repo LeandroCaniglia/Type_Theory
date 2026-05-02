@@ -1984,7 +1984,7 @@ This approach consists of the following
 \end{description}
 
 \begin{rem}\label{rem:framework-qinv}
-    The requirement that the global dependent functions\/ $\fun{encode}$ and\/ $\fun{decode}$ are quasi-inverses is a fiberwise property. For fixed parameters $x,y\colon A$, the locally instantiated functions
+    Given $x,y\colon A$, we have to verify that the functions
     \[
         \fun{encode}(x,y)\colon(x\eq Ay)\to\fun{Code}(x,y)
     \]
@@ -1992,18 +1992,15 @@ This approach consists of the following
     \[
         \fun{decode}(x,y)\colon\fun{Code}(x,y)\to(x\eq Ay)
     \]
-    we have to verify that their compositions are pointwise homotopic to the identity functions on their respective domains. That is, 
-    \begin{enumerate}[-]
-        \item for $p\colon x\eq Ay$, we have
+    satisfy
         \[
-            \fun{decode}(x,y,\fun{encode}(x,y,p))\eq{x\eq Ay}p
+            \fun{decode}(x,y,\fun{encode}(x,y,p))\eq{x\eq Ay}p,
         \]
-
-        \item and, for $d\colon\fun{Code}(x,y)$,
+        for $p\colon x\eq Ay$, and
         \[
-            \fun{encode}(x,y,\fun{decode}(x,y,d))\eq{\fun{Code}(x,y)}d.
+            \fun{encode}(x,y,\fun{decode}(x,y,d))\eq{\fun{Code}(x,y)}d,
         \]
-    \end{enumerate}
+    for $d\colon\fun{Code}(x,y)$.
 \end{rem}
 
 \begin{rem}
@@ -2536,6 +2533,137 @@ which are clearly well defined. Moreover
     \end{itemize}
     Thus, $\fun{refl}_{\fun{refl}_{(f(a),g(b))}}$ is a witness of the target identity type.
 \end{proof}
+
+\section{Equality in the Boolean Type}\label{equality-in-the-boolean-type}
+
+To characterize the identity type of the booleans, we instantiate the \nameref{observational-framework}.
+
+\textsc{Code family:}
+    We define the code family $\fun{Code}\colon\fun2\to\fun2\to\univ$ by double induction on $\fun2$:
+    \begin{align*}
+        \fun{Code}(0_{\fun2}, 0_{\fun2}) &\defeq \fun1 & \fun{Code}(0_{\fun2}, 1_{\fun2}) &\defeq \fun0 \\
+        \fun{Code}(1_{\fun2}, 0_{\fun2}) &\defeq \fun0 & \fun{Code}(1_{\fun2}, 1_{\fun2}) &\defeq \fun1.
+    \end{align*}
+
+\textsc{Base code:}
+    The base code $c_x\colon\fun{Code}(x,x)$ is defined by induction on $x\colon\fun2$ as\footnote{Since $\fun{Code}(x,x)$ is not definitionally equal to $\fun1$, and $c_x$ must be of type $\fun{Code}(x,x)$, we cannot define it as the constant map $\lambda x.\,\fun\star$.}
+    \[
+        c_{0_{\fun2}} \defeq \fun\star \quad\text{and}\quad c_{1_{\fun2}} \defeq \fun\star.
+    \]
+
+\textsc{Encode function:}
+    \begin{align*}
+        \fun{encode}\colon\prod_{x,y\colon\fun2}(x\eq{\fun2}y)
+            &\to\fun{Code}(x,y)\\
+        (x,y,p)&\mapsto\fun{transport}^{C_x}(p,c_x),
+    \end{align*}
+    which is well-defined because $C_x(y)\equiv\fun{Code}(x,y)$.
+
+\textsc{Decode function:} It proceeds by double induction on $x$ and $y$:
+    \begin{align*}
+        \fun{decode}\colon\prod_{x,y\colon\fun2}\fun{Code}(x,y)
+            &\to(x\eq{\fun2}y)\\
+        (0_{\fun2},0_{\fun2},\fun\star)
+            &\mapsto\fun{refl}_{0_{\fun2}}\\
+        (0_{\fun2},1_{\fun2},\zeta)
+            &\mapsto\fun{rec}_{\fun0}(\zeta)\\
+        (1_{\fun2},0_{\fun2},\zeta)
+            &\mapsto\fun{rec}_{\fun0}(\zeta)\\
+        (1_{\fun2},1_{\fun2},\fun\star)
+            &\mapsto\fun{refl}_{1_{\fun2}}
+    \end{align*}
+
+\begin{thm}\label{thm:bool-equality}
+    For any $x,y\colon\fun2$, the functions $\fun{encode}(x,y)$ and $\fun{decode}(x,y)$ are quasi-inverses.
+\end{thm}
+
+\begin{proof}
+    Following Remark~\ref{rem:framework-qinv}, we must verify that the compositions are pointwise homotopic to the respective identity functions.
+
+    First, let $p\colon x\eq{\fun2}y$. By path induction on $p$, it suffices to check the case where $y\equiv x$ and $p\equiv\fun{refl}_x$. By definition of $\fun{encode}$, we have
+    \[
+        \fun{encode}(x,x,\fun{refl}_x) \equiv c_x.
+    \]
+    \needspace{2\baselineskip}
+    By induction on $x$:
+    \begin{enumerate}[-]
+        \item If $x\equiv0_{\fun2}$, then $c_{0_{\fun2}}\equiv\fun\star$, and $\fun{decode}(0_{\fun2},0_{\fun2},\fun\star)\equiv\fun{refl}_{0_{\fun2}}$.
+        
+        \item If $x\equiv1_{\fun2}$, then $c_{1_{\fun2}}\equiv\fun\star$, and $\fun{decode}(1_{\fun2},1_{\fun2},\fun\star)\equiv\fun{refl}_{1_{\fun2}}$.
+    \end{enumerate}
+    Thus, $\fun{decode}(x,x,\fun{encode}(x,x,\fun{refl}_x))\eq{}\fun{refl}_x$.
+
+    Second, let $d\colon\fun{Code}(x,y)$. We proceed by double induction on $x$ and $y$:
+    \begin{enumerate}[-]
+        \item If $x,y\equiv0_{\fun2}$, then $d\colon\fun1$ and induction on $d$ yields $\fun{decode}(0_{\fun2},0_{\fun2},\fun\star)\equiv\fun{refl}_{0_\fun2}$. Thus, 
+        \[
+            \fun{encode}(
+                0_{\fun2},
+                0_{\fun2},
+                \fun{decode}(0_{\fun2},0_{\fun2},\fun\star)
+                )
+            \equiv\fun{encode}(
+                0_{\fun2},
+                0_{\fun2},
+                \fun{refl}_{0_{\fun2}}
+                )
+            \equiv c_{0_{\fun2}}
+            \equiv\fun\star.
+        \]
+
+        \item If $x,y\equiv1_{\fun2}$, then $d\colon\fun1$ and induction on $d$ yields $\fun{decode}(1_{\fun2},1_{\fun2},\fun\star)\equiv\fun{refl}_{1_\fun2}$. Thus,
+        \[
+            \fun{encode}(
+                1_{\fun2},
+                1_{\fun2},
+                \fun{decode}(1_{\fun2},1_{\fun2},\fun\star)
+                )
+            \equiv\fun{encode}(
+                1_{\fun2},
+                1_{\fun2},
+                \fun{refl}_{1_{\fun2}}
+                )
+            \equiv c_{1_{\fun2}}\equiv\fun\star.
+        \]
+        
+        \item If $x\equiv1_{\fun2}$ and $y\equiv0_{\fun2}$, or the other way around, then $d\colon\fun0$, and the goal is vacuously satisfied.
+    \end{enumerate}
+\end{proof}
+
+\textbf{Extended framework}. We define:
+
+    \textsc{Inversion map:}
+    \begin{align*}
+        \fun{inv}\colon\prod_{x,y\colon\fun2}&\fun{Code}(x,y)
+            \to\fun{Code}(y,x)\\
+        &\begin{array}{cccc}
+            x & y & \zeta & \fun{inv}(x,y,\zeta) \\
+            \hline
+            0_{\fun2} & 0_{\fun2} & \zeta & \zeta \\
+            1_{\fun2} & 1_{\fun2} & \zeta & \zeta \\
+            0_{\fun2} & 1_{\fun2} & \zeta & \fun{rec}_{\fun0}(\zeta) \\
+            1_{\fun2} & 0_{\fun2} & \zeta & \fun{rec}_{\fun0}(\zeta) \\
+        \end{array}
+    \intertext{\textsc{Concatenation:}}
+        {\ect}\colon\prod_{x,y,z\colon\fun2}&\fun{Code}(x,y)
+            \to\fun{Code}(y,z) \to \fun{Code}(x,z)\\
+        &\qquad u\mapsto v\mapsto u\ect v\\
+        &\begin{array}{cccc}
+            x&y&u&u\ect v\\
+            \hline
+            0_{\fun2}&0_{\fun2}&\fun1&v\\
+            1_{\fun2}&1_{\fun2}&\fun1&v\\
+            0_{\fun2}&1_{\fun2}&\fun0&\fun{rec}_{\fun0}(u)\\
+            1_{\fun2}&0_{\fun2}&\fun0&\fun{rec}_{\fun0}(u)
+        \end{array}
+    \end{align*}
+    \needspace{2\baselineskip}
+    \textsc{Unit laws:}
+
+    To show that $\fun{inv}(x,x,c_x)\eq{\fun{Code}(x,x)}c_x$ it suffices to consider the cases $x\equiv0_{\fun2}$ and $x\equiv1_{\fun2}$. In both cases $c_x\equiv\fun\star$, and $\fun{inv}(x,x,\fun\star)\equiv\fun\star$ by definition.
+
+    To show that $c_x\ect v\eq{\fun{Code}(x,z)}v$, by induction on $x$, we must only verify the cases $x\equiv0_{\fun2}$ and $x\equiv1_{\fun2}$, where the concatenation satisfies $c_x\ect v\equiv v$ by definition.
+
 
 \section{Equality in \textSigma-Types}\label{equality-in-Sigma-types}
 
@@ -4159,7 +4287,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 \end{proof}
 
 \begin{prop}\label{prop:transport-function-codomain}
-    Let\/ $A$ be a type, $P\colon X\to\univ$ a type family, and\/ $p\colon x\eq Xy$ a path. For any function\/ $f\colon A\to P(x)$, we have
+    Let\/ $A$ be a type, $P\colon X\to\univ$ a type family. Given $x,y\colon A$ and\/ $p\colon x\eq Xy$, for any function\/ $f\colon A\to P(x)$, we have
     \[
         \fun{transport}^{\lambda z.\,(A\to P(z))}(p,f)
             \eq{A\to P(y)}\lambda a.\,\fun{transport}^P(p,f(a)).
@@ -6494,6 +6622,10 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
             \eq{\prod_{x\colon X}\sum_{y\colon A(x)}P(x,y)}f.
     \]
 \end{proof}
+
+\begin{rem}
+    It is worth noting that the axiom of function extensionality was used to prove that the map $\fun{ac}$ is an equivalence. However, no axiom was needed for the construction of the global choice function $g\colon\prod_{x\colon X}A(x)$.
+\end{rem}
 
 \begin{thm}
     Let\/ $A,B,C\colon\univ$ be types. Then the map

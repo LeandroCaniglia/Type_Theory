@@ -455,7 +455,7 @@
 %\newcommand{\defeq}{\mathrel{\mathop:}\equiv}
 \newcommand{\defeq}{\mathrel{\vcentcolon}\equiv}
 \newcommand{\eq}[1]{\mathrel{=_{#1}}}
-%\newcommand{\ct}{\mathbin{\mbf{\fun\cdot}}}
+\newcommand{\modeq}[1]{\quad (\text{in } #1)} % Usage: p=q\modeq{x\eq{A}y}
 \newcommand{\ct}{\mathbin{\boldsymbol{\cdot}}}
 \newcommand{\ect}{\mathbin\ast}
 \newcommand{\hct}{\mathbin{\vcenter{\hbox{$\scriptstyle\bullet$}}}}
@@ -477,3 +477,5 @@
 \newcommand{\puniv}{{\univ_\sbull}}
 
 \newcommand{\explain}[2][]{\underbracket[0.5pt][2pt]{#2}_{#1}}
+
+\newcommand{\tac}{\fun{ac}_0}
