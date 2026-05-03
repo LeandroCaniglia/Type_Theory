@@ -214,7 +214,7 @@
     \end{enumerate}
 \end{proof}
 
-\begin{defn}
+\begin{defn}\label{defn:1-type}
     A type $A$ is a \textsl{$1$-type} if for all $x,y\colon A$, $p,q\colon x\eq Ay$, and $r,s\colon p\eq{x\eq Ay}q$, we have $r\eq{p\eq{x\eq Ay}q}s$.
 \end{defn}
 
@@ -496,7 +496,8 @@
     Combining the lemma with Remark~\ref{rem:ids-in-a-set-are-subsingletons}, we deduce that, if $P$ is a subsingleton, $x\eq Py$ is also a subsingleton for all $x,y\colon P$.
 \end{rem}
 
-\begin{thm}
+
+\begin{thm}\label{thm:boolean-type-is-set}
     The boolean type\/ $\fun2$ is a set.
 \end{thm}
 
@@ -544,12 +545,42 @@
     \]
 \end{defn}
 
-\begin{lem}\label{lem:total-space-with-subsigleton-fibers}
-    Let\/ $P\colon A\to\univ$ be a type family such that\/ $P(x)$ is a subsingleton for all\/ $x\colon A$. For any\/ $u,v\colon\Sigma_AP$, if\/ $\pi_1(u)\eq{A}\pi_1(v)$, then\/ $u\eq{\Sigma_AP}v$.
+\begin{lem}\label{lem:total-space-with-subsingleton-fibers}
+    Let $P\colon A\to\univ$ be a type family such that $P(x)$ is a subsingleton for all $x\colon A$. For any $u,v\colon\Sigma_AP$, the first projection induces an equivalence between their identity types:
+    \[
+        (u \eq{\Sigma_A P} v) \simeq (\pi_1(u) \eq{A} \pi_1(v)).
+    \]
 \end{lem}
 
 \begin{proof}
-    Let $p\colon\pi_1(u)\eq A\pi_1(v)$. To verify that $u\eq{\Sigma_AP}v$, we need to show that $p_*(\pi_2(u))\eq{P(\pi_1(v))}\pi_2(v)$, which holds trivially because $P(\pi_1(v))$ is a subsingleton.
+    Consider
+    $$\begin{aligned}
+        f\colon(u\eq{\Sigma_AP}v)&\to(\pi_1(u)\eq A\pi_1(v))\\
+        p&\mapsto\fun{ap}_{\pi_1}(p).
+    \end{aligned}$$
+    To construct a backward map
+    $$g\colon(\pi_1(u)\eq A\pi_1(v))\to(u\eq{\Sigma_AP}v),$$
+    given a path $q\colon\pi_1(u)\eq A\pi_1(v)$, take a witness
+    $$\epsilon\colon\fun{isProp}(P(\pi_1(v))).$$
+    Then,
+    $$\gamma\defeq\epsilon(q_*(\pi_2(u)),\pi_2(v))$$
+    inhabits $q_*(\pi_2(u))\eq{P(\pi_1(v))}\pi_2(v)$. Therefore, we can define the backward map as
+    \[
+        g(q)\defeq\fun{pair}^=(q,\gamma).
+    \]
+    To conclude that $f$ and $g$ are quasi-inverses, we must verify that their compositions are homotopic to the respective identity maps:
+    \begin{enumerate}[-]
+        \item For any $q\colon\pi_1(u)\eq A\pi_1(v)$, it is clear that $f(g(q))\eq{}q$.
+        
+        \item For any $p\colon u\eq{\Sigma_AP}v$, we can write $p\eq{} \fun{pair}^=(p_1,p_2)$ for some transport path $p_2\colon(p_1)_*(\pi_2(u)) \eq{P(\pi_1(v))} \pi_2(v)$, where $p_1\defeq\fun{ap}_{\pi_1}(p)$.
+        
+        Evaluating $g(f(p))$ yields $\fun{pair}^=(p_1,\gamma')$, where 
+        $\gamma'\defeq\epsilon((p_1)_*(\pi_2(u)),\pi_2(v))$. Because $P(\pi_1(v))$ is a subsingleton, it is also a set, meaning any two parallel paths within it are propositionally equal. In particular, $\gamma'\eq{}p_2$. Applying the function $\fun{ap}$ to this equality yields 
+        \[
+            \fun{pair}^=(p_1,\gamma')\eq{}\fun{pair}^=(p_1,p_2),
+        \]
+        which implies $g(f(p))\eq{}p$.
+    \end{enumerate}
 \end{proof}
 
 \begin{ntn}
@@ -569,7 +600,7 @@
     
 \end{ntn}
 
-\begin{thm}\label{thm:closure-subsingletons}
+\begin{thm}\label{thm:subsingletons}
     Subsingletons are closed under the following type-theoretic constructions:
     \begin{enumerate}[a),font=\upshape]
         \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of subsingletons\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is a subsingleton. 
@@ -587,6 +618,7 @@
     \end{enumerate}
 \end{thm}
 
+\needspace{2\baselineskip}
 \begin{proof}${}$
     \begin{enumerate}[a)]
         \item Let $f,g\colon\prod_{x\colon A}P(x)$. Given $x\colon A$, since $P(x)$ is a subsingleton, we have $f(x)\eq{P(x)}g(x)$. Thus, the conclusion follows by function extensionality.
@@ -596,7 +628,7 @@
         \item Let $(a,b),(c,d)\colon P\times Q$. Then $a\eq Pc$ and $b\eq Qd$ and so $(a,b)\eq{P\times Q}(c,b)\eq{P\times Q}(c,d)$. The conclusion follows because, for all $x\colon P\times Q$, we have $x\eq{P\times Q}(\pi_1(x),\pi_2(x))$.
 
         
-        \item This is a direct consequence of Lemma~\ref{lem:total-space-with-subsigleton-fibers}.
+        \item This is a direct consequence of Lemma~\ref{lem:total-space-with-subsingleton-fibers}.
 
         \item Fix $f\colon P\to\neg Q$, and let $\epsilon\colon\fun{isProp}(P)$ and $\delta\colon\fun{isProp}(Q)$. To construct a dependent function of type
         \[
@@ -700,7 +732,7 @@
         \[
             (f\circ h\sim\id_Q)\equiv\prod_{y\colon Q}f(h(y))\eq{Q}\id_Q(y).
         \]
-        Because $Q$ is a subsingleton, Remark~\ref{rem:ids-in-subsingletons-are-singletons} ensures that the identity type $f(h(y))\eq{Q}\id_Q(y)$ is a subsingleton. Part a) then guarantees that the homotopy is a subsingleton. Since the fibers are subsingletons and the base components are necessarily equal, Lemma~\ref{lem:total-space-with-subsigleton-fibers} implies that any two elements in this first factor are equal.
+        Because $Q$ is a subsingleton, Remark~\ref{rem:ids-in-subsingletons-are-singletons} ensures that the identity type $f(h(y))\eq{Q}\id_Q(y)$ is a subsingleton. Part a) then guarantees that the homotopy is a subsingleton. Since the fibers are subsingletons and the base components are necessarily equal, Lemma~\ref{lem:total-space-with-subsingleton-fibers} implies that any two elements in this first factor are equal.
         
         A symmetric argument applies to the second factor. Hence, $\fun{isequiv}(f)$ is a subsingleton, which concludes the first claim.
 
@@ -743,6 +775,52 @@
         \eta,\vartheta\colon f\sim g\equiv\prod_{x\colon A}f(x)\eq Pg(x).
     \]
     By Remark~\ref{rem:ids-in-subsingletons-are-singletons}, we deduce that $\eta(x)\eq{f(x)\eq Pg(x)}\vartheta(x)$ for all\/ $x\colon A$. Then, function extensionality yields $\eta\eq{f\sim g}\vartheta$. The conclusion follows.
+\end{proof}
+
+\begin{cor}\label{cor:isequiv(f)-is-set}
+    Let\/ $A$ and\/ $B$ be sets, and let\/ $f\colon A\to B$ be a function. Then the type\/ $\fun{isequiv}(f)$ is a set.
+
+    Moreover, if\/ $A$ and\/ $B$ are subsingletons, then $\fun{isequiv}(f)$ is a subsingleton.
+\end{cor}
+
+\begin{proof}
+    To prove that $\fun{isequiv}(f)$ is a set, we have to prove that the type
+    \[
+        \Bigl(
+            \sum_{g\colon B\to A}f\circ g\sim\id_B
+        \Bigr)
+        \times
+        \Bigl(
+            \sum_{h\colon B\to A}h\circ f\sim\id_A
+        \Bigr)
+    \]
+    is a set.
+
+    By the symmetry between $A$ and $B$, and the fact that the Cartesian product of sets is a set given in part~d) of Theorem~\ref{thm:sets}, it suffices to show that the first $\Sigma$-type is a set.
+
+    By part~f) of the same theorem, the type $B\to A$ is a set. Therefore, to reach the conclusion, it suffices to show that we can apply part~e), i.e., that $f\circ g\sim\id_B$ is a set for every $g\colon B\to A$.
+
+    To see this, take $\eta_1,\eta_2\colon f\circ g\sim\id_B$. Given $y\colon B$, we have
+    \[
+        \eta_1(y),\eta_2(y)\colon f(g(y))\eq By.
+    \]
+    Since $B$ is a set, we obtain $\eta_1(y)\eq{}\eta_2(y)$ in $f(g(y))\eq By$. Therefore, function extensionality produces $\eta_1\eq{}\eta_2$ in $f\circ g\sim\id_B$. Thus, $f\circ g\sim\id_B$ is a subsingleton, hence a set. The conclusion follows.
+
+    In the case where $A$ and $B$ are subsingletons, since they are also sets, the fact that $f\circ g\sim\id_B$ is a subsingleton allows us to invoke part~d) of Theorem~\ref{thm:subsingletons}, because $B\to A$ is a subsingleton by part~a) of the same theorem. By symmetry, the second $\Sigma$-type is also a subsingleton, and since the product of subsingletons is a subsingleton (part~c), the type $\fun{isequiv}(f)$ is a subsingleton.
+\end{proof}
+
+\begin{cor}\label{cor:set-simeq-set-is-set}
+    Let\/ $A$ and\/ $B$ be sets. Then the type\/ $A\simeq B$ is a set.
+\end{cor}
+
+\begin{proof}
+    By definition, the type of equivalences is given by the $\Sigma$-type:
+    \[
+        A\simeq B\defeq\sum_{f\colon A\to B}\fun{isequiv}(f).
+    \]
+    To show that a $\Sigma$-type is a set, by part~e) of Theorem~\ref{thm:sets}, it suffices to show that $A\to B$ is a set and that each $\fun{isequiv}(f)$ is a set.
+    
+    The first requirement is covered by part~f) of said theorem. The second by Corollary~\ref{cor:isequiv(f)-is-set}.
 \end{proof}
 
 
@@ -791,7 +869,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
         \|f\|\defeq\fun{rec}_{\|A\|}(\|B\|,a\mapsto|f(a)|).
     \]
     
-    To prove the identity and composition laws, observe that in both cases the codomains $\|A\|$ and $\|C\|$ are subsingletons. By Theorem~\ref{thm:closure-subsingletons}~b), the function spaces $\|A\|\to\|A\|$ and $\|A\|\to\|C\|$ are also subsingletons. Because any two inhabitants of a subsingleton are equal, the homotopies $\|\id_A\|\sim\id_{\|A\|}$ and $\|g\circ f\|\sim\|g\|\circ\|f\|$ are trivially inhabited.
+    To prove the identity and composition laws, observe that in both cases the codomains $\|A\|$ and $\|C\|$ are subsingletons. By Theorem~\ref{thm:subsingletons}~b), the function spaces $\|A\|\to\|A\|$ and $\|A\|\to\|C\|$ are also subsingletons. Because any two inhabitants of a subsingleton are equal, the homotopies $\|\id_A\|\sim\id_{\|A\|}$ and $\|g\circ f\|\sim\|g\|\circ\|f\|$ are trivially inhabited.
 
     Finally, suppose $f\colon A\to B$ is an equivalence with quasi-inverse $f^{-1}\colon B\to A$. Functoriality gives us maps $\|f\|\colon\|A\|\to\|B\|$ and $\|f^{-1}\|\colon\|B\|\to\|A\|$. Since the target spaces are subsingletons, the compositions $\|f^{-1}\|\circ\|f\|$ and $\|f\|\circ\|f^{-1}\|$ are homotopic to $\id_{\|A\|}$ and $\id_{\|B\|}$, respectively. Thus, $\|f\|$ is an equivalence.
     
@@ -811,6 +889,27 @@ In the case of non-dependent subsingleton families, we have the recursion princi
         |{-}|\colon A\to\|A\|,\quad a\mapsto|a|.
     \]
     The conclusion follows from Lemma~\ref{lem:subsingleton-equivalence} and the univalence axiom.
+\end{proof}
+
+\begin{lem}\label{lem:trucated-eq-to-set-is-set}
+    Let\/ $S$ be a set, and let\/ $A\colon\univ$ be a type. If\/ $\|A\eq\univ S\|$ is inhabited, then\/ $A$ is a set.
+\end{lem}
+
+\begin{proof}
+    We must construct an inhabitant of the type $\fun{isSet}(A)$. 
+    
+    By recursion for propositional truncation, to define a function $\|X\|\to P$, where $P$ is a subsingleton, it suffices to construct a map from $X$ to $P$. By Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, we know that $\fun{isSet}(C)$ is a subsingleton for every $C\colon\univ$. Hence, we can apply recursion to the case $X\defeq A\eq\univ S$ and $P\defeq\fun{isSet}(A)$.
+    
+    To provide the function $f\colon(A\eq\univ S)\to\fun{isSet}(A)$, fix a witness $\epsilon\colon\fun{isSet}(S)$ and define:
+    \[
+        f(q)\defeq\fun{transport}^{\fun{isSet}}(q^{-1},\epsilon).
+    \]
+    Thus, if $h\colon\fun{isProp}(\fun{isSet}(A))$, we obtain the function
+    \[
+        \fun{rec}_{\|A\eq\univ S\|}\bigl(\fun{isSet}(A),h,f\bigr)
+            \colon\|A\eq\univ S\|\to\fun{isSet}(A).
+    \]
+    The conclusion follows.
 \end{proof}
 
 \begin{ntn}
@@ -862,7 +961,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $p(x)$ follows.
 \end{proof}
 
-\begin{lem}\label{lem:isContr-is-a-subsingletion}
+\begin{lem}\label{lem:isContr-is-a-subsingleton}
     For any type\/ $A$, the type\/ $\fun{isContr}(A)$ is a subsingleton.
 \end{lem}
 
@@ -926,7 +1025,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \begin{proof}
     By definition, the type of contractible maps is the dependent type given in \eqref{eq:isContrMap}.
 
-    By Lemma~\ref{lem:isContr-is-a-subsingletion}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a subsingleton for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:closure-subsingletons}.
+    By Lemma~\ref{lem:isContr-is-a-subsingleton}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a subsingleton for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:subsingletons}.
     
 \end{proof}
 
@@ -934,7 +1033,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \section{The Axiom of Choice}
 
 \begin{rem}
-    A consequence of part~d) of Theorem~\ref{thm:closure-subsingletons} applies to the universes of sets and subsingletons, $\fun{Set}_\univ$ and $\fun{Prop}_\univ$. By definition, elements of these universes are dependent pairs consisting of a base type and a witness to its particular characteristic. 
+    A consequence of part~d) of Theorem~\ref{thm:subsingletons} applies to the universes of sets and subsingletons, $\fun{Set}_\univ$ and $\fun{Prop}_\univ$. By definition, elements of these universes are dependent pairs consisting of a base type and a witness to its particular characteristic. 
     
     Because the types $\fun{isSet}(A)$ and $\fun{isProp}(P)$ are themselves subsingletons, part~d) guarantees that the second coordinates of these pairs add no new information. In the language of type theory, being a set or a subsingleton is a \textit{property} of a type, rather than an additional \textit{structure} placed upon it. 
 
@@ -1021,7 +1120,27 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{proof}
 
-\begin{lem}
+
+\begin{thm}\label{thm:generalized-total-space}
+    Let $P\colon\univ\to\fun{isProp}_\univ$ be a subsingleton family. Then, for any $u\equiv(A,p)$ and $v\equiv(B,q)$ in $\Sigma_\univ P$, there is an equivalence:
+    \[
+        (u\eq{\Sigma_\univ P}v)\simeq(A\simeq B).
+    \]
+\end{thm}
+
+\begin{proof}
+    By Lemma~\ref{lem:total-space-with-subsingleton-fibers}, there is an equivalence:
+    \[
+        (u\eq{\Sigma_\univ P}v)\simeq(A\eq{\univ}B).
+    \]
+    The conclusion follows from the univalence axiom by composition of the former equivalence with:
+    \[
+        (A\eq{\univ}B)\simeq(A\simeq B).
+    \]
+\end{proof}
+
+
+\begin{cor}\label{cor:general-tac-is-false}
     The following type is inhabited:
     \[
         \sum_{X\colon\univ}\;\sum_{C\colon X\to\fun{Set}_\univ}
@@ -1029,11 +1148,69 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             \Bigl(\prod_{x\colon X}\|C(x)\|\Bigr)
             \to
             \Bigl\|\prod_{x\colon X}C(x)\Bigr\|
-        \biggr) \to \fun0.
+        \biggr)\to\fun0.
     \]
     In other words, there exists a type\/ $X$ and a family\/ $C\colon X\to\fun{Set}_\univ$ such that\/ {\upshape\eqref{eq:traditional-tac}} is false.
-\end{lem}
+\end{cor}
 
 \begin{proof}
+    Define
+    \[
+        X\defeq\sum_{A\colon\univ}\|\fun2\eq{\univ}A\|.
+    \]
+    Since $\fun2$ is a set [cf.~Theorem~\ref{thm:boolean-type-is-set}], it follows by Lemma~\ref{lem:trucated-eq-to-set-is-set} that if $(A,p)\colon X$, then $A$ must be a set as well.
+    
+    By Theorem~\ref{thm:generalized-total-space}, for any $u\defeq(A,p)$ and $v\defeq(B,q)$ in $X$, there is an equivalence:
+    \begin{equation}\label{eq:pi-1-equivalence}
+        (u\eq Xv)\simeq(A\simeq B).
+    \end{equation}
+    
+    From \eqref{eq:pi-1-equivalence}, we infer using Corollary~\ref{cor:set-simeq-set-is-set} that $A\simeq B$ is a set. Hence, $u\eq Xv$ is a set as well.
+    
+    Let $x_0\defeq(\fun2,|\fun{refl}_{\fun2}|)$. It follows that the family 
+    \begin{align*}
+        C\colon X&\to\univ\\
+        x&\mapsto(x_0\eq Xx), 
+    \end{align*}
+    has the property that $C(x)$ is a set for all $x\colon X$.
+    
+    In the particular case where $v\defeq u\defeq x_0$, \eqref{eq:pi-1-equivalence} yields
+    \[
+        (x_0\eq Xx_0)\simeq(\fun2\simeq\fun2).
+    \]
+    As Exercise~\ref{exr:2-simeq-2-simeq-2} shows, $(\fun2\simeq\fun2)\simeq\fun2$. Using the lemma from that exercise, we deduce that $x_0\eq Xx_0$ has two distinct inhabitants. Hence, $X$ is not a set. More precisely, there is a map $\fun{isSet}(X)\to\fun0$.
+
+    Suppose
+    \[
+        f\colon
+            \Bigl(\prod_{x\colon X}\|C(x)\|\Bigr)
+            \to
+            \Bigl\|\prod_{x\colon X}C(x)\Bigr\|.
+    \]
+    Given
+    \[
+        \zeta\colon\prod_{x\colon X}\|x_0\eq Xx\|,
+    \]
+    we obtain
+    \[
+        f(\zeta)\colon\Big\|\prod_{x\colon X}x_0\eq Xx\Bigr\|.
+    \]
+    Since $\fun{isContr}(X)$ is a subsingleton by Lemma~\ref{lem:isContr-is-a-subsingleton}, using recursion on the \rhs, to construct a map
+    \[
+        \Big\|\prod_{x\colon X}x_0\eq Xx\Bigr\|\to\fun{isContr}(X),
+    \]
+    it suffices to provide a map
+    \[
+        \iota\colon\Bigl(\prod_{x\colon X}x_0\eq Xx\Bigr)\to\fun{isContr}(X),
+    \]
+    which we can do by setting $\iota(g)\defeq(x_0,g)$.
+
+    Applying the recursion principle of the propositional truncation, we obtain an element of $\fun{isContr}(X)$. Since $\fun{isContr}(X)$ is a subsingleton, and every subsingleton is a set [cf.~Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}], by composition we obtain a witness
+    \[
+        \epsilon\colon\Bigl\|\prod_{x\colon X}x_0\eq Xx\Bigr\|\to\fun0.
+    \]
+    Consequently, the map $\lambda f.\,f(\zeta)\circ\epsilon$ fulfills the requirement of the statement.
+    %
     
 \end{proof}
+
