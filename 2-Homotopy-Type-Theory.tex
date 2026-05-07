@@ -583,7 +583,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \begin{rem}\label{rem:section-type}
     The lemma can be represented by the following diagram, where the horizontal arrows represent paths ---i.e., terms of the propositional equalities between their ends--- and the vertical arrows, functions:
     \[
-        \begin{tikzcd}[row sep=large, column sep=huge]
+        \begin{tikzcd}[row sep=large,column sep=huge]
             (a,u)
                 \arrow[r,"{\fun{lift}(u,p)}"]
                 \arrow[d,"\pi_1"']
@@ -596,6 +596,11 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
         \qquad;\ u\colon P(a),\;p\colon a\eq Ax.
     \]
     Note also that a term $f\colon\prod_{x\colon A}P(x)$ can be regarded as a \textsl{section} of the fibration induced by~$P$.
+
+    In particular, given that\/ $\fun{transport}^P(\fun{refl}_a,u)\equiv u$, we deduce that yielding a witness of\/ $(a,u)\eq E(a,v)$ is exactly the same as yielding a witness of
+    \begin{equation}\label{eq:Sigma-trivial-equality}
+        u\eq{P(a)}v.
+    \end{equation}
 \end{rem}
 
 \begin{ntn}\label{ntn:p_*}

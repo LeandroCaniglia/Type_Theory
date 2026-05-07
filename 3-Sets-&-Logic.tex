@@ -934,11 +934,31 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \section{Contractibility}
 
 \begin{defn}
-    A type $A$ is \textsl{contractible} if there is an element $a\colon A$, called the \textsl{center of contraction}, such that every element in $A$ is equal to $a$. We define the type of such witnesses as
+    A type $A$ is \textsl{contractible} (a.k.a.~a \textsl{singleton}) if there is an element $a\colon A$, called the \textsl{center of contraction}, such that every element in $A$ is equal to $a$. We define the type of such witnesses as
     \[
         \fun{isContr}(A)\defeq\sum_{a\colon A}\;\prod_{x\colon A}a\eq{A}x.
     \]
 \end{defn}
+
+\begin{lem}\label{lem:contractible-equivalences}
+    For a type\/ $A$, the following are logically equivalent.
+    \begin{enumerate}[a), font=\upshape]
+        \item $A$ is contractible.
+        \item $A$ is a subsingleton, and there is a point\/ $a\colon A$.
+        \item $A$ is equivalent to\/ $\fun1$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item $\Rightarrow$~b) The hypothesis provides a witness $h\colon\fun{isContr}(A)$. Composition with first projection yields a witness $\pi_1(h))\colon A$. Hence, $A$ is inhabited.
+
+        \item $\Rightarrow$~c) See Lemma~\ref{lem:mere-prop-and-1}.
+
+        \item $\Rightarrow$~a) The canonical element $\fun\star\colon\fun1$ is a center of contraction as shown by the $\fun{uniq}_{\fun1}$ function [cf.~\nref{lpar:Pi-types-over-product}].
+    \end{enumerate}
+    
+\end{proof}
 
 \begin{lem}\label{lem:transport-prod-id}
     Let\/ $A$ be a type, $a,b\colon A$, and define the type family
@@ -961,9 +981,9 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $p(x)$ follows.
 \end{proof}
 
-\begin{lem}\label{lem:isContr-is-a-subsingleton}
+\begin{thm}\label{thm:isContr-is-a-subsingleton}
     For any type\/ $A$, the type\/ $\fun{isContr}(A)$ is a subsingleton.
-\end{lem}
+\end{thm}
 
 \begin{proof}
     Let $c,d\colon\fun{isContr}(A)$. Set
@@ -1002,6 +1022,228 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     Since $c$ witnesses that $A$ is contractible, $A$ is a subsingleton. By Remark~\ref{rem:ids-in-subsingletons-are-singletons}, $b\eq{A}x$ is a subsingleton. Since both $p(b)^{-1}\ct p(x)$ and $q(x)$ are elements of $b\eq{A}x$, they are necessarily equal. This completes the proof.
 \end{proof}
 
+\begin{cor}
+    If\/ $A$ is contractible, $\fun{isContr}(A)$ is also contractible.
+\end{cor}
+
+\begin{proof}
+    By the theorem, $\fun{isContr}(A)$ is a subsingleton. It is also inhabited because $A$ is contractible.  The conclusion follows from part~b) of Lemma~\ref{lem:contractible-equivalences}.
+\end{proof}
+
+\begin{rem}\label{rem:choice-free-center-construction}
+    Let $A\colon\univ$ be a type and $P\colon A\to\univ$ a type family. Claiming that \textit{the type $P(x)$ is contractible for every $x\colon A$} means that we are given a dependent function
+    \[
+        h\colon\prod_{x\colon A}\fun{isContr}(P(x)),
+    \]
+    i.e.,
+    \[
+        h\colon\prod_{x\colon A}\;
+            \sum_{c\colon P(x)}\;\prod_{z\colon P(x)}c\eq{P(x)}z.
+    \]
+    In particular, given $x\colon A$, the term $c_x\defeq\pi_1(h(x))$ is a center of contraction for $P(x)$. In other words, picking the center of contraction for every contractible fiber of $P$ is a constructive, choice-free operation.
+\end{rem}
+
+\begin{thm}\label{thm:contractible-types}
+    Contractible types are closed under the following type-theoretic constructions:
+    \begin{enumerate}[a),font=\upshape]
+        \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of contractible types\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is contractible. 
+        
+        \item \textsc{\upshape Functions:} If\/ $Q$ is contractible, the type\/ $A\to Q$ is contractible for any arbitrary type\/ $A$.
+        
+        \item \textsc{\upshape Products:} If\/ $P$ and\/ $Q$ are contractible, then their Cartesian product\/ $P\times Q$ is contractible.
+        
+        \item \textsc{\upshape Dependent Pairs:} If\/ $A$ is contractible and\/ $P\colon A\to\univ$ is a family of contractible types, then the total space\/ $\Sigma_AP$ is contractible.
+        
+        \item \textsc{\upshape Identity Types:} If\/ $A$ is contractible, then for any\/ $x,y\colon A$, the identity type\/ $x\eq A y$ is contractible.
+        
+        \item \textsc{\upshape Equivalences \& Identity:} If\/ $P$ and\/ $Q$ are contractible, the type of equivalences\/ $P\simeq Q$ and their propositional equality\/ $P\eq{\univ}Q$ are contractible.
+
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}
+    Since Theorem~\ref{thm:isContr-is-a-subsingleton} establishes that every contractible type is a subsingleton, Theorem~\ref{thm:subsingletons} guarantees that the constructed types are subsingletons. Therefore, by Lemma~\ref{lem:contractible-equivalences}, it suffices to show that each of them is inhabited. In all cases, constructing a witness from the centers of contraction of the constituent contractible types is straightforward.
+\end{proof}
+
+\begin{defn}
+    A \textsl{retraction} is a function $r\colon A\to B$ such that there exists a function $s\colon B\to A$, called its \textsl{section}, and a homotopy $\eta\colon\prod_{y\colon B}r(s(y))\eq By$. If such a retraction exists, we say that $B$ is a \textsl{retract} of $A$.
+\end{defn}
+
+\begin{lem}
+    Every retract of a contractible type is contractible.
+\end{lem}
+
+\begin{proof}
+    Let\/ $A$ be contractible and\/ $r\colon A\to B$ a retraction. If\/ $a\colon A$ denotes its center of contraction, we claim that\/ $b\defeq r(a)$ is a center of contraction for\/ $B$. This means that we must construct a witness of
+    \[
+        \prod_{y\colon B}b\eq By.
+    \]
+    Let\/ $s\colon B\to A$ be a section of\/ $r$, and\/ $\eta\colon r\circ s\sim\id_B$ the corresponding homotopy.
+
+    The hypothesis implies that for every\/ $y\colon B$, the identity type\/ $a\eq As(y)$ is inhabited. Applying\/ $\fun{ap}_r$ yields a witness of\/ $b\eq Br(s(y))$, whose concatenation with\/ $\eta(y)$ constructs a witness of\/ $b\eq By$. The conclusion follows.
+    %
+    
+\end{proof}
+
+\begin{lem}
+    Let\/ $A$ be a type. Given\/ $a\colon A$, the type\/ $\displaystyle\sum_{x\colon A}a\eq Ax$ is contractible.
+\end{lem}
+
+\begin{proof}
+    Let $X$ denote this $\Sigma$-type. We claim that $(a,\fun{refl}_a)$ is a center of contraction for $X$. Given $(x,p)\colon X$, we have $p\colon a\eq Ax$. Since
+    \[
+        \fun{transport}^{\zeta\mapsto(a\eq A\zeta)}(p,\fun{refl}_a)
+            \eq{}\fun{refl}_a\ct p\equiv p,
+    \]
+    by part a) of Proposition~\ref{prop:transport-decomposition-for-paths}, the identity type $(a,\fun{refl}_a)\eq X(x,p)$ is inhabited.
+\end{proof}
+
+\begin{rem}\label{rem:contractible-center-to-center-path}
+    Suppose that $A\colon\univ$ is a contractible type. If $c$ is a center of contraction for $A$, then for every $x\colon A$ we have a path $p_x\colon c\eq Ax$. Even though we cannot assume that $p_c\equiv\fun{refl}_c$, we do have
+    \[
+        p_c\eq{c\eq Ac}\fun{refl}_c,
+    \]
+    because every contractible type is a subsingleton, and every subsingleton is a set.
+\end{rem}
+
+\begin{thm}\label{thm:contractible-data-ignored}
+    The principle that contractible data can be freely ignored up to equivalence manifests in the following equivalences. Let\/ $A$ and\/ $B$ be types, and let\/ $P\colon A\to\univ$ be a type family.
+    \begin{enumerate}[a), font=\upshape]
+        \item \textsc{\upshape Dependent Pairs (Right):} If for every\/ $x\colon A$, the type\/ $P(x)$ is contractible, then\/ $\sum_{x\colon A}P(x)\simeq A$.
+        
+        \item \textsc{\upshape Dependent Pairs (Left):} If\/ $A$ is contractible with center\/ $c\colon A$, then\/ $\sum_{x\colon A}P(x)\simeq P(c)$.
+        
+        \item \textsc{\upshape Dependent Functions (Left):} If\/ $A$ is contractible with center\/ $c\colon A$, then\/ $\prod_{x\colon A}P(x)\simeq P(c)$.
+        
+        \item \textsc{\upshape Dependent Functions (Right):} If for every\/ $x\colon A$, the type\/ $P(x)$ is contractible, then the dependent product\/ $\prod_{x\colon A}P(x)$ is contractible, hence\/ $\prod_{x\colon A}P(x)\simeq\fun1$.
+        
+        \item \textsc{\upshape Cartesian Products:} If\/ $B$ is contractible, then\/ $A\times B\simeq A$. By symmetry, if\/ $A$ is contractible, then\/ $A\times B\simeq B$.
+        
+        \item \textsc{\upshape Functions (Domain):} If\/ $A$ is contractible with center\/ $a\colon A$, then the function type\/ $(A\to B)\simeq B$.
+        
+        \item \textsc{\upshape Functions (Codomain):} If\/ $B$ is contractible, then the function type\/ $A\to B$ is contractible, hence\/ $(A\to B)\simeq\fun1$.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}${}$
+    \begin{enumerate}[a)]
+        \item Consider the function
+        \begin{align*}
+            \iota\colon A&\to\sum_{x\colon A}P(x)\\
+            x&\mapsto(x,c_x),
+        \end{align*}
+        where $c_x$ is the center of contraction for $P(x)$ [cf.~Remark~\ref{rem:choice-free-center-construction}]. Then $\pi_1\circ\iota\equiv\id_A$, and
+        \[
+            \iota(\pi_1(x,u))\equiv(x,c_x).
+        \]
+        By equation \eqref{eq:Sigma-trivial-equality} of Remark~\ref{rem:section-type}, to verify that $(x,c_x)\eq{\Sigma_AP}(x,u)$, we must construct a witness of $c_x\eq{P(x)}u$. But this is trivial because the identity type $c_x\eq{P(x)}u$ is inhabited by hypothesis.
+
+        \item Let
+        \[
+            h\colon\fun{isContr}(A)\equiv\sum_{c\colon A}\;\prod_{x\colon A}c\eq Ax.
+        \]
+        Then $c\defeq\pi_1(h)$ is a center for $A$, and given $x\colon A$, $p_x\defeq\pi_2(h)(x)$ satisfies $p_x\colon c\eq Ax$. Thus, we can introduce
+        \begin{align*}
+            f\colon\sum_{x\colon A}P(x)&\to P(c)\\
+            (x,u)&\mapsto\fun{transport}^P(p_x^{-1},u),
+        \intertext{which is well-defined because $p_x^{-1}\colon x\eq Ac$. On the other hand, we have}
+            \iota\colon P(c)&\to\sum_{x\colon A}P(x)\\
+            u&\mapsto(c,u).
+        \end{align*}
+        Then,
+        \begin{align*}
+            f(\iota(u))&\equiv f(c,u)\\
+            &\equiv\fun{transport}^P(p_c^{-1},u)\\
+            &\eq{P(c)}\fun{transport}^P(\fun{refl}_c^{-1},u)\\
+            &\equiv u,
+        \end{align*}
+        where the equality follows from Remark~\ref{rem:contractible-center-to-center-path} and $\fun{ap}_{\fun{transport}^P(-,u)}$.
+    
+        Moreover,
+        \[
+            \iota(f(x,u))\equiv(c,\fun{transport}^P(p_x^{-1},u)).
+        \]
+        Since $p_x\colon c\eq Ax$, to prove that $\iota\circ f(x,u)\eq{\Sigma_AP}(x,u)$, we need to verify that
+        \[
+            \fun{transport}^P\bigl(p_x,\fun{transport}^P(p_x^{-1},u)\bigr)\eq{P(x)}u,
+        \]
+        which is witnessed by $\fun{transportinv}_r(p_x,u)$ [cf.~Lemma~\ref{lem:transportinv}].
+
+        \item Let $c\colon A$ be a center of contraction. Evaluation at $c$ gives us a map
+        \begin{align*}
+            \ev c\colon\prod_{x\colon A}P(x)&\to P(c)\\
+            f&\mapsto f(c).
+        \intertext{For the backward function, define}
+            \gamma\colon P(c)&\to\prod_{x\colon A}P(x)\\
+            u&\mapsto\lambda x.\,\fun{transport}^P(p_x,u),
+        \end{align*}
+        where $p_x\colon c\eq Ax$ is constructed as in part~b). These functions satisfy:
+        \begin{align*}
+            \ev c(\gamma(u))
+                &\equiv\fun{transport}^P(p_c,u)\\
+                &\eq{P(c)}\fun{transport}^P(\fun{refl}_c,u)\\
+                &\equiv u,
+        \intertext{where the equality follows from Remark~\ref{rem:contractible-center-to-center-path} and $\fun{ap}_{\fun{transport}^P(-,u)}$. In addition, for $x\colon A$,}
+            \gamma(f(c))(x)
+                &\equiv\fun{transport}^P(p_x,f(c))\\
+                &\eq{P(x)}f(x)
+                    &&\text{; by }\fun{apd}_f(p_x),
+        \end{align*}
+        where the last equality follows from Lemma~\ref{lem:dependent-map}. By function extensionality, $\gamma(f(c))\eq{}f$ in $\displaystyle\prod_{x\colon A}P(x)$.
+        
+        \item For $x\colon A$, let $(f_x,\eta_x,\vartheta_x)\colon P(x)\simeq\fun1$ be an equivalence with quasi-inverse $f_x^{-1}$. Define
+        \begin{align*}
+            \gamma\colon\prod_{x\colon A}P(x)&\to\fun1\\
+            u&\mapsto\fun\star,
+        \intertext{and}
+            \epsilon\colon\fun1&\to\prod_{x\colon A}P(x)\\
+            z&\mapsto\lambda x.\,f_x^{-1}(z).
+        \end{align*}
+        Then,
+        \[
+            \gamma(\epsilon(\fun\star))\equiv\fun\star.
+        \]
+        Since $P(x)$ is a subsingleton, there is a path $p_x\colon f_x^{-1}(\fun\star)\eq{P(x)}u(x)$. Hence,
+        \begin{align*}
+            \epsilon(\gamma(u))(x)
+                &\equiv f_x^{-1}(\fun\star)\\
+                &\eq{P(x)}u(x)
+                    &&\text{; by }p_x.
+        \end{align*}
+        Thus, by function extensionality,
+        \[
+            \epsilon(\gamma(u))\eq{\prod_{x\colon A}P(x)}u.
+        \]
+
+        \item Suppose that $B$ is contractible. Define
+        \begin{align*}
+            \iota\colon A&\to A\times B\\
+            a&\mapsto(a,c),
+        \end{align*}
+        where $c$ is a center of contraction for $B$. Then, $\iota$ is a quasi-inverse of $\pi_1$, because $\pi_1(\iota(a))\equiv\pi_1(a,c)\equiv a$, and
+        \begin{align*}
+            \iota(\pi_1(a,b))&\equiv(a,c)\\
+                &\eq{A\times B}(a,b)
+                    &&\text{; by }\fun{ap}_{y\mapsto(a,y)}(p_b),
+        \end{align*}
+        where $p_b\colon c\eq Bb$.
+
+        \item This is a particular case of part~c) for the constant family $B$.
+
+        \item This is a particular case of part~d) for the constant family $B$.
+    \end{enumerate}
+\end{proof}
+
+\begin{lem}
+    A type\/ $A$ is a subsingleton if, and only if, for all\/ $x,y\colon A$, the type\/ $x\eq Ay$ is contractible.
+\end{lem}
+
+\begin{proof}
+    If $A$ is a subsingleton, by Lemma~\ref{lem:subsingletons-are-sets}, it is also a set. Therefore, by definition, $x\eq Ay$ is a subsingleton. Since $x$ (as well as $y$) is a witness of $A$, it follows from Lemma~\ref{lem:contractible-equivalences} that $A$ is contractible. Hence, it has a center, say $c$, and we can take $p\colon c\eq Ax$ and $q\colon c\eq Ay$ to construct $p^{-1}\ct q\colon x\eq Ay$.
+
+    Conversely, if $x\eq Ay$ is contractible for all $x,y\colon A$, then $A$ is a subsingleton by definition.
+\end{proof}
+
 \begin{defns}
     Let $f\colon A\to B$ be a function.
     \begin{enumerate}[-]
@@ -1025,7 +1267,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \begin{proof}
     By definition, the type of contractible maps is the dependent type given in \eqref{eq:isContrMap}.
 
-    By Lemma~\ref{lem:isContr-is-a-subsingleton}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a subsingleton for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:subsingletons}.
+    By Theorem~\ref{thm:isContr-is-a-subsingleton}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a subsingleton for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:subsingletons}.
     
 \end{proof}
 
@@ -1195,7 +1437,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         f(\zeta)\colon\Big\|\prod_{x\colon X}x_0\eq Xx\Bigr\|.
     \]
-    Since $\fun{isContr}(X)$ is a subsingleton by Lemma~\ref{lem:isContr-is-a-subsingleton}, using recursion on the \rhs, to construct a map
+    Since $\fun{isContr}(X)$ is a subsingleton by Theorem~\ref{thm:isContr-is-a-subsingleton}, using recursion on the \rhs, to construct a map
     \[
         \Big\|\prod_{x\colon X}x_0\eq Xx\Bigr\|\to\fun{isContr}(X),
     \]
