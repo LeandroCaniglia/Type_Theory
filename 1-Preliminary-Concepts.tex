@@ -197,8 +197,10 @@
     Since there is no universe\/ $\univ_\infty$, the expression $\lambda i\colon\N.\,\univ_i$ does not define a function (otherwise, its codomain would be a global universe). More precisely, no rule permits the definition of a function where the codomain depends on the value of the input in a way that transcends the universe hierarchy.
 \end{lpar}
 
-\begin{lpar}{The cumulative property.} 
-    The family of universes is \textsl{cumulative}, meaning that $A\colon\univ_{i+1}$ assuming that $A\colon\univ_i$. The following example illustrates the reason behind this rule.
+\begin{lpar}{The cumulative property.}\label{lpar:cumulative-property}
+    The family of universes is \textsl{cumulative}, meaning that if $A\colon\univ_i$, then $A\colon\univ_{i+1}$. In particular, if $a$ is a witness of $A$ in $\univ_{i+1}$, it is also a witness of $A$ in $\univ_i$.
+    
+    The following example illustrates the reason behind this rule.
     
     \begin{xmpl}
         Consider a type constructor $\fun{List}$ that forms the type of lists containing elements of a specific type. If we want to create a list of types, we must determine the universe in which this list lives.
@@ -300,7 +302,7 @@
     \[
         \fun{swap}_{A,B,C}(f)(b,a)=f(a,b).
     \]
-    Note that given $f\colon\prod_{x\colon A}\prod_{y\colon B(x)}C(x,y)$, we have $f(a,b)\colon C(a,b)$, assuming $a\colon A$ and $b\colon B(a)$.
+    Note that given $f\colon\prod_{x\colon A}\prod_{y\colon B(x)}C(x,y)$, we have $f(a,b)\colon C(a,b)$.
 \end{lpar}
 
 \section{Product Types}
@@ -309,7 +311,7 @@
     
     For now, we only declare $A\times B$ as a (new) type, and specify that all pairs $(a,b)$ with $a\colon A$ and $b\colon B$ satisfy $(a,b)\colon A\times B$. In \nref{lpar:products-revisited}, we will further establish the additional rules for defining this new type.
     
-    Even though the pairs $(a,b)$, with $a\colon A$ and $b\colon B$,  are of type $A\times B$, the definition of this type makes no attempt at specifying that all the elements of $A\times B$ are pairs (as is the case in Set Theory). By contrast, we will derive this fact as a theorem.    
+    Even though the pairs $(a,b)$ are of type $A\times B$, the definition of this type makes no attempt at specifying that all the elements of $A\times B$ are pairs (as is the case in Set Theory). By contrast, we will derive this fact as a theorem.    
 \end{lpar}
 
 \begin{lpar}{Unit type.}\label{lpar:unit-type}
@@ -923,9 +925,9 @@
     As a result, we obtain the \textsl{induction principle for coproducts}
     \begin{equation}\label{eq:coproduct-ind}
         \fun{ind}_{A+B}\colon\prod_{C\colon(A+B)\to\univ}\;
-            \prod_{x\colon A}C(\fun{inl}(x))
+            \Bigl(\prod_{x\colon A}C(\fun{inl}(x))\Bigr)
             \to
-            \prod_{y\colon B}C(\fun{inr}(y))
+            \Bigl(\prod_{y\colon B}C(\fun{inr}(y))\Bigr)
             \to
             \prod_{s\colon A+B}C(s).
     \end{equation}
@@ -1181,6 +1183,7 @@
     We say that $f$ is defined by \textsl{primitive recursion}.
 \end{lpar}
 
+
 \begin{lpar}{Natural doubling.}
     A simple example of a function is $\fun{double}\colon\N\to\N$, which can be defined by
     \begin{align*}
@@ -1328,6 +1331,7 @@
     In our case, $\Phi\defeq n$. Since $n$ is a variable and not a constructor, neither reduction rule applies. The machine cannot simplify the expression further, and the computation \textit{blocks}. Thus, we cannot rely on automatic reduction. In \nref{lpar:additive-identity} we construct an explicit proof term.
 \end{lpar}
 
+
 \section{Propositions as Types}
 
 \begin{lpar}{Propositional Logic.}\label{lpar:propositional-logic}
@@ -1343,7 +1347,7 @@
             3&$A$ and $B$ & $A \times B$ \\
             4&$A$ or $B$ & $A + B$ \\
             5&if $A$ then $B$ & $A \to B$ \\
-            6&$A$ if and only if $B$ & $(A\to B)\times(B\to A)$\\
+            6&$A$ if, and only if, $B$ & $(A\to B)\times(B\to A)$\\
             7&not $A$ & $A \to \mathbf{0}$ \\
             \hline
         \end{tabular}
@@ -1708,13 +1712,13 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{lpar}{Transport.}\label{lpar:transport}
     The principle of \textsl{indiscernibility of identicals} establishes that the equality constructor is compatible with \textsl{type transport} (a.k.a.~\textsl{type substitution}).\footnote{See also Exercise~\ref{exr:ap-application}.}
         
-\begin{lem}\label{lem:transportP}
+\begin{thm}\label{thm:transportP}
     Let\/ $P\colon A\to\univ$ be a family of types. Given\/ $x,y\colon A$ and a path\/ $p\colon x\eq A y$, there is a function
     \[
         \fun{transport}^P(p)\colon P(x)\to P(y).
     \]
     Moreover, $\fun{transport}^P(\fun{refl}_x) \equiv \lambda z.\,z$.
-\end{lem}
+\end{thm}
 
 \begin{proof}
     Consider the motive $C\colon\prod_{x,y\colon A}(x\eq Ay)\to\univ$
@@ -1725,8 +1729,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         \fun{transport}^P(x,y,e)\defeq\fun{ind}_{\eq A}(C,c,x,y,e).
     \]
-\end{proof}    
-
+\end{proof}
 \end{lpar}
 
 \begin{lpar}{Based path induction.}\label{lpar:based-path-induction}
@@ -1925,7 +1928,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{proof}
         We must construct a map of signature
         \[
-            \prod_{n\colon\N}\fun{succ}(n)\eq\N0\to\fun0.
+            \prod_{n\colon\N}(\fun{succ}(n)\eq\N0)\to\fun0.
         \]
         Define a type family $P\colon\N\to\univ$ by recursion:
         \begin{align*}
@@ -1956,19 +1959,25 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
 \end{lpar}
 
-\begin{lpar}{The order relation on $\N$.}
-    The translation table (see \nref{lpar:predicate-logic}) implies that the relation $n\le m$, where $n,m\colon\N$, can be defined as
-    \[
-        n\le m \defeq \sum_{k\colon\N} (n+k\eq\N m).
-    \]
-    \begin{lem}
+\begin{lpar}{The order relation on $\N$.}\label{lpar:order-in-N}
+    The translation table (see \nref{lpar:predicate-logic}) implies that the order relations can be defined as
+    \begin{align*}
+        n\le m&\defeq\sum_{k\colon\N}n+k\eq\N m
+        \intertext{and}
+        n<m&\defeq(n\le m)\times\neg(n\eq\N m).
+    \end{align*}
+    
+    \begin{lem}\label{lem:order-in-N}
         The following properties hold
         \begin{enumerate}[a),font=\upshape]
             \item $0\le n$
             \item $n\le\fun{succ}(n)$
             \item $n\le n$
-            \item $n\le m$ and $m\le n$ imply\/ $n=m$
-            \item $n\le m$ and $m\le r$ imply\/ $n\le r$
+            \item $n\le m$ and\/ $m\le n$ imply\/ $n=m$
+            \item $n\le m$ and\/ $m\le r$ imply\/ $n\le r$
+            \item $n\le m$ or\/ $m\le n$
+            \item $n<0$ does not hold
+            \item $\neg(n\eq\N0)$ implies\/ $n\eq\N\fun{succ}(\fun{pred}(n))$
         \end{enumerate}        
     \end{lem}
     \begin{proof} (Sketch)
@@ -2004,6 +2013,57 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
                 (n+k+h\eq\N m+h)\times(m+h\eq\N r)
             \]
             is inhabited, and the result is a consequence of the transitivity of the equality.
+
+            \item We proceed by induction on $n$.
+
+            The base case $n \eq{\N} 0$ is covered by part a).
+            
+            For the inductive step, assume that for a fixed $n\colon\N$ and all $m\colon\N$, we have $(n \le m) + (m \le n)$. We must show that for all $m\colon\N$, we have
+            \[
+                (\fun{succ}(n) \le m) + (m \le \fun{succ}(n)).
+            \]
+            We proceed by induction on $m$.
+            
+            For $m \eq{\N} 0$, it suffices to note that $0 \le \fun{succ}(n)$.
+            
+            For the inductive step, assume the result holds for $m$, so we want to show
+            \[
+                (\fun{succ}(n) \le \fun{succ}(m)) + (\fun{succ}(m) \le \fun{succ}(n)). \tag{1}
+            \]
+            By the outer inductive hypothesis applied to $m$, we have a witness of
+            \[
+                (n \le m) + (m \le n). \tag{2}
+            \]
+            To construct a map from the type defined in (2) to the type defined in (1), it suffices to define two maps, one from $n \le m$ and another from $m \le n$, both of which are easily deduced by applying $\fun{succ}$.
+            
+            This completes the induction on $m$, and therefore the induction on $n$.
+
+            \item By definition $(n<0)\equiv(n\le0)\times\neg(n\eq\N0)$. Thus, if $u\colon n<0$ then $\pi_1(u)\colon n\le0$ and, by part~d), there exists $p\colon n\eq\N0$. Thus, $\pi_2(u)(p)\colon\fun0$, proving $\neg(n<0)$.
+
+            \item Let $u\colon(n\eq0)\to\fun0$. We proceed by induction on $n\colon\N$.
+    
+            In the case $n\equiv0$, the goal is obtained as
+            \[
+                \fun{rec}_{\fun0}
+                    \bigl(
+                        0\eq\N\fun{succ}(\fun{pred}(0)), u(\fun{refl}_0)
+                    \bigr).
+            \]
+            
+            For the inductive step, assume the property holds for $n\colon\N$. We must construct a function for $\fun{succ}(n)$ with signature
+            \[
+                \neg(\fun{succ}(n)\eq\N0)
+                    \to
+                    \bigl(
+                    \fun{succ}(n)\eq\N\fun{succ}(\fun{pred}(\fun{succ}(n))
+                    \bigr).
+            \]
+            Assume $u\colon\neg(\fun{succ}(n)\eq\N0)$. By definition, $\fun{pred}(\fun{succ}(n))\equiv n$. Therefore, our goal reduces definitionally to:
+            \[
+                \fun{succ}(n)\eq\N\fun{succ}(n),
+            \]
+            which is trivially inhabited by $\fun{refl}_{\fun{succ}(n)}$, regardless of~$u$ and the inductive hypothesis.
+            
         \end{enumerate}
     \end{proof}
 \end{lpar}
@@ -2664,7 +2724,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{solution}
 
 
-\begin{exr}
+\begin{exr}\label{exr:neg-neng-neg}
     Show that for any type\/ $A$, we have\/ $\neg\neg\neg A \to \neg A$.
 \end{exr}
 

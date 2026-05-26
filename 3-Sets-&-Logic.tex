@@ -1,6 +1,6 @@
 \chapter{Sets \texorpdfstring{\&}{and} Logic}
 
-\section{Sets and \texorpdfstring{$n$}{n}-types}
+\section{Sets}
 
 \begin{defn}
     A type $A$ is a \textsl{set} if
@@ -273,6 +273,34 @@
     To see this, consider the Boolean type $\fun2$. As shown in Exercise~\ref{exr:2-simeq-2-simeq-2}, we have an equivalence $(\fun2\simeq\fun2)\simeq\fun2$. Since the lemma in that exercise shows that $0_{\fun2}\ne1_{\fun2}$, we deduce that there are two distinct equivalences from $\fun2$ to $\fun2$ (namely, the identity and the swap function). By the univalence axiom, these two equivalences correspond to two distinct paths in the identity type $\fun2\eq{\univ}\fun2$, contradicting the definition of a set.
 \end{xmpl}
 
+\begin{lem}\label{lem:A+negA-to-negnegA-to-A}
+    For any type\/ $A$, there is a map\/ $(A+\neg A)\to(\neg\neg A\to A)$.
+\end{lem}
+
+\begin{proof}
+    To construct a map from $A+\neg A$ to $\neg\neg A\to A$, we first define the constant function
+    \begin{align*}
+        c\colon A&\to(\neg\neg A\to A)\\
+        a&\mapsto(\beta\mapsto a).
+    \end{align*}
+    Second, fix $b\colon\neg A$. Using recursion, we obtain
+    \begin{align*}
+        \rho_b\colon\neg\neg A&\to A\\
+        \beta&\mapsto\fun{rec}_{\fun0}(A)(\beta(b)).
+    \end{align*}
+    This yields a function
+    \begin{align*}
+        \rho\colon\neg A&\to(\neg\neg A\to A)\\
+        b&\mapsto\rho_b.
+    \end{align*}
+    By recursion on $A+\neg A$, we arrive at the desired map:
+    \begin{align*}
+        \varphi_A&\colon(A+\neg A)\to(\neg\neg A\to A)\\
+        \varphi_A(x)&\defeq\fun{rec}_{A+\neg A}(\neg\neg A\to A,c,\rho,x).
+    \end{align*}
+\end{proof}
+
+
 \begin{thm}
     It is not the case that for all\/ $A\colon\univ$ we have\/ $\neg\neg A\to A$.
 \end{thm}
@@ -344,11 +372,11 @@
         \epsilon\colon\fun{not}(b)\eq{\fun2}b.
     \]
     We can define
-    \begin{align*}
+    \begin{align}\label{eq:not-eq-id->0}
         &\psi\colon\prod_{x\colon\fun2}(\fun{not}(x)\eq{\fun2}x)\to\fun0\\
-        &\psi(0_{\fun2})\defeq\fun{neq}\\
-        &\psi(1_{\fun2})\defeq\lambda p.\,\fun{neq}(p^{-1}),
-    \end{align*}
+        &\psi(0_{\fun2})\defeq\fun{neq}\nonumber\\
+        &\psi(1_{\fun2})\defeq\lambda p.\,\fun{neq}(p^{-1}),\nonumber
+    \end{align}
     where $\fun{neq}\colon(1_{\fun2}\eq{\fun2}0_{\fun2})\to\fun0$ is the function defined in the lemma of Exercise~\ref{exr:2-simeq-2-simeq-2}.
     
     In consequence, the function
@@ -359,7 +387,16 @@
 
 \end{proof}
 
-\begin{cor}
+\begin{rem}\label{rem:notid}
+    The function\/ $\psi$ of \eqref{eq:not-eq-id->0} allows us to define
+    \begin{align*}
+        \fun{notid}\colon\Bigl(\sum_{x\colon\fun2}\fun{not}(x)\eq{\fun2}x\Bigr)
+            &\to\fun0\\
+        (x,p)&\mapsto\psi(x,p).
+    \end{align*}
+\end{rem}
+
+\begin{cor}\label{cor:A+negA-not-always-true}
     It is not the case that for all\/ $A\colon\univ$ we have\/ $A+\neg A$.
 \end{cor}
 
@@ -368,27 +405,9 @@
     \[
         \Bigl(\prod_{A\colon\univ}A+\neg A\Bigr)\to\fun0
     \]
-    is inhabited. Let $A\colon\univ$. To construct a map from $A+\neg A$ to $\neg\neg A\to A$, we first define the constant function
-    \begin{align*}
-        c\colon A&\to(\neg\neg A\to A)\\
-        a&\mapsto(\beta\mapsto a).
-    \end{align*}
-    Second, fix $b\colon\neg A$. Using recursion, we obtain
-    \begin{align*}
-        \rho_b\colon\neg\neg A&\to A\\
-        \beta&\mapsto\fun{rec}_{\fun0}(A)(\beta(b)).
-    \end{align*}
-    This yields a function
-    \begin{align*}
-        \rho\colon\neg A&\to(\neg\neg A\to A)\\
-        b&\mapsto\rho_b.
-    \end{align*}
-    By recursion on $A+\neg A$, we can further define
-    \begin{align*}
-        \varphi_A&\colon(A+\neg A)\to(\neg\neg A\to A)\\
-        \varphi_A(x)&\defeq\fun{rec}_{A+\neg A}(\neg\neg A\to A,c,\rho,x).
-    \end{align*}
-    This family of functions leads to
+    is inhabited.
+
+    By Lemma~\ref{lem:A+negA-to-negnegA-to-A}, for any $A\colon\univ$ there is a map $\varphi_A\colon(A+\neg A)\to(\neg\neg A\to A)$. This family of functions leads to
     \begin{align*}
         \Phi\colon\Bigl(\prod_{A\colon\univ}A+\neg A\Bigr)
             &\to\prod_{A\colon\univ}\neg\neg A\to A\\
@@ -538,12 +557,150 @@
 
 %\section{Law of Excluded Middle}
 
-\begin{defn}
-    The \textsl{law of excluded middle} is the type
-    \[
-        \fun{lem}\defeq\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
-    \]
-\end{defn}
+\begin{defns}\label{defn:lem}${}$
+    \begin{enumerate}[-]
+        \item A type $A$ is \textsl{decidable} if $A+\neg A$ is inhabited.
+        
+        \item A family $C\colon A\to\univ$ is \textsl{decidable} if $\prod_{a\colon A}C(a)+\neg C(a)$ is inhabited.
+        
+        \item The \textsl{law of excluded middle} is the type
+        \[
+            \fun{Lem}\defeq\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
+        \]
+        In other words, the law of excluded middle states that all subsingletons are decidable.
+    \end{enumerate}
+\end{defns}
+
+\begin{prop}\label{prop:decidability-of-equality-on-N}${}$
+    \begin{enumerate}[a), font=\upshape]
+        \item The types\/ $\fun0$ and\/ $\fun1$ are both decidable.
+
+        \item If\/ $A$ and\/ $B$ are decidable, then\/ $A+B$ is decidable.
+
+        \item Equality on\/ $\N$ is decidable; that is, given\/ $n,m\colon\N$, we have 
+        \[
+            (n\eq{\N} m)+\neg(n\eq{\N} m).
+        \]
+
+        \item Given $n,m\colon\N$, if\/ $\neg(n<m)$ and $\neg(m<n)$ then\/ $n\eq\N m$.
+
+        %\item Given $n,m\colon\N$, we have $(n<\fun{succ}(m))\simeq(n\le m)$.
+
+        \item Given $n,m\colon\N$, if\/ $n<\fun{succ}(m)$ then\/ $n\le m$.
+    \end{enumerate}   
+\end{prop}
+
+\begin{proof}${}$
+    \begin{enumerate}[a), font=\upshape]
+        \item We have the terms $\fun{inr}(\id_{\fun0})\colon\fun0+\neg\fun0$ and $\fun{inl}(\ast)\colon\fun1+\neg\fun1$.
+        
+        \item The diagram below captures the cases needed to define a map
+        \[
+            \bigl((A+\neg A)\times(B+\neg B)\bigr)\to\bigl((A+B)+\neg(A+B)\bigr).
+        \]
+        \[
+            \begin{tikzcd}[column sep=-0.8cm]
+                    &\fun0\\
+                A
+                    \arrow[rd,"\fun{inl}"']
+                    \arrow[ru,"u"]
+                    &&B
+                    \arrow[ld,"\fun{inr}"]
+                    \arrow[lu,"v"']\\
+                &A+B
+                    \arrow[d,"\fun{inl}"']
+                    \arrow[uu,"u+v"]\\
+                &(A+B)+\neg(A+B)
+            \end{tikzcd}
+        \]
+        More precisely, let $C\defeq(A+B)+\neg(A+B)$. By the universal property of the product, we can equivalently define a curried map
+        \[
+            f\colon(A+\neg A)\to(B+\neg B)\to C.
+        \]
+        To construct $f$, we apply the recursion principle for $A+\neg A$. 
+        
+        For the left branch, we take
+        \[
+            \phi\defeq\lambda a.\,\lambda y.\,\fun{inl}(\fun{inl}(a))\colon A\to((B+\neg B)\to C).
+        \]
+        
+        For the right branch, we define
+        \begin{align*}
+            \psi&\colon\neg A\to((B+\neg B)\to C)\\
+            \psi(u)&\defeq\fun{rec}_{B+\neg B}(C,\fun{inl}\circ\fun{inr},\lambda v.\,\fun{inr}(\fun{rec}_{A+B}(\fun0,u,v))).
+        \end{align*}
+        
+        Combining these branches, we obtain
+        \[
+            f\defeq\fun{rec}_{A+\neg A}((B+\neg B)\to C,\phi,\psi).
+        \]
+        \item Using the encoding and decoding of equalities in $\N$ introduced in \S\,\ref{equality-in-N}, it is straightforward to construct a witness
+        \[
+            \epsilon\colon
+                (\fun{Code}(n,m)\simeq\fun0)
+                +(\fun{Code}(n,m)\simeq\fun1).
+        \]
+        Let $E$ be the coproduct above and $C\defeq\fun{Code}(n,m)+\neg\fun{Code}(n,m)$. To construct an inhabitant of $C$, it suffices to define a map from $E$ to $C$. We proceed by recursion on the coproduct $E$.
+        \begin{enumerate}[-]
+            \item For the left case, given an equivalence $(f_0,\eta_0,\vartheta_0)\colon\fun{Code}(n,m)\simeq\fun0$, since $f_0\colon\fun{Code}(n,m)\to\fun0$, we can specify
+            \[
+                g_0(f_0,\eta_0,\vartheta_0)\defeq\fun{inr}(f_0).
+            \]
+            \item For the right case, given an equivalence $(f_1,\eta_1,\vartheta_1)\colon\fun{Code}(n,m)\simeq\fun1$, we specify
+            \[
+                g_1(f_1,\eta_1,\vartheta_1)
+                    \defeq\fun{inl}(f_1^{-1}(\ast)).
+            \]
+        \end{enumerate}
+        As a result, we obtain
+        \[
+            \fun{rec}_E(C,g_0,g_1,\epsilon)\colon C.
+        \]
+
+        \item Let $u\colon\neg(n<m)$ and $v\colon\neg(m<n)$ be two witnesses. By part~c) the type $(n\eq\N m)+\neg(n\eq\N m)$ is inhabited. Therefore, to prove that $n\eq\N m$ it suffices to define a map
+        \[
+            \bigl((n\eq\N m)+\neg(n\eq\N m)\bigr)\to(n\eq\N m).
+        \]
+        We proceed by recursion on the coproduct.
+        \begin{enumerate}[-]
+            \item For the left case, we take the identity $\id_{n\eq\N m}$.
+            
+            \item For the right case, consider $z\colon\neg(n\eq\N m)$. By Lemma~\ref{lem:order-in-N}, there is a term
+            \[
+                w\colon(n\le m)+(m\le n).
+            \]
+            We will use $z$ to define a map
+            \[
+                \zeta_z\colon ((n\le m)+(m\le n))\to(n\eq\N m),
+            \]
+            and $z\mapsto\zeta_z(w)$ will provide the required map 
+            \[
+                \neg(n\eq\N m)\to(n\eq\N m).
+            \]
+            We proceed by recursion on the coproduct domain:
+            \begin{itemize}
+                \item If $r\colon n\le m$, the pair $(r,z)$ inhabits $(n\le m)\times\neg(n\eq\N m)$, which is definitionally $n<m$. Applying $u$ to this pair yields a term in~$\fun0$. Hence, we can apply $\fun{rec}_{\fun0}(n\eq\N m)$ to obtain our goal.
+                
+                \item If $s\colon m\le n$, then $(s,z')$, with $z'\defeq\lambda q\colon(m\eq\N n).\,z(q^{-1})$, is a term of $m<n$. Thus, $v(s,z')\colon\fun0$ and
+                \[
+                    \fun{rec}_{\fun0}(n\eq\N m,v(s,z'))\colon(n\eq\N m).
+                \]
+            \end{itemize}
+        \end{enumerate}
+
+        \item By definition $(n<\fun{succ}(m))\equiv(n\le \fun{succ}(m))\times\neg(n\eq\N\fun{succ}(m))$. Take $(p,u)$ in the \rhs with 
+        \[
+            p\equiv(k,q),
+            \quad q\colon n+k\eq\N\fun{succ}(m),
+            \quad\text{and }u\colon(n\eq\N\fun{succ}(m))\to\fun0.
+        \]
+        Since $(k\eq\N0)+\neg(k\eq\N0)$, we deduce from $u$ and $q$ that $\neg(k\eq\N0)$. Then, by Lemma~\ref{lem:order-in-N}, $k\eq\N\fun{succ}(\fun{pred}(k))$. It follows that
+        \[
+            \fun{succ(n+\fun{pred}(k))}\eq\N\fun{succ}(m).
+        \]
+        Hence, $n+\fun{pred}(k)\eq\N m$, which proves that $n\le m$.
+    \end{enumerate}
+\end{proof}
 
 \begin{lem}\label{lem:total-space-with-subsingleton-fibers}
     Let $P\colon A\to\univ$ be a type family such that $P(x)$ is a subsingleton for all $x\colon A$. For any $u,v\colon\Sigma_AP$, the first projection induces an equivalence between their identity types:
@@ -554,16 +711,20 @@
 
 \begin{proof}
     Consider
-    $$\begin{aligned}
+    \begin{align*}
         f\colon(u\eq{\Sigma_AP}v)&\to(\pi_1(u)\eq A\pi_1(v))\\
         p&\mapsto\fun{ap}_{\pi_1}(p).
-    \end{aligned}$$
+    \end{align*}
     To construct a backward map
-    $$g\colon(\pi_1(u)\eq A\pi_1(v))\to(u\eq{\Sigma_AP}v),$$
+    \[
+        g\colon(\pi_1(u)\eq A\pi_1(v))\to(u\eq{\Sigma_AP}v),
+    \]
     given a path $q\colon\pi_1(u)\eq A\pi_1(v)$, take a witness
-    $$\epsilon\colon\fun{isProp}(P(\pi_1(v))).$$
+    $\epsilon\colon\fun{isProp}(P(\pi_1(v)))$.
     Then,
-    $$\gamma\defeq\epsilon(q_*(\pi_2(u)),\pi_2(v))$$
+    \[
+        \gamma\defeq\epsilon(q_*(\pi_2(u)),\pi_2(v))
+    \]
     inhabits $q_*(\pi_2(u))\eq{P(\pi_1(v))}\pi_2(v)$. Therefore, we can define the backward map as
     \[
         g(q)\defeq\fun{pair}^=(q,\gamma).
@@ -579,7 +740,7 @@
         \[
             \fun{pair}^=(p_1,\gamma')\eq{}\fun{pair}^=(p_1,p_2),
         \]
-        which implies $g(f(p))\eq{}p$.
+        which implies $g(f(p))\eq{}p$.\qedhere
     \end{enumerate}
 \end{proof}
 
@@ -638,14 +799,14 @@
 
         For the cross-cases, given $x\colon P$ and $y\colon Q$, define:
         \begin{align*}
-            g&\colon(P\times Q)\to\fun0\\
-            g&(x,y)\defeq f(x)(y),\\[2mm]
-            \fun{rec}&\colon\prod_{x\colon P}\;\prod_{y\colon Q}
-                \fun0\to(\fun{inl}(x)\eq{P+Q}\fun{inr}(y))\\
-            \fun{rec}&(x,y)\defeq\fun{rec}_{\fun0}(\fun{inl}(x)\eq{P+Q}\fun{inr}(y)),\\[2mm]
-            \zeta&\colon\prod_{x\colon P}\;\prod_{y\colon Q}
-                \fun{inl}(x)\eq{P+Q}\fun{inr}(y)\\
-            \zeta&(x,y)\defeq\fun{rec}(x,y)(g(x,y)).
+            g&\colon(P\times Q)\to\fun0,
+            &(x,y)&\mapsto f(x)(y),\\[2mm]
+            \fun{rec}&\colon\!\!\prod_{x\colon P}\;\prod_{y\colon Q}
+                \fun0\to(\fun{inl}(x)\eq{P+Q}\fun{inr}(y)),
+            &(x,y)&\mapsto\fun{rec}_{\fun0}(\fun{inl}(x)\eq{P+Q}\fun{inr}(y)),\\[2mm]
+            \zeta&\colon\!\!\prod_{x\colon P}\;\prod_{y\colon Q}
+                \fun{inl}(x)\eq{}\fun{inr}(y),
+            &(x,y)&\mapsto\fun{rec}(x,y)(g(x,y)).
         \end{align*}
     
         Take $x,x'\colon P$. We have $\epsilon(x,x')\colon x\eq{P}x'$ and so
@@ -825,30 +986,31 @@
 
 
 
-\section{Propositional Truncation}
-We can define a new type former that converts any type $A\colon\univ$ into $\|A\|\colon\univ$, whose canonical terms are of the form $|a|$ for $a\colon A$. The distinguishing characteristic of $\|A\|$ is that it is a subsingleton; that is, for any $x,y\colon\|A\|$, we have $x\eq{\|A\|}y$. More precisely, there exists a dependent function
+\section{Propositional Truncation}\label{propositional-truncation}
+We can define a new type former that converts any type $A\colon\univ$ into $\lVert A\rVert\colon\univ$, whose canonical terms are of the form $|a|$ for $a\colon A$. The distinguishing characteristic of $\lVert A\rVert$ is that it is a subsingleton; that is, for any $x,y\colon\lVert A\rVert$, we have $x\eq{\lVert A\rVert}y$. More precisely, there exists a dependent function
 \[
-    \fun{squash}\colon\prod_{x,y\colon\|A\|}x\eq{\|A\|}y.
+    \fun{squash}\colon\prod_{x,y\colon\lVert A\rVert}x\eq{\lVert A\rVert}y.
 \]
 The induction principle, which can be applied to subsingleton families, is given by:
 \begin{equation}\label{eq:ind-truncation}
-    \fun{ind}_{\|A\|}\colon
-        \prod_{C\colon\fun{Pred}(\|A\|)}
+    \fun{ind}_{\lVert A\rVert}\colon
+        \prod_{C\colon\fun{Pred}(\lVert A\rVert)}
         \Bigl(\prod_{a\colon A} C(|a|)\Bigr)
         \to
-        \prod_{z\colon\|A\|} C(z),
+        \prod_{z\colon\lVert A\rVert} C(z),
 \end{equation}
-satisfying $\fun{ind}_{\|A\|}(C,f,|a|)\defeq f(a)$ for $a\colon A$.
+satisfying $\fun{ind}_{\lVert A\rVert}(C,f,|a|)\defeq f(a)$ for $a\colon A$.
 
 In the case of non-dependent subsingleton families, we have the recursion principle
 \begin{align}\label{eq:rec-truncation}
-    \fun{rec}_{\|A\|}\colon
-        &\prod_{B\colon\fun{Prop}_\univ}(A\to B)\to(\|A\|\to B)\\
-    \fun{rec}_{\|A\|}&(B,f)\defeq\fun{ind}_{\|A\|}(a\mapsto B,f).
+    \fun{rec}_{\lVert A\rVert}&\colon
+        \prod_{B\colon\fun{Prop}_\univ}(A\to B)\to(\lVert A\rVert\to B)\\
+    \fun{rec}_{\lVert A\rVert}(B,f)&\defeq\fun{ind}_{\lVert A\rVert}
+        (a\mapsto B,f).\nonumber
 \end{align}
 
 \begin{rem}
-    One might be tempted to simplify the defining requirement $x\eq{\|A\|}y$ for all $x,y\colon\|A\|$, to merely $|a|\eq{\|A\|}|b|$ for all $a,b\colon A$, and then attempt to use induction on $\|A\|$ to deduce the former. However, to apply the induction principle, we must first show that the target family $C(x,y)\defeq x\eq{\|A\|}y$ is a predicate. This requires already knowing that the identity type $x\eq{\|A\|}y$ is a subsingleton, which is equivalent to knowing that $\|A\|$ is a set. Because we do not yet know this, we are trapped in a circular reasoning.
+    One might be tempted to simplify the defining requirement $x\eq{\lVert A\rVert}y$ for all $x,y\colon\lVert A\rVert$, to merely $|a|\eq{\lVert A\rVert}|b|$ for all $a,b\colon A$, and then attempt to use induction on $\lVert A\rVert$ to deduce the former. However, to apply the induction principle, we must first show that the target family $C(x,y)\defeq x\eq{\lVert A\rVert}y$ is a predicate. This requires already knowing that the identity type $x\eq{\lVert A\rVert}y$ is a subsingleton, which is equivalent to knowing that $\lVert A\rVert$ is a set. Because we do not yet know this, we are trapped in a circular reasoning.
 
     Imposing paths only on canonical elements fails to define a set. For instance, consider the type $\fun{1}+\fun{2}$. This type has exactly three discrete elements, say $x,y,z$, derived from injecting $\fun\star$ on the left, and $0_{\fun{2}}$ and $1_{\fun{2}}$ on the right. If we explicitly adjoin paths $p_{xy}\colon x\eq{}y$, $p_{yz}\colon y\eq{}z$, and $p_{xz}\colon x\eq{}z$, we obtain a hollow triangle. In this space, there are two distinct ways to travel from $x$ to $z$: the path $p_{xz}$, and the concatenation $p_{xy}\ct p_{yz}$. Because we have not explicitly stated that $p_{xz}\eq{}p_{xy}\ct p_{yz}$, these two paths are not equal. Consequently, the identity type $x\eq{}z$ is not a subsingleton, and the resulting type is not a set.
 \end{rem}
@@ -856,49 +1018,49 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \begin{lem}\label{lem:truncation-functor}
     Truncation is a functorial operation. That is,
     \begin{enumerate}[a),font=\upshape]
-        \item Every map\/ $f\colon A\to B$ produces a map\/ $\|f\|\colon\|A\|\to\|B\|$.
-        \item For any type\/ $A$, we have\/ $\|\id_A\|\sim\id_{\|A\|}$.
-        \item For any\/ $f\colon A\to B$ and\/ $g\colon B\to C$, we have\/ $\|g\circ f\|\sim\|g\|\circ\|f\|$.
+        \item Every map\/ $f\colon A\to B$ produces a map\/ $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$.
+        \item For any type\/ $A$, we have\/ $\lVert\id_A\rVert\sim\id_{\lVert A\rVert}$.
+        \item For any\/ $f\colon A\to B$ and\/ $g\colon B\to C$, we have\/ $\lVert g\circ f\rVert\sim\lVert g\rVert\circ\lVert f\rVert$.
     \end{enumerate}
-    Consequently, if\/ $A\simeq B$, then\/ $\|A\|\simeq\|B\|$.
+    Consequently, if\/ $A\simeq B$, then\/ $\lVert A\rVert\simeq\lVert B\rVert$.
 \end{lem}
 
 \begin{proof}
-    Given $f\colon A\to B$, we define the map $\|f\|$ using the recursion principle $\fun{rec}_{\|A\|}$. Since the target $\|B\|$ is a subsingleton, it suffices to define its action on the canonical constructor:
+    Given $f\colon A\to B$, we define the map $\lVert f\rVert$ using the recursion principle $\fun{rec}_{\lVert A\rVert}$. Since the target $\lVert B\rVert$ is a subsingleton, it suffices to define its action on the canonical constructor:
     \[
-        \|f\|\defeq\fun{rec}_{\|A\|}(\|B\|,a\mapsto|f(a)|).
+        \lVert f\rVert\defeq\fun{rec}_{\lVert A\rVert}(\lVert B\rVert,a\mapsto|f(a)|).
     \]
     
-    To prove the identity and composition laws, observe that in both cases the codomains $\|A\|$ and $\|C\|$ are subsingletons. By Theorem~\ref{thm:subsingletons}~b), the function spaces $\|A\|\to\|A\|$ and $\|A\|\to\|C\|$ are also subsingletons. Because any two inhabitants of a subsingleton are equal, the homotopies $\|\id_A\|\sim\id_{\|A\|}$ and $\|g\circ f\|\sim\|g\|\circ\|f\|$ are trivially inhabited.
+    To prove the identity and composition laws, observe that in both cases the codomains $\lVert A\rVert$ and $\lVert C\rVert$ are subsingletons. By Theorem~\ref{thm:subsingletons}~b), the function spaces $\lVert A\rVert\to\lVert A\rVert$ and $\lVert A\rVert\to\lVert C\rVert$ are also subsingletons. Because any two inhabitants of a subsingleton are equal, the homotopies $\lVert\id_A\rVert\sim\id_{\lVert A\rVert}$ and $\lVert g\circ f\rVert\sim\lVert g\rVert\circ\lVert f\rVert$ are trivially inhabited.
 
-    Finally, suppose $f\colon A\to B$ is an equivalence with quasi-inverse $f^{-1}\colon B\to A$. Functoriality gives us maps $\|f\|\colon\|A\|\to\|B\|$ and $\|f^{-1}\|\colon\|B\|\to\|A\|$. Since the target spaces are subsingletons, the compositions $\|f^{-1}\|\circ\|f\|$ and $\|f\|\circ\|f^{-1}\|$ are homotopic to $\id_{\|A\|}$ and $\id_{\|B\|}$, respectively. Thus, $\|f\|$ is an equivalence.
+    Finally, suppose $f\colon A\to B$ is an equivalence with quasi-inverse $f^{-1}\colon B\to A$. Functoriality gives us maps $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$ and $\lVert f^{-1}\rVert\colon\lVert B\rVert\to\lVert A\rVert$. Since the target spaces are subsingletons, the compositions $\lVert f^{-1}\rVert\circ\lVert f\rVert$ and $\lVert f\rVert\circ\lVert f^{-1}\rVert$ are homotopic to $\id_{\lVert A\rVert}$ and $\id_{\lVert B\rVert}$, respectively. Thus, $\lVert f\rVert$ is an equivalence.
     
 \end{proof}
 
-\begin{lem}
-    If $A$ is a subsingleton, then $A\eq{\univ}\|A\|$.
+\begin{lem}\label{lem:subsingletons-are-truncated}
+    If $A$ is a subsingleton, then $A\eq{\univ}\lVert A\rVert$.
 \end{lem}
 
 \begin{proof}
     Since $A$ is a subsingleton, recursion yields a function
     \[
-        \fun{rec}_{\|A\|}(A,\id_A)\colon\|A\|\to A.
+        \fun{rec}_{\lVert A\rVert}(A,\id_A)\colon\lVert A\rVert\to A.
     \]
     Conversely, the canonical constructor gives:
     \[
-        |{-}|\colon A\to\|A\|,\quad a\mapsto|a|.
+        |{-}|\colon A\to\lVert A\rVert,\quad a\mapsto|a|.
     \]
     The conclusion follows from Lemma~\ref{lem:subsingleton-equivalence} and the univalence axiom.
 \end{proof}
 
 \begin{lem}\label{lem:trucated-eq-to-set-is-set}
-    Let\/ $S$ be a set, and let\/ $A\colon\univ$ be a type. If\/ $\|A\eq\univ S\|$ is inhabited, then\/ $A$ is a set.
+    Let\/ $S$ be a set, and let\/ $A\colon\univ$ be a type. If\/ $\lVert A\eq\univ S\rVert$ is inhabited, then\/ $A$ is a set.
 \end{lem}
 
 \begin{proof}
     We must construct an inhabitant of the type $\fun{isSet}(A)$. 
     
-    By recursion for propositional truncation, to define a function $\|X\|\to P$, where $P$ is a subsingleton, it suffices to construct a map from $X$ to $P$. By Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, we know that $\fun{isSet}(C)$ is a subsingleton for every $C\colon\univ$. Hence, we can apply recursion to the case $X\defeq A\eq\univ S$ and $P\defeq\fun{isSet}(A)$.
+    By recursion for propositional truncation, to define a function $\lVert x\rVert\to P$, where $P$ is a subsingleton, it suffices to construct a map from $X$ to $P$. By Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, we know that $\fun{isSet}(C)$ is a subsingleton for every $C\colon\univ$. Hence, we can apply recursion to the case $X\defeq A\eq\univ S$ and $P\defeq\fun{isSet}(A)$.
     
     To provide the function $f\colon(A\eq\univ S)\to\fun{isSet}(A)$, fix a witness $\epsilon\colon\fun{isSet}(S)$ and define:
     \[
@@ -906,13 +1068,13 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     \]
     Thus, if $h\colon\fun{isProp}(\fun{isSet}(A))$, we obtain the function
     \[
-        \fun{rec}_{\|A\eq\univ S\|}\bigl(\fun{isSet}(A),h,f\bigr)
-            \colon\|A\eq\univ S\|\to\fun{isSet}(A).
+        \fun{rec}_{\lVert A\eq\univ S\rVert}\bigl(\fun{isSet}(A),h,f\bigr)
+            \colon\lVert A\eq\univ S\rVert\to\fun{isSet}(A).
     \]
     The conclusion follows.
 \end{proof}
 
-\begin{ntn}
+\begin{ntn}\label{ntn:logic}
     Truncation allows us to interpret traditional logical notation via the following type-theoretic operations. Although we will not adopt this notation extensively ---reserving it primarily for contexts strictly focused on sets and propositions--- it establishes a precise dictionary between classical logic and type theory. Here, $P$ and\/ $Q$ denote subsingletons (or subsingleton families), and\/ $A$ is an arbitrary type. 
     
     For operations that inherently preserve subsingletons, no truncation is necessary:
@@ -926,8 +1088,8 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     \end{align*}
     For operations that can construct spaces with multiple distinct points, we must apply propositional truncation to strictly yield a subsingleton:
     \begin{align*}
-        P\lor Q&\defeq\|P+Q\|\\
-        \exists(x\colon A).\,P(x)&\defeq\Bigl\|\sum_{x\colon A}P(x)\Bigr\|
+        P\lor Q&\defeq\lVert P+Q\rVert\\
+        \exists(x\colon A).\,P(x)&\defeq\Bigl\lVert\sum_{x\colon A}P(x)\Bigr\rVert
     \end{align*}
 \end{ntn}
 
@@ -1115,13 +1277,13 @@ In the case of non-dependent subsingleton families, we have the recursion princi
         
         \item \textsc{\upshape Dependent Functions (Left):} If\/ $A$ is contractible with center\/ $c\colon A$, then\/ $\prod_{x\colon A}P(x)\simeq P(c)$.
         
-        \item \textsc{\upshape Dependent Functions (Right):} If for every\/ $x\colon A$, the type\/ $P(x)$ is contractible, then the dependent product\/ $\prod_{x\colon A}P(x)$ is contractible, hence\/ $\prod_{x\colon A}P(x)\simeq\fun1$.
+        \item \textsc{\upshape Dependent Functions (Right):} If for every\/ $x\colon A$, the type\/ $P(x)$ is contractible, then\/ $\prod_{x\colon A}P(x)$ is contractible, hence\/ $\prod_{x\colon A}P(x)\simeq\fun1$.
         
         \item \textsc{\upshape Cartesian Products:} If\/ $B$ is contractible, then\/ $A\times B\simeq A$. By symmetry, if\/ $A$ is contractible, then\/ $A\times B\simeq B$.
         
-        \item \textsc{\upshape Functions (Domain):} If\/ $A$ is contractible with center\/ $a\colon A$, then the function type\/ $(A\to B)\simeq B$.
+        \item \textsc{\upshape Functions (Domain):} If\/ $A$ is contractible, then\/ $(A\to B)\simeq B$.
         
-        \item \textsc{\upshape Functions (Codomain):} If\/ $B$ is contractible, then the function type\/ $A\to B$ is contractible, hence\/ $(A\to B)\simeq\fun1$.
+        \item \textsc{\upshape Functions (Codomain):} If\/ $B$ is contractible, then\/ $A\to B$ is contractible, hence\/ $(A\to B)\simeq\fun1$.
     \end{enumerate}
 \end{thm}
 
@@ -1295,21 +1457,21 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \begin{equation}\label{eq:tac}
         \tac\colon
             \Bigl(
-                \prod_{x\colon X}\;\Bigl\|\sum_{a\colon A(x)}P(x,a)\Bigr\|
+                \prod_{x\colon X}\;\Bigl\lVert\sum_{a\colon A(x)}P(x,a)\Bigr\rVert
             \Bigr)
             \to
-            \Bigl\|
+            \Bigl\lVert
                 \sum_{f\colon\prod_{x\colon X}A(x)}\;\prod_{x\colon X}P(x,f(x))
-            \Bigr\|.
+            \Bigr\rVert.
     \end{equation}
 \end{defn}
 
-\begin{lem}
+\begin{lem}\label{lem:traditional-tac}
     The axiom of choice is equivalent to the statement that for any set\/ $X$ and any family of sets\/ $C\colon X\to\fun{Set}_\univ$, the function type
     \begin{equation}\label{eq:traditional-tac}
-        \Bigl(\prod_{x\colon X}\|C(x)\|\Bigr)
+        \Bigl(\prod_{x\colon X}\lVert C(x)\rVert\Bigr)
         \to
-        \Bigl\|\prod_{x\colon X}C(x)\Bigr\|
+        \Bigl\lVert\prod_{x\colon X}C(x)\Bigr\rVert
     \end{equation}
     is inhabited.
 \end{lem}
@@ -1317,9 +1479,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \begin{proof}
     Let $X,A,P$ be as in Definition~\ref{defn:tac}. By Theorem~\ref{thm:ac-generalized}, the \rhs of \eqref{eq:tac} is equivalent to
     \begin{equation}\label{eq:tac-codomain-equivalent}
-        \Bigl\|
+        \Bigl\lVert
             \prod_{x\colon X}\;\sum_{y\colon A(x)}P(x,y)
-        \Bigr\|.
+        \Bigr\rVert.
     \end{equation}
     Let
     \[
@@ -1387,9 +1549,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         \sum_{X\colon\univ}\;\sum_{C\colon X\to\fun{Set}_\univ}
         \biggl(
-            \Bigl(\prod_{x\colon X}\|C(x)\|\Bigr)
+            \Bigl(\prod_{x\colon X}\lVert C(x)\rVert\Bigr)
             \to
-            \Bigl\|\prod_{x\colon X}C(x)\Bigr\|
+            \Bigl\lVert\prod_{x\colon X}C(x)\Bigr\rVert
         \biggr)\to\fun0.
     \]
     In other words, there exists a type\/ $X$ and a family\/ $C\colon X\to\fun{Set}_\univ$ such that\/ {\upshape\eqref{eq:traditional-tac}} is false.
@@ -1398,7 +1560,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \begin{proof}
     Define
     \[
-        X\defeq\sum_{A\colon\univ}\|\fun2\eq{\univ}A\|.
+        X\defeq\sum_{A\colon\univ}\lVert\fun2\eq{\univ}A\rVert.
     \]
     Since $\fun2$ is a set [cf.~Theorem~\ref{thm:boolean-type-is-set}], it follows by Lemma~\ref{lem:trucated-eq-to-set-is-set} that if $(A,p)\colon X$, then $A$ must be a set as well.
     
@@ -1425,21 +1587,21 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     Suppose
     \[
         f\colon
-            \Bigl(\prod_{x\colon X}\|C(x)\|\Bigr)
+            \Bigl(\prod_{x\colon X}\lVert C(x)\rVert\Bigr)
             \to
-            \Bigl\|\prod_{x\colon X}C(x)\Bigr\|.
+            \Bigl\lVert\prod_{x\colon X}C(x)\Bigr\rVert.
     \]
     Given
     \[
-        \zeta\colon\prod_{x\colon X}\|x_0\eq Xx\|,
+        \zeta\colon\prod_{x\colon X}\lVert x_0\eq Xx\rVert,
     \]
     we obtain
     \[
-        f(\zeta)\colon\Big\|\prod_{x\colon X}x_0\eq Xx\Bigr\|.
+        f(\zeta)\colon\Big\lVert\prod_{x\colon X}x_0\eq Xx\Bigr\rVert.
     \]
     Since $\fun{isContr}(X)$ is a subsingleton by Theorem~\ref{thm:isContr-is-a-subsingleton}, using recursion on the \rhs, to construct a map
     \[
-        \Big\|\prod_{x\colon X}x_0\eq Xx\Bigr\|\to\fun{isContr}(X),
+        \Big\lVert\prod_{x\colon X}x_0\eq Xx\Bigr\rVert\to\fun{isContr}(X),
     \]
     it suffices to provide a map
     \[
@@ -1449,10 +1611,1149 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
     Applying the recursion principle of the propositional truncation, we obtain an element of $\fun{isContr}(X)$. Since $\fun{isContr}(X)$ is a subsingleton, and every subsingleton is a set [cf.~Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}], by composition we obtain a witness
     \[
-        \epsilon\colon\Bigl\|\prod_{x\colon X}x_0\eq Xx\Bigr\|\to\fun0.
+        \epsilon\colon\Bigl\lVert\prod_{x\colon X}x_0\eq Xx\Bigr\rVert\to\fun0.
     \]
     Consequently, the map $\lambda f.\,f(\zeta)\circ\epsilon$ fulfills the requirement of the statement.
     %
     
 \end{proof}
 
+\section{Exercises}
+
+\begin{exr}\label{exr:}
+    Prove that if\/ $A\simeq B$ and\/ $A$ is a set, then so is\/ $B$.
+\end{exr}
+
+\begin{solution}
+    Let $(f,\eta,\vartheta)\colon A\simeq B$. Take $x,y\colon B$. Given $p,q\colon x\eq By$, we have
+    \[
+        \fun{ap}_{f^{-1}}(p),\fun{ap}_{f^{-1}}(q)
+            \colon f^{-1}(x)\eq A f^{-1}(y).
+    \]
+    Since $A$ is a set, its identity types are subsingletons. Therefore,
+    \[
+        \fun{ap}_{f^{-1}}(p)
+        \eq{f^{-1}(x)\eq A f^{-1}(y)}
+        \fun{ap}_{f^{-1}}(q).
+    \]
+    Applying $\fun{ap}_f$ and using Proposition~\ref{prop:ap-properties}, we obtain
+    \[
+        \fun{ap}_{f\circ f^{-1}}(p)
+        \eq{f(f^{-1}(x))\eq B f(f^{-1}(y))}
+        \fun{ap}_{f\circ f^{-1}}(q).
+    \]
+    On the other hand, the naturality of the homotopy $\eta\colon f\circ f^{-1}\sim\id_B$ [cf.~\eqref{eq:nat-transformation}] yields
+    \[
+        \fun{ap}_{f\circ f^{-1}}(p)\ct\eta_y
+            \eq{}\eta_x\ct\fun{ap}_{\id_B}(p)
+            \eq{}\eta_x\ct p,
+            \quad\text{in }f(f^{-1}(x))\eq B y,
+    \]
+    and similarly for $q$. By concatenating $\eta_y$ on the right it follows that
+    \[
+        \eta_x\ct p
+        \eq{f(f^{-1}(x))\eq B y}
+        \eta_x\ct q.
+    \]
+    Thus, concatenating with $\eta_x^{-1}$ on the left constructs the desired path
+    \[
+        p\eq{x\eq By}q.
+    \]
+\end{solution}
+
+\begin{exr}
+    Prove that if\/ $A$ and\/ $B$ are sets, then so is\/ $A+B$.
+\end{exr}
+
+\begin{solution}
+    We have to construct a witness
+    \[
+        \sigma\colon\prod_{u,v\colon A+B}\;\prod_{p,q\colon u\eq{A+B}v}
+            p\eq{u\eq{A+B}v}q.
+    \]
+    Let $\sigma_A\colon\fun{isSet}(A)$ and $\sigma_B\colon\fun{isSet}(B)$. By double induction on $u$ and $v$, we have
+    \[
+        \sigma(\fun{inl}(x),\fun{inl}(y))(p,q)\defeq
+            \fun{ap}_{\fun{decode}}
+                \bigl(
+                    \sigma_A(x,y)(\fun{encode}(p),\fun{encode}(q))
+                \bigr),
+    \]
+    where $\fun{encode}$ and $\fun{decode}$ are the functions defined in \nref{equality-in-coproducts}. This is well-defined because, in this case,
+    \[
+        \fun{encode}(p),\fun{encode}(q)\colon x\eq Ay,
+    \]
+    and so
+    \[
+        \sigma_A(x,y)(\fun{encode}(p),\fun{encode}(q))
+            \colon
+                \fun{encode}(p)
+                \eq{x\eq Ay}
+                \fun{encode}(q).
+    \]
+    A similar construction yields
+    \[
+        \sigma(\fun{inr}(x),\fun{inr}(y))(p,q)\defeq
+            \fun{ap}_{\fun{decode}}
+                \bigl(
+                    \sigma_B(x,y)(\fun{encode}(p),\fun{encode}(q))
+                \bigr).
+    \]
+    In the cases $u\equiv\fun{inl}(x)$ and $v\equiv\fun{inr}(y)$, or $u\equiv\fun{inr}(x)$ and $v\equiv\fun{inl}(y)$, considering that $\fun{encode}(p),\fun{encode}(q)\colon\fun0$, we simply define
+    \[
+        \sigma(u,v)(p,q)
+            \defeq\fun{rec}_{\fun0}(p\eq{u\eq{A+B}v}q)(\fun{encode}(p)).
+    \]
+\end{solution}
+
+\begin{exr}
+    Show that\/ $A$ is a subsingleton if, and only if, $A\to A$ is contractible.
+\end{exr}
+
+\begin{proof}
+    Suppose that $A$ is a subsingleton. By part b) of Theorem~\ref{thm:subsingletons}, the type $A\to A$ is also a subsingleton. Since $\id_A\colon A\to A$, it is inhabited. Therefore, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
+
+    Conversely, assume that $A\to A$ is contractible. Define
+    \begin{align*}
+        \iota\colon A&\to(A\to A)\\
+        x&\mapsto\lambda z.\,x.
+    \end{align*}
+    We have a witness
+    \[
+        h\colon\prod_{a\colon A}\;\prod_{f\colon A\to A}\iota(a)\eq{A\to A}f.
+    \]
+    Then the dependent function
+    \begin{align*}
+        k\colon\prod_{a\colon A}\;&\prod_{x\colon A}a\eq Ax\\
+        a\mapsto&\lambda x.\,\fun{ap}_{\fun{ev}_a}(h(a,\iota(x)))
+    \end{align*}
+    is well-defined because $h(a,\iota(x))\colon\iota(a)\eq{A\to A}\iota(x)$ and so
+    \[
+        \fun{ap}_{\fun{ev}_a}(h(a,\iota(x)))\colon a\eq Ax.
+    \]
+\end{proof}
+
+\begin{exr}
+    Show that\/ $\fun{isProp}(A)\simeq(A\to\fun{isContr}(A))$.
+\end{exr}
+
+\begin{solution}
+    By Theorem~\ref{thm:isContr-is-a-subsingleton}, $\fun{isContr}(A)$ is a subsingleton. By part b) of Theorem~\ref{thm:subsingletons}, $A\to\fun{isContr}(A)$ is a subsingleton.
+
+    Consider
+    \begin{align*}
+        \fun{isProp}(A)&\to(A\to\fun{isContr}(A))\\
+        u&\mapsto\lambda a.\,\bigl(a,\lambda x.\,u(a,x)\bigr),
+    \end{align*}
+    which is well-defined because $u(a,x)\colon a\eq Ax$ for all $a,x\colon A$.
+
+    On the other hand, we have
+    \begin{align*}
+        (A\to\fun{isContr}(A))&\to\fun{isProp}(A)\\
+        f&\mapsto\lambda x,y.\,\pi_2(f(x))(x)^{-1}\ct\pi_2(f(x))(y),
+    \end{align*}
+    also well-defined because
+    \[
+        f(x)\colon\sum_{a\colon A}\;\prod_{y\colon A}a\eq Ay
+    \]
+    and so, $\pi_2(f(x))\colon\prod_{y\colon A}\pi_1(f(x))\eq Ay$. Hence,
+    \[
+        \pi_2(f(x))(x)^{-1}\ct\pi_2(f(x))(y)\colon x\eq Ay.
+    \]
+    The result follows from Lemma~\ref{lem:subsingleton-equivalence}.
+\end{solution}
+
+\begin{exr}\label{exr:A+negA-is-subsingleton}
+    Show that if\/ $A$ is a subsingleton, then so is\/ $A+\neg A$. In particular, in the context of\/ {\upshape Notation~\ref{ntn:logic}}, there is no need to apply propositional truncation to define $A\lor\neg A\defeq A+\neg A$.
+\end{exr}
+
+\begin{solution}
+    By part~e) of Theorem~\ref{thm:subsingletons}, it suffices to show that there is a map
+    \[
+        A\to((A\to\fun0)\to\fun0).
+    \]
+    Given $a\colon A$ and $f\colon A\to\fun0$, we define such a map by
+    \[
+        \fun{ev}(a)(f)\defeq f(a).
+    \]
+\end{solution}
+
+\begin{exr}\label{exr:when-isequiv-is-subsingleton}
+    Assume that some type\/ $\fun{isequiv}(f)$ satisfies that, for any two inhabitants\/ $e_1,e_2\colon\fun{isequiv}(f)$, we have\/ $e_1\eq{\fun{isequiv}(f)}e_2$. Show that the type\/ $\lVert\fun{qinv}(f)\rVert$ satisfies the same condition and is equivalent to\/ $\fun{isequiv}(f)$.
+\end{exr}
+
+\begin{solution}
+    The condition on $\fun{isequiv}(f)$ means that it is a subsingleton. By Lemma~\ref{lem:subsingletons-are-truncated}, $\fun{isequiv}(f)\eq\univ\lVert\fun{isequiv}(f)\rVert$. Thus, the map $\fun{qinv}(f)\to\fun{isequiv}(f)$ from Proposition~\ref{prop:qinv<->isequiv} induces a map $\lVert\fun{qinv}(f)\rVert\to\fun{isequiv}(f)$.
+    
+    On the other hand, the map $\fun{isequiv}(f)\to\fun{qinv}(f)$ from the same proposition, followed by $\fun{qinv}(f)\to\lVert\fun{qinv}(f)\rVert$, $e\mapsto\lvert e\rvert$, is a function $\fun{isequiv}(f)\to\lVert\fun{qinv}(f)\rVert$.
+
+    By Lemma~\ref{lem:subsingleton-equivalence}, we deduce that $\lVert\fun{qinv}(f)\rVert\simeq\fun{isequiv}(f)$. Moreover, $\lVert\fun{qinv}(f)\rVert$ trivially satisfies the condition because it is a subsingleton.
+    %
+    
+\end{solution}
+
+\begin{exr}\label{exr:Lem-implies-2-props}
+    Show that if\/ $\fun{Lem}$ {\upshape[Definition~\ref{defn:lem}]} holds, then
+    \[
+        \Bigl(\sum_{A\colon\univ}\fun{isProp}(A)\Bigr)\simeq\fun2.
+    \]
+\end{exr}
+
+\begin{solution}
+
+    \textsc{Idea:} The $\Sigma$-type defines two groups of subsingleton types: the empty ones and the contractible ones.
+    
+    Fix $A\colon\univ$. By hypothesis, there exists a function $\lambda\colon\fun{Lem}$ satisfying
+    \[
+        \lambda(A)\colon\fun{isProp}(A)\to(A+\neg A).
+    \]
+    Let $c_1\colon A\to\fun2$ be the constant map $c_1(a)\defeq1_{\fun2}$. Similarly, let $c_0\colon\neg A\to\fun2$ be the constant map $c_0(z)\defeq 0_{\fun2}$. These maps construct a function $c_A\colon(A+\neg A)\to\fun2$. Then, we can define
+    \begin{align*}
+        f\colon\Bigl(\sum_{A\colon\univ}\fun{isProp}(A)\Bigr)
+            &\to\fun2\\
+        (A,\epsilon)&\mapsto c_A(\lambda(A)(\epsilon)).
+    \end{align*}
+    For the backward function, consider
+    \begin{align*}
+        \tau\colon\fun2&\to\sum_{A\colon\univ}\fun{isProp}(A)\\
+        0_{\fun2}&\mapsto(\fun0,\epsilon_0),\\
+        1_{\fun2}&\mapsto(\fun1,\epsilon_1),
+    \end{align*}
+    where $\epsilon_0\colon\fun{isProp}(\fun0)$ and $\epsilon_1\colon\fun{isProp}(\fun1)$ are the canonical dependent functions defined by induction on $\fun0$ and $\fun1$, respectively, as follows:
+    \[
+        \epsilon_0\defeq\fun{ind}_{\fun0}
+            \Bigl(
+                \lambda x.\,\prod_{y\colon\fun0}x\eq{\fun0}y
+            \Bigr),\quad
+        \epsilon_1\defeq\fun{ind}_{\fun1}
+            \Bigl(
+                \lambda x.\,\prod_{y\colon\fun1}x\eq{\fun1}y,
+                \fun{ind}_{\fun1}
+                    \Bigl(
+                        \lambda y.\,\star\eq{\fun1}y,
+                        \fun{refl}_{\star}
+                    \Bigr)
+            \Bigr).
+    \]
+    Let us now compute both compositions.
+    \begin{align*}
+        (f\circ\tau)(0_{\fun2})
+            &\equiv f(\fun0,\epsilon_0)\\
+            &\equiv c_0(\lambda(\fun0)(\epsilon_0))\\
+            &\equiv 0_{\fun2}
+                &&\text{; $c_0$ is constant.}\\
+        (f\circ\tau)(1_{\fun2})
+            &\equiv f(\fun1,\epsilon_1)\\
+            &\equiv c_1(\lambda(\fun1)(\epsilon_1))\\
+            &\equiv 1_{\fun2}
+                &&\text{; $c_1$ is constant.}
+    \intertext{For the other composition, we need to prove that}
+        \tau(f(A,\epsilon))
+            &\equiv\tau(c_A(\lambda(A)(\epsilon)))\\
+            &\eq{}(A,\epsilon).
+    \end{align*}
+    Therefore, it suffices to prove that $\tau(c_A(z))\eq{}(A,\epsilon)$ for all $z\colon A+\neg A$. By induction on $A+\neg A$, we are reduced to the cases $z\equiv\fun{inl}(a)$ and $z\equiv\fun{inr}(\zeta)$, where $a\colon A$ and $\zeta\colon A\to\fun0$.
+
+    In the first case, the goal reduces to showing that $(\fun1,\epsilon_1)\eq{}(A,\epsilon)$ is inhabited. Since $\epsilon\colon\fun{isProp}(A)$, $A$ is a subsingleton. By Lemma~\ref{lem:contractible-equivalences}, it is contractible because $a\colon A$. By the same lemma, it follows that $A\simeq\fun1$. Hence, the univalence axiom implies the existence of a path $p\colon\fun1\eq\univ A$. To prove the goal, we have to show that
+    \[
+        \fun{transport}^{\fun{isProp}}(p,\epsilon_1)
+            \eq{\fun{isProp}(A)}\epsilon,
+    \]
+    which holds trivially because, by Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, $\fun{isProp}(A)$ is a subsingleton.
+
+    In the second case, the goal reduces to proving that $(\fun0,\epsilon_0)\eq{}(A,\epsilon)$.
+
+    To see that $\fun0\eq\univ A$, we need the following lemma:
+
+    \medskip
+
+    \textbf{Lemma.} \textit{If\/ $A\to\fun0$ is inhabited, then\/ $A\eq\univ\fun0$.}
+    
+    \textsc{Proof:} By univalence, it suffices to find an equivalence $A\simeq\fun0$.
+    
+    Let $f\colon A\to\fun0$ be the function given by hypothesis. We claim that $g\defeq\fun{rec}_{\fun0}(A)$ is a quasi-inverse of $f$.
+    
+    First, observe that $f\circ g\colon\fun0\to\fun0$ equals the identity function $\id_{\fun0}$ because $\fun0\to\fun0$ is contractible by part~b) of Theorem~\ref{thm:contractible-types}.
+    
+    Second, to prove that $g(f(x))\eq Ax$, it suffices to prove that $g(z)\eq Ax$ for all $z\colon\fun0$. This trivially follows by induction on $\fun0$ by means of
+    \[
+        \fun{ind}_{\fun0}(\lambda u.\,g(u)\eq Ax,z). \tag*{\lqed}
+    \]
+    It remains to be shown that $\fun{transport}^{\fun{isProp}}(p,\epsilon_0)\eq{\fun{isProp}(A)}\epsilon$, where $p\colon\fun0\eq\univ A$. Again, this is trivial because $\fun{isProp}(A)$ is a subsingleton.
+    %
+    
+\end{solution}
+
+\begin{exr}\label{exr:propositional-resizing}
+    Show that if\/ $\univ_{i+1}$ satisfies\/ $\fun{Lem}$, then the canonical inclusion\/ $\fun{Prop}_{\univ_i}\to\fun{Prop}_{\univ_{i+1}}$ is an equivalence.
+\end{exr}
+
+\begin{solution}
+    Let us recall that, by definition,
+    \[
+        \fun{Prop}_\univ\equiv\sum_{A\colon\univ}\fun{isProp}(A),
+    \]
+    and that the canonical inclusion is
+    \begin{align*}
+        \iota_i\colon\fun{Prop}_{\univ_i}&\to\fun{Prop}_{\univ_{i+1}}\\
+        (A,\epsilon)&\mapsto(A,\epsilon),
+    \end{align*}
+    where $A$ is considered as a type in $\univ_{i+1}$ on the \rhs, by \textsc{\nameref{lpar:cumulative-property}}.
+    
+    By Exercise~\ref{exr:Lem-implies-2-props}, the hypothesis means that $\fun{Prop}_{\univ_{i+1}}\simeq\fun2$. In addition, the triangle
+    \[
+        \begin{tikzcd}
+            \fun{Prop}_{\univ_i}
+                    \arrow[r,"\iota_i"]
+                    \arrow[rd,dashed,"\phi"]
+                &\fun{Prop}_{\univ_{i+1}}
+                    \arrow[d,"f_{i+1}"]\\
+                &\fun2
+                    \arrow[lu,"\tau_i",bend left]
+                    \arrow[u,"\tau_{i+1}"',bend right=60]
+        \end{tikzcd}
+    \]
+    where $\tau_i$, $\tau_{i+1}$, and $f_{i+1}$ are the maps constructed in that exercise, defines by composition a function $\phi\colon\fun{Prop}_{\univ_i}\to\fun2$.
+
+    Moreover, using the notation of Exercise~\ref{exr:Lem-implies-2-props}, we have
+    \begin{align*}
+        (\phi\circ\tau_i)(0_{\fun2})
+            &\equiv f_{i+1}(\iota_i(\fun0,\epsilon_0))\\
+            &\eq{} f_{i+1}(\tau_{i+1}(0_{\fun2}))\\
+            &\equiv 0_{\fun2},
+    \end{align*}
+    and similarly for $1_{\fun2}$. Hence, by induction on $\fun2$, we deduce that $\phi\circ\tau_i\eq{\fun2\to\fun2}\id_{\fun2}$.
+
+    For the other composition,
+    \begin{align*}
+        (\tau_i\circ\phi)(A,\epsilon)
+            &\equiv \tau_i(f_{i+1}(\iota_i(A,\epsilon)))\\
+            &\eq{}\tau_i(f_{i+1}(A,\epsilon))\\
+            &\equiv\tau_i(c_A(\lambda(A)(\epsilon))),
+    \end{align*}
+    where $\lambda$ is the witness of $\fun{Lem}\colon\univ_{i+1}$ given by hypothesis, and $c_A\colon(A+\neg A)\to\fun2$ is the map of the previous exercise.
+
+    We claim that $\tau_i(c_A(z))\eq{}(A,\epsilon)$ for all $A\colon\univ_i$ and $z\colon A+\neg A$. But this was proved in the previous exercise by induction on $z$, using the fact that $\fun{isProp}(A)$ is a subsingleton (and not that $\fun{Lem}\colon\univ_i$ was inhabited).
+
+    Therefore, $\tau_i$ and $\phi$ are quasi-inverses, which implies that $\iota_i$ induces an equivalence.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that it is not the case that for all\/ $A\colon\univ$ we have\/ $\lVert A\rVert\to A$. (However, there can be particular types for which\/ $\lVert A\rVert\to A$. {\upshape Exercise~\ref{exr:when-isequiv-is-subsingleton}} implies that\/ $\fun{qinv}(f)$ is such.)
+\end{exr}
+
+\begin{solution}
+    Note that if $A$ has a witness $a\colon A$, then $\lVert A\rVert$ is an inhabited subsingleton, hence equivalent to $\fun1$. Thus, we can define a map $\lVert A\rVert\to A$ as the composition $\lVert A\rVert\to\fun1\to A$, where the second map is defined by mapping $\star\colon\fun1$ to~$a$. What the exercise emphasizes is the nonexistence of a general function that would identify a witness of each inhabited type.
+
+    To solve the exercise, we have to define a map
+    \[
+        \epsilon\colon
+            \Bigl(
+                \prod_{X\colon\univ}\lVert X\rVert\to X
+            \Bigr)
+            \to\fun0.
+    \]
+    Take $u$ in the domain. Then $u(\fun2)\colon\lVert\fun2\rVert\to\fun2$.
+
+    Suppose that $p\colon A\eq\univ B$ is a path between two types $A$ and $B$. Then
+    \[
+        \fun{apd}_u(p)\colon
+            \fun{transport}^P(p,u(A))\eq{\lVert B\rVert\to B}u(B),
+    \]
+    where $P\colon\univ\to\univ$ is defined as $P\defeq\lVert-\rVert\to\id_\univ$, i.e., $P(X)\defeq\lVert X\rVert\to X$. Applying Proposition~\ref{prop:non-dependent-transport-composition} to the case $(A\to B)\equiv(\lVert-\rVert\to\id_\univ)$ and $f\equiv u(A)$, we obtain
+    \[
+        \fun{transport}^P(p,u(A))
+        \eq{\lVert B\rVert\to B}
+        \fun{transport}^{\id_\univ}(p)
+            \circ u(A)
+            \circ\fun{transport}^{\lVert-\rVert}(p^{-1}).
+    \]
+    By Theorem~\ref{thm:idtoeqv-def}, the first transport on the \rhs induces the equivalence $\fun{idtoeqv}\colon A\simeq B$. The second can be any map $\lVert B\rVert\to\lVert A\rVert$, because this function type is a subsingleton.
+
+    In particular, if $p\equiv\fun{ua}(e)$ for some equivalence $e\colon A\simeq B$, the path $\fun{apd}_u(p)$ induces a path
+    \[
+        q\colon e\circ u(A)\circ\lVert e\rVert^{-1} \eq{\lVert B\rVert\to B} u(B).
+    \]
+    Specializing this generic setting to the case where $B\defeq A\defeq\fun2$ and $e\equiv\fun{not}$, we obtain
+    \[
+        \fun{not}\circ u(\fun2)\eq{\lVert\fun2\rVert\to\fun2}u(\fun2),
+    \]
+    since $\lVert\fun{not}\rVert\eq{\lVert\fun2\rVert\to\lVert\fun2\rVert}\id_{\lVert\fun2\rVert}$. In particular, we obtain a path
+    \[
+        r\colon\fun{not}(u(\fun2)(\lvert 1_{\fun2}\rvert))\eq{\fun2}u(\fun2)(\lvert 1_{\fun2}\rvert),
+    \]
+    and we can define
+    \[
+        \epsilon(u)\defeq\fun{notid}(u(\fun2)(\lvert 1_{\fun2}\rvert),r),
+    \]
+    where $\fun{notid}$ is the function defined in Remark~\ref{rem:notid}.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that if\/ $\fun{Lem}$ holds, then for all\/ $A\colon\univ$ we have
+    \[
+        \bigl\lVert\lVert A\rVert\to A\bigr\rVert.
+    \]
+\end{exr}
+
+\begin{solution}
+    We have to construct a dependent function
+    \[
+        \epsilon\colon\prod_{A\colon\univ}
+            \lVert P(A)\rVert,
+    \]
+    where $P(A)\defeq\lVert A\rVert\to A$.
+    
+    By hypothesis, we have a witness of $\fun{Lem}$, say
+    \[
+        \lambda\colon\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
+    \]
+    Fix $A\colon\univ$. We have
+    \[
+        \lambda(\lVert A\rVert)(\fun{squash})
+            \colon\lVert A\rVert+\neg\lVert A\rVert.
+    \]
+    To define a map from $\lVert A\rVert+\neg\lVert A\rVert$ to $\lVert P(A)\rVert$, we have to specify two maps: $\alpha\colon\lVert A\rVert\to\lVert P(A)\rVert$ and $\beta\colon\neg\lVert A\rVert\to\lVert P(A)\rVert$.
+
+    To define $\alpha$ we use recursion:
+    \[
+        \alpha\defeq
+            \fun{rec}_{\lVert A\rVert}
+                (
+                    \lVert P(A)\rVert,
+                    a\mapsto\lvert z\mapsto a\rvert
+                ).
+    \]
+    For $\beta$, take $u\colon\lVert A\rVert\to\fun0$. Then,
+    \[
+        \beta(u)\defeq
+            \lvert z\mapsto\fun{rec}_{\fun0}(A,u(z))\rvert.
+    \]
+    Since $\alpha$ and $\beta$ are well defined, they induce a map
+    \[
+        \gamma(A)\colon(\lVert A\rVert+\neg\lVert A\rVert)\to\lVert P(A)\rVert.
+    \]
+    To conclude, we define
+    \[
+        \epsilon(A)\defeq\gamma(A)(\lambda(\lVert A\rVert)(\fun{squash})).
+    \]
+    \textbf{Note.} Saying that $\lVert P(A)\rVert$ is inhabited means that there is some witness of $P(A)$, i.e., some way to choose an element of $A$, provided that $A$ is inhabited. Since HoTT requires that every element be constructed, this claim is not generally true.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    {\upshape Corollary~\ref{cor:A+negA-not-always-true}} shows that the following naive form of\/ $\fun{Lem}$ is inconsistent with univalence:
+    \[
+        \prod_{A\colon\univ}(A+\neg A).
+    \]
+    Assuming this axiom (which is known to be consistent in the absence of univalence), show that it implies the axiom of choice.
+\end{exr}
+
+\begin{solution}
+    Let $X$, $A$, and $P$ be as in Definition~\ref{defn:tac}.
+
+    According to Lemma~\ref{lem:traditional-tac}, given a set $X$ and a family of sets $C\colon X\to\univ$, we have to construct a witness
+    \[
+        \epsilon\colon\Bigl(\prod_{x\colon X}\lVert C(x)\rVert\Bigr)
+        \to
+        \Bigl\lVert\prod_{x\colon X}C(x)\Bigr\rVert.
+    \]
+    Let $\gamma$ be a witness of the axiom and let $f$ be a term of the domain type for $\epsilon$.
+    
+    Fix $x\colon X$. By hypothesis, there is a witness $\gamma(C(x))\colon C(x)+\neg C(x)$.
+
+    Since $f(x)\colon\lVert C(x)\rVert$, we can define
+    \begin{align*}
+        \zeta\colon\neg C(x)&\to C(x)\\
+        \beta&\mapsto\fun{rec}_{\fun0}
+            \bigl(
+                C(x),\tilde\beta(f(x))
+            \bigr),
+    \end{align*}
+    where $\tilde\beta$ is the composition of $\lVert\beta\rVert\colon\lVert C(x)\rVert\to\lVert\fun0\rVert$ followed by the induction-defined map $\lVert\fun0\rVert\to\fun0$.
+    
+    By induction on the coproduct, $\id_{C(x)}$ and $\zeta$ construct a function
+    \[
+        v\colon(C(x)+\neg C(x))\to C(x).
+    \]
+    Thus, the evaluation
+    \[
+        v(\gamma(C(x)))
+    \]
+    inhabits $C(x)$. Hence, we can define $\epsilon\defeq\lVert \lambda x.\,v(\gamma(C(x)))\rVert$.
+    %
+    
+\end{solution}
+
+\begin{exr}\label{exr:lem-implies-neg-neg-equals-truncation}
+    Show that assuming\/ $\fun{Lem}$, the double negation\/ $\neg\neg A$ has the same recursion principle as the propositional truncation\/ $\lVert A\rVert$ but with a propositional computation rule rather than a judgmental one. In other words, prove that assuming\/ $\fun{Lem}$, if\/ $B$ is a subsingleton and we have\/ $f\colon A\to B$, then there is an induced\/ $g\colon\neg\neg A\to B$ such that\/ $g(\lambda u.\,u(a))\eq Bf(a)$ for all\/ $a\colon A$. Deduce that (assuming\/ $\fun{Lem}$) we have\/ $\neg\neg A\simeq\lVert A\rVert$. Thus, under\/ $\fun{Lem}$, the propositional truncation can be defined rather than taken as a separate type former.
+\end{exr}
+
+\begin{solution}
+    As we saw in Exercise~\ref{exr:neg-neng-neg}, given $a\colon A$, the evaluation at $a$, defined by $\ev a\defeq\lambda u\colon\neg A.\,u(a)$, is a term of $\neg\neg A$.
+
+    As the following diagram shows, $f\colon A\to B$ induces a map $\neg f\colon\neg B\to\neg A$ defined by $v\mapsto v\circ f$.
+    \[
+        \begin{tikzcd}
+            A
+                \arrow[r,"f"]
+                \arrow[rd,dashed]
+            &B
+                \arrow[d,"v"]\\
+            &\fun0
+        \end{tikzcd}
+    \]
+    Applying this once again yields a map
+    \begin{align*}
+       \neg\neg f\colon\neg\neg A&\to\neg\neg B\\
+       \nu&\mapsto\nu\circ\neg f.
+    \end{align*}
+    Note moreover that
+    \begin{align*}
+       (\neg\neg f(\ev a))(v)
+            &\equiv\ev a(\neg f(v))\\
+            &\equiv\ev a(v\circ f)\\
+            &\equiv (v\circ f)(a)\\
+            &\equiv \ev{f(a)}(v),
+    \end{align*}
+    i.e., $\neg\neg f\circ\ev{}\equiv\ev{}\circ f$, which means that the following diagram commutes definitionally:
+    \[
+        \begin{tikzcd}[row sep=large]
+            \neg\neg A
+                \arrow[r,"\neg\neg f"]
+            &\neg\neg B
+                \arrow[d,dashed,bend left=49,"\theta",shift left]\\
+            A
+                \arrow[r,"f"]
+                \arrow[u,"\ev{}"]
+            &B
+                \arrow[u,"\ev{}"']
+        \end{tikzcd}
+    \]
+    Thus, to obtain $g\colon\neg\neg A\to B$, it suffices to construct $\theta\colon\neg\neg B\to B$.
+    
+    By Lemma~\ref{lem:A+negA-to-negnegA-to-A}, there is a map
+    \[
+        \varphi\colon(B+\neg B)\to(\neg\neg B\to B).
+    \]
+    Therefore, given witnesses $\ell\colon\fun{Lem}$ and $\pi\colon\fun{isProp}(B)$, we obtain a witness
+    \[
+        \ell(\pi)\colon B+\neg B.
+    \]
+    Applying $\varphi$, we arrive at the desired map $\theta$:
+    \[
+        \theta\defeq\varphi(\ell(\pi)).
+    \]
+    Hence, we can define $g\defeq\theta\circ\neg\neg f$.
+    
+    To verify that $g(\ev a)\eq Bf(a)$, i.e., that the square above commutes for $\theta$, recall that $B$ is a subsingleton and $\pi(g(\ev a),f(a))$ provides the required path.
+
+    Note that since $\neg\neg X\equiv(\neg X\to\fun0)$, both $\neg\neg A$ and $\neg\neg B$ are subsingletons. In particular, $\ev{}$ and $\theta$ are quasi-inverses of each other by Lemma~\ref{lem:subsingleton-equivalence}.
+
+    In the case where $B\defeq\lVert A\rVert$ and $f$ is the canonical constructor $a\mapsto\lvert a\rvert$, the map $g\colon\neg\neg A\to\lVert A\rVert$ satisfies $g(\ev a)\eq{\lVert A\rVert}\lvert a\rvert$ for all $a\colon A$.
+
+    Take an element $u\colon\neg A$. Since $u\colon A\to\fun0$ and $\fun0$ is a subsingleton, we obtain an element $\tilde u\colon\lVert A\rVert\to\fun0$. This defines a map
+    \begin{align*}
+        \rho\colon\neg A&\to\neg\lVert A\rVert\\
+        u&\mapsto\tilde u.
+    \end{align*}
+    This, in turn, yields a map $\neg\rho\colon\neg\neg\lVert A\rVert\to\neg\neg A$, as we saw above.
+
+    Summarizing in a diagram, we have
+    \[
+        \begin{tikzcd}[row sep=large,column sep=huge]
+            \neg\neg A
+                    \arrow[rd,"g"]
+                    \arrow[r,"\neg\neg\lvert-\rvert"]
+                &\neg\neg\lVert A\rVert
+                    \arrow[d,"\simeq",]
+                    \arrow[l,"\neg\rho"',bend right=50]\\
+            |[text=gray]|A
+                    \arrow[r,"\lvert-\rvert"',gray]
+                    \arrow[u,"\ev{}",gray]
+                &\lVert A\rVert
+                    %\arrow[u,"{\ev{}[\simeq]}"']
+        \end{tikzcd}
+    \]
+    Now Lemma~\ref{lem:subsingleton-equivalence} implies that the top horizontal functions are mutual quasi-inverses. In particular, $g$ induces the desired equivalence $\neg\neg A\simeq\lVert A\rVert$.
+    %
+
+\end{solution}
+
+\begin{exr}${}$
+    \begin{enumerate}[a),font=\upshape]
+        \item Show that for any\/ $A\colon\univ$, the type
+        \[
+            \prod_{P\colon\fun{Prop}_\univ}(A\to P)\to P
+        \]
+        has the same recursion principle as\/ $\lVert A\rVert$, at least relative to propositions in\/ $\univ$, with the same judgmental computation rule.
+        \item The type considered in the previous part does not lie in the same universe\/ $\univ$, and its recursion principle only applies to subsingletons in\/ $\univ$. Show that if we assume propositional resizing, we can define a type that does lie in the same universe\/ $\univ$ and satisfies the same recursion principle as\/ $\lVert A\rVert$, albeit with only a propositional computation rule. Thus, we can also define the propositional truncation in this case.
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}${}$
+    \begin{enumerate}[a)]
+        \item Let $\Pi$ denote the $\Pi$-type defined in the statement. We have to prove that $(\Pi\to Q)\simeq(A\to Q)$ for all subsingletons $Q\colon\univ$.
+
+        Fix a subsingleton $Q$. Define the forward map as
+        \begin{align*}
+            \varphi\colon(\Pi\to Q)&\to(A\to Q)\\
+            \alpha&\mapsto\lambda a.\,\alpha(\lambda P.\,\ev a^P),
+        \end{align*}
+        where $\ev a^P\colon(A\to P)\to P$ is the evaluation at $a$. This is well-defined because $(\lambda P.\,\ev a^P)\colon\Pi$.
+        
+        For the backward map, consider
+        \begin{align*}
+            \psi\colon(A\to Q)&\to(\Pi\to Q)\\
+            f&\mapsto\lambda\pi.\,\pi(Q)(f).
+        \end{align*}
+        Since $\pi(Q)\colon(A\to Q)\to Q$, its value at $f$ inhabits $Q$.
+    
+        For the first composition, we have
+        \begin{align*}
+            \varphi\circ\psi(f)
+                &\equiv\varphi\bigl(\lambda\pi.\,\pi(Q)(f)\bigr)\\
+                &\equiv\lambda a.\,(\lambda P.\,\ev a^P)(Q)(f)\\
+                &\equiv\lambda a.\,\ev a^Q(f)\\
+                &\equiv\lambda a.\, f(a)\\
+                &\equiv f.
+        \intertext{For the second composition,}
+            \psi\circ\varphi(\alpha)
+                &\equiv\psi
+                    \bigl(
+                        \lambda a.\,\alpha(\lambda P.\,\ev a^P)
+                    \bigr)\\
+                &\equiv\lambda\pi.\,\pi(Q)(\lambda a.\,\alpha(\lambda P.\,\ev a^P)).
+        \intertext{Since this cannot be definitionally reduced to $\alpha$, we resort to the fact that $\Pi\to Q$ is a subsingleton, and so}
+            (\psi\circ\varphi)(\alpha)&\eq{\Pi\to Q}\alpha.
+        \end{align*}
+        Given that $A\to Q$ is also a subsingleton, the equivalence follows from Lemma~\ref{lem:subsingleton-equivalence}.
+
+        It remains to be shown that the recursion principle of $\Pi$ evaluates judgmentally in the same way as that of the truncation.
+        
+        Before verifying this property, let us emphasize that, since $\Pi$ quantifies over all subsingletons of $\univ$, it cannot belong to $\univ$ and becomes an element of a universe above it. This differs from the type former $\lVert-\rVert$, which produces a type $\lVert A\rVert$ in the same universe as $A$.
+        
+        To check the recursion principle of $\Pi$, let us define
+        \begin{align*}
+            \ev{}\colon A&\to\Pi\\
+            a&\mapsto\lambda P.\,\ev a^P.
+        \end{align*}
+        Given $f\colon A\to Q$, the function $\psi(f)$ makes the following diagram judgmentally commutative:
+        \[
+            \begin{tikzcd}[baseline=(top.base)]
+                |[alias=top]| A
+                        \arrow[r,"f"]
+                        \arrow[d,"\ev{}"']
+                    &Q\\
+                \Pi
+                        \arrow[ru,"\psi(f)"']
+            \end{tikzcd}
+            \qquad
+            \begin{aligned}[t]
+                \psi(f)\circ\ev{}(a)
+                    &\equiv (\lambda\pi.\,\pi(Q)(f))(\lambda P.\,\ev a^P)\\
+                    &\equiv (\lambda P.\,\ev a^P)(Q)(f)\\
+                    &\equiv \ev a^Q(f)\\
+                    &\equiv f(a).
+            \end{aligned}
+        \]
+
+        \item To better understand this part, we need to introduce the following axiom.
+
+        \textbf{Axiom} [Propositional resizing] The canonical map $\iota_i\colon\fun{Prop}_{\univ_i}\to\fun{Prop}_{\univ_{i+1}}$ is an equivalence.
+
+        Using the notation of Exercise~\ref{exr:propositional-resizing}, note that if $\iota_i^{-1}$ is a quasi-inverse of~$\iota_i$, then given $Q'\colon\univ_{i+1}$, the homotopy between $\iota_i\circ\iota_i^{-1}$ and the identity implies that the type $Q\defeq\iota_i^{-1}(Q')$ satisfies $\iota_i(Q)\eq{\univ_{i+1}}Q'$. In particular, $\iota_i(Q)\simeq Q'$.
+
+        It is also worth noting that the universe level of a dependent product $\prod_{x\colon X}Y(x)$ is the maximum of the universe levels of its domain $X$ and its family of codomains $Y(x)$.
+
+        Let $\univ\equiv\univ_i$ and define $\univ'\defeq\univ_{i+1}$. In the case of $\Pi$, since $(A\to P)\to P\colon\univ$ for all $P\colon\fun{Prop}_{\univ}$, and the domain $\fun{Prop}_{\univ}\colon\univ'$, we deduce that $\Pi\colon\univ'$.
+        
+        By part a) of Theorem~\ref{thm:subsingletons}, a product of subsingletons is a subsingleton, so $\Pi$ is a subsingleton. This means that it represents an element of $\fun{Prop}_{\univ'}$. 
+        
+        If propositional resizing is assumed, the equivalence $\fun{Prop}_{\univ}\simeq\fun{Prop}_{\univ'}$ provides a subsingleton $\Pi'\colon\fun{Prop}_{\univ}$ that is equivalent to $\Pi$. Its underlying type belongs to $\univ$. Because $\Pi'$ and $\Pi$ are equivalent, maps out of $\Pi'$ into any proposition $Q\colon\univ$ are equivalent to maps out of $\Pi$, meaning $\Pi'$ satisfies the same recursion principle.
+        
+        Because the recursion for $\Pi'$ is inherited from its equivalence with $\Pi$, its computation rule only holds propositionally.
+        
+    \end{enumerate}
+    %
+
+\end{solution}    
+
+
+\begin{exr}
+    Assuming $\fun{Lem}$, show that double negation commutes with universal quantification of subsingletons over sets. That is, show that if $X$ is a set and each $C(x)$ is a subsingleton, then $\fun{Lem}$ implies
+    \[
+        \Bigl(
+            \prod_{x\colon X}\neg\neg C(x)
+        \Bigr)
+        \simeq
+        \neg\neg\prod_{x\colon X}C(x). \tag{$\dag$}
+    \]
+    Observe that if we assume instead that each $C(x)$ is a set, then $(\dag)$ becomes equivalent to the axiom of choice.
+\end{exr}
+
+\begin{proof}
+    Let $\ell\colon\fun{Lem}$ be a witness of the least excluded middle type. By definition, given a type $A\colon\univ$, we have
+    \[
+        \ell(A)\colon\fun{isProp}(A)\to(A+\neg A).
+    \]
+    Applying this to $C(x)$, we obtain a witness
+    \[
+        \ell(C(x))(\zeta(x))\colon C(x)+\neg C(x),
+    \]
+    where $\zeta(x)$ inhabits $\fun{isProp}(C(x))$. Applying the map
+    \[
+        (C(x)+\neg C(x))\to(\neg\neg C(x)\to C(x))
+    \]
+    from Lemma~\ref{lem:A+negA-to-negnegA-to-A} yields a map
+    \[
+        e(x)\colon\neg\neg C(x)\to C(x).
+    \]
+    To define a forward function for $(\dag)$, fix an element $f$ of the \lhs. For $x\colon X$, we have
+    \[
+        f(x)\colon\neg\neg C(x).
+    \]
+    Then, to define a map
+    \[
+        \varphi(f)\colon\Bigl(\neg\prod_{x\colon X}C(x)\Bigr)\to\fun0,
+    \]
+    for $u\colon\Bigl(\prod_{x\colon X}C(x)\Bigr)\to\fun0$, we specify 
+    \[
+        \varphi(f)(u)\defeq u\bigl(\lambda x.\,e(x)(f(x))\bigr),
+    \]
+    which is well-typed because $e(x)(f(x))\colon C(x)$.
+
+    Let $\Pi$ be the dependent product on the \rhs of $(\dag)$. By part a) of Theorem~\ref{thm:subsingletons}, we know that $\Pi$ is a subsingleton. Hence,
+    \[
+        \ell(\Pi)(\zeta)\colon\Pi+\neg\Pi,
+    \]
+    where $\zeta$ is an inhabitant of $\fun{isProp}(\Pi)$. Applying the map
+    \[
+        (\Pi+\neg\Pi)\to(\neg\neg\Pi\to\Pi)
+    \]
+    from Lemma~\ref{lem:A+negA-to-negnegA-to-A} yields a map
+    \[
+        e\colon\Bigl(\neg\neg\prod_{x\colon X}C(x)\Bigr)
+            \to\prod_{x\colon X}C(x).
+    \]
+    Thus, the canonical map $\ev{}\colon C(x)\to\neg\neg C(x)$ [cf.~Exercise~\ref{exr:lem-implies-neg-neg-equals-truncation}] yields a map
+    \[
+        \psi\colon\Bigl(\neg\neg\prod_{x\colon X}C(x)\Bigr)
+            \to\prod_{x\colon X}\neg\neg C(x).
+    \]
+    Given that both sides of $(\dag)$ are subsingletons, their equivalence follows from Lemma~\ref{lem:subsingleton-equivalence}.
+
+    As proved in Exercise~\ref{exr:lem-implies-neg-neg-equals-truncation}, double negation and truncation are equivalent in $\fun{Lem}$ is assumed. Therefore, $(\dag)$ is equivalent to
+    \[
+        \Bigl(
+            \prod_{x\colon X}\lVert C(x)\rVert
+        \Bigr)
+        \simeq
+        \Bigl\lVert
+            \prod_{x\colon X}C(x)
+        \Bigr\rVert.
+    \]
+    In the case where each $C(x)$ is a set for $x\colon X$, since the canonical backward map
+    \[
+        \Bigl\lVert\prod_{x\colon X}C(x)\Bigr\rVert
+        \to
+        \prod_{x\colon X}\lVert C(x)\rVert
+    \]
+    always exists (even if the types $C(x)$ are not sets), the equivalence $(\dag)$ reduces to the existence of a forward map. By Lemma~\ref{lem:traditional-tac}, the existence of such a map is equivalent to the axiom of choice.
+    %
+    
+\end{proof}
+
+\begin{exr}
+    Show that, in the case of propositional truncation, the existence of\/ $\fun{rec}_{\lVert A\rVert}$ for $A\colon\univ$, implies the existence of\/ $\fun{ind}_{\lVert A\rVert}$.
+\end{exr}
+
+\begin{solution}
+    Take $A\colon\univ$. We must construct the function $\fun{ind}_{\lVert A\rVert}$ of \eqref{eq:ind-truncation}.
+
+    Let $C\colon\lVert A\rVert\to\fun{Prop}_{\univ}$ be a predicate. Given a dependent map
+    \[
+        f\colon\prod_{a\colon A}C(\lvert a\rvert)
+    \]
+    and an element $z\colon\lVert A\rVert$, we need to specify an inhabitant $g(z)\colon C(z)$.
+
+    For any $a\colon A$, there is a path $p_z\colon \lvert a\rvert\eq{\lVert A\rVert}z$. Hence, we have the transport map
+    \[
+        (p_z)_*\defeq\fun{transport}^C(p_z)\colon C(\lvert a\rvert)\to C(z).
+    \]
+    In particular, $(p_z)_*(f(a))\colon C(z)$. This yields a map
+    \begin{align*}
+        v\colon A&\to C(z)\\
+        a&\mapsto (p_z)_*(f(a)).
+    \end{align*}
+    Thus, the recursion principle provides
+    \[
+        \rho\defeq\fun{rec}_{\lVert A\rVert}(C(z),v)\colon\lVert A\rVert\to C(z),
+    \]
+    and we can define $g(z)\defeq\rho(\lvert a\rvert)$.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that the law of excluded middle\/ {\upshape[cf.~Definition~\ref{defn:lem}]} and the law of double negation, which states that
+    \begin{equation}\label{eq:double-negation}
+        \prod_{A\colon\univ}\fun{isProp}(A)\to(\neg\neg A\to A),
+    \end{equation}
+    are logically equivalent.
+
+    {\upshape Hint: To derive $\fun{Lem}$ use the hypothesis on $A+\neg A$.}
+    
+\end{exr}
+
+\begin{solution}
+    If $\ell\colon\fun{Lem}$, given $A\colon\univ$, we have
+    \[
+        \ell(A)\colon\fun{isProp}(A)\to(A+\neg A).
+    \]
+    Following this with the map $(A+\neg A)\to(\neg\neg A\to A)$ of Lemma~\ref{lem:A+negA-to-negnegA-to-A} yields a map from $\fun{Lem}$ to the type of \eqref{eq:double-negation}.
+
+    Conversely, given an inhabitant $d$ of \eqref{eq:double-negation}, we must use the function
+    \[
+        h(A)\colon\fun{isProp}(A)\to(\neg\neg A\to A)
+    \]
+    to construct a map
+    \[
+        \fun{isProp}(A)\to(A+\neg A).
+    \]
+    For any $\epsilon\colon\fun{isProp}(A)$, we have $h(A)(\epsilon)\colon\neg\neg A\to A$. By Exercise~\ref{exr:A+negA-is-subsingleton}, the type $A+\neg A$ is a subsingleton. Therefore, applying the hypothesis $h$ to $A+\neg A$ yields a map
+    \[
+        h(A+\neg A)\colon\neg\neg(A+\neg A)\to(A+\neg A).
+    \]
+    For any $u\colon(A+\neg A)\to\fun0$, define
+    \begin{align*}
+        \rho(u)&\colon\neg(A+\neg A)\to\fun0\\
+        \rho(u)&\defeq\lambda v\colon(A+\neg A)\to\fun0.\,\fun{rec}_{A+\neg A}(\fun0,v\circ\fun{inl},u\circ\fun{inr}).
+    \end{align*}
+    Setting $\rho\defeq\lambda u.\,\rho(u)$, we obtain a term $\rho\colon\neg\neg(A+\neg A)$, which gives us the element $h(A+\neg A)(\rho)\colon A+\neg A$.
+    %
+    
+\end{solution}
+
+\begin{exr}\label{exr:decidable+subsingleton-family}
+    Suppose\/ $P\colon\mathbb{N}\to\univ$ is a decidable family\footnote{Definition~\ref{defn:lem}.} of subsingletons. Prove that
+    \[
+        \Bigl\lVert\sum_{n\colon\mathbb{N}}P(n)\Bigr\rVert\to\sum_{n\colon\mathbb{N}}P(n).
+    \]
+    {\upshape Hint: If $F\colon\N\to\univ$ is a subsingleton family such that $F(n)\eq\univ F(m)$ only when $n\eq\N m$, then $\Sigma_\N F$ is a subsingleton.}
+\end{exr}
+
+\begin{solution}
+    By hypothesis, there exists
+    \[
+        \epsilon\colon\prod_{n\colon\N}P(n)+\neg P(n).
+    \]
+    The $\Pi$-type
+    \[
+        Q(n)\defeq\prod_{k\colon\N}(k<n)\to\neg P(k)
+    \]
+    is a subsingleton by Theorem~\ref{thm:subsingletons}.
+    The dependent type
+    \[
+        F(n)\defeq Q(n)\times P(n),
+    \]
+    which is also a subsingleton by the same theorem, is inhabited when $n$ is the first natural number such that $P(n)$ is true.
+
+    Now consider
+    \[
+        S\defeq\sum_{n\colon\N}F(n).
+    \]
+    We claim that $S$ is a subsingleton. Intuitively, it is clear that $S$ can have at most one inhabitant. Take two elements $(n,f)$ and $(k,g)$ of $S$. By Lemma~\ref{lem:total-space-with-subsingleton-fibers}, to show that they are equal it suffices to show that $n\eq \N k$. If $u\colon k<n$, then
+    \[
+        \pi_1(f)(u)\colon\neg P(k).
+    \]
+    However, $\pi_2(g)\colon P(k)$, which yields $\pi_1(f)(u)(\pi_2(g))\colon\fun0$.
+
+    By symmetry, $n<k$ also yields a contradiction. Hence, by part~d) of Proposition~\ref{prop:decidability-of-equality-on-N}, we deduce that $n\eq \N k$, proving our claim that $S$ is a subsingleton.
+
+    Consequently, by recursion on the truncated type, to define a map $\lVert\Sigma_\N P\rVert\to S$, it suffices to define a map $\Sigma_\N P\to S$. And since the second projection induces a map from $S$ to $\Sigma_\N P$, the solution would be complete if we define said map.
+    
+    The induction principle of $\Sigma$-types reduces our goal further to defining a map $P(n)\to S$ for $n\colon\N$.
+
+    The idea is to construct the desired maps by induction on $n$. However, to enable that, we need an additional property, which we will also prove by induction, namely, that the coproduct
+    \[
+        S+Q(n)
+    \]
+    is inhabited for all $n\colon\N$.
+
+    In the case $n\equiv0$, by part g) of Lemma~\ref{lem:order-in-N}, for each $k\colon\N$, there is a witness $\zeta_k\colon(k<0)\to\fun0$. Therefore, the map $\lambda k.\,\lambda u.\,\fun{rec}_{\fun0}(\neg P(k),\zeta_k(u))$ inhabits $Q(0)$.
+
+    In the inductive step, suppose that we have a witness $h\colon S+Q(n)$. To construct a witness of $S+Q(\fun{succ}(n))$ it suffices to define a map from the former type to the latter. We proceed by recursion on the coproduct:
+    \begin{itemize}
+        \item For the left branch $S\to S+Q(\fun{succ}(n))$, we use the canonical injection $\fun{inl}$.
+
+        \item For the right branch, given $q\colon Q(n)$ we define a function
+        \[
+            \sigma_n\colon(P(n)+\neg P(n))\to(S+Q(\fun{succ}(n)))
+        \]
+        using recursion once again:
+        
+        For the left sub-branch, we define
+        \begin{align*}
+            P(n)&\to S+Q(\fun{succ}(n))\\
+            u&\mapsto\fun{inl}(n,(q,u)),
+        \end{align*}
+        which is well-defined because $(q,u)\colon Q(n)\times P(n)$, the type definitionally equal to $F(n)$, and so $(n,(q,u))\colon S$.
+
+        For the right sub-branch, if $z\colon\neg P(n)$, using recursion for the third time, we define a map $v_z\colon(k<n)+(k\eq \N n)\to\neg P(k)$ via the functions:
+        \begin{align*}
+            q(k)&\colon(k<n)\to\neg P(k),\\
+            \zeta_z&\colon(k\eq \N n)\to\neg P(k),\quad p\mapsto\fun{transport}^{\neg P}(p^{-1},z).
+        \end{align*}
+        Thus, precomposing $v_z$ with the canonical map\footnote{This is easily deduced from part e) of Proposition~\ref{prop:decidability-of-equality-on-N}.}
+        \[
+            (k<\fun{succ}(n))\to(k<n)+(k\eq \N n),
+        \]
+        we obtain a function $k\mapsto((k<\fun{succ}(n))\to\neg P(k))$, which is exactly an element of $Q(\fun{succ}(n))$. Composing this with 
+        \[
+            \fun{inr}\colon Q(\fun{succ}(n))\to S+Q(\fun{succ}(n))
+        \]
+        yields the desired function with domain $\neg P(n)$.        
+    \end{itemize}
+
+    This finishes the construction of $\sigma_n$, which proves inductively that $S+Q(n)$ is inhabited for all $n\colon\N$.
+
+    Now we are in a position to construct the desired maps $P(n)\to S$. Indeed, given $u\colon P(n)$, the functions
+    \begin{align*}
+        \id_S&\colon S\to S\\
+        \gamma_{u,n}&\colon Q(n)\to S,\quad
+        q\mapsto(n,(q,u)),
+    \end{align*}
+    define a map $\fun{rec}_{S+Q(n)}(S,\id_S,\gamma_{u,n})\colon S+Q(n)\to S$. Thus, we can define
+    \begin{align*}
+        P(n)&\to S\\
+        u&\mapsto\fun{rec}_{S+Q(n)}(S,\id_S,\gamma_{u,n})(\tau_n),
+    \end{align*}
+    where $\tau_n\colon S+Q(n)$ is the witness obtained from our previous induction.
+    %
+    
+\end{solution}
+
+
+\begin{exr}
+    Prove that\/ $\fun{isProp}(P)\simeq(P\simeq\lVert P\rVert)$.
+\end{exr}
+
+\begin{solution}
+    As shown in Lemma~\ref{lem:subsingletons-are-truncated}, if $P$ is a subsingleton, we have a map $\fun{rec}_{\lVert P\rVert}(P,\id_P)\colon\lVert P\rVert\to P$. Since we also have the canonical injection $P\to\lVert P\rVert$, by Lemma~\ref{lem:subsingleton-equivalence}, we deduce that there is a map $\fun{isProp}(P)\to(P\simeq\lVert P\rVert)$.
+
+    By Proposition~\ref{prop:isSet-and-isProp-are-subsingletons} and part~f) of Theorem~\ref{thm:subsingletons}, both $\fun{isProp}(P)$ and $P\simeq\lVert P\rVert$ are subsingletons. Consequently, by Lemma~\ref{lem:subsingleton-equivalence}, to prove their equivalence it suffices to construct a backward map.
+
+    Let $(f,\eta,\vartheta)\colon P\simeq\lVert P\rVert$, where $f\colon P \to \lVert P \rVert$ is the forward map and $g\colon \lVert P \rVert \to P$ is its quasi-inverse. Given $x,y\colon P$, we have a path
+    \[
+        \fun{squash}(f(x),f(y))\colon f(x)\eq{\lVert P\rVert}f(y).
+    \]
+    Therefore, we can concatenate the following paths:
+    \begin{align*}
+        x
+            &\eq{P} g(f(x))
+                &&\text{by } \vartheta(x)^{-1},\\
+            &\eq{P} g(f(y))
+                &&\text{by } \fun{ap}_g(\fun{squash}(f(x),f(y))),\\
+            &\eq{P} y
+                &&\text{by } \eta(y),
+    \end{align*}
+    which proves that $P$ is a subsingleton. Thus, we can define the map
+    \[
+        (P\simeq\lVert P\rVert)\to\fun{isProp}(P),
+            \quad(f,\eta,\vartheta)\mapsto\epsilon,
+    \]
+    where $\epsilon\colon \fun{isProp}(P)$ is the witness constructed from the equality chain above.    
+\end{solution}
+
+\begin{exr}
+    As in classical set theory, the finite version of the axiom of choice is a theorem. Prove that the axiom of choice \eqref{eq:traditional-tac} holds when\/ $X$ is a finite type\/ $\fun{Fin}(n)$, as defined in\/ {\upshape Exercise~\ref{exr:Fin}}.
+\end{exr}
+
+\begin{solution}
+    Let us introduce
+    \[
+        A_n\defeq\prod_{x\colon\fun{Fin}(n)}\lVert C(x)\rVert
+        \quad\text{and}\quad
+        B_n\defeq\prod_{x\colon\fun{Fin}(n)}C(x).
+    \]
+    We must construct a map
+    \[
+        f_n\colon A_n\to\lVert B_n\rVert.
+    \]
+    We proceed by induction on $n$.
+    
+    The case $n\equiv0$ is trivial because $\fun{Fin}(0)\eq{\univ}\fun0$, and so $A_0\simeq\fun1$ and $B_0\simeq\fun1$. We can compose the forward map of the first equivalence with the inverse of the second to obtain a map $A_0\to B_0$. Hence, we complete the base case by postcomposing this with the canonical injection $B_0\to\lVert B_0\rVert$.
+
+    For the inductive step, let $C'\defeq C\circ\fun{inl}$ and set
+    \[
+        A'_n\defeq\prod_{x\colon\fun{Fin}(n)}\lVert C'(x)\rVert,
+        \quad
+        B'_n\defeq\prod_{x\colon\fun{Fin}(n)}C'(x).
+    \]
+    Since $\fun{Fin}(\fun{succ}(n))\equiv\fun{Fin}(n)+\fun1$, we can apply the universal property of dependent functions over coproducts, Theorem~\ref{thm:universal-property-of-product-over-coproduct}, to obtain the equivalences
+    \[
+        A_{\fun{succ}(n)}\simeq A'_n\times\lVert C(\fun{inr}(\ast))\rVert,
+        \quad
+        B_{\fun{succ}(n)}\simeq B'_n\times C(\fun{inr}(\ast)).
+    \]
+    Thus, to complete the induction we have to define a map
+    \[
+        A'_n\times\lVert C(\fun{inr}(\ast))\rVert\to
+        \lVert B'_n\times C(\fun{inr}(\ast))\rVert.
+    \]
+    Since the inductive hypothesis gives us a map $A'_n\to\lVert B'_n\rVert$, the conclusion is a direct consequence of the following
+
+    \textbf{Lemma.} {\itshape If\/ $A$ and\/ $B$ are types, then\/ $\lVert A\times B\rVert\simeq(\lVert A\rVert\times\lVert B\rVert)$.}
+
+    \textsc{Proof:} There is a commutative diagram
+    \[
+        \begin{tikzcd}
+            A\times B
+                \arrow[r,"r"]
+                \arrow[d,"\lvert-\rvert"']
+            &\lVert A\rVert\times\lVert B\rVert
+                \arrow[ld,"v",dashed,bend left,shift right]\\
+            \lVert A\times B\rVert
+                \arrow[ru,"u",shift right]
+        \end{tikzcd}
+    \]
+    where
+    \begin{align*}
+        r&\defeq\lambda(a,b).\,(\lvert a\rvert,\lvert b\rvert),\\
+        u&\defeq\fun{rec}_{\lVert A\times B\rVert}
+            (
+                \lVert A\rVert\times\lVert B\rVert,r
+            ),
+    \end{align*}
+    which is well-defined because $r$ factors through $\lvert-\rvert$ by part c) of Theorem~\ref{thm:subsingletons}.
+
+    To construct $v$, define the curried function
+    \begin{align*}
+        A&\to(B\to\lVert A\times B\rVert)\\
+        a&\mapsto(b\mapsto\lvert(a,b)\rvert).
+    \end{align*}
+    Since the codomain is a function type into a subsingleton, it is a subsingleton itself, and so the outer function factors through $\lVert A\rVert$. In turn, for each $a\colon A$, the inner function $b\mapsto\lvert(a,b)\rvert$ factors through $\lVert B\rVert$, yielding a map
+    \[
+        \lVert A\rVert\to(\lVert B\rVert\to\lVert A\times B\rVert),
+    \]
+    whose uncurried form gives $v$.
+    
+    The conclusion follows from Lemma~\ref{lem:subsingleton-equivalence}.
+    %
+    
+\end{solution}
+
+\begin{exr}\label{exr:decidable-family}
+    Show that the conclusion of\/ {\upshape Exercise~\ref{exr:decidable+subsingleton-family}} if $P\colon\N\to\univ$ is any decidable family.
+\end{exr}
+
+\begin{solution}
+    We open our reasoning by establishing the following
+
+    \textbf{Lemma.} {\itshape For any type $P$, there is a map $(P+\neg P)\to(\lVert P\rVert+\neg\lVert P\rVert)$. In particular, if $P$ is decidable, then $\lVert P\rVert$ is decidable as well.}
+
+    \textsc{Proof:}
+        We proceed by induction on the coproduct $P+\neg P$.
+        
+        For the left branch, we take the composition $\fun{inl}\circ\lvert-\rvert$.
+        
+        For the right branch, observe that since $\fun0$ is a subsingleton, every map $u\colon P\to\fun0$ factors through the canonical map $\lvert-\rvert\colon P\to\lVert P\rVert$; i.e., there is a commutative triangle
+        \[
+            \begin{tikzcd}
+                P
+                    \arrow[r,"u"]
+                    \arrow[d,"\lvert-\rvert"']
+                &\fun0\\
+                \lVert P\rVert
+                    \arrow[ur,"\tilde u"']
+            \end{tikzcd}
+        \]
+        Therefore, we can define the mapping for this branch as $u\mapsto\fun{inr}(\tilde u)$. \localqed
+    
+    \medskip
+
+    In our case, since the family $P(n)$ is decidable, we deduce that the family of types $\lVert P(n)\rVert$ satisfies the hypothesis of Exercise~\ref{exr:decidable+subsingleton-family}. Therefore, we have a map
+    \[
+        \Bigl\lVert
+            \sum_{n\colon\N}\lVert P(n)\rVert
+        \Bigr\rVert
+        \to\sum_{n\colon\N}\lVert P(n)\rVert.
+    \]
+    Before proceeding, we need a second
+
+    \textbf{Lemma.} {\itshape Let $P\colon A\to\univ$ be any type family. Then, there is an equivalence
+    \[
+        \Bigl\lVert
+            \sum_{x\colon A}\lVert P(x)\rVert
+        \Bigr\rVert
+        \simeq
+        \Bigl\lVert
+            \sum_{x\colon A}P(x)
+        \Bigr\rVert.
+    \]}
+
+    \textsc{Proof:} Since the type on the \lhs is a subsingleton, to construct a forward map, it suffices to define it with domain in the untruncated $\Sigma$-type. The induction principle for $\Sigma$-types reduces the goal to defining, for each $a\colon A$, a map
+    \[
+        \lVert P(a)\rVert\to\Bigl\lVert\sum_{x\colon A}P(x)\Bigr\rVert.
+    \]
+    Applying the recursion principle for propositional truncation once again, the goal reduces further to defining a map $P(a)\to\Bigl\lVert\sum_{x\colon A}P(x)\Bigr\rVert$, which is trivially constructed by $u\mapsto\lvert(a,u)\rvert$.
+    
+    The backward map is trivially derived from the canonical map $P(x)\to\lVert P(x)\rVert$.
+    
+    Lemma~\ref{lem:subsingleton-equivalence} completes the proof. \localqed
+
+    \medskip
+    As a result, by composing our derived maps, we have a witness
+    \[
+        \epsilon\colon\Bigl\lVert
+            \sum_{n\colon\N}P(n)
+        \Bigr\rVert
+        \to\sum_{n\colon\N}\lVert P(n)\rVert.
+    \]
+    Let
+    \[
+        (n,\zeta)\colon\sum_{n\colon\N}\lVert P(n)\rVert.
+    \]
+    Then $\zeta\colon\lVert P(n)\rVert$. By hypothesis, we are given an element $\epsilon\colon P(n)+\neg P(n)$. To derive from $\epsilon$ an element of $P(n)$, thereby establishing a map $\lVert P(n)\rVert\to P(n)$, it suffices to construct a map $(P(n)+\neg P(n))\to P(n)$ and evaluate it at $\epsilon$. We proceed by induction on the coproduct:
+    
+    \begin{description}[font=\normalfont\scshape]
+        \item[Left branch:] Here we specify the identity map $\id_{P(n)}$.
+    
+        \item[Right branch:] Given $u\colon\neg P(n)$, we factor it through $\lVert P(n)\rVert$. This is possible because $u\colon P(n)\to\fun0$ yields an extension $\tilde u\colon\lVert P(n)\rVert\to\fun0$, since $\fun0$ is a subsingleton. Thus, $\tilde u(\zeta)\colon\fun0$, which allows us to specify $\fun{rec}_{\fun0}(P(n),\tilde u(\zeta))$ for the right branch.
+    \end{description}
+    
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Simplify the proof of\/ {\upshape Theorem~\ref{thm:N-equality-encode-decode}} by first proving that\/ $\fun{Code}(n,m)$ is a subsingleton for all\/ $n,m\colon\N$.
+\end{exr}
+
+\begin{solution}
+    To prove that $\fun{Code}(n,m)$ is a subsingleton for all $n,m\colon\N$, we proceed by double induction on $n$ and $m$.
+    \begin{enumerate}[-]
+        \item For $n\equiv0$, we use induction on $m$ to show that $\fun{Code}(0,m)$ is a subsingleton:
+        \begin{itemize}
+            \item For $m\equiv0$, this is trivial because, by definition, $\fun{Code}(0,0)\equiv\fun1$.
+            \item For $\fun{succ}(m)$, this is also trivial because $\fun{Code}(0,\fun{succ}(m))\equiv\fun0$ by definition.
+        \end{itemize}
+        \item For $\fun{succ}(n)$, suppose that we have $h_m\colon\fun{isProp}(\fun{Code}(n,m))$ for every $m\colon\N$. We prove by induction on $m$ that $\fun{isProp}(\fun{Code}(\fun{succ}(n),m))$ is inhabited:
+        \begin{itemize}
+            \item For $m\equiv0$, this is trivial because $\fun{Code}(\fun{succ}(n),0)\equiv\fun0$.
+            \item For $\fun{succ}(m)$, since $\fun{Code}(\fun{succ}(n),\fun{succ}(m))\equiv\fun{Code}(n,m)$, our goal follows from the inductive hypothesis.
+        \end{itemize}
+    \end{enumerate}
+    
+    Let $n,m\colon\N$ and $c\colon\fun{Code}(n,m)$. Since both $\fun{encode}(\fun{decode}(c))$ and $c$ are inhabitants of $\fun{Code}(n,m)$, and we just proved that this type is a subsingleton, they must be equal. As a result, the homotopy $\fun{encode}\circ\fun{decode}\sim\id_{\fun{Code}(n,m)}$ is inhabited.
+
+    The proof of the other composition proceeds as presented in Theorem~\ref{thm:N-equality-decode-encode}.
+    %
+    
+\end{solution}

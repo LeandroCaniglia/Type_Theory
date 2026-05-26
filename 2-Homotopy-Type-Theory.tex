@@ -778,12 +778,14 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \begin{proof}
     First, observe that both sides of the equation inhabit $P(z)$. To prove equality, we fix $x\colon A$ and proceed by based path induction on $p$.
 
-    The motive of the induction is the family of types $D\colon \prod_{y\colon A} (x\eq A y)\to \univ$ defined by
-    \[
-        D(y, p)\defeq\prod_{u\colon P(x)}\;
+    The motive of the induction is the family of types defined by
+    \begin{align*}
+        D\colon&\prod_{y\colon A}(x\eq Ay)\to\univ\\ 
+        D(y,p)\defeq&\prod_{u\colon P(x)}\;
         \prod_{z\colon A}\;\prod_{q\colon y\eq Az}
             q_*(p_*(u))\eq{P(z)}(p\ct q)_*(u).
-    \]
+    \end{align*}
+        
     We must construct a term of type $D(x, \fun{refl}_x)$. Substituting $y$ with $x$ and $p$ with $\fun{refl}_x$, the goal becomes
     \[
         \prod_{u\colon P(x)}\;
@@ -1441,15 +1443,11 @@ Types admit different interpretations: depending on the circumstances, they can 
 \begin{prop}\label{prop:qinv<->isequiv}
 Let\/ $f\colon A\to B$. Then:
   \begin{enumerate}[a),font=\upshape]
-    \item There is a canonical map
+    \item There is a canonical map\/ $\fun{qinv}(f)\to\fun{isequiv}(f)$
         \begin{align*}
-            \fun{qinv}(f)&\to\fun{isequiv}(f)\\
-            (g,(\eta,\vartheta))&\mapsto((g,\eta),(g,\vartheta)).
+            (g,(\eta,\vartheta))\mapsto((g,\eta),(g,\vartheta)).
         \end{align*}
-    \item There is a map
-    \[
-        \fun{isequiv}(f)\to\fun{qinv}(f).
-    \]
+    \item There is a map\/ $\fun{isequiv}(f)\to\fun{qinv}(f)$.
   \end{enumerate}
   Consequently, the type\/ $\fun{qinv}(f)$ is inhabited if, and only if, $\fun{isequiv}(f)$ is inhabited.
 \end{prop}
@@ -4812,7 +4810,7 @@ Analogously, based on the definition of right homotpy whiskering
             &\eq{}\bigl(
                     h\lwct\fun{happly}(\fun{funext}(\eta))
                 \bigr)(x)
-                &&\text{(Lemma~\ref{lem:left-whiskering-naturality})}\\
+                &&\text{; Lem.~\ref{lem:left-whiskering-naturality}}\\
             &\eq{}(h\lwct\eta)(x)\\
             &\eq{}\fun{ap}_h(\eta(x)).
     \end{align*}
@@ -4831,7 +4829,7 @@ Analogously, based on the definition of right homotpy whiskering
                     \fun{funext}(\eta)\rwct k
                 \bigr)(z)\\
             &\eq{}\fun{happly}(\fun{funext}(\eta))(k(z))
-                &&\text{; Lem~\ref{lem:right-whiskering-naturality}}\\
+                &&\text{; Lem.~\ref{lem:right-whiskering-naturality}}\\
             &\eq{}\eta(k(z)).
     \end{align*}
     Since both sides are pointwise equal, $\fun{funext}$ yields the second identity.
@@ -5080,7 +5078,7 @@ To apply the observational framework~\ref{observational-framework} to the univer
             &\equiv\id_A,\\[1mm]
         \rhs&\equiv\fun{transport}^{\id_\univ}(\fun{refl}_A)\\
             &\equiv\fun{\id_A}
-            &&\text{; Lem.~\ref{lem:transportP}}
+            &&\text{; Thm.~\ref{thm:transportP}}
     \end{align*}
     
 \begin{thm}\label{thm:idtoeqv-def}
@@ -5616,7 +5614,7 @@ The following results establish computational rules for these transport operatio
     By path induction on $p$, we may assume that $a'\equiv a$ and $p\equiv\fun{refl}_a$. In this case, the transport operation on the \lhs evaluates definitionally to $q$. On the \rhs, the dependent action on paths $\fun{apd}$ for both $f$ and $g$ evaluates to $\fun{refl}_{f(a)}$ and $\fun{refl}_{g(a)}$, respectively. Furthermore, transport along $\fun{refl}_a$ in $B$ is definitionally the identity function, so its action on the path $q$ is simply $q$. The expression reduces to $\fun{refl}_{f(a)}^{-1}\ct q\ct\fun{refl}_{g(a)}$, which propositionally reduces to $q$ by the unit laws for path concatenation.
     \end{proof}
 
-\section{Equality in Coproducts}
+\section{Equality in Coproducts}\label{equality-in-coproducts}
 
 To apply the observational framework \ref{observational-framework} to the coproduct $A+B$, we proceed as follows:
 \begin{description}[font=\normalfont\scshape]
@@ -5898,7 +5896,7 @@ For the Extended framework~\ref{extended-framework} we have to consider
     \end{enumerate}
 \end{proof}
 
-\section{Equality in Natural Numbers}
+\section{Equality in Natural Numbers}\label{equality-in-N}
 
 In this section we apply the Observational Framework \ref{observational-framework} to the type of natural numbers.
 \begin{description}[font=\normalfont\scshape]
@@ -6774,6 +6772,48 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         f(\omega),
     \]
     and the result follows by function extensionality.
+\end{proof}
+
+\begin{thm}\label{thm:universal-property-of-product-over-coproduct}
+    Let\/ $A$ and\/ $B$ be types, and let\/ $C\colon A+B\to\univ$ be a type family. Then there is an equivalence
+    \[
+        \prod_{z\colon A+B}C(z)\simeq
+            \Bigl
+                (\prod_{x\colon A}C(\fun{inl}(x))
+            \Bigr)
+            \times
+            \Bigl(
+                \prod_{y\colon B}C(\fun{inr}(y))
+            \Bigr).
+    \]
+\end{thm}
+
+\begin{proof}
+    The forward map is defined as
+    \begin{align*}
+        \fun{split}&\defeq\lambda f.\,(f\circ\fun{inl},f\circ\fun{inr}),
+    \intertext{and the backward map as}
+        \fun{merge}&\defeq\lambda(u,v).\,\fun{ind}_{A+B}(C,u,v).
+    \end{align*}
+    To complete the proof, we compute both compositions. For the first composition, we have:
+    \begin{align*}
+        \fun{split}(\fun{merge}(u,v))
+            &\equiv\fun{split}(\fun{ind}_{A+B}(C,u,v))\\
+            &\equiv(\fun{ind}_{A+B}(C,u,v)\circ\fun{inl},\fun{ind}_{A+B}(C,u,v)\circ\fun{inr}).
+    \end{align*}
+    Evaluating these precompositions at $x\colon A$ and $y\colon B$ yields
+    \begin{align*}
+        \fun{ind}_{A+B}(C,u,v,\fun{inl}(x))&\equiv u(x),\\
+        \fun{ind}_{A+B}(C,u,v,\fun{inr}(y))&\equiv v(y).
+    \end{align*}
+    Thus, the composition is equal to the identity function.
+
+    For the other composition, we have:
+    \[
+        \fun{merge}(\fun{split}(f))
+            \equiv\fun{ind}_{A+B}(C,f\circ\fun{inl},f\circ\fun{inr}),
+    \]
+    which equals $f$ by the computation rules of $\fun{ind}_{A+B}$, because both functions yield the same results when precomposed with $\fun{inl}$ and $\fun{inr}$.
 \end{proof}
 
 \begin{thm}
@@ -7792,13 +7832,13 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
 
     \textbf{Lemma.}\quad\textit{There is a function $\fun{neq}\colon(1_{\fun2}\eq{\fun2}0_{\fun2})\to\fun0$.}
 
-    \textit{Proof.}
+    \textsc{Proof:}
         Let $P\colon\fun2\to\univ$ be the type family defined by $P(1_{\fun2})\defeq\fun1$ and $P(0_{\fun2})\defeq\fun0$. Then, we define
         \[
             \fun{neq}\defeq\lambda x\colon1_{\fun2}\eq{\fun2}0_{\fun2}.\,
                 \fun{transport}^P(x,\fun\star).
         \]
-        $\blacksquare$
+        \localqed
     
     By \nref{lpar:exactly-two-booleans}, there is a witness
     \[
