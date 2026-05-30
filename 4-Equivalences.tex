@@ -1,0 +1,205 @@
+\chapter{Equivalences}
+
+\section{Quasi-Inverses}
+
+\begin{thm}\label{thm:equivalence-fibers-are-contractible}
+    If\/ $f\colon A\to B$ induces an equivalence, then\/ $\fun{fib}_f(y)$ is contractible for all\/ $y\colon B$.
+\end{thm}
+
+\begin{proof}
+    By Theorem~\ref{thm:coherent-quasi-inverse}, there is a coherent quasi-inverse $(g,\eta,\vartheta,\tau)$, where
+    \[
+        \tau\colon f\lwct\vartheta\sim\eta\rwct f
+        \quad\text{i.e.,}\quad
+        \tau\colon\prod_{x\colon A}\fun{ap}_f(\vartheta_x)
+            \eq{f(g(f(x)))\eq Bf(x)}\eta_{f(x)}.
+    \]
+    Given $y\colon B$, we will show that $\fun{fib}_f(y)$ is contractible by proving that the center of contraction is
+    \[
+        (g(y),\eta(y))\colon\fun{fib}_f(y),
+    \]
+    which is well-typed since $\eta(y)\colon f(g(y))\eq By$.
+
+    Fix $(x,p)\colon\fun{fib}_f(y)$, where $p\colon f(x)\eq By$. According to Definition~\ref{defn:fiber-over-y}, we must provide a path $\gamma\colon g(y)\eq Ax$ such that
+    \[
+        \fun{transport}^{z\mapsto f(z)\eq By}(\gamma,\eta(y))\eq{f(x)\eq By}p.
+    \]
+    Using Lemma~\ref{lem:post-composition-transport}, the \lhs equals
+    \[
+        \fun{transport}^{z\mapsto z\eq By}\bigl(\fun{ap}_f(\gamma),\eta(y)\bigr).
+    \]
+    Therefore, by Proposition~\ref{prop:transport-decomposition-for-paths}, our goal becomes
+    \[
+        \fun{ap}_f(\gamma)^{-1}\ct\eta(y)\eq{f(x)\eq By}p,
+    \]
+    which is equivalent to
+    \[
+        \fun{ap}_f(\gamma)\ct p\eq{f(g(y))\eq By}\eta(y).\tag{$\dag$}
+    \]
+    Let
+    \[
+        \gamma\defeq\fun{ap}_g(p)^{-1}\ct\vartheta_x.
+    \]
+    Since $\fun{ap}_g(p)\colon g(f(x))\eq A g(y)$ and $\vartheta_x\colon g(f(x))\eq Ax$, we see that $\gamma$ is of the required type. Moreover,
+    \[
+        \fun{ap}_f(\gamma)\ct p
+            \eq{f(g(y))\eq By}
+                \fun{ap}_f(\fun{ap}_g(p))^{-1}
+                \ct\fun{ap}_f(\vartheta_x)
+                \ct p.
+    \]
+    Using the coherence condition $\tau_x$, we obtain
+    \[\tag{$\ddag$}
+        \fun{ap}_f(\gamma)\ct p
+        \eq{f(g(y))\eq By}
+        \fun{ap}_f(\fun{ap}_g(p))^{-1}\ct\eta_{f(x)}\ct p.
+    \]
+    The naturality path diagram \eqref{tik:nat-transformation} applied to $p\colon f(x)\eq By$ and $\eta\colon f\circ g\sim\id_B$ yields
+    \[
+        \begin{tikzcd}[column sep=large]
+            f(g(f(x)))
+                    \arrow[r,"\fun{ap}_{f\circ g}(p)"]
+                    \arrow[d,"\eta_{f(x)}"']
+                &f(g(y))
+                    \arrow[d,"\eta(y)"]\\
+            f(x)
+                    \arrow[r,"\fun{ap}_{\id}(p)"']
+                &y
+        \end{tikzcd}
+    \]
+    Using that $\fun{ap}_{f\circ g}\eq{} \fun{ap}_f\circ\fun{ap}_g$ and $\fun{ap}_{\id}\eq{}\id$, the diagram translates into
+    \[
+        \fun{ap}_f(\fun{ap}_g(p))^{-1}\ct\eta_{f(x)}\ct p
+        \eq{f(g(y))\eq By}
+        \eta(y).
+    \]
+    Substituting this into ($\ddag$), we arrive at ($\dag$).
+\end{proof}
+
+\begin{defn}\label{defn:left-right-inverses}
+    Given a function $f\colon A\to B$, we define the types
+    \begin{align*}
+        \fun{linv}(f)
+            &\defeq\sum_{g\colon B\to A}g\circ f\sim \id_A\\
+        \fun{rinv}(f)
+            &\defeq\sum_{g\colon B\to A}f\circ g\sim\id_B
+    \end{align*}
+    of \textsl{left} and \textsl{right inverses} to $f$, respectively. We call $f$ \textsl{left invertible} if $\fun{linv}(f)$ is inhabited, and \textsl{right invertible} if $\fun{rinv}(f)$ is inhabited.
+\end{defn}
+
+\begin{prop}\label{prop:side-inverses-are-contractible}
+    If\/ $f\colon A\to B$ has a quasi-inverse, then the types\/ $\fun{rinv}(f)$ and\/ $\fun{linv}(f)$ are contractible.
+\end{prop}
+
+\begin{proof}
+    Consider the maps
+    \begin{align*}
+        (f \circ-)&\colon(C\to A)\to(C\to B)\\
+        (-\circ f)&\colon(B\to C)\to(A\to C).
+    \end{align*}
+    If $g$ is a quasi-inverse of $f$, then $(g \circ \mathord{-})$ and $(\mathord{-} \circ g)$ are quasi-inverses of $(f \circ \mathord{-})$ and $(\mathord{-} \circ f)$, respectively. Thus, they are equivalences and, by Theorem~\ref{thm:equivalence-fibers-are-contractible}, their fibers are contractible. 
+    
+    Therefore, the same theorem implies that $\fun{rinv}(f)$ and $\fun{linv}(f)$ are contractible because, by function extensibility, we have
+    \begin{align*}
+        \fun{linv}(f)
+            &\simeq\Bigl(
+                \sum_{g\colon B\to A}
+                    (g\circ f)\eq{A\to A}\id_A
+            \Bigr)
+            \equiv\fun{fib}_{-\circ f}(\id_A)\\
+        \fun{rinv}(f)
+        &\simeq\Bigl(
+            \sum_{g\colon B\to A}
+                (f\circ g)\eq{B\to B}\id_B
+        \Bigr)
+        \simeq\fun{fib}_{f\circ-}(\id_B).
+    \end{align*}
+\end{proof}
+
+\begin{lem}\label{lem:qinv-reassociation}
+    Let\/ $f\colon A\to B$ be a function. Then there is an equivalence
+    \[
+        \fun{qinv}(f)\simeq
+            \sum_{\omega\colon\fun{rinv}(f)}\pi_1(\omega)\circ f\sim\id_A.
+    \]
+\end{lem}
+
+\begin{proof}
+    By definition, the type $\fun{qinv}(f)$ is given by
+    \[
+        \fun{qinv}(f)\equiv\sum_{h\colon B\to A}
+            (f\circ h\sim\id_B)\times(h\circ f\sim\id_A).
+    \]
+    By expressing the cartesian product as a non-dependent $\Sigma$-type, this is definitionally equivalent to
+    \[
+        \sum_{h\colon B\to A}\;\sum_{\theta\colon f\circ h\sim\id_B}h\circ f\sim\id_A.
+    \]
+    Using $\Sigma$-associativity (see Proposition~\ref{prop:sigma-associativity}), this nested $\Sigma$-type is equivalent to
+    \[
+        \sum_{\omega\colon\sum_{h\colon B\to A}f\circ h\sim\id_B}\pi_1(\omega)\circ f\sim\id_A.
+    \]
+    This completes the proof because the index type is precisely $\fun{rinv}(f)$.
+\end{proof}
+
+\begin{lem}\label{lem:contractible-sigma-product}
+    Let\/ $X\colon\univ$ be a type, and let\/ $A,B\colon X\to\univ$ be type families over\/ $X$. If\/ $\Sigma_XA$ is contractible with center\/ $(z,c)$, then there is an equivalence
+    \[
+        \sum_{x\colon X}A(x)\times B(x)\simeq B(z).
+    \]
+\end{lem}
+
+\begin{proof}
+    By rewriting the cartesian product as a non-dependent $\Sigma$-type, the \lhs equals
+    \[
+        \sum_{x\colon X}\;\sum_{u\colon A(x)}B(x).
+    \]
+    Using $\Sigma$-associativity (see Proposition~\ref{prop:sigma-associativity}), this total space is equivalent to
+    \[
+        \sum_{\omega\colon\Sigma_XA}B(\pi_1(\omega)).
+    \]
+    By part b) of Theorem~\ref{thm:contractible-data-ignored}, we obtain
+    \[
+        \Bigl(
+            \sum_{\omega\colon\Sigma_XA}B(\pi_1(\omega))
+        \Bigr)
+        \simeq B(\pi_1(z,c))\equiv B(z).
+    \]
+\end{proof}
+
+
+\begin{prop}
+    If\/ $f\colon A\to B$ is such that\/ $\fun{qinv}(f)$ is inhabited, then
+    \[
+        \fun{qinv}(f)\simeq\Bigl(\prod_{x\colon A}x\eq Ax\Bigr).
+    \]
+\end{prop}
+
+\begin{proof}
+    Let $(g,\eta,\vartheta)$ be a witness of $\fun{qinv}(f)$. Then, given $x\colon A$, we have
+    \[
+        \vartheta\colon g\circ f\sim\id_A,
+    \]
+    which defines
+    \begin{alignat*}2
+        \epsilon&\colon\id_A\sim\id_A,\quad
+        \epsilon\defeq\vartheta^{-1}\ct\vartheta.
+    \intertext{Conversely, we can define}
+        \sigma&\colon(\id_A\sim\id_A)\to(g\circ f\sim\id_A),\quad
+        &\sigma(\epsilon)\defeq\vartheta\ct\epsilon.
+    \end{alignat*}
+    The function $\sigma$ is an equivalence with inverse
+    \begin{align*}
+        (g\circ f\sim\id_A)&\to(\id_A\sim\id_A)\\
+        \delta&\mapsto\vartheta^{-1}\ct\delta.
+    \end{align*}
+    Since $\fun{qinv}(f)$ is inhabited, $f$ has a quasi-inverse. Therefore, by Proposition~\ref{prop:side-inverses-are-contractible}, $\fun{rinv}(f)$ is contractible. Let $(g,\eta)$ denote its center of contraction.
+    
+    Then, Lemma~\ref{lem:contractible-sigma-product} applied to
+    \[
+        \fun{qinv}(f)
+            \equiv\sum_{h\colon B\to A}
+                (f\circ h\sim\id_B)\times(h\circ f\sim\id_A),
+    \]
+    yields an equivalence $\fun{qinv}\simeq(g\circ f\sim\id_A)$, which combined with the equivalence induced by $\sigma$, completes the proof.
+\end{proof}
+

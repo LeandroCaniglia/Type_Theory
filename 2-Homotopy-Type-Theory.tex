@@ -1121,44 +1121,44 @@ Types admit different interpretations: depending on the circumstances, they can 
         \end{tabular}
     \end{center}
 
-    \item[Natural transformations.] These are the homotopies: given $f,g\colon A\to B$, a natural transformation between them is an inhabitant of the homotopy type $\eta\colon f\sim g$. To see this we need to show the (propositional) commutativity of the square
+    \item[Natural transformations.]\label{nat-transformation} These are the homotopies: given $f,g\colon A\to B$, a natural transformation between them is an inhabitant of the homotopy type $\eta\colon f\sim g$. To see this we need to show the (propositional) commutativity of the square
     \begin{equation}\label{tik:nat-transformation}
         \begin{tikzcd}
             f(x)
-                    \arrow[r,"\tilde f(p)"]
+                    \arrow[r,"\fun{ap}_f(p)"]
                     \arrow[d,"\eta_x"']
                 &f(y)
                     \arrow[d,"\eta_y"]\\
             g(x)
-                    \arrow[r,"\tilde g(p)"']
+                    \arrow[r,"\fun{ap}_g(p)"']
                 &g(y)
         \end{tikzcd}
     \end{equation}
     i.e., for every $p\colon x\eq Ay$, the type
-    \begin{align}\label{eq:nat-transformation}
-        \fun{ap}_f(p)\ct\eta_y\eq B\eta_x\ct\fun{ap}_g(p)
-    \end{align}
+    \begin{equation}\label{eq:nat-transformation}
+        \fun{ap}_f(p)\ct\eta_y\eq{f(x)\eq Bg(y)}\eta_x\ct\fun{ap}_g(p)
+    \end{equation}
     is inhabited. This follows by based path induction on $p$ using the motive $C\colon\prod_{y\colon A}(x\eq Ay)\to\univ$ defined by
     \[
         C(y,p)\defeq
-            \tilde f(p)\ct\eta_y\eq B\eta_x\ct\tilde g(p),
+            \fun{ap}_f(p)\ct\eta_y\eq{f(x)\eq Bg(y)}\eta_x\ct\fun{ap}_g(p),
     \]
     which satisfies
     \begin{align*}
         C(x,\fun{refl}_x)
-            &\defeq\tilde f(\fun{refl}_x)\ct\eta_x
-                \eq B\eta_x\ct\tilde g(\fun{refl}_x)\\
+            &\defeq\fun{ap}_f(\fun{refl}_x)\ct\eta_x
+                \eq{f(x)\eq Bg(x)}\eta_x\ct\fun{ap}_g(\fun{refl}_x)\\
             &\equiv\fun{refl}_{f(x)}\ct\eta_x
-                \eq B\eta_x\ct\fun{refl}_{g(x)}\\
-            &\equiv \eta_x\eq B\eta_x\ct\fun{refl}_{g(x)}.
+                \eq{f(x)\eq Bg(x)}\eta_x\ct\fun{refl}_{g(x)}\\
+            &\equiv\eta_x\eq{f(x)\eq Bg(x)}\eta_x\ct\fun{refl}_{g(x)}.
     \end{align*}
-    By Lemma~\ref{lem:right-unit-law}, $\fun{ru}(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq B\eta_x$. Hence, $\fun{ru}(\eta_x)^{-1}$ is an inhabitant $C(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{lu}$, that satisfies $\fun{lu}(p)\colon\fun{refl}_x\ct p\eq Ap$, arriving at $\fun{lu}(\eta_x)\ct\fun{ru}(\eta_x)^{-1}$.}
+    By Lemma~\ref{lem:right-unit-law}, $\fun{ru}(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq{f(x)\eq Bg(x)}\eta_x$. Hence, $\fun{ru}(\eta_x)^{-1}$ is an inhabitant of $C(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{lu}$, that satisfies $\fun{lu}(p)\colon\fun{refl}_x\ct p\eq{x\eq Ay}p$, arriving at $\fun{lu}(\eta_x)\ct\fun{ru}(\eta_x)^{-1}$.}
 \end{description}
 
-\begin{prop}
+\begin{prop}\label{prop:f~id}
     Let\/ $\eta\colon f\sim\id_A$ be a homotopy, with\/ $f\colon A\to A$. Then for any\/ $x\colon A$ we have
     \[
-        \eta_{f(x)}\eq A\tilde f(\eta_x).
+        \eta_{f(x)}\eq A\fun{ap}_f(\eta_x).
     \]
 \end{prop}
 
@@ -1682,7 +1682,7 @@ Let\/ $f\colon A\to B$. Then:
     \]
 \end{rem}
 
-\begin{defn}
+\begin{defn}\label{defn:half-adjoint-equivalence}
     Let\/ $f\colon A\to B$ be a function. A \emph{coherent quasi-inverse} (a.k.a.~\textsl{half-adjoint equivalence}) of\/ $f$ consists of a quasi-inverse\/ $(f^{-1},\eta,\vartheta)$ along with a higher homotopy
     \[
         \tau\colon\prod_{x\colon A}
@@ -1707,6 +1707,10 @@ Let\/ $f\colon A\to B$. Then:
                         shorten >=6pt]
         \end{tikzcd}
     \]
+    Using function whiskering [cf.~Proposition~\ref{prop:whiskering}], the coherence term $\tau$ can be seen as an homotopy
+    \[
+        \tau\colon f\lwct\vartheta\sim\eta\rwct f.
+    \]
 \end{defn}
 
 \begin{thm}\label{thm:coherent-quasi-inverse}
@@ -1714,7 +1718,7 @@ Let\/ $f\colon A\to B$. Then:
 \end{thm}
 
 \begin{proof}
-    Since\/ $f$ is an equivalence, it has a quasi-inverse, say\/ $(g, \eta, \vartheta)$, where\/ $g\colon B\to A$,\/ $\eta\colon f\circ g\sim\id_B$, and\/ $\vartheta\colon g\circ f\sim\id_A$. 
+    Since $f$ is an equivalence, it has a quasi-inverse, say $(g, \eta, \vartheta)$, where $g\colon B\to A$, $\eta\colon f\circ g\sim\id_B$, and $\vartheta\colon g\circ f\sim\id_A$. 
 
     Using the paths in the diagram
     \begin{equation}\label{tikz:coherence-1}
@@ -1729,9 +1733,9 @@ Let\/ $f\colon A\to B$. Then:
                     \arrow[u,"\eta_y"']
         \end{tikzcd}
     \end{equation}
-    we define a new left homotopy\/ $\eta'\colon f\circ g\sim\id_B$.
+    we define a new left homotopy $\eta'\colon f\circ g\sim\id_B$.
     
-    To complete the proof we need to show:
+    To complete the proof we need to show an inhabitant of $f\lwct\vartheta\sim\eta'\rwct f$, i.e., an inhabitant of
     \begin{equation}\label{eq:coherent-qinv-1}
         \fun{ap}_f(\vartheta_x)
         \eq{f(g(f(x)))\eq Bf(x)}
@@ -1739,12 +1743,12 @@ Let\/ $f\colon A\to B$. Then:
             \ct\fun{ap}_f(\vartheta_{g(f(x))})
             \ct\eta_{f(x)}.
     \end{equation}
-    By the naturality of\/ $\eta$ (see \eqref{tik:nat-transformation}) applied to the path 
+    By the naturality of $\eta$ (see \eqref{tik:nat-transformation}) applied to the path 
     \[
         q\defeq\fun{ap}_f(\vartheta_x)
             \colon f(g(f(x)))\eq Bf(x),
     \]
-    we obtain the commuting square of paths in\/ $B$:
+    we obtain the commuting square of paths in $B$:
     \begin{equation}\label{tikz:coherence-2}
         \begin{tikzcd}[row sep=large,column sep=2.5cm]
             f(g(f(g(f(x)))))
@@ -1758,7 +1762,7 @@ Let\/ $f\colon A\to B$. Then:
                 &f(x)
         \end{tikzcd}
     \end{equation}
-    The naturality of\/ $\vartheta$ yields
+    The naturality of $\vartheta$ yields
     \begin{equation}\label{tikz:coherence-3}
         \begin{tikzcd}[row sep=large,column sep=2.5cm]
             g(f(g(f(x))))
@@ -1771,23 +1775,27 @@ Let\/ $f\colon A\to B$. Then:
                 &x
         \end{tikzcd}
     \end{equation}
-    meaning\/ $\vartheta_{g(f(x))}\eq A\fun{ap}_{g\circ f}(\vartheta_x)$. 
+    meaning $\vartheta_{g(f(x))}\eq{g(f(g(f(x))))\eq A g(f(x))}\fun{ap}_{g\circ f}(\vartheta_x)$. 
     
     Therefore, we can evaluate the boundary of \eqref{tikz:coherence-2} as follows:
     \begin{align*}
         \eta_{f(g(f(x)))}\ct\fun{ap}_f(\vartheta_x)
-            &\eq B\fun{ap}_{f\circ g}(\fun{ap}_f(\vartheta_x))
+            &\eq{}\fun{ap}_{f\circ g}(\fun{ap}_f(\vartheta_x))
                 \ct\eta_{f(x)}
                 &&\text{; \eqref{tikz:coherence-2}}\\
-            &\eq B\fun{ap}_f(\fun{ap}_{g\circ f}(\vartheta_x))
+            &\eq{}\fun{ap}_f(\fun{ap}_{g\circ f}(\vartheta_x))
                 \ct\eta_{f(x)}
                 &&\text{; Prop.~\ref{prop:ap-properties} d)}\\
-            &\eq B\fun{ap}_f(\vartheta_{g(f(x))})
+            &\eq{}\fun{ap}_f(\vartheta_{g(f(x))})
                 \ct\eta_{f(x)}
-                &&\text{; \eqref{tikz:coherence-3}}.
+                &&\text{; \eqref{tikz:coherence-3}},
     \end{align*}
-    Concatenating\/ $\eta_{f(g(f(x)))}^{-1}$ on the left yields exactly \eqref{eq:coherent-qinv-1}.
+    where all identities refer to the type $f(g(f(g(f(x)))))\eq B f(x)$.
+    
+    Concatenating $\eta_{f(g(f(x)))}^{-1}$ on the left yields exactly \eqref{eq:coherent-qinv-1}.
 \end{proof}
+
+
 
 \begin{thm} {\upshape[Transport as a coherent equivalence]}
     \label{thm:coherent-transport}
@@ -3068,7 +3076,7 @@ Here is a picture illustrating the construction
 \begin{prop}\label{prop:sigma-associativity} {\upshape[\textSigma-associativity]}
     Let\/ $X\colon\univ$ be a type, $A\colon X\to\univ$ a type family over\/ $X$, and\/ $B\colon\Sigma_XA\to\univ$ a type family over the total space. Then, there is an equivalence
     \[
-        \sum_{x\colon X\vphantom(}\sum_{u\colon A(x)}B((x,u))
+        \sum_{x\colon X\vphantom(}\;\sum_{u\colon A(x)}B((x,u))
         \simeq
         \sum_{\omega\colon\Sigma_XA}B(\omega).
     \]
@@ -3103,7 +3111,6 @@ Here is a picture illustrating the construction
         f\circ g&\equiv((x,u),z)\mapsto(x,(u,z))\mapsto((x,u),z).
     \end{align*}
 \end{proof}
-
 
 \begin{thm}\label{thm:composite-transport}
     Let\/ $A\colon X\to\univ$ be a type family with total space\/ $\Sigma_XA$. Let\/ $B\colon \Sigma_XA\to\univ$ be a second type family. Define the composite type family\/ $\Sigma_AB\colon X\to\univ$ as $x\mapsto\sum_{u\colon A(x)}B(x,u)$. If\/ $\Sigma_{\Sigma_XA\,}B$ is the total space of\/ $B$, then
@@ -7392,7 +7399,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     The proofs of $\varphi\circ\psi\sim\id$ and $\psi\circ\varphi\sim\id$ are analogous to the previous case.
 \end{solution}
 
-\begin{exr}
+\begin{exr}\label{exr:Sigma-associativity}
     Prove that\/ $\Sigma$-types are ``associative'', in that for any\/ $A\colon\univ$ and families\/ $B\colon A\to\univ$ and\/ $C\colon\Sigma_A B\to\univ$, we have
     \[
         \sum_{x\colon A}\sum_{y\colon B(x)}C(x,y)
