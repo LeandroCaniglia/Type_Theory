@@ -1138,47 +1138,22 @@ Types admit different interpretations: depending on the circumstances, they can 
     \begin{equation}\label{eq:nat-transformation}
         \fun{ap}_f(p)\ct\eta_y\eq{f(x)\eq Bg(y)}\eta_x\ct\fun{ap}_g(p)
     \end{equation}
-    is inhabited. This follows by based path induction on $p$ using the motive $C\colon\prod_{y\colon A}(x\eq Ay)\to\univ$ defined by
+    is inhabited. This follows by based path induction on $p$ using the motive $D\colon\prod_{y\colon A}(x\eq Ay)\to\univ$ defined by
     \[
-        C(y,p)\defeq
+        D(y,p)\defeq
             \fun{ap}_f(p)\ct\eta_y\eq{f(x)\eq Bg(y)}\eta_x\ct\fun{ap}_g(p),
     \]
     which satisfies
     \begin{align*}
-        C(x,\fun{refl}_x)
+        D(x,\fun{refl}_x)
             &\defeq\fun{ap}_f(\fun{refl}_x)\ct\eta_x
                 \eq{f(x)\eq Bg(x)}\eta_x\ct\fun{ap}_g(\fun{refl}_x)\\
             &\equiv\fun{refl}_{f(x)}\ct\eta_x
                 \eq{f(x)\eq Bg(x)}\eta_x\ct\fun{refl}_{g(x)}\\
             &\equiv\eta_x\eq{f(x)\eq Bg(x)}\eta_x\ct\fun{refl}_{g(x)}.
     \end{align*}
-    By Lemma~\ref{lem:right-unit-law}, $\fun{ru}(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq{f(x)\eq Bg(x)}\eta_x$. Hence, $\fun{ru}(\eta_x)^{-1}$ is an inhabitant of $C(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{lu}$, that satisfies $\fun{lu}(p)\colon\fun{refl}_x\ct p\eq{x\eq Ay}p$, arriving at $\fun{lu}(\eta_x)\ct\fun{ru}(\eta_x)^{-1}$.}
+    By Lemma~\ref{lem:right-unit-law}, $\fun{ru}(\eta_x)\colon\eta_x\ct\fun{refl}_{g(x)}\eq{f(x)\eq Bg(x)}\eta_x$. Hence, $\fun{ru}(\eta_x)^{-1}$ is an inhabitant of $D(x,\fun{refl}_x)$.\footnote{To achieve independence of our definition of concatenation, we could also have used the left unit law $\fun{lu}$, that satisfies $\fun{lu}(p)\colon\fun{refl}_x\ct p\eq{x\eq Ay}p$, arriving at $\fun{lu}(\eta_x)\ct\fun{ru}(\eta_x)^{-1}$.}
 \end{description}
-
-\begin{prop}\label{prop:f~id}
-    Let\/ $\eta\colon f\sim\id_A$ be a homotopy, with\/ $f\colon A\to A$. Then for any\/ $x\colon A$ we have
-    \[
-        \eta_{f(x)}\eq A\fun{ap}_f(\eta_x).
-    \]
-\end{prop}
-
-\begin{proof}
-    By \eqref{tik:nat-transformation}, we have a commutative path diagram
-    \[
-        \begin{tikzcd}
-        f(f(x))
-                \arrow[r,"\tilde f(\eta_x)"]
-                \arrow[d,"\eta_{f(x)}"']
-            &f(x)
-                \arrow[d,"\eta_x"]\\
-        f(x)
-                \arrow[r,"\eta_x"']
-            &x
-        \end{tikzcd}
-    \]
-    where, according to Lemma~\ref{prop:ap-properties}, we have replaced $\widetilde\id_A(\eta_x)$ with $\eta_x$. The conclusion follows from concatenation with $\eta_x^{-1}$.
-    
-\end{proof}
 
 \subsection{The Algebra of Homotopies}
 
@@ -1292,6 +1267,47 @@ Types admit different interpretations: depending on the circumstances, they can 
             &\equiv (h\lwct\eta)\rwct k.
     \end{align*}
 \end{proof}
+
+\subsection{Evaluating a homotopy on another}\label{homotopy-evaluated-on-homotopy}
+Suppose that in the context where we have two function $f,g\colon A\to B$ and a homotopy $\eta\colon f\sim g$, we also have a third type $C$, two functions $u,v\colon C\to A$ and another homotopy $\vartheta\colon u\sim v$, as depicted in the diagram
+\[
+    \begin{tikzcd}
+        C
+                \arrow[r,"u",bend left=49]
+                \arrow[r,"v"',bend right=49]
+                \arrow[r,"\scriptstyle\vartheta",phantom]
+            &A
+                \arrow[r,"f",bend left=49]
+                \arrow[r,"g"',bend right=49]
+                \arrow[r,"\scriptstyle\eta",phantom]
+            &B
+    \end{tikzcd}
+\]
+For every $z\colon C$, we can plug the path $\vartheta(z)$ into the naturality equation \eqref{eq:nat-transformation} using the endpoints $x\defeq u(z)$ and $y\defeq v(z)$, and obtain
+\[
+    \fun{ap}_f(\vartheta(z))\ct\eta(v(z))
+    \eq{}\eta(u(z))\ct\fun{ap}_g(\vartheta(z)).
+\]
+Thus, abstracting $z$ and using the whiskering notation, we deduce that
+\begin{equation}\label{eq:homotopy-evaluated-on-homotopy}
+     (f\lwct \vartheta)\ct(\eta\rwct v)
+     \sim
+     (\eta\rwct u)\ct(g\lwct\vartheta).
+\end{equation}
+is inhabited. This can be visualized as a commutative square where the vertices are functions the edges homotopies:
+\begin{equation}\label{tik:homotopy-evaluated-on-homotopy}
+    \begin{tikzcd}[column sep=huge,row sep=huge]
+        f\circ u
+            \arrow[r, "\eta\rwct u"]
+            \arrow[d, "f\lwct \vartheta"'] &
+        g\circ u
+            \arrow[d, "g\lwct \vartheta"] \\
+        f\circ v
+            \arrow[r, "\eta\rwct v"'] &
+        g\circ v
+    \end{tikzcd}
+\end{equation}
+
 
 \subsection{Sections of Path Spaces}
 
@@ -4967,6 +4983,8 @@ In categorical terms, the maps $(h \circ -)$ and $(-\circ k)$ act as functors, a
 \end{prop}
 
 \begin{proof}
+    This can be derived from \S\,\ref{homotopy-evaluated-on-homotopy} by function extensionality. However, here we give an independent proof.
+
     First observe that the path on the \lhs is a concatenation of a path $f\circ u\eq{X\to Z}f\circ v$ and a path $f\circ v\eq{X\to Z}g\circ v$, which computes to a path that inhabits $f\circ u\eq{X\to Z}g\circ v$.
 
     In the \rhs the first path inhabits $f\circ u\eq{X\to Z}g\circ u$ while the second inhabits $g\circ u\eq{X\to Z}g\circ v$. Thus, their concatenation also computes to a path of type $f\circ u\eq{X\to Z}g\circ v$.
