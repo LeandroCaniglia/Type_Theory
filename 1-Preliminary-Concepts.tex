@@ -3,9 +3,9 @@
 \section{Introduction} This section describes basic concepts to establish an intuitive background that will be useful when providing formal definitions.
 
 \begin{lpar}{The syntactic nature of Type Theory.}
-    For a mathematician trained in classical structures (like groups or geometries), the definition of Homotopy Type Theory can seem unusual. Typically, mathematical structures are defined \emph{axiomatically} or \emph{descriptively}: we assume a background universe (usually ZFC Set Theory) and specify a list of properties that a collection of objects must satisfy (e.g., ``A Projective Plane is a set of points and lines such that \dots'').
+    For a mathematician trained in classical structures (like groups or geometries), the definition of Homotopy Type Theory can seem unusual. Typically, mathematical structures are defined \textit{axiomatically} or \textit{descriptively}: we assume a background universe (usually ZFC Set Theory) and specify a list of properties that a collection of objects must satisfy (e.g., ``A Projective Plane is a set of points and lines such that \dots'').
 
-    However, Type Theory is not a structure \emph{within} mathematics; it is a \emph{foundation for} mathematics. As such, it cannot rely on a pre-existing universe of sets. Instead, it must be defined \textsl{syntactically} or \textsl{generatively}, much like a programming language.
+    However, Type Theory is not a structure \textit{within} mathematics; it is a \textit{foundation for} mathematics. As such, it cannot rely on a pre-existing universe of sets. Instead, it must be defined \textsl{syntactically} or \textsl{generatively}, much like a programming language.
 
     This approach relies on three components:
     \begin{enumerate}
@@ -16,11 +16,11 @@
 
     In this view, mathematical objects are not pre-existing entities that we capture with axioms; they are \textsl{constructions} that we build using the rules. A ``proof'' is not an abstract truth value, but a valid derivation tree within this grammar.
 
-    Therefore, when we ask \textit{What is a type in} HoTT?, the answer is not given by describing its properties in Set Theory, but by specifying the \emph{inference rules} that govern how to construct it, how to construct its elements (introduction), and how to use them (elimination).
+    Therefore, when we ask \textit{What is a type in} HoTT?, the answer is not given by describing its properties in Set Theory, but by specifying the \textit{inference rules} that govern how to construct it, how to construct its elements (introduction), and how to use them (elimination).
 
     To put this generative process into action, the theory requires a set of \textsl{primitive objects} (or base types) to serve as the \textit{seeds} of the universe. Just as a grammar needs terminal symbols to form sentences, Type Theory postulates specific starting points—such as the Empty type ($\fun{0}$), the Unit type ($\fun{1}$), and the Natural Numbers ($\N$).
     
-    These primitives are not constructed from simpler pieces; they are introduced by \emph{fiat} through their own specific rules (Formation, Introduction, Elimination, Computation). They act as the \textit{base cases} of the mathematical induction that builds the universe: once these primitives exist, the generative machinery (like $\Sigma$ and $\Pi$ types) can combine them to construct arbitrarily complex structures.
+    These primitives are not constructed from simpler pieces; they are introduced by \textit{fiat} through their own specific rules (Formation, Introduction, Elimination, Computation). They act as the \textit{base cases} of the mathematical induction that builds the universe: once these primitives exist, the generative machinery (like $\Sigma$ and $\Pi$ types) can combine them to construct arbitrarily complex structures.
 \end{lpar}
 
 \begin{paragraph}{The Problem: Runtime Errors vs.~Mathematical Certainty.}
@@ -639,9 +639,9 @@
     \]
     The constructor takes $a\colon A$ and $b\colon B(a)$ and produces
     \[
-        (a,b)\colon \sum_{x\colon A}B(x).
+        \dep{a,b}\colon \sum_{x\colon A}B(x).
     \]
-    In this regard, $\Sigma$-types resemble the existential binder $\exists$ of Set Theory in that its elements $(a,b)$ consist of a first component $a$ and a second $b$, which is a proof of $B(a)$. In particular, in the case where $B$ is constant, we have
+    In this regard, $\Sigma$-types resemble the existential binder $\exists$ of Set Theory in that its elements $\dep{a,b}$ consist of a first component $a$ and a second $b$, which is a proof of $B(a)$. In particular, in the case where $B$ is constant, we have
     \[
         \sum_{x\colon A}B\equiv A\times B.
     \]
@@ -676,7 +676,7 @@
     \]
     and specify
     \[
-        f((a,b)) \defeq g(a)(b).
+        f(\dep{a,b}) \defeq g(a)(b).
     \]
 \end{lpar}
 
@@ -688,7 +688,7 @@
     \]
     with specification
     \[
-        \pi_1((a,b)) \defeq a,
+        \pi_1(\dep{a,b})\defeq a,
     \]
     which, with the notation of \nref{lpar:Sigma-types}, corresponds to
     \[
@@ -700,7 +700,7 @@
     \end{equation}
     specified as
     \[
-        \pi_2((a,b)) \defeq b.
+        \pi_2(\dep{a,b}) \defeq b.
     \]
     More generally, we need the \textsl{induction principle} of $\Sigma$-types, which says that, given a type family
     \[
@@ -708,23 +708,25 @@
     \]
     to define a dependent function
     \[
-        f\colon\prod_{p\colon\sum_{x\colon A}B(x)}\!\!\!\!\!C(p)
+        f\colon\prod_{p\colon\sum_{x\colon A}
+            B(x)}\!\!\!\!\!C(p)
     \]
     we must provide a function
     \[
-        g\colon\prod_{a\colon A}\;\prod_{b\colon B(a)}C((a,b))
+        g\colon\prod_{a\colon A}\;\prod_{b\colon B(a)}
+            C(\dep{a,b})
     \]
     and specify
     \[
-        f((a,b)) \defeq g(a)(b).
+        f(\dep{a,b})\defeq g(a)(b).
     \]
     Thus, in the case where $C(p) \defeq B(\pi_1(p))$, we can take
     \[
         g(a)(b) \defeq b
     \]
-    for $(a,b)\colon\sum_{x\colon A}B(x)$, and obtain \eqref{eq:Sigma-pi-2}. This is valid because
+    for $\dep{a,b}\colon\sum_{x\colon A}B(x)$, and obtain \eqref{eq:Sigma-pi-2}. This is valid because
     \[
-        C((a,b))\equiv B(\pi_1((a,b))\equiv B(a)
+        C(\dep{a,b})\equiv B(\pi_1(\dep{a,b}))\equiv B(a)
     \]
     and $b\colon B(a)$.
 \end{lpar}
@@ -740,7 +742,8 @@
     \]
     specified as
     \begin{equation}\label{eq:Sigma-type-rec-evaluation}
-        \fun{rec}_{\sum_{x\colon A}B(x)}(C,g,(a,b))\defeq g(a)(b),
+        \fun{rec}_{\sum_{x\colon A}B(x)}(C,g,\dep{a,b})
+            \defeq g(a)(b),
     \end{equation}
     This can be represented by a collection of diagrams that commute for all $a\colon A$ 
     \[
@@ -753,7 +756,7 @@
             &C
     \end{tikzcd}
     \]
-    where $\iota_a\defeq\lambda y\colon B(a).\,(a,y)$.
+    where $\iota_a\defeq\lambda y\colon B(a).\,\dep{a,y}$.
     
     For the induction principle
     \[
@@ -761,19 +764,21 @@
             \prod_{C\colon\bigl(\sum_{x\colon A}B(x)\bigr)
                 \to\univ}
                     \Bigl(
-                        \prod_{a\colon A}\;\prod_{b\colon B(a)}
-                            \!\!\!C((a,b))
+                        \prod_{a\colon A}\;
+                        \prod_{b\colon B(a)}
+                            \!\!\!C(\dep{a,b})
                     \Bigr)
-                    \to\prod_{p\colon\sum_{x\colon A}B(x)}\!\!\!\!\!C(p)
+                    \to\prod_{p\colon\sum_{x\colon A}B(x)}
+                        \!\!\!\!\!C(p)
     \]
     where
     \[
         \fun{ind}_{\sum_{x\colon A}B(x)}
-            (C,g,(a,b))\defeq g(a)(b).
+            (C,g,\dep{a,b})\defeq g(a)(b).
     \]
     Note that when $C$ is constant $\fun{ind}$ reduces to $\fun{rec}$.
 
-    \textbf{Interpretation.} To prove $C(p)$ for every $p\colon\sum_{x\colon A}B(x)$ it suffices to show a proof of $C((a,b))$ for every canonical pair $(a,b)$.
+    \textbf{Interpretation.} To prove $C(p)$ for every $p\colon\sum_{x\colon A}B(x)$ it suffices to show a proof of $C(\dep{a,b})$ for every canonical pair $\dep{a,b}$.
 \end{lpar}
 
 \begin{lpar}{Relations.}\label{lpar:relations}
@@ -781,13 +786,13 @@
     \[
         \sum_{y\colon B}R(a,y)
     \]
-    represents the fiber at $a$ of the relation $R$. Its elements are pairs $(b,\omega)$ where $b\colon B$ and $\omega\colon R(a,b)$ is a witness that $b$ is related to $a$.
+    represents the fiber at $a$ of the relation $R$. Its elements are pairs $\dep{b,\omega}$ where $b\colon B$ and $\omega\colon R(a,b)$ is a witness that $b$ is related to $a$.
 
     For instance, let $R(2,n)$ stand for the type representing the relation ``$2\mid n$'', where $n\colon\N$. The elements of the type $\sum_{n\colon\N}R(2,n)$ represent the even numbers paired with the evidence of their evenness. Thus, if $\omega$ is a witness that $2\cdot3\eq\N6$, we have
     \[
-        (6,\omega)\colon\sum_{n\colon\N}R(2,n).
+        \dep{6,\omega}\colon\sum_{n\colon\N}R(2,n).
     \]
-    However, there is no term $\omega$ for which $(3,\omega)\colon\sum_{n\colon\N}R(2,n)$, because the type $R(2,3)$ is uninhabited (there is no proof of $2\mid 3$).    
+    However, there is no term $\omega$ for which $\dep{3,\omega}\colon\sum_{n\colon\N}R(2,n)$, because the type $R(2,3)$ is uninhabited (there is no proof of $2\mid 3$).    
 \end{lpar}
 
 \begin{lpar}{Type-theoretic Axiom of Choice.}\label{lpar:axiom-of-choice}
@@ -800,7 +805,7 @@
     \[
         g\colon \prod_{x\colon A}\;\sum_{y\colon B}R(x,y).
     \]
-    For $x\colon A$, the term $g(x)$ is a pair $(y,\omega)$ where $y\colon B$ and $\omega\colon R(x,y)$. We can therefore define the \textit{choice function\/} $f\colon A\to B$ as
+    For $x\colon A$, the term $g(x)$ is a pair $\dep{y,\omega}$ where $y\colon B$ and $\omega\colon R(x,y)$. We can therefore define the \textit{choice function\/} $f\colon A\to B$ as
     \[
         f\defeq\lambda x.\,\pi_1(g(x)).
     \]
@@ -811,17 +816,17 @@
     Finally, we specify
     \begin{align*}
         \fun{ac}&\defeq
-                \bigl(
+                \dep{
                 \overbrace{\lambda x.\,\pi_1(g(x))}^{f\equiv},\,
                 \overbrace{\lambda x.\,\pi_2(g(x))}^{\omega\equiv}
-                \bigr).
+                }.
     \end{align*}
     
-    \textbf{Note.} Even though both the conventional existence binder $\exists\,y\,R(x,y)$ and the dependent pair type binder $\sum_yR(x,y)$ express the existence of an element~$y$, their semantics differ. While the former predicates the mere existence of $y$, the latter identifies pairs $(y,w)$, where $w$ \textit{proves\/} $R(x,y)$. Thus, in Type Theory, when we evaluate the antecedent function $g$ at $x$, the result $g(x)\equiv(y,w)$ already contains the element $y$ whose existence is claimed. Consequently, the \textit{choice} is trivial in this setting. This explains why, even though the translation to Logic reads as the classical Axiom of Choice, the Type Theoretic version is a theorem whose proof is a direct consequence of the definitions.
+    \textbf{Note.} Even though both the conventional existence binder $\exists\,y\,R(x,y)$ and the dependent pair type binder $\sum_yR(x,y)$ express the existence of an element~$y$, their semantics differ. While the former predicates the mere existence of $y$, the latter identifies pairs $\dep{y,w}$, where $w$ \textit{proves\/} $R(x,y)$. Thus, in Type Theory, when we evaluate the antecedent function $g$ at $x$, the result $g(x)\equiv\dep{y,w}$ already contains the element $y$ whose existence is claimed. Consequently, the \textit{choice} is trivial in this setting. This explains why, even though the translation to Logic reads as the classical Axiom of Choice, the Type Theoretic version is a theorem whose proof is a direct consequence of the definitions.
 \end{lpar}
 
 \begin{lpar}{Mathematical structures.}
-    Many mathematical structures are compositions of the simplest one, called magma, that consists of a set $A$ and an operation $m\colon A\times A\to A$. In Type Theory notation the pair $(A,m)$ is an element of a dependent pair type
+    Many mathematical structures are compositions of the simplest one, called magma, that consists of a set $A$ and an operation $m\colon A\times A\to A$. In Type Theory notation the pair $\dep{A,m}$ is an element of a dependent pair type
     \[
         M \defeq\sum_{A\colon\univ}A\to A\to A.
     \]
@@ -829,7 +834,7 @@
     \[
         PM \defeq\sum_{A\colon\univ}(A\to A\to A)\times A
     \]
-    and, consequently, we will have expressions like $(A,(m,e))\colon PM$. By abuse of notation, however, we will sometimes simply say \textit{let $A$ be a magma/group/etc.} as it is usually expressed in the regular mathematical jargon. Similarly, instead of $(A,(m,e))$ we will write $(A,m,e)$ to minimize the number of parentheses.
+    and, consequently, we will have expressions like $\dep{A,(m,e)}\colon PM$. By abuse of notation, however, we will sometimes simply say \textit{let $A$ be a magma/group/etc.} as it is usually expressed in the regular mathematical jargon.
 \end{lpar}
 
 \section{Coproduct Types}
@@ -1059,11 +1064,11 @@
     along with
     \begin{equation}\label{eq:inA-inB}
         \begin{aligned}
-            \fun{in}_A\colon A&\to A\oplus B, &a&\mapsto(0_{\fun2},a)\\
-            \fun{in}_B\colon B&\to A\oplus B, &b&\mapsto(1_{\fun2},b).
+            \fun{in}_A\colon A&\to A\oplus B, &a&\mapsto\dep{0_{\fun2},a}\\
+            \fun{in}_B\colon B&\to A\oplus B, &b&\mapsto\dep{1_{\fun2},b}.
         \end{aligned}
     \end{equation}
-    To see that these are well-defined specifications, note that for any $a\colon A$, the pair $(0_{\fun2},a)$ has type $\sum_{x\colon\fun2}\sigma(x)$ because the second component is of the required type $\sigma(0_{\fun2})\equiv A$. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
+    To see that these are well-defined specifications, note that for any $a\colon A$, the pair $\dep{0_{\fun2},a}$ has type $\sum_{x\colon\fun2}\sigma(x)$ because the second component is of the required type $\sigma(0_{\fun2})\equiv A$. A similar argument holds for $\fun{in}_B$ since $\sigma(1_{\fun2}) \equiv B$.
 
     It remains to be shown that $A+B\simeq A\oplus B$. To see this first define
     \begin{equation}\label{eq:phi-coproduct-to-sigma}
@@ -1103,17 +1108,29 @@
         \phi(\psi(p))&\eq{A\oplus B}p\quad(p\colon A\oplus B)\\
         \psi(\phi(s))&\eq{A+B}s\quad(s\colon A+B)
     \end{align*}
-    To verify the first equation, by the definition of $A\oplus B$, it suffices to consider the cases $p\defeq(0_{\fun2},a)$ and $p\defeq(1_{\fun2},b)$, with $a\colon A$ and $b\colon B$, since these exhaust all the canonical pairs of $A\oplus B$.
+    To verify the first equation, by the definition of $A\oplus B$, it suffices to consider the cases $p\defeq\dep{0_{\fun2},a}$ and $p\defeq\dep{1_{\fun2},b}$, with $a\colon A$ and $b\colon B$, since these exhaust all the canonical pairs of $A\oplus B$.
     \begin{itemize}
-        \item For $p\defeq(0_{\fun2},a)$, we have $\psi((0_{\fun2},a)) \equiv h(0_{\fun2})(a) \equiv \fun{inl}(a)$. Thus,
-        \[ \phi(\psi(p)) \equiv \phi(\fun{inl}(a)) \equiv \fun{in}_A(a) \equiv (0_{\fun2}, a) \equiv p. \]
-        \item For $p\defeq(1_{\fun2},b)$, we have $\psi((1_{\fun2},b)) \equiv h(1_{\fun2})(b) \equiv \fun{inr}(b)$. Thus,
-        \[ \phi(\psi(p)) \equiv \phi(\fun{inr}(b)) \equiv \fun{in}_B(b) \equiv (1_{\fun2}, b) \equiv p. \]
+        \item For $p\defeq\dep{0_{\fun2},a}$, we have $\psi(\dep{0_{\fun2},a}) \equiv h(0_{\fun2})(a) \equiv \fun{inl}(a)$. Thus,
+        \[
+            \phi(\psi(p))
+                \equiv\phi(\fun{inl}(a))
+                \equiv\fun{in}_A(a)
+                \equiv\dep{0_{\fun2},a}
+                \equiv p.
+        \]
+        \item For $p\defeq\dep{1_{\fun2},b}$, we have $\psi(\dep{1_{\fun2},b})\equiv h(1_{\fun2})(b)\equiv\fun{inr}(b)$. Thus,
+        \[
+            \phi(\psi(p))
+                \equiv\phi(\fun{inr}(b))
+                \equiv\fun{in}_B(b)
+                \equiv\dep{1_{\fun2},b}
+                \equiv p.
+        \]
     \end{itemize}
     Conversely, for $s\colon A+B$, we check $\psi(\phi(s))\eq{A+B}s$ by induction on the coproduct:
     \begin{itemize}
-        \item For $s\defeq\fun{inl}(a)$, $\psi(\phi(s)) \equiv \psi(\fun{in}_A(a)) \equiv \psi((0_{\fun2}, a)) \equiv \fun{inl}(a) \equiv s$.
-        \item For $s\defeq\fun{inr}(b)$, $\psi(\phi(s)) \equiv \psi(\fun{in}_B(b)) \equiv \psi((1_{\fun2}, b)) \equiv \fun{inr}(b) \equiv s$.
+        \item For $s\defeq\fun{inl}(a)$, $\psi(\phi(s)) \equiv\psi(\fun{in}_A(a))\equiv\psi(\dep{0_{\fun2},a})\equiv\fun{inl}(a)\equiv s$.
+        \item For $s\defeq\fun{inr}(b)$, $\psi(\phi(s)) \equiv\psi(\fun{in}_B(b))\equiv\psi(\dep{1_{\fun2},b})\equiv\fun{inr}(b)\equiv s$.
     \end{itemize}
     This completes the proof.
 \end{lpar}
@@ -1266,7 +1283,7 @@
 
     \needspace{2\baselineskip}
     \begin{xmpl}
-        Let us define the factorial function $\fun{fact} : \mathbb{N} \to \mathbb{N}$.
+        Let us define the factorial function $\fun{fact} : \N \to \N$.
 
         In the convenient pattern matching style, we write:
         \begin{align*}
@@ -1277,7 +1294,7 @@
         
         Here, our components correspond to the general schema as follows:
         \begin{enumerate}[a), font=\upshape]
-            \item The target type is $C \equiv \mathbb{N}$.
+            \item The target type is $C \equiv\N$.
             \item The base case is $\Phi_0 \equiv 1$.
             \item The successor expression is $\Phi_s \equiv \fun{succ}(n) \cdot \fun{fact}(n)$. Note that this involves both the variable $n$ and the recursive call $\fun{fact}(n)$.
             \item $\Phi'_s \defeq \fun{succ}(n) \cdot g$.
@@ -1519,7 +1536,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         C\colon\prod_{x,y\colon A}(x\eq A y)\to\univ.
     \]
-    This distinction explains why we write $C(x,y,p)$ rather than $C((x,y,p))$.
+    This distinction explains why we write $C(x,y,p)$ rather than $C(\dep{(x,y),p})$.
 
     Given such a motive $C$ and a base case function $c\colon\prod_{x\colon A}C(x,x,\fun{refl}_x)$, the principle establishes the existence of a dependent function
     \[
@@ -1982,7 +1999,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{lem}
     \begin{proof} (Sketch)
         \begin{enumerate}[a)]
-            \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n \eq\N n$. The proof term is $(n,\fun{refl}_n)$.
+            \item Take $k \defeq n$. By the definition of addition (see \nref{lpar:natural-addition}), we have the definitional equality $0+n \equiv n$. Thus, $\fun{refl}_n$ has type $0+n \eq\N n$. The proof term is $\dep{n,\fun{refl}_n}$.
 
             \item This relies on the equality $\fun{succ}(n)\eq\N n+1$, which can be proved by induction following a similar approach to the one we sketched in \nref{lpar:additive-identity} for proving $n+0\eq\N n$ .
 
@@ -1997,7 +2014,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             
             The first theorem follows by induction on $n$. The base case is trivial since $0+s\equiv s$. The inductive step consists in showing a witness of
             \[
-                \fun{succ}(n)+s\eq\N\fun{succ(n)}
+                \fun{succ}(n)+s\eq\N\fun{succ}(n)
                     \to\fun{succ}(n+s)\eq\N\fun{succ}(n),
             \]
             which follows from $\fun{succ}(n)\eq\N\fun{succ}(m)\to n\eq\N m$.
@@ -2096,15 +2113,15 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     \item $\sum_{x:A}B(x)$
     
-    \textsc{Constructors:} $(a,b)$
+    \textsc{Constructors:} $\dep{a,b}$
     
     \textsc{Eliminators:} $\pi_1, \pi_2$
     \begin{align*}
         \beta&\colon\begin{cases}
-            \pi_1(a,b)\equiv a\\
-            \pi_2(a,b)\equiv b
+            \pi_1(\dep{a,b})\equiv a\\
+            \pi_2(\dep{a,b})\equiv b
         \end{cases}\\
-        \eta&\colon z\equiv(\pi_1(z), \pi_2(z))
+        \eta&\colon z\equiv\dep{\pi_1(z),\pi_2(z)}
     \end{align*}
 
     \item $A+B$
@@ -2261,12 +2278,16 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
     It remains to be shown that the recursion works as expected. To verify this we have to evaluate the function at canonical elements. In this case it suffices to compute the $\lambda$-expression when $p\equiv(a,b)$ with $b\colon B(a)$. Here we have
     \begin{align*}
-        \fun{rec}_{\sum_{x\colon A}B(x)}(C,g)((a,b))
-            &\equiv\bigl(\lambda p.\,g(\pi_1(p))(\pi_2(p))\bigr)((a,b))\\
-            &\equiv g(\pi_1((a,b))(\pi_2((a,b)))\\
+        \fun{rec}_{\sum_{x\colon A}B(x)}(C,g)(\dep{a,b})
+            &\equiv
+                \bigl(
+                    \lambda p.\,g(\pi_1(p))(\pi_2(p))
+                \bigr)(\dep{a,b})\\
+            &\equiv g(\pi_1(\dep{a,b}))(\pi_2(\dep{a,b}))\\
             &\equiv g(a)(b),
     \end{align*}
-    because $\pi_1((a,b))\equiv a$ and $\pi_2((a,b))\equiv b$. Since this coincides with \eqref{eq:Sigma-type-rec-evaluation}, our definition of $\fun{rec}$ recovers the definition given in \nref{lpar:Sigma-type-rec-and-ind}.
+    because $\pi_1(\dep{a,b})\equiv a$ and $\pi_2(\dep{a,b})\equiv b$. Since this coincides with \eqref{eq:Sigma-type-rec-evaluation}, our definition of $\fun{rec}$ recovers the definition given in \nref{lpar:Sigma-type-rec-and-ind}.
+
 \end{solution}
 
 \begin{exr}
@@ -2397,7 +2418,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         g\colon
             \prod_{t\colon\fun2\vphantom{\univ y}}\;
             \prod_{z\colon\fun{rec}_{\fun2}(\univ,A,B,t)}
-            C((t,z)).
+            C(\dep{t,z}).
     \]
     As a result, we will obtain
     \[
@@ -2416,7 +2437,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     where $D\colon\fun2\to\univ$ is given by
     \[
-        D(t)\defeq\prod_{z\colon\fun{rec}_{\fun2}(\univ,A,B,t)}C((t,z)),
+        D(t)\defeq\prod_{z\colon\fun{rec}_{\fun2}(\univ,A,B,t)}C(\dep{t,z}),
     \]
     which, according to \eqref{eq:inA-inB}, confirms the required typing judgments $g_0\colon D(0_{\fun2})$ and $g_1\colon D(1_{\fun2})$.
     %
@@ -2427,7 +2448,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \begin{enumerate}[a),font=\upshape]
         \item Define multiplication and exponentiation using\/ $\fun{rec}_\N$.
 
-        \item Verify that\/ $(\N,+,0,{}\cdot{},1)$ is a semiring using only\/ $\fun{ind}_\N$.
+        \item Verify that\/ $(\N,+,0,\dummy,1)$ is a semiring using only\/ $\fun{ind}_\N$.
 
         \item Verify that $m^{n+n'}\eq\N m^n\cdot m^{n'}$.
     \end{enumerate}
@@ -2640,28 +2661,28 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{align*}
     According with equations \eqref{eq:recursion-semantics} for the case where $f$ is $\fun{ack}$, by defining
     \[
-        \fun{ack}(m,{}\cdot{})\defeq\fun{rec}_\N(C,c_0,c_s,m)
+        \fun{ack}(m,\dummy)\defeq\fun{rec}_\N(C,c_0,c_s,m)
     \]
     we obtain
     \begin{align*}
         \fun{ack}(0,n)&\equiv c_0(n)\\
-        \fun{ack}(\fun{succ}(m),{}\cdot{})
-            &\equiv c_s(m,\fun{ack}(m,{}\cdot{}))
+        \fun{ack}(\fun{succ}(m),\dummy)
+            &\equiv c_s(m,\fun{ack}(m,\dummy))
     \end{align*}
     The equation $\fun{ack}(0,n)\equiv\fun{succ}(n)$, that we must honor, makes the definition of~$c_0$ straightforward: $c_0\defeq\fun{succ}$. 
     
-    To define $c_s(m,g)\colon\N\to\N$, we fix $m\colon\N$ and $g\colon\N\to\N$, with $g$ playing the role of $\fun{ack}(m,{}\cdot{})$, and proceed by recursion on $n$. We need to provide two pieces of information
+    To define $c_s(m,g)\colon\N\to\N$, we fix $m\colon\N$ and $g\colon\N\to\N$, with $g$ playing the role of $\fun{ack}(m,\dummy)$, and proceed by recursion on $n$. We need to provide two pieces of information
     \begin{align*}
         d_0&\colon\N\\
         d_s&\colon\N\to\N\to\N,
     \end{align*}
-    where $d_0\equiv c_s(m,g)(0)$. Since $c_s$ is the step function on $m$ for $\fun{ack}(m,{}\cdot{})$, we deduce that
+    where $d_0\equiv c_s(m,g)(0)$. Since $c_s$ is the step function on $m$ for $\fun{ack}(m,\dummy)$, we deduce that
     \[
         d_0 \equiv \fun{ack}(\fun{succ}(m),0)\equiv\fun{ack}(m,1).
     \]
     Therefore, we must specify $d_0\defeq g(1)$.
 
-    Since $c_s(m,g)$ represents $\fun{ack}(\fun{succ}(m),{}\cdot{})$, and
+    Since $c_s(m,g)$ represents $\fun{ack}(\fun{succ}(m),\dummy)$, and
     \[
         d_s(n,c_s(m,g)(n))\equiv c_s(m,g)(\fun{succ}(n)),
     \]
@@ -2872,7 +2893,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         
         \item Show that\/ $\fun{ap}_f$ distributes over path concatenation, i.e.,
         \[
-            \fun{ap}_f(p\ct q)\eq {f(x)\eq Bf(z)}\fun{ap}_f(p)\ct \fun{ap}_f(q),
+            \fun{ap}_f(p\ct q)\eq{f(x)\eq Bf(z)}\fun{ap}_f(p)\ct \fun{ap}_f(q),
         \]
         for\/ $x,y,z\colon A$, $p\colon x\eq Ay$, and\/ $q\colon y\eq Az$.
     \end{enumerate}
@@ -2918,7 +2939,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \begin{align*}
             D_f&\colon\prod_{x,y\colon A}(x\eq Ay)\to\univ\\
                 D_f(x,y,p)&\defeq\prod_{z\colon A}\;\prod_{q\colon y\eq Az}
-                \tilde f(p\ct q)\eq {f(x)\eq Bf(z)}
+                \tilde f(p\ct q)\eq{f(x)\eq Bf(z)}
                     \tilde f(p)\ct\tilde f(q).
         \end{align*}
         Using part a) and the fact that $\fun{refl}$ is the  definitionally left concatenation unit, we deduce
@@ -2947,7 +2968,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \item Define the negation function\/ $\fun{not}\colon\fun2\to\fun2$.
         \item Prove that negation is an involution, i.e., construct a witness for
         \[
-            \prod_{b\colon\fun2}\fun{not}(\fun{not}(b))\eq {\fun2} b.
+            \prod_{b\colon\fun2}\fun{not}(\fun{not}(b))\eq{\fun2} b.
         \]
     \end{enumerate}
 \end{exr}

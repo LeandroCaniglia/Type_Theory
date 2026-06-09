@@ -2,25 +2,107 @@
 
 \section{Quasi-Inverses}
 
+\begin{lem}\label{lem:X->X-id-homotopy}
+    Let\/ $X$ be a type. Given a function\/ $u\colon X\to X$ and a homotopy\/ $\theta\colon u\sim\id_X$, there is a homotopy
+    \[
+        \theta\rwct u\sim u\lwct\theta.
+    \]
+\end{lem}
+
+\begin{proof}
+    Let $p\colon x\eq Xy$ be a path. The naturality identity \eqref{eq:nat-transformation} of $\theta$ evaluated on $p$ yields
+    \[
+        \theta(x)\ct p\eq{u(x)\eq Xy}\fun{ap}_u(p)\ct\theta(y).
+    \]
+    By choosing $p\defeq\theta(x)\colon u(x)\eq Xx$, we obtain
+    \[
+        \theta(u(x))\ct\theta(x)
+        \eq{u(u(x))\eq Xx}
+        \fun{ap}_u(\theta(x))\ct\theta(x).
+    \]
+    Right-canceling $\theta(x)$ yields the stated homotopy.
+\end{proof}
+
+\begin{prop}\label{prop:coherence-swap}
+    Given two functions\/ $f\colon A\to B$ and\/ $g\colon B\to A$ and two homotopies\/ $\eta\colon f\circ g\sim\id_B$ and\/ $\vartheta\colon g\circ f\sim\id_A$, the types
+    \[
+        (f\lwct\vartheta\sim\eta\rwct f)
+            \to(g\lwct\eta\sim\vartheta\rwct g)
+        \quad\text{and\/}\quad
+        (g\lwct\eta\sim\vartheta\rwct g)
+            \to(f\lwct\vartheta\sim\eta\rwct f)
+    \]
+    are inhabited.
+\end{prop}
+
+\begin{proof}
+    By symmetry, it suffices to construct a map from the first to the second homotopy.
+
+    Fix a homotopy $\tau\colon f\lwct\vartheta\sim\eta\rwct f$. We must construct $\rho\colon g\lwct\eta\sim\vartheta\rwct g$.
+
+    Applying Lemma~\ref{lem:X->X-id-homotopy} to $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$, we obtain two homotopies:
+    \begin{align*}
+        N_\eta&\colon\eta\rwct(f\circ g)
+            \sim(f\circ g)\lwct\eta,\\
+        N_\vartheta&\colon\vartheta\rwct(g\circ f)
+            \sim(g\circ f)\lwct\vartheta.
+    \end{align*}
+    By whiskering $\tau$ with $g$ on both sides, we obtain
+    \[
+        g\lwct\tau\rwct g\colon(g\circ f)\lwct\vartheta\rwct g\sim g\lwct\eta\rwct(f\circ g).
+    \]
+    Then
+    \begin{align*}
+        \vartheta\rwct(g\circ f\circ g)
+        &\sim(g\circ f)\lwct\vartheta\rwct g && \text{; via $N_\vartheta\rwct g$}\\
+        &\sim g\lwct\eta\rwct(f\circ g) && \text{; via $g\lwct\tau\rwct g$}\\
+        &\sim(g\circ f\circ g)\lwct\eta && \text{; via $g\lwct N_\eta$},
+    \end{align*}
+    which constructs $\alpha\colon\vartheta\rwct(g\circ f\circ g)\sim(g\circ f\circ g)\lwct\eta$.
+
+    Now consider the naturality of $\vartheta\colon g\circ f\sim\id_A$ evaluated on the homotopy $g\lwct\eta\colon g\circ f\circ g\sim g$, as described in \S\,\ref{homotopy-evaluated-on-homotopy}. In this case, diagram~\eqref{tik:homotopy-evaluated-on-homotopy} yields the following commutative square of homotopies:
+    \[
+        \begin{tikzcd}[column sep=huge, row sep=huge]
+            g\circ f\circ g\circ f\circ g
+                \arrow[r, "\vartheta\rwct(g\circ f\circ g)"]
+                \arrow[d, "(g\circ f\circ g)\lwct\eta"'] &
+            g\circ f\circ g
+                \arrow[d, "g\lwct\eta"] \\
+            g\circ f\circ g
+                \arrow[r, "\vartheta\rwct g"'] &
+            g
+        \end{tikzcd}
+    \]
+    Since $\alpha$ establishes that the top edge is homotopic to the left edge, we obtain the required homotopy
+    \[
+        g\lwct\eta \sim \vartheta\rwct g.
+    \]
+\end{proof}
+
+\begin{cor}\label{cor:coherent-quasi-inverse-2}
+    If\/ $f\colon A\to B$ is an equivalence with quasi-inverse\/ $\dep{g,(\eta,\vartheta)}$, there is a homotopy\/ $\vartheta'\colon g\circ f\sim\id_A$ such that\/ $\dep{g,(\eta,\vartheta')}$ is a coherent quasi-inverse.
+\end{cor}
+
+\begin{proof}
+    The hypothesis implies that $\dep{f,(\vartheta,\eta)}$ is a quasi-inverse of $g$. By Theorem~\ref{thm:coherent-quasi-inverse}, there is a homotopy $\vartheta'$ such that $\dep{f,(\vartheta',\eta)}$ is a coherent quasi-inverse. This means that we have $\tau\colon g\lwct\vartheta'\sim\eta\rwct g$. Applying Proposition~\ref{prop:coherence-swap}, we deduce that $f\lwct\vartheta'\sim\eta\rwct f$ is inhabited, as desired.
+\end{proof}
+
 \begin{thm}\label{thm:equivalence-fibers-are-contractible}
-    If\/ $f\colon A\to B$ is an equivalence with quasi-inverse $(g,\eta,\vartheta)$, then for all\/ $y\colon B$ the fiber $\fun{fib}_f(y)$ is contractible with center $(g(y),\eta(y))$.
+    If\/ $f\colon A\to B$ is an equivalence with quasi-inverse\/ $\dep{g,(\eta,\vartheta)}$, then for all\/ $y\colon B$ the fiber\/ $\fun{fib}_f(y)$ is contractible with center\/ $\dep{g(y),\eta(y)}$.
 \end{thm}
 
 \begin{proof}
-    By Theorem~\ref{thm:coherent-quasi-inverse}, there is a coherent quasi-inverse $(g,\eta,\vartheta,\tau)$, where
+    By Corollary~\ref{cor:coherent-quasi-inverse-2}, after replacing $\vartheta$ with $\vartheta'$, we can assume that there exists a homotopy
     \[
-        \tau\colon f\lwct\vartheta\sim\eta\rwct f
-        \quad\text{i.e.,}\quad
-        \tau\colon\prod_{x\colon A}\fun{ap}_f(\vartheta_x)
-            \eq{f(g(f(x)))\eq Bf(x)}\eta_{f(x)}.
+        \tau\colon f\lwct\vartheta\sim\eta\rwct f.
     \]
-    Given $y\colon B$, we will show that $\fun{fib}_f(y)$ is contractible by proving that the center of contraction is
+    Given $y\colon B$, note that
     \[
-        (g(y),\eta(y))\colon\fun{fib}_f(y),
+        \dep{g(y),\eta(y)}\colon\fun{fib}_f(y)
     \]
-    which is well-typed since $\eta(y)\colon f(g(y))\eq By$.
+    is well-typed since $\eta(y)\colon f(g(y))\eq By$.
 
-    Fix $(x,p)\colon\fun{fib}_f(y)$, where $p\colon f(x)\eq By$. According to Definition~\ref{defn:fiber-over-y}, we must provide a path $\gamma\colon g(y)\eq Ax$ such that
+    Fix $\dep{x,p}\colon\fun{fib}_f(y)$, where $p\colon f(x)\eq By$. According to Definition~\ref{defn:fiber-over-y}, we must provide a path $\gamma\colon g(y)\eq Ax$ such that
     \[
         \fun{transport}^{z\mapsto f(z)\eq By}(\gamma,\eta(y))\eq{f(x)\eq By}p.
     \]
@@ -40,7 +122,7 @@
     \[
         \gamma\defeq\fun{ap}_g(p)^{-1}\ct\vartheta_x.
     \]
-    Since $\fun{ap}_g(p)\colon g(f(x))\eq A g(y)$ and $\vartheta_x\colon g(f(x))\eq Ax$, we see that $\gamma$ is of the required type. Moreover,
+    Since $\fun{ap}_g(p)\colon g(f(x))\eq Ag(y)$ and $\vartheta_x\colon g(f(x))\eq Ax$, we see that $\gamma$ is of the required type. Moreover,
     \[
         \fun{ap}_f(\gamma)\ct p
             \eq{f(g(y))\eq By}
@@ -48,7 +130,8 @@
                 \ct\fun{ap}_f(\vartheta_x)
                 \ct p.
     \]
-    Using the coherence condition $\tau_x$, we obtain
+    Using the coherence condition $\tau_x\colon\fun{ap}_f(\vartheta_x)
+            \eq{f(g(f(x)))\eq Bf(x)}\eta_{f(x)}$, we obtain
     \[\tag{$\ddag$}
         \fun{ap}_f(\gamma)\ct p
         \eq{f(g(y))\eq By}
@@ -63,11 +146,11 @@
                 &f(g(y))
                     \arrow[d,"\eta(y)"]\\
             f(x)
-                    \arrow[r,"\fun{ap}_{\id}(p)"']
+                    \arrow[r,"\fun{ap}_{\id_B}(p)"']
                 &y
         \end{tikzcd}
     \]
-    Using that $\fun{ap}_{f\circ g}\eq{} \fun{ap}_f\circ\fun{ap}_g$ and $\fun{ap}_{\id}\eq{}\id$, the diagram translates into
+    Using that $\fun{ap}_{f\circ g}\equiv\fun{ap}_f\circ\fun{ap}_g$ and $\fun{ap}_{\id_B}\equiv\id$, the diagram translates into
     \[
         \fun{ap}_f(\fun{ap}_g(p))^{-1}\ct\eta_{f(x)}\ct p
         \eq{f(g(y))\eq By}
@@ -88,37 +171,34 @@
 \end{defn}
 
 \begin{prop}\label{prop:side-inverses-are-contractible}
-    If\/ $f\colon A\to B$ has a quasi-inverse, then the types\/ $\fun{rinv}(f)$ and\/ $\fun{linv}(f)$ are contractible.
+    If\/ $f\colon A\to B$ has a quasi-inverse\/ $\dep{g,(\eta,\vartheta)}$, then the types\/ $\fun{rinv}(f)$ and\/ $\fun{linv}(f)$ are contractible with respective centers\/ $\dep{g,\eta}$ and\/ $\dep{g,\vartheta}$.
 \end{prop}
 
 \begin{proof}
     Consider the maps
     \begin{align*}
-        (f \circ \mathord-)&\colon(C\to A)\to(C\to B)\\
-        (\mathord-\circ f)&\colon(B\to C)\to(A\to C).
+        (f\circ\dummy)&\colon(C\to A)\to(C\to B)\\
+        (\dummy\circ f)&\colon(B\to C)\to(A\to C).
     \end{align*}
-    If $g$ is a quasi-inverse of $f$, then $(g\circ\mathord-)$ and $(\mathord-\circ g)$ are quasi-inverses of $(f\circ \mathord-)$ and $(\mathord-\circ f)$, respectively. Thus, they are equivalences and, by Theorem~\ref{thm:equivalence-fibers-are-contractible}, their fibers are contractible. 
+    If\/ $g$ is a quasi-inverse of\/ $f$, then\/ $(g\circ\dummy)$ and\/ $(\dummy\circ g)$ are quasi-inverses of\/ $(f\circ\dummy)$ and\/ $(\dummy\circ f)$, respectively. Thus, they are equivalences and, by Theorem~\ref{thm:equivalence-fibers-are-contractible}, their fibers are contractible. 
     
-    Therefore, the same theorem implies that $\fun{rinv}(f)$ and $\fun{linv}(f)$ are contractible because, by function extensibility, we have
+    Therefore, the same theorem implies that\/ $\fun{rinv}(f)$ and\/ $\fun{linv}(f)$ are contractible because, by function extensionality, we have
     \begin{align*}
-        \fun{linv}(f)
-            &\simeq\Bigl(
-                \sum_{g\colon B\to A}
-                    (g\circ f)\eq{A\to A}\id_A
-            \Bigr)
-            \equiv\fun{fib}_{\mathord-\circ f}(\id_A)\\
         \fun{rinv}(f)
             &\simeq\Bigl(
                 \sum_{g\colon B\to A}
                     (f\circ g)\eq{B\to B}\id_B
             \Bigr)
-            \equiv\fun{fib}_{f\circ\mathord-}(\id_B).
+            \equiv\fun{fib}_{f\circ\dummy}(\id_B)\\
+        \fun{linv}(f)
+            &\simeq\Bigl(
+                \sum_{g\colon B\to A}
+                    (g\circ f)\eq{A\to A}\id_A
+            \Bigr)
+            \equiv\fun{fib}_{\dummy\circ f}(\id_A).
     \end{align*}
+    Since\/ $\dep{g,\fun{funext}(\eta)}$ and\/ $\dep{g,\fun{funext}(\vartheta)}$ are the respective centers of\/ $\fun{fib}_{f\circ\dummy}(\id_B)$ and\/ $\fun{fib}_{\dummy\circ f}(\id_A)$, the statement on the centers of\/ $\fun{rinv}(f)$ and\/ $\fun{linv}(f)$ follows.
 \end{proof}
-
-\begin{rem}\label{rem:side-inverses-are-contractible}
-    Actually, Theorem~\ref{thm:equivalence-fibers-are-contractible} implies that if\/ $(g,\eta,\vartheta)$ is a quasi-inverse of\/ $f$, then\/ $(g,\eta)$ is a center of contraction of\/ $\fun{rinv}(f)$ and\/ $(g,\vartheta)$ is a center of contraction of\/ $\fun{linv}(f)$.
-\end{rem}
 
 \begin{lem}\label{lem:qinv-reassociation}
     Let\/ $f\colon A\to B$ be a function. Then there is an equivalence
@@ -146,7 +226,7 @@
 \end{proof}
 
 \begin{lem}\label{lem:contractible-sigma-product}
-    Let\/ $X\colon\univ$ be a type, and let\/ $A,B\colon X\to\univ$ be type families over\/ $X$. If\/ $\Sigma_XA$ is contractible with center\/ $(z,c)$, then there is an equivalence
+    Let\/ $X\colon\univ$ be a type, and let\/ $A,B\colon X\to\univ$ be two type families over\/ $X$. If\/ $\Sigma_XA$ is contractible with center\/ $\dep{z,c}$, then there is an equivalence
     \[
         \sum_{x\colon X}A(x)\times B(x)\simeq B(z).
     \]
@@ -166,7 +246,7 @@
         \Bigl(
             \sum_{\omega\colon\Sigma_XA}B(\pi_1(\omega))
         \Bigr)
-        \simeq B(\pi_1(z,c))\equiv B(z).
+        \simeq B(\pi_1(\dep{z,c}))\equiv B(z).
     \]
 \end{proof}
 
@@ -178,7 +258,7 @@
 \end{prop}
 
 \begin{proof}
-    Since $\fun{qinv}(f)$ is inhabited, $f$ has a quasi-inverse $(g,\eta,\vartheta)$. Define
+    Since $\fun{qinv}(f)$ is inhabited, $f$ has a quasi-inverse $\dep{g,(\eta,\vartheta)}$. Define
     \begin{align*}
         \sigma\colon(\id_A\sim\id_A)&\to(g\circ f\sim\id_A)\\
         \epsilon&\mapsto\vartheta\ct\epsilon.
@@ -186,7 +266,7 @@
         (g\circ f\sim\id_A)&\to(\id_A\sim\id_A)\\
         \delta&\mapsto\vartheta^{-1}\ct\delta.
     \end{align*}
-    By Remark~\ref{rem:side-inverses-are-contractible}, $\fun{rinv}(f)$ is contractible with center $(g,\eta)$. Thus, applying Lemma~\ref{lem:contractible-sigma-product} to the definition
+    By Proposition~\ref{prop:side-inverses-are-contractible}, $\fun{rinv}(f)$ is contractible with center $\dep{g,\eta}$. Thus, applying Lemma~\ref{lem:contractible-sigma-product} to the definition
     \[
         \fun{qinv}(f)
             \equiv\sum_{h\colon B\to A}
@@ -200,7 +280,7 @@
     \begin{enumerate}[a),font=\upshape]
         \item The type\/ $a\eq Aa$ is a set.
         \item For all\/ $x\colon A$ we have\/ $\lVert a\eq Ax\rVert$.
-        \item For all\/ $p\colon a\eq A a$ we have\/ $p\ct q\eq{a\eq Aa}q\ct p$.
+        \item For all\/ $p\colon a\eq Aa$ we have\/ $p\ct q\eq{a\eq Aa}q\ct p$.
     \end{enumerate}
     Then there exists a homotopy\/ $\eta\colon\id_A\sim\id_A$ with\/ $\eta(a)\equiv q$.
 \end{lem}
@@ -233,9 +313,10 @@
     \]
     Hence, we can define $\gamma(r,s)\defeq\omega_{r,s}$.
 
-    Given that $\fun{isSet}(x\eq Ay)$ is a subsingleton [cf.~Remark~\ref{rem:ids-in-a-set-are-subsingletons}], the map $\gamma$ factors through a map
+    Given that $\fun{isSet}(x\eq Ay)$ is a subsingleton [cf.~Remark~\ref{rem:ids-in-a-set-are-subsingletons}], the map $\gamma$ factors through
     \[
-        \gamma'\colon
+        \fun{rec}_{\lVert\cdots\rVert}(\fun{isSet}(x\eq Ay),\gamma)
+        \colon
             \lVert(a\eq Ax)\times(a\eq Ay)\rVert
             \to\fun{isSet}(x\eq Ay).
     \]
@@ -243,7 +324,7 @@
 
     \textsc{Part 2.} {\itshape Given\/ $x\colon A$, the type
     \[
-        B(x)\defeq\sum_{r\colon x\eq Ax}\;\prod_{s\colon a\eq A x}
+        B(x)\defeq\sum_{r\colon x\eq Ax}\;\prod_{s\colon a\eq Ax}
             r\eq{x\eq Ax}s^{-1}\ct q\ct s
     \]
     is a subsingleton.}
@@ -252,7 +333,7 @@
     \[
         (a\eq Ax)\to\fun{isProp}(B(x)).
     \]
-    Let $t\colon a\eq Ax$. If $(r,u)$ and $(r',u')$ are elements of $B(x)$, we must construct from $t$ a path between them.
+    Let $t\colon a\eq Ax$. If $\dep{r,u}$ and $\dep{r',u'}$ are elements of $B(x)$, we must construct from $t$ a path between them.
 
     Since
     \[
@@ -264,7 +345,7 @@
     \[
         e\defeq u(t)\ct u'(t)^{-1}\colon r\eq{x\eq Ax}r'.
     \]
-    To complete the equality $(r,u)\eq{B(x)}(r',u')$, we must show that for the type family
+    To establish the equality $\dep{r,u}\eq{B(x)}\dep{r',u'}$, we must show that for the type family
     \[
         S(p)\defeq\prod_{w\colon a\eq Ax}
             p\eq{x\eq Ax}w^{-1}\ct q\ct w,
@@ -292,18 +373,21 @@
     
     By definition,
     \[
-        B(a)\equiv\sum_{r\colon a\eq Aa}\;\prod_{s\colon a\eq A a}
+        B(a)\equiv\sum_{r\colon a\eq Aa}\;\prod_{s\colon a\eq Aa}
             r\eq{a\eq Aa}s^{-1}\ct q\ct s.
     \]
     Condition c) implies that for $r\defeq q$, we have a path
     \[
         \beta(s)\colon q\eq{a\eq Aa}s^{-1}\ct q\ct s.
     \]
-    Thus, $(q,\beta)\colon B(a)$, as required. As a result, for every $x\colon A$, we obtain a map $f_x\colon(a\eq Ax)\to B(x)$. Given that $B(x)$ is a subsingleton, $f_x$ factors through $\lVert a\eq Ax\rVert$. And since this type is inhabited, we obtain a witness $b_x\colon B(x)$. Moreover, $b_a\equiv f_a(\fun{refl}_a)\equiv(q,\beta)$.
+    Thus, $\dep{q,\beta}\colon B(a)$, as required. As a result, for every $x\colon A$, we obtain a map $f_x\colon(a\eq Ax)\to B(x)$. Given that $B(x)$ is a subsingleton, $f_x$ factors through $\lVert a\eq Ax\rVert$. And since this type is inhabited, we obtain a witness $b_x\colon B(x)$. Moreover, $b_a\equiv f_a(\fun{refl}_a)\equiv\dep{q,\beta}$.
     
     Therefore, we can define the homotopy $\eta\defeq\lambda x.\,\pi_1(b_x)$ that satisfies
     \[
-        \eta(a)\equiv\pi_1(b_a)\equiv\pi_1(q,\beta)\equiv q.
+        \eta(a)
+            \equiv\pi_1(b_a)
+            \equiv\pi_1(\dep{q,\beta})
+            \equiv q.
     \]
 \end{proof}
 
@@ -318,7 +402,7 @@
     \[
         A\defeq\sum_{X\colon\univ}\lVert\fun2\eq\univ X\rVert.
     \]
-    Let $a\defeq(\fun2,\lvert\fun{refl}_{\fun2}\rvert)\colon A$, and consider the equivalence $e\colon\fun2\simeq\fun2$ induced by the map $\fun{not}$ introduced in Exercise~\ref{exr:not}. By the lemma included in the solution to Exercise~\ref{exr:2-simeq-2-simeq-2}, $\fun{not}\ne\id_{\fun2}$. Consequently, $e$ is not the identity equivalence, meaning that if we define the path $q\defeq\fun{ua}(e)$, we deduce that $q\ne\fun{refl}_{\fun2}$.
+    Let $a\defeq\dep{\fun2,\lvert\fun{refl}_{\fun2}\rvert}\colon A$, and consider the equivalence $e\colon\fun2\simeq\fun2$ induced by the map $\fun{not}$ introduced in Exercise~\ref{exr:not}. By the lemma included in the solution to Exercise~\ref{exr:2-simeq-2-simeq-2}, $\fun{not}\ne\id_{\fun2}$. Consequently, $e$ is not the identity equivalence, meaning that the path $q\defeq\fun{ua}(e)$ satisfies $q\ne\fun{refl}_{\fun2}$.
 
     Since we intend to use Lemma~\ref{lem:conditioned-id-id-homotopy}, we need to prove the three conditions stated there.
 
@@ -329,14 +413,14 @@
     \]
     Since $(\fun2\simeq\fun2)\simeq\fun2$ by Exercise~\ref{exr:2-simeq-2-simeq-2}, and $\fun2$ is a set by Theorem~\ref{thm:boolean-type-is-set}, condition~a) holds.
 
-    \textsc{Condition}~b) Given $x\defeq(X,u)$ with $u\colon\lVert\fun2\eq\univ X\rVert$, we need to verify that the truncated type
+    \textsc{Condition}~b) Given $x\defeq\dep{X,u}$ with $u\colon\lVert\fun2\eq\univ X\rVert$, we need to verify that the truncated type
     \[
-        \lVert(\fun2,\lvert\fun{refl}_{\fun2}\rvert)
-        \eq A(X,u)\rVert
+        \lVert\dep{\fun2,\lvert\fun{refl}_{\fun2}\rvert}
+        \eq A\dep{X,u}\rVert
     \]
     is inhabited.
     
-    We proceed by recursion on the truncated type $\lVert\fun2\eq\univ X\rVert$. Let $P\colon\univ\to\univ$ be the type family $X\mapsto\lVert\fun2\eq\univ X\rVert$. Given a path $p\colon\fun2\eq\univ X$, we can apply Lemma~\ref{lem:total-space-with-subsingleton-fibers}, to obtain a path $\epsilon_p\colon a\eq A x$, because $P(X)$ is a subsingleton.
+    We proceed by recursion on the truncated type $\lVert\fun2\eq\univ X\rVert$. Let $P\colon\univ\to\univ$ be the type family $X\mapsto\lVert\fun2\eq\univ X\rVert$. Given a path $p\colon\fun2\eq\univ X$, we can apply Lemma~\ref{lem:total-space-with-subsingleton-fibers}, to obtain a path $\epsilon_p\colon a\eq Ax$, because $P(X)$ is a subsingleton.
     
     It follows that $p\mapsto\lvert\epsilon_p\rvert$ is a map of type $(\fun2\eq\univ X)\to\lVert a\eq Ax\rVert$. Since the codomain is a subsingleton, this map factors through $\lVert\fun2\eq\univ X\rVert$. Evaluating this factored map at the given $u$ provides the desired witness in $\lVert a\eq Ax\rVert$.
 
@@ -360,108 +444,272 @@ Definition~\ref{defn:half-adjoint-equivalence} introduces the concept of a coher
         f\lwct\vartheta\sim\eta\rwct f.
 \end{equation}
 
-The need for this definition arises from the failure of $\fun{qinv}(f)$ to be a subsingleton. The type $\fun{qinv}(f)$ is formed by three pieces of data: a map $g$, a right homotopy $\eta$, and a left homotopy $\vartheta$. As noted in Remark~\ref{rem:side-inverses-are-contractible}, when $f$ is an equivalence, the space $\fun{linv}(f)$ of its left inverses is contractible. As a consequence, the total space $\fun{qinv}(f)$ reduces to the space of right homotopies $\eta$ [cf.~Theorem~\ref{thm:contractible-types}~b)].
+The need for this definition arises from the failure of $\fun{qinv}(f)$ to be a subsingleton. The type $\fun{qinv}(f)$ is formed by three pieces of data: a map $g$, a right homotopy $\eta$, and a left homotopy $\vartheta$. As stated in Proposition~\ref{prop:side-inverses-are-contractible}, when $f$ is an equivalence, the space $\fun{linv}(f)$ of its left inverses is contractible. As a consequence, the total space $\fun{qinv}(f)$ reduces to the space of right homotopies $\eta$ [cf.~Theorem~\ref{thm:contractible-types}~b)].
 
 As established in Proposition~\ref{prop:qinv-id-homotopy-equivalence}, the space $\fun{qinv}(f)$ is equivalent to $\id_A\sim\id_A$. If the space $A$ is not a set, there are multiple distinct, non-homotopic loops at each point, meaning there are multiple valid choices for $\eta$. Consequently, $\fun{qinv}(f)$ can have multiple inhabitants.
 
-To ensure that the property of being an equivalence is a subsingleton, we must eliminate these extra degrees of freedom. This is achieved by introducing the coherence datum in \eqref{eq:half-adjoint-homotopy}, which tethers the right homotopy $\eta$ to the left homotopy $\vartheta$. While the space of all possible right homotopies is large, the space of pairs $(\eta, \tau)$, where $\tau\colon f\lwct\vartheta\sim\eta\rwct f$, is contractible. By pairing the contractible space of left inverses $(g,\vartheta)$ with the contractible space of coherent right homotopies $(\eta,\tau)$, all higher degrees of freedom are eliminated, and $\fun{ishae}(f)$ turns out to be a subsingleton.
+To ensure that the property of being an equivalence is a subsingleton, we must eliminate these extra degrees of freedom. This is achieved by introducing the coherence datum in \eqref{eq:half-adjoint-homotopy}, which tethers the right homotopy $\eta$ to the left homotopy $\vartheta$. While the space of all possible right homotopies is potentially large, the space of pairs $\dep{\eta,\tau}$, where $\tau\colon f\lwct\vartheta\sim\eta\rwct f$, is contractible. By pairing the contractible space of left inverses $\dep{g,\vartheta}$ with the contractible space of coherent right homotopies $\dep{\eta,\tau}$, all higher degrees of freedom are eliminated, and $\fun{ishae}(f)$ turns out to be a subsingleton.
 
 On a practical level, if $\fun{isequiv}(f)$ were not a subsingleton, every time we used the fact that $f$ is an equivalence, we would have to explicitly keep track of which specific proof we were using.
 
-By constructing $\fun{ishae}(f)$ as a subsingleton, we obtain \textit{proof irrelevance}. We can construct an equivalence and immediately forget the specific construction of the right/left homotopies, because any two inhabitants of the subsingleton are  propositionally equal. This saves the theory from collapsing into an unmanageable infinite tower of coherence conditions.
+By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irrelevance}. We can construct an equivalence and immediately forget the specific construction of the right/left homotopies, because any two inhabitants of the subsingleton are  propositionally equal. This saves the theory from collapsing into an unmanageable infinite tower of coherence conditions.
 
-\begin{lem}\label{lem:X->X-id-homotopy}
-    Let\/ $X$ be a type. Given a function\/ $u\colon X\to X$ and a homotopy\/ $\theta\colon u\sim\id_X$, there is a homotopy
-    \[
-        \theta\rwct u\sim u\lwct\theta.
-    \]
-\end{lem}
-
-\begin{proof}
-    Let $p\colon x\eq Xy$ be a path. The naturality identity \eqref{eq:nat-transformation} of $\theta$ evaluated on $p$ yields
-    \[
-        \theta(x)\ct p\eq{u(x)\eq Xy}\fun{ap}_u(p)\ct\theta(y).
-    \]
-    By choosing $p\defeq\theta(x)\colon u(x)\eq Xx$, we obtain
-    \[
-        \theta(u(x))\ct\theta(x)
-        \eq{u(u(x))\eq Xx}
-        \fun{ap}_u(\theta(x))\ct\theta(x).
-    \]
-    Right-canceling $\theta(x)$ yields the stated homotopy.
-\end{proof}
-
-\begin{lem}
-    Given two functions\/ $f\colon A\to B$ and\/ $g\colon B\to A$ and two homotopies\/ $\eta\colon f\circ g\sim\id_B$ and\/ $\vartheta\colon g\circ f\sim\id_A$, the types
-    \[
-        (f\lwct\vartheta\sim\eta\rwct f)
-            \to(g\lwct\eta\sim\vartheta\rwct g)
-        \quad\text{and\/}\quad
-        (g\lwct\eta\sim\vartheta\rwct g)
-            \to(f\lwct\vartheta\sim\eta\rwct f)
-    \]
-    are inhabited.
-\end{lem}
-
-\begin{proof}
-    By symmetry, it suffices to construct a map from the first to the second homotopy.
-
-    Fix a homotopy $\tau\colon f\lwct\vartheta\sim\eta\rwct f$. We must construct $\rho\colon g\lwct\eta\sim\vartheta\rwct g$.
-
-    Applying Lemma~\ref{lem:X->X-id-homotopy} to $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$, we obtain two homotopies:
-    \begin{align*}
-        N_\eta&\colon\eta\rwct(f\circ g)
-            \sim(f\circ g)\lwct\eta\\
-        N_\vartheta&\colon\vartheta\rwct(g\circ f)
-            \sim(g\circ f)\lwct\vartheta.
-    \end{align*}
-    By whiskering $\tau$ with $g$ on both sides, we obtain:
-    \[
-        g\lwct\tau\rwct g\colon(g\circ f)\lwct\vartheta\rwct g\sim g\lwct\eta\rwct(f\circ g).
-    \]
-    Then
-    \begin{align*}
-        \vartheta\rwct(g\circ f\circ g)
-        &\sim(g\circ f)\lwct\vartheta\rwct g && \text{; via $N_\vartheta\rwct g$}\\
-        &\sim g\lwct\eta\rwct(f\circ g) && \text{; via $g\lwct\tau\rwct g$}\\
-        &\sim(g\circ f\circ g)\lwct\eta && \text{; via $g\lwct N_\eta$},
-    \end{align*}
-    which constructs $\alpha\colon\vartheta\rwct(g\circ f\circ g)\sim(g\circ f\circ g)\lwct\eta$.
-
-    Now, we consider the naturality of $\vartheta\colon g\circ f\sim\id_A$ evaluated on the homotopy $g\lwct\eta\colon g\circ f\circ g\sim g$ as described in \S\,\ref{homotopy-evaluated-on-homotopy}. In this case, diagram~\eqref{tik:homotopy-evaluated-on-homotopy} yields the following commutative square of homotopies:
-    \[
-        \begin{tikzcd}[column sep=huge, row sep=huge]
-            g\circ f\circ g\circ f\circ g
-                \arrow[r, "\vartheta\rwct(g\circ f\circ g)"]
-                \arrow[d, "(g\circ f\circ g)\lwct\eta"'] &
-            g\circ f\circ g
-                \arrow[d, "g\lwct\eta"] \\
-            g\circ f\circ g
-                \arrow[r, "\vartheta\rwct g"'] &
-            g
-        \end{tikzcd}
-    \]
-    Because our 2-path $\alpha$ establishes that the top edge is homotopic to the left edge, we can substitute the top edge out of the left-hand side of the equation, yielding:
-    \[
-        \bigl((g\circ f\circ g)\lwct\eta\bigr)\ct(g\lwct\eta) \sim \bigl((g\circ f\circ g)\lwct\eta\bigr)\ct(\vartheta\rwct g).
-    \]
-    Finally, by left-canceling $(g\circ f\circ g)\lwct\eta$, we obtain the required homotopy:
-    \[
-        g\lwct\eta \sim \vartheta\rwct g.
-    \]
-\end{proof}
 
 \begin{rem}
     As we discussed at the beginning of this section, the type of quasi-inverses reduces to the space of choices for the right homotopy $\eta$. This leaves $\eta$ as an unbound ``loose end'', meaning the type $\fun{qinv}(f)$ is not generally a subsingleton.
     
-    The coherence condition $\tau\colon f\lwct\vartheta\sim\eta\rwct f$ fixes this loose end by tethering $\eta$ to~$\vartheta$. Since the space of coherent pairs $(\eta,\tau)$ is contractible, the structure becomes a pair of contractible spaces, with no degree of freedom. Thus, the type $\fun{ishae}(f)$ is a subsingleton.
+    The coherence condition $\tau\colon f\lwct\vartheta\sim\eta\rwct f$ fixes this loose end by tethering $\eta$ to $\vartheta$. Since the space of coherent pairs $\dep{\eta,\tau}$ is contractible, the structure becomes a pair of contractible spaces, with no degrees of freedom. Thus, the type $\fun{ishae}(f)$ is a subsingleton.
     
     If we wanted to reproduce the categorical adjunction by demanding both coherence conditions, we would have to define a type containing the data $(g,\vartheta,\eta,\tau,\nu)$, where $\nu\colon g\lwct\eta\sim\vartheta\rwct g$.
     
-    Since $(g,\vartheta,\eta,\tau)$ forms a contractible space, the total space would reduce to the space of choices for~$\nu$.
+    Since $\dep{\dep{g,(\vartheta,\eta)},\tau}$ forms a contractible space, the total space would reduce to the space of choices for $\nu$.
     
-    However, $\nu$ is a homotopy between homotopies. Just as with $\eta$ in the previous case, there can be multiple  choices for $\nu$, which would re-introduce a degree of freedom. In other words, the type of full adjoint equivalences would fail to be a subsingleton.
+    However, $\nu$ is a homotopy between homotopies. Just as with $\eta$ in the previous case, there can be multiple choices for $\nu$, which would re-introduce degrees of freedom. In other words, the type of full adjoint equivalences would fail to be a subsingleton.
     
     This is why the standard definition specifies only one coherence condition, instead of (redundantly) including both.    
 \end{rem}
 
+\begin{thm}\label{thm:qinv->ishae}
+    Given\/ $f\colon A\to B$, there is a map\/ $\fun{qinv}(f)\to\fun{ishae}(f)$.
+\end{thm}
+
+\begin{proof}
+    This is Theorem~\ref{thm:coherent-quasi-inverse} restated after the introduction of $\fun{ishae}(f)$.
+\end{proof}
+
+\begin{lem}\label{lem:fib-equality}
+    Let\/ $f\colon A\to B$ be a function. Then, given\/ $y\colon B$, and elements\/ $\dep{x,p},\dep{x',p'}\colon\fun{fib}_f(y)$, we have an equivalence
+    \[
+        \bigl(
+            \dep{x,p}\eq{\fun{fib}_f(y)}\dep{x',p'}
+        \bigr)
+        \simeq
+        \sum_{q\colon x=x'}
+            \fun{ap}_f(q)\ct p'\eq{f(x)\eq By}p.
+    \]
+\end{lem}
+
+\begin{proof}
+    By the characterization of equality in $\Sigma$-types [cf.~\S\,\ref{equality-in-Sigma-types}], we have an equivalence
+    \[
+        \bigl(\dep{x,p}\eq{\fun{fib}_f(y)}\dep{x',p'}\bigr)
+        \simeq
+        \sum_{q\colon x=x'} \fun{transport}^P(q,p)\eq{f(x')\eq By}p',
+    \]
+    where $P(x)\defeq f(x)\eq By$.
+
+    Since $P\equiv(z\mapsto z\eq By)\circ f$, we can use Lemma~\ref{lem:post-composition-transport} and Proposition~\ref{prop:transport-decomposition-for-paths} to compute the transport as
+    \[
+        \fun{transport}^P(q,p)
+        \eq{f(x')\eq By}
+        \fun{ap}_f(q)^{-1}\ct p.
+    \]
+    Thus, for any fixed $q\colon x\eq Ax'$, the identity above involving the transport is equivalent to
+    \[
+        \fun{ap}_f(q)^{-1}\ct p\eq{f(x')\eq By}p'.
+    \]
+    Left-concatenating both sides with $\fun{ap}_f(q)$ yields an equivalence to
+    \[
+        p\eq{f(x)\eq By}\fun{ap}_f(q)\ct p'.
+    \]
+    Taking the path inverse provides a further equivalence to
+    \[
+        \fun{ap}_f(q)\ct p'\eq{f(x)\eq By}p.
+    \]
+    Since this establishes an equivalence between the fibers for each $q\colon x\eq Ax'$, the induced map on the total spaces is an equivalence as well.
+\end{proof}
+
+\begin{rem}\label{rem:equivalence-fib-is-contractible}
+    By Theorem~\ref{thm:equivalence-fibers-are-contractible}, if $f\colon A\to B$ is a half-adjoint equivalence, then for any $y\colon B$, the fiber $\fun{fib}_f(y)$ is contractible.
+\end{rem}
+
+\begin{defn}\label{def:coherences}
+    For any function\/ $f\colon A\to B$, a right inverse\/ $\dep{g,\eta}\colon\fun{rinv}(f)$, and a left inverse\/ $\dep{g,\vartheta}\colon\fun{linv}(f)$, we define the types of \textsl{right coherences} and \textsl{left coherences} as
+    \begin{align*}
+        \fun{rcoh}_f(\dep{g,\eta})
+            &\defeq \sum_{\vartheta\colon g\circ f\sim\id_A} f\lwct\vartheta\sim\eta\rwct f, \\
+        \fun{lcoh}_f(\dep{g,\vartheta})
+            &\defeq \sum_{\eta\colon f\circ g\sim\id_B} g\lwct\eta\sim\vartheta\rwct g.
+    \end{align*}
+\end{defn}
+
+\begin{ntn}\label{ntn:fib-pullback}
+    Given\/ $u\colon X\to Z$, $v\colon Z\to Y$, $w\colon X\to Y$, and\/ $\theta\colon v\circ u\sim w$, we introduce the function
+    \begin{align*}
+        \dep{u,\theta}
+            &\colon\prod_{x\colon X}\fun{fib}_v(w(x))\\
+        x&\mapsto\dep{u(x),\theta(x)}.
+    \end{align*}
+    Representing this in a homotopy diagram, the total space of the fibration acts as the categorical pullback\/ $X\times_Y Z$. The homotopy\/ $\theta$ witnesses the commutativity of the outer quadrangle, and\/ $\dep{u,\theta}$ is the map induced by the pair\/ $(\id_X,u)$:
+    \[
+        \begin{tikzcd}[arrows={|->}, column sep=1.1cm]
+            x
+                \arrow[rd, dashed, "\dep{u,\theta}"]
+                \arrow[rdd, "\id_X"', bend right=30]
+                \arrow[rrd, "u", bend left=20]\\
+            & \dep{x,\dep{u(x),\theta(x)}}
+                \arrow[r, "\pi_1\circ\pi_2"]
+                \arrow[d, "\pi_1"']
+                %\arrow[rd, phantom, "\scriptstyle\theta(x)"]
+            & u(x)
+                \arrow[d, "v"]\\
+            & x
+                \arrow[r, "w"']
+            & w(x)
+        \end{tikzcd}
+    \]
+\end{ntn}
+
+\begin{lem}\label{lem:side-coherences-equivalence}
+    Let\/ $f\colon A\to B$, $g\colon B\to A$, $\eta\colon f\circ g\sim\id_B$, and\/ $\vartheta\colon g\circ f\sim\id_A$. Using the preceding notation we have
+    \begin{align*}
+        \fun{rcoh}_f(\dep{g,\eta})
+            &\simeq
+                \bigl(
+                    \dep{g\circ f,\eta\rwct f}
+                        \sim\dep{\id_A,\fun{refl}\rwct f}
+                \bigr),\\
+        \fun{lcoh}_f(\dep{g,\vartheta})
+            &\simeq
+                \bigl(
+                    \dep{f\circ g,\vartheta\rwct g}
+                        \sim\dep{\id_B,\fun{refl}\rwct g}
+                \bigr).
+    \end{align*}
+\end{lem}
+
+\begin{proof}
+    By symmetry, it suffices to prove the first equivalence.
+
+    First note that the expressions above are well-typed:
+    \begin{enumerate}[a),font=\upshape]
+        \item For $\dep{g\circ f,\eta\rwct f}$, take $u\defeq g\circ f$, $\theta\defeq\eta\rwct f$, $v\defeq f$, and $w\defeq f$.
+        
+        \item For $\dep{\id_A,\fun{refl}\rwct f}$, take $u\defeq\id_A$, $\theta\defeq\fun{refl}\rwct f$, $v\defeq f$, and $w\defeq f$.
+    \end{enumerate}
+    
+    For the forward map of the equivalence, fix $\dep{\alpha,\beta}\colon\fun{rcoh}_f(\dep{g,\eta})$. We have to construct the corresponding homotopy.
+
+    By definition, $\alpha\colon g\circ f\sim\id_A$ and $\beta\colon f\lwct\alpha\sim\eta\rwct f$.
+    
+    Given $x\colon A$, we need a path
+    \[
+        \dep{g(f(x)),\eta_{f(x)}}
+            \eq{\fun{fib}_f(f(x))}
+            \dep{x,\fun{refl}_{f(x)}}.
+    \]
+    Let $p\defeq\alpha(x)$ and $q\defeq\beta(x)$. Then 
+    \[
+        p\colon g(f(x))\eq Ax
+        \quad\text{and }\quad
+        q\colon\fun{ap}_f(p)
+            \eq{f(g(f(x)))\eq Bf(x)}\eta_{f(x)}.
+    \]
+    By Lemma~\ref{lem:fib-equality}, constructing the required path in $\fun{fib}_f(f(x))$ is equivalent to providing an element of the $\Sigma$-type
+    \[
+        \sum_{r\colon g(f(x))\eq Ax}
+            \fun{ap}_f(r)\ct\fun{refl}_{f(x)}
+            \eq{f(g(f(x)))\eq Bf(x)}
+            \eta_{f(x)}.
+    \]
+    Since $\fun{ru}(\fun{ap}_f(p))\colon\fun{ap}_f(p)\ct\fun{refl}_{f(x)}\eq{f(g(f(x)))\eq Bf(x)}\fun{ap}_f(p)$, we can take $r\defeq p$, form the required dependent pair $\dep{p,\fun{ru}(\fun{ap}_f(p))\ct q}$.
+
+    For the backward map, consider $\tau\colon\dep{g\circ f,\eta\rwct f}\sim\dep{\id_A,\fun{refl}\rwct f}$, and let us construct a witness of $\fun{rcoh}_f(\dep{g,\eta})$.
+
+    According to the definition, we need two homotopies 
+    \[
+        \varepsilon\colon g\circ f\sim\id_A
+        \quad\text{and}\quad
+        \nu\colon f\lwct\varepsilon\sim\eta\rwct f.
+    \]
+    Evaluating at $x\colon A$ and following Notation~\ref{ntn:fib-pullback}, we obtain
+    \[
+        \tau(x)\colon\dep{g(f(x)),\eta_{f(x)}}
+            \eq{\fun{fib}_f(f(x))}
+            \dep{x,\fun{refl}_{f(x)}}.
+    \]
+    Applying the forward direction of Lemma~\ref{lem:fib-equality} to $\tau(x)$, we obtain a pair $\dep{p,q}$ consisting of two paths
+    \[
+        p\colon g(f(x))\eq Ax
+        \quad\text{and}\quad
+        q\colon\fun{ap}_f(p)\ct\fun{refl}_{f(x)}
+        \eq{f(g(f(x)))\eq Bf(x)}\eta_{f(x)}.
+    \]
+    Thus, we can define
+    \[
+        \varepsilon(x)\defeq p
+        \quad\text{and}\quad
+        \nu(x)\defeq\fun{ru}(\fun{ap}_f(p))^{-1}\ct q.
+    \]
+
+    Verifying that these maps are quasi-inverses of each other is straightforward.
+\end{proof}
+
+\begin{lem}\label{lem:rcoh-is-contractible}
+    If\/ $f\colon A\to B$ is an equivalence, then for any\/ $\dep{g,\eta}\colon\fun{rinv}(f)$, the type\/ $\fun{rcoh}_f(\dep{g,\eta})$ is contractible.
+\end{lem}
+
+\begin{proof}
+    According to Notation~\ref{ntn:fib-pullback}, we have
+    \[
+        \dep{g\circ f,\eta}\colon
+            \prod_{x\colon A}\fun{fib}_f(f(x)).
+    \]
+    Since the fibers $\fun{fib}_f$ of $f$ are contractible by Theorem~\ref{thm:equivalence-fibers-are-contractible}, we deduce from part a) of Theorem~\ref{thm:contractible-types} that the $\Pi$-type above is contractible.
+
+    For the same reasons, $\dep{\id_A,\fun{refl}\rwct f}$ is contractible. Hence, by part g) of the same theorem, we deduce that $\dep{g\circ f,\eta}\sim\dep{\id_A,\fun{refl}\rwct f}$ is contractible. The conclusion follows from Lemma~\ref{lem:side-coherences-equivalence}.
+\end{proof}
+
+\begin{thm}\label{thm:ishae-is-subsingleton}
+    For any\/ $f\colon A\to B$, the type\/ $\fun{ishae}(f)$ is a subsingleton.
+\end{thm}
+
+\begin{proof}
+    By $\Sigma$-associativity, Proposition~\ref{prop:sigma-associativity}, we have
+    \begin{align*}
+        \fun{ishae}(f)
+            &\defeq
+                \sum_{g\colon B\to A}\;
+                \sum_{\eta\colon f\circ g\sim\id_B}
+                    \fun{rcoh}(\dep{\fun{g,\eta}})\\
+            &\eq{}
+                \sum_{\omega\colon\fun{rinv}(f)}\fun{rcoh}(\omega).
+    \end{align*}
+    If $\fun{ishae}(f)$ is inhabited, then $\fun{rinv}(f)$ is contractible by Proposition~\ref{prop:side-inverses-are-contractible}, and $\fun{rcoh}(f)$ is contractible by Lemma~\ref{lem:rcoh-is-contractible}. Thus, the conclusion follows from part~d) of Theorem~\ref{thm:contractible-types}.
+\end{proof}
+
+\section{Bi-invertible Maps}
+
+\begin{defn}
+    We say that $f\colon A\to B$ is \textsl{bi-invertible} if it has both a left inverse and a right inverse, i.e., if the type
+    \[
+        \fun{biinv}(f)\defeq\fun{linv}(f)\times\fun{rinv}(f)
+    \]
+    is inhabited.
+\end{defn}
+
+\begin{thm}\label{thm:biinv-is-subsingleton}
+    For any\/ $f\colon A\to B$, the type\/ $\fun{biinv}(f)$ is a subsingleton.
+\end{thm}
+
+\begin{proof}
+    It suffices to show that, in the case where $\fun{biinv}(f)$ is inhabited, it is contractible.
+    
+    If $\fun{biinv}(f)$ is inhabited, by definition, $f$ induces an equivalence. Hence, it is quasi-invertible and by Proposition~\ref{prop:side-inverses-are-contractible} both $\fun{rinv}(f)$ and $\fun{linv}(f)$ are contractible. Thus, the conclusion follows from part c) of Theorem~\ref{thm:contractible-types}.
+\end{proof}
+
+\begin{rem}
+    While\/ $\fun{ishae}(f)$ requires the addition of a $2$-dimensional coherence homotopy to reach the status of a subsingleton, $\fun{biinv}(f)$ achieves the same using only $1$-dimensional homotopies.
+\end{rem}
+
+\begin{cor}
+    Let\/ $f\colon A\to B$ be a function. Then\/ $\fun{biinv}(f)\simeq\fun{ishae}(f)$.
+\end{cor}
+
+\begin{proof}
+    Given that both types are subsingletons, by Lemma~\ref{lem:subsingleton-equivalence}, it suffices to show a forward and a backward map.
+
+    By Theorem~\ref{thm:qinv->ishae}, there is a map $\fun{qinv}(f)\to\fun{ishae}(f)$. Composing this with the trivial map $\fun{biinv}(f)\to\fun{qinv}(f)$, one obtain a forward map.
+\end{proof}
+
+\section{Contractible Fibers}
