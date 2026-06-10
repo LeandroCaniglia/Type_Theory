@@ -418,22 +418,22 @@
     The conclusion follows by composing $\Phi$ with the function given in \eqref{eq:notnotA-to-A}.
 \end{proof}
 
-\section{Subsingletons}
+\section{Mere Propositions}
 
 \begin{defn}
-    A type $P$ is a \textsl{subsingleton} (a.k.a.~\textsl{mere proposition}, a.k.a.~\textsl{h-proposition}) if the type
+    A type $P$ is a \textsl{mere proposition} (a.k.a.~\textsl{subsingleton}, a.k.a.~\textsl{h-proposition}) if the type
     \[
         \fun{isProp}(P)\defeq\prod_{x,y\colon P}x\eq Py
     \]
     is inhabited.\footnote{We have adopted the function name given in \citep{hottbook}.}
 \end{defn}
 
-\begin{rem}\label{rem:ids-in-a-set-are-subsingletons}
-    If $A$ is a set, then $x\eq Ay$ is a subsingleton for all $x,y\colon A$.
+\begin{rem}\label{rem:ids-in-a-set-are-mere-propositions}
+    If $A$ is a set, then $x\eq Ay$ is a mere proposition for all $x,y\colon A$.
 \end{rem}
 
 \begin{lem}\label{lem:mere-prop-and-1}
-    Every inhabited subsingleton is equivalent to the unit type\/~$\fun1$.
+    Every inhabited mere proposition is equivalent to the unit type\/~$\fun1$.
 \end{lem}
 
 \begin{proof}
@@ -453,8 +453,8 @@
     showing that $\lambda x.\,\pi(a,x)\colon\psi\circ\phi\sim\id_P$.
 \end{proof}
 
-\begin{lem}\label{lem:subsingleton-equivalence}
-    Let\/ $P$ and\/ $Q$ be subsingletons. Then any pair of functions\/ $P\to Q$ and\/ $Q\to P$ yields an equivalence\/ $P\simeq Q$.
+\begin{lem}\label{lem:mere-proposition-equivalence}
+    Let\/ $P$ and\/ $Q$ be mere propositions. Then any pair of functions\/ $P\to Q$ and\/ $Q\to P$ yields an equivalence\/ $P\simeq Q$.
 \end{lem}
 
 \begin{proof}
@@ -476,15 +476,15 @@
 \end{proof}
 
 \begin{rem}
-    Lemma \ref{lem:mere-prop-and-1} could have been proved as a consequence of Lemma~\ref{lem:subsingleton-equivalence}.
+    Lemma \ref{lem:mere-prop-and-1} could have been proved as a consequence of Lemma~\ref{lem:mere-proposition-equivalence}.
 \end{rem}
 
-\begin{lem}\label{lem:subsingletons-are-sets}
-    Every subsingleton is a set.
+\begin{lem}\label{lem:mere-propositions-are-sets}
+    Every mere proposition is a set.
 \end{lem}
 
 \begin{proof}
-    Let $A$ be a subsingleton. Fix $\pi\colon\fun{isProp}(A)$, two points $x,y\colon A$, and paths $p,q\colon x\eq{A}y$. 
+    Let $A$ be a mere proposition. Fix $\pi\colon\fun{isProp}(A)$, two points $x,y\colon A$, and paths $p,q\colon x\eq{A}y$. 
     
     Consider the dependent function
     \[
@@ -513,8 +513,8 @@
     \end{align*}
 \end{proof}
 
-\begin{rem}\label{rem:ids-in-subsingletons-are-singletons}
-    Combining the lemma with Remark~\ref{rem:ids-in-a-set-are-subsingletons}, we deduce that, if $P$ is a subsingleton, $x\eq Py$ is also a subsingleton for all $x,y\colon P$.
+\begin{rem}\label{rem:ids-in-mere-propositions-are-singletons}
+    Combining the lemma with Remark~\ref{rem:ids-in-a-set-are-mere-propositions}, we deduce that, if $P$ is a mere proposition, $x\eq Py$ is also a mere proposition for all $x,y\colon P$.
 \end{rem}
 
 
@@ -525,36 +525,36 @@
 \begin{proof}
     Let $x,y\colon\fun2$ and consider two paths $p,q\colon x\eq{\fun2}y$. 
     
-    By Theorem~\ref{thm:bool-equality}, the map $\fun{encode}(x,y)$ is an equivalence, and therefore an embedding. Thus, to prove $p\eq{x\eq{\fun2}y}q$, it suffices to show that $\fun{Code}(x,y)$ is a subsingleton for any $x$ and $y$; that is, we need to construct an inhabitant of
+    By Theorem~\ref{thm:bool-equality}, the map $\fun{encode}(x,y)$ is an equivalence, and therefore an embedding. Thus, to prove $p\eq{x\eq{\fun2}y}q$, it suffices to show that $\fun{Code}(x,y)$ is a mere proposition for any $x$ and $y$; that is, we need to construct an inhabitant of
     \[
         \prod_{x,y\colon\fun2}\fun{isProp}(\fun{Code}(x,y)).
     \]
     We proceed to construct this witness by double induction on $x$ and $y$:
     \begin{enumerate}[-]
-        \item If $x\equiv0_{\fun2}$ and $y\equiv0_{\fun2}$, or $x\equiv1_{\fun2}$ and $y\equiv1_{\fun2}$, the type $\fun{Code}(x,y)$ is definitionally equal to $\fun1$, which is a subsingleton.
+        \item If $x\equiv0_{\fun2}$ and $y\equiv0_{\fun2}$, or $x\equiv1_{\fun2}$ and $y\equiv1_{\fun2}$, the type $\fun{Code}(x,y)$ is definitionally equal to $\fun1$, which is a mere proposition.
         
-        \item If $x\equiv0_{\fun2}$ and $y\equiv1_{\fun2}$, or $x\equiv1_{\fun2}$ and $y\equiv0_{\fun2}$, the type $\fun{Code}(x,y)$ is definitionally equal to $\fun0$, which is trivially a subsingleton.
+        \item If $x\equiv0_{\fun2}$ and $y\equiv1_{\fun2}$, or $x\equiv1_{\fun2}$ and $y\equiv0_{\fun2}$, the type $\fun{Code}(x,y)$ is definitionally equal to $\fun0$, which is trivially a mere proposition.
     \end{enumerate}
 \end{proof}
 
-\begin{prop}\label{prop:isSet-and-isProp-are-subsingletons}
-    For any type\/ $A$, the types\/ $\fun{isProp}(A)$ and\/ $\fun{isSet}(A)$ are subsingletons.
+\begin{prop}\label{prop:isSet-and-isProp-are-mere-propositions}
+    For any type\/ $A$, the types\/ $\fun{isProp}(A)$ and\/ $\fun{isSet}(A)$ are mere propositions.
 \end{prop}
 
 \begin{proof}
-    Consider $f,g\colon\fun{isProp}(A)$. To show that $\fun{isProp}(A)$ is a subsingleton, we must show that $f\eq{\fun{isProp}(A)}g$. By function extensionality, it suffices to fix $x,y\colon A$ and show that $f(x,y)\eq{x\eq{A}y}g(x,y)$. The terms evaluate as
+    Consider $f,g\colon\fun{isProp}(A)$. To show that $\fun{isProp}(A)$ is a mere proposition, we must show that $f\eq{\fun{isProp}(A)}g$. By function extensionality, it suffices to fix $x,y\colon A$ and show that $f(x,y)\eq{x\eq{A}y}g(x,y)$. The terms evaluate as
     \[
         f(x,y)\colon x\eq{A}y
         \quad\text{and}\quad
         g(x,y)\colon x\eq{A}y.
     \]
-    Since $f$ is a witness that $A$ is a subsingleton, Lemma~\ref{lem:subsingletons-are-sets} implies that $A$ is a set. Therefore, $x\eq{A}y$ is a subsingleton and so $f(x,y)\eq{x\eq{A}y}g(x,y)$, as desired.
+    Since $f$ is a witness that $A$ is a mere proposition, Lemma~\ref{lem:mere-propositions-are-sets} implies that $A$ is a set. Therefore, $x\eq{A}y$ is a mere proposition and so $f(x,y)\eq{x\eq{A}y}g(x,y)$, as desired.
 
     In the case where $f,g\colon\fun{isSet}(A)$, fix $x,y\colon A$ and $p,q\colon x\eq{A}y$. Then,
     \[
         f(x,y,p,q),\,g(x,y,p,q)\colon p\eq{x\eq{A}y}q.
     \]
-    The existence of $f$ implies that $A$ is a set. So, by Lemma~\ref{lem:set-implies-id-types-are-sets}, $x\eq{A}y$ is a set. Thus, $p\eq{x\eq{A}y}q$ is a subsingleton. Therefore, $f(x,y,p,q)\eq{p\eq{x\eq{A}y}q}g(x,y,p,q)$. The proof concludes by function extensionality.
+    The existence of $f$ implies that $A$ is a set. So, by Lemma~\ref{lem:set-implies-id-types-are-sets}, $x\eq{A}y$ is a set. Thus, $p\eq{x\eq{A}y}q$ is a mere proposition. Therefore, $f(x,y,p,q)\eq{p\eq{x\eq{A}y}q}g(x,y,p,q)$. The proof concludes by function extensionality.
 \end{proof}
 
 %\section{Law of Excluded Middle}
@@ -569,7 +569,7 @@
         \[
             \fun{Lem}\defeq\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
         \]
-        In other words, the law of excluded middle states that all subsingletons are decidable.
+        In other words, the law of excluded middle states that all mere propositions are decidable.
     \end{enumerate}
 \end{defns}
 
@@ -705,8 +705,8 @@
     \end{enumerate}
 \end{proof}
 
-\begin{lem}\label{lem:total-space-with-subsingleton-fibers}
-    Let\/ $P\colon A\to\univ$ be a type family such that\/ $P(x)$ is a subsingleton for all\/ $x\colon A$. For any\/ $u,v\colon\Sigma_AP$, the first projection induces an equivalence between their identity types:
+\begin{lem}\label{lem:total-space-with-mere-proposition-fibers}
+    Let\/ $P\colon A\to\univ$ be a type family such that\/ $P(x)$ is a mere proposition for all\/ $x\colon A$. For any\/ $u,v\colon\Sigma_AP$, the first projection induces an equivalence between their identity types:
     \[
         (u\eq{\Sigma_AP}v)\simeq(\pi_1(u)\eq A\pi_1(v)).
     \]
@@ -739,7 +739,7 @@
         \item For any $p\colon u\eq{\Sigma_AP}v$, we can write $p\eq{} \fun{pair}^=(p_1,p_2)$ for some transport path $p_2\colon(p_1)_*(\pi_2(u)) \eq{P(\pi_1(v))} \pi_2(v)$, where $p_1\defeq\fun{ap}_{\pi_1}(p)$.
         
         Evaluating $g(f(p))$ yields $\fun{pair}^=(p_1,\gamma')$, where 
-        $\gamma'\defeq\epsilon((p_1)_*(\pi_2(u)),\pi_2(v))$. Because $P(\pi_1(v))$ is a subsingleton, it is also a set, meaning any two parallel paths within it are propositionally equal. In particular, $\gamma'\eq{}p_2$. Applying the function $\fun{ap}$ to this equality yields 
+        $\gamma'\defeq\epsilon((p_1)_*(\pi_2(u)),\pi_2(v))$. Because $P(\pi_1(v))$ is a mere proposition, it is also a set, meaning any two parallel paths within it are propositionally equal. In particular, $\gamma'\eq{}p_2$. Applying the function $\fun{ap}$ to this equality yields 
         \[
             \fun{pair}^=(p_1,\gamma')\eq{}\fun{pair}^=(p_1,p_2),
         \]
@@ -748,36 +748,36 @@
 \end{proof}
 
 \begin{ntn}
-    When\/ $P\colon A\to\univ$ is a family of subsingletons, an alternative notation for\/ $\Sigma_AP$ will be
+    When\/ $P\colon A\to\univ$ is a family of mere propositions, an alternative notation for\/ $\Sigma_AP$ will be
     \begin{equation}\label{eq:set-notation}
         \set{x\colon A\mid P(x)}.
     \end{equation}
     If, in addition, $A$ is a set, we will say that \eqref{eq:set-notation} is a \textsl{subset} of\/ $A$. In the general case, we will refer to this type as a \textsl{subtype} of\/ $A$.
 
-    By\/ {\upshape Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}} we can use this notation to introduce
+    By\/ {\upshape Proposition~\ref{prop:isSet-and-isProp-are-mere-propositions}} we can use this notation to introduce
     \begin{align*}
         \fun{Set}_\univ&\defeq\set{A\colon\univ\mid\fun{isSet}(A)}\\
         \fun{Prop}_\univ&\defeq\set{A\colon\univ\mid\fun{isProp}(A)}
-    \intertext{In particular, we can define subsingleton families, a.k.a.~\textsl{predicates} of\/ $A$ by}
+    \intertext{In particular, we can define mere proposition families, a.k.a.~\textsl{predicates} of\/ $A$ by}
         \fun{Pred}(A)&\defeq A\to\fun{Prop}_\univ.
     \end{align*}
     
 \end{ntn}
 
-\begin{thm}\label{thm:subsingletons}
-    Subsingletons are closed under the following type-theoretic constructions:
+\begin{thm}\label{thm:mere-propositions}
+    Mere propositions are closed under the following constructions:
     \begin{enumerate}[a),font=\upshape]
-        \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of subsingletons\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is a subsingleton. 
+        \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of mere propositions\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is a mere proposition. 
         
-        \item \textsc{\upshape Functions \& Negation:} If\/ $Q$ is a subsingleton, the type\/ $A\to Q$ is a subsingleton for any arbitrary type\/ $A$. In particular, the negation\/ $\neg A$ is always a subsingleton.
+        \item \textsc{\upshape Functions \& Negation:} If\/ $Q$ is a mere proposition, the type\/ $A\to Q$ is a mere proposition for any arbitrary type\/ $A$. In particular, the negation\/ $\neg A$ is always a mere proposition.
         
-        \item \textsc{\upshape Products:} If\/ $P$ and\/ $Q$ are subsingletons, then their Cartesian product\/ $P\times Q$ is a subsingleton.
+        \item \textsc{\upshape Products:} If\/ $P$ and\/ $Q$ are mere propositions, then their Cartesian product\/ $P\times Q$ is a mere proposition.
         
-        \item \textsc{\upshape Dependent Pairs:} If\/ $A$ is a subsingleton and\/ $P\colon A\to\univ$ is a family of subsingletons, then the total space\/ $\Sigma_AP$ is a subsingleton.
+        \item \textsc{\upshape Dependent Pairs:} If\/ $A$ is a mere proposition and\/ $P\colon A\to\univ$ is a family of mere propositions, then the total space\/ $\Sigma_AP$ is a mere proposition.
         
-        \item \textsc{\upshape Mutually Exclusive Coproducts:} If\/ $P$ and\/ $Q$ are subsingletons, and they are \textsl{mutually exclusive} (i.e., we have a function\/ $P\to\neg Q$), then the coproduct\/ $P+Q$ is a subsingleton.
+        \item \textsc{\upshape Mutually Exclusive Coproducts:} If\/ $P$ and\/ $Q$ are mere propositions, and they are \textsl{mutually exclusive} (i.e., we have a function\/ $P\to\neg Q$), then the coproduct\/ $P+Q$ is a mere proposition.
         
-        \item \textsc{\upshape Equivalences \& Identity:} If\/ $P$ and\/ $Q$ are subsingletons, the type of equivalences\/ $P\simeq Q$ and their propositional equality\/ $P\eq{\fun{Prop}_\univ}Q$ are subsingletons.
+        \item \textsc{\upshape Equivalences \& Identity:} If\/ $P$ and\/ $Q$ are mere propositions, the type of equivalences\/ $P\simeq Q$ and their propositional equality\/ $P\eq{\fun{Prop}_\univ}Q$ are mere propositions.
 
     \end{enumerate}
 \end{thm}
@@ -785,14 +785,14 @@
 \needspace{2\baselineskip}
 \begin{proof}${}$
     \begin{enumerate}[a)]
-        \item Let $f,g\colon\prod_{x\colon A}P(x)$. Given $x\colon A$, since $P(x)$ is a subsingleton, we have $f(x)\eq{P(x)}g(x)$. Thus, the conclusion follows by function extensionality.
+        \item Let $f,g\colon\prod_{x\colon A}P(x)$. Given $x\colon A$, since $P(x)$ is a mere proposition, we have $f(x)\eq{P(x)}g(x)$. Thus, the conclusion follows by function extensionality.
 
-        \item This is a direct consequence of part a) for the particular case where $P(x)\equiv Q$ for all $x\colon A$. Since $\fun0$ is clearly a subsingleton (witnessed by $\fun{ind}_{\fun0}(\prod_{x\colon\fun0}\,\prod_{y\colon\fun0}x\eq{\fun0}y)$), we deduce that $\neg A\equiv A\to\fun0$ is a subsingleton.
+        \item This is a direct consequence of part a) for the particular case where $P(x)\equiv Q$ for all $x\colon A$. Since $\fun0$ is clearly a mere proposition (witnessed by $\fun{ind}_{\fun0}(\prod_{x\colon\fun0}\,\prod_{y\colon\fun0}x\eq{\fun0}y)$), we deduce that $\neg A\equiv A\to\fun0$ is a mere proposition.
 
         \item Let $(a,b),(c,d)\colon P\times Q$. Then $a\eq Pc$ and $b\eq Qd$ and so $(a,b)\eq{P\times Q}(c,b)\eq{P\times Q}(c,d)$. The conclusion follows because, for all $x\colon P\times Q$, we have $x\eq{P\times Q}(\pi_1(x),\pi_2(x))$.
 
         
-        \item This is a direct consequence of Lemma~\ref{lem:total-space-with-subsingleton-fibers}.
+        \item This is a direct consequence of Lemma~\ref{lem:total-space-with-mere-proposition-fibers}.
 
         \item Fix $f\colon P\to\neg Q$, and let $\epsilon\colon\fun{isProp}(P)$ and $\delta\colon\fun{isProp}(Q)$. To construct a dependent function of type
         \[
@@ -884,7 +884,7 @@
         \[
             P\simeq Q\equiv\sum_{f\colon P\to Q}\fun{isequiv}(f).
         \]
-        By part b), the base type $P\to Q$ is a subsingleton. By part d), to prove that the total space $P\simeq Q$ is a subsingleton, it suffices to show that the fiber $\fun{isequiv}(f)$ is a subsingleton for all $f\colon P\to Q$.
+        By part b), the base type $P\to Q$ is a mere proposition. By part d), to prove that the total space $P\simeq Q$ is a mere proposition, it suffices to show that the fiber $\fun{isequiv}(f)$ is a mere proposition for all $f\colon P\to Q$.
         
         Fix $f\colon P\to Q$. Recall that $\fun{isequiv}(f)$ is the product of two $\Sigma$-types:
         \[
@@ -892,13 +892,13 @@
             \times
             \Bigl(\sum_{k\colon Q\to P}k\circ f\sim\id_P\Bigr).
         \]
-        By part c), we need only show that each factor is a subsingleton. Consider the first factor. By part b), the base type $Q\to P$ is a subsingleton. Hence, any two elements in this factor have equal first components. Furthermore, the fiber family is given by
+        By part c), we need only show that each factor is a mere proposition. Consider the first factor. By part b), the base type $Q\to P$ is a mere proposition. Hence, any two elements in this factor have equal first components. Furthermore, the fiber family is given by
         \[
             (f\circ h\sim\id_Q)\equiv\prod_{y\colon Q}f(h(y))\eq{Q}\id_Q(y).
         \]
-        Because $Q$ is a subsingleton, Remark~\ref{rem:ids-in-subsingletons-are-singletons} ensures that the identity type $f(h(y))\eq{Q}\id_Q(y)$ is a subsingleton. Part a) then guarantees that the homotopy is a subsingleton. Since the fibers are subsingletons and the base components are necessarily equal, Lemma~\ref{lem:total-space-with-subsingleton-fibers} implies that any two elements in this first factor are equal.
+        Because $Q$ is a mere proposition, Remark~\ref{rem:ids-in-mere-propositions-are-singletons} ensures that the identity type $f(h(y))\eq{Q}\id_Q(y)$ is a mere proposition. Part a) then guarantees that the homotopy is a mere proposition. Since the fibers are mere propositions and the base components are necessarily equal, Lemma~\ref{lem:total-space-with-mere-proposition-fibers} implies that any two elements in this first factor are equal.
         
-        A symmetric argument applies to the second factor. Hence, $\fun{isequiv}(f)$ is a subsingleton, which concludes the first claim.
+        A symmetric argument applies to the second factor. Hence, $\fun{isequiv}(f)$ is a mere proposition, which concludes the first claim.
 
         \bigskip
 
@@ -906,11 +906,11 @@
         \[
             (P\eq{\fun{Prop}_\univ}Q)\simeq\sum_{h\colon P_0\eq{\univ}Q_0}h_*(f)\eq{\fun{isProp}(Q_0)}g.
         \]
-        By the Univalence Axiom, $(P_0\eq{\univ}Q_0)\simeq(P_0\simeq Q_0)$. Since $P_0$ and $Q_0$ are subsingletons, the first claim of this part implies that $P_0\simeq Q_0$ is a subsingleton. Thus, its equivalent type $P_0\eq{\univ}Q_0$ is also a subsingleton.
+        By the Univalence Axiom, $(P_0\eq{\univ}Q_0)\simeq(P_0\simeq Q_0)$. Since $P_0$ and $Q_0$ are mere propositions, the first claim of this part implies that $P_0\simeq Q_0$ is a mere proposition. Thus, its equivalent type $P_0\eq{\univ}Q_0$ is also a mere proposition.
         
-        Furthermore, by Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, $\fun{isProp}(Q_0)$ is a subsingleton, which implies by Remark~\ref{rem:ids-in-subsingletons-are-singletons} that the identity type $h_*(f)\eq{\fun{isProp}(Q_0)}g$ is a subsingleton for any $h$.
+        Furthermore, by Proposition~\ref{prop:isSet-and-isProp-are-mere-propositions}, $\fun{isProp}(Q_0)$ is a mere proposition, which implies by Remark~\ref{rem:ids-in-mere-propositions-are-singletons} that the identity type $h_*(f)\eq{\fun{isProp}(Q_0)}g$ is a mere proposition for any $h$.
         
-        Since both the base type and the fibers of this $\Sigma$-type are subsingletons, part d) dictates that the total space is a subsingleton. Because the property of being a subsingleton is preserved under equivalence, we conclude that the identity type $P\eq{\fun{Prop}_\univ}Q$ is a subsingleton.\qedhere
+        Since both the base type and the fibers of this $\Sigma$-type are mere propositions, part d) dictates that the total space is a mere proposition. Because the property of being a mere proposition is preserved under equivalence, we conclude that the identity type $P\eq{\fun{Prop}_\univ}Q$ is a mere proposition.\qedhere
         
 
     \end{enumerate}
@@ -926,11 +926,11 @@
     \[
         P\times P,\quad P\times Q,\quad Q\times P,\quad \text{and}\quad Q\times Q.
     \]
-    The proof effectively \textit{integrated} over the cross-quadrants $P\times Q$ and $Q\times P$ using $\zeta$ and $\zeta^{-1}$, and over the squares $P\times P$ and $Q\times Q$ using the internal subsingleton witnesses $\epsilon$ and $\delta$.
+    The proof effectively \textit{integrated} over the cross-quadrants $P\times Q$ and $Q\times P$ using $\zeta$ and $\zeta^{-1}$, and over the squares $P\times P$ and $Q\times Q$ using the internal mere proposition witnesses $\epsilon$ and $\delta$.
 \end{rem}
 
 \begin{cor}
-    Let\/ $f,g\colon A\to P$ be two functions. If\/ $P$ is a subsingleton, then\/ $f\sim g$ is a subsingleton as well.
+    Let\/ $f,g\colon A\to P$ be two functions. If\/ $P$ is a mere proposition, then\/ $f\sim g$ is a mere proposition as well.
 \end{cor}
 
 \begin{proof}
@@ -938,13 +938,13 @@
     \[
         \eta,\vartheta\colon f\sim g\equiv\prod_{x\colon A}f(x)\eq Pg(x).
     \]
-    By Remark~\ref{rem:ids-in-subsingletons-are-singletons}, we deduce that $\eta(x)\eq{f(x)\eq Pg(x)}\vartheta(x)$ for all\/ $x\colon A$. Then, function extensionality yields $\eta\eq{f\sim g}\vartheta$. The conclusion follows.
+    By Remark~\ref{rem:ids-in-mere-propositions-are-singletons}, we deduce that $\eta(x)\eq{f(x)\eq Pg(x)}\vartheta(x)$ for all\/ $x\colon A$. Then, function extensionality yields $\eta\eq{f\sim g}\vartheta$. The conclusion follows.
 \end{proof}
 
 \begin{cor}\label{cor:isequiv(f)-is-set}
     Let\/ $A$ and\/ $B$ be sets, and let\/ $f\colon A\to B$ be a function. Then the type\/ $\fun{isequiv}(f)$ is a set.
 
-    Moreover, if\/ $A$ and\/ $B$ are subsingletons, then $\fun{isequiv}(f)$ is a subsingleton.
+    Moreover, if\/ $A$ and\/ $B$ are mere propositions, then $\fun{isequiv}(f)$ is a mere proposition.
 \end{cor}
 
 \begin{proof}
@@ -968,9 +968,9 @@
     \[
         \eta_1(y),\eta_2(y)\colon f(g(y))\eq By.
     \]
-    Since $B$ is a set, we obtain $\eta_1(y)\eq{}\eta_2(y)$ in $f(g(y))\eq By$. Therefore, function extensionality produces $\eta_1\eq{}\eta_2$ in $f\circ g\sim\id_B$. Thus, $f\circ g\sim\id_B$ is a subsingleton, hence a set. The conclusion follows.
+    Since $B$ is a set, we obtain $\eta_1(y)\eq{}\eta_2(y)$ in $f(g(y))\eq By$. Therefore, function extensionality produces $\eta_1\eq{}\eta_2$ in $f\circ g\sim\id_B$. Thus, $f\circ g\sim\id_B$ is a mere proposition, hence a set. The conclusion follows.
 
-    In the case where $A$ and $B$ are subsingletons, since they are also sets, the fact that $f\circ g\sim\id_B$ is a subsingleton allows us to invoke part~d) of Theorem~\ref{thm:subsingletons}, because $B\to A$ is a subsingleton by part~b) of the same theorem. By symmetry, the second $\Sigma$-type is also a subsingleton, and since the product of subsingletons is a subsingleton (part~c), the type $\fun{isequiv}(f)$ is a subsingleton.
+    In the case where $A$ and $B$ are mere propositions, since they are also sets, the fact that $f\circ g\sim\id_B$ is a mere proposition allows us to invoke part~d) of Theorem~\ref{thm:mere-propositions}, because $B\to A$ is a mere proposition by part~b) of the same theorem. By symmetry, the second $\Sigma$-type is also a mere proposition, and since the product of mere propositions is a mere proposition (part~c), the type $\fun{isequiv}(f)$ is a mere proposition.
 \end{proof}
 
 \begin{cor}\label{cor:set-simeq-set-is-set}
@@ -990,11 +990,11 @@
 
 
 \section{Propositional Truncation}\label{propositional-truncation}
-We can define a new type former that converts any type $A\colon\univ$ into $\lVert A\rVert\colon\univ$, whose canonical terms are of the form $\lvert a\rvert$ for $a\colon A$. The distinguishing characteristic of $\lVert A\rVert$ is that it is a subsingleton; that is, for any $x,y\colon\lVert A\rVert$, we have $x\eq{\lVert A\rVert}y$. More precisely, there exists a dependent function
+We can define a new type former that converts any type $A\colon\univ$ into $\lVert A\rVert\colon\univ$, whose canonical terms are of the form $\lvert a\rvert$ for $a\colon A$. The distinguishing characteristic of $\lVert A\rVert$ is that it is a mere proposition; that is, for any $x,y\colon\lVert A\rVert$, we have $x\eq{\lVert A\rVert}y$. More precisely, there exists a dependent function
 \[
     \fun{squash}\colon\prod_{x,y\colon\lVert A\rVert}x\eq{\lVert A\rVert}y.
 \]
-The induction principle, which can be applied to subsingleton families, is given by:
+The induction principle, which can be applied to mere proposition families, is given by:
 \begin{equation}\label{eq:ind-truncation}
     \fun{ind}_{\lVert A\rVert}\colon
         \prod_{C\colon\fun{Pred}(\lVert A\rVert)}
@@ -1004,7 +1004,7 @@ The induction principle, which can be applied to subsingleton families, is given
 \end{equation}
 satisfying $\fun{ind}_{\lVert A\rVert}(C,f,\lvert a\rvert)\defeq f(a)$ for $a\colon A$.
 
-In the case of non-dependent subsingleton families, we have the recursion principle
+In the case of non-dependent mere proposition families, we have the recursion principle
 \begin{align}\label{eq:rec-truncation}
     \fun{rec}_{\lVert A\rVert}&\colon
         \prod_{B\colon\fun{Prop}_\univ}(A\to B)\to(\lVert A\rVert\to B)\\
@@ -1013,9 +1013,9 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \end{align}
 
 \begin{rem}
-    One might be tempted to simplify the defining requirement $x\eq{\lVert A\rVert}y$ for all $x,y\colon\lVert A\rVert$, to merely $\lvert a\rvert\eq{\lVert A\rVert}\lvert b\rvert$ for all $a,b\colon A$, and then attempt to use induction on $\lVert A\rVert$ to deduce the former. However, to apply the induction principle, we must first show that the target family $C(x,y)\defeq x\eq{\lVert A\rVert}y$ is a predicate. This requires already knowing that the identity type $x\eq{\lVert A\rVert}y$ is a subsingleton, which is equivalent to knowing that $\lVert A\rVert$ is a set. Because we do not yet know this, we are trapped in a circular reasoning.
+    One might be tempted to simplify the defining requirement $x\eq{\lVert A\rVert}y$ for all $x,y\colon\lVert A\rVert$, to merely $\lvert a\rvert\eq{\lVert A\rVert}\lvert b\rvert$ for all $a,b\colon A$, and then attempt to use induction on $\lVert A\rVert$ to deduce the former. However, to apply the induction principle, we must first show that the target family $C(x,y)\defeq x\eq{\lVert A\rVert}y$ is a predicate. This requires already knowing that the identity type $x\eq{\lVert A\rVert}y$ is a mere proposition, which is equivalent to knowing that $\lVert A\rVert$ is a set. Because we do not yet know this, we are trapped in a circular reasoning.
 
-    Imposing paths only on canonical elements fails to define a set. For instance, consider the type $\fun1+\fun2$. This type has exactly three discrete elements, say $x,y,z$, derived from injecting $\fun\star$ on the left, and $0_{\fun2}$ and $1_{\fun2}$ on the right. If we explicitly adjoin paths $p_{xy}\colon x\eq{}y$, $p_{yz}\colon y\eq{}z$, and $p_{xz}\colon x\eq{}z$, we obtain a hollow triangle. In this space, there are two distinct ways to travel from $x$ to $z$: the path $p_{xz}$, and the concatenation $p_{xy}\ct p_{yz}$. Because we have not explicitly stated that $p_{xz}\eq{}p_{xy}\ct p_{yz}$, these two paths are not equal. Consequently, the identity type $x\eq{}z$ is not a subsingleton, and the resulting type is not a set.
+    Imposing paths only on canonical elements fails to define a set. For instance, consider the type $\fun1+\fun2$. This type has exactly three discrete elements, say $x,y,z$, derived from injecting $\fun\star$ on the left, and $0_{\fun2}$ and $1_{\fun2}$ on the right. If we explicitly adjoin paths $p_{xy}\colon x\eq{}y$, $p_{yz}\colon y\eq{}z$, and $p_{xz}\colon x\eq{}z$, we obtain a hollow triangle. In this space, there are two distinct ways to travel from $x$ to $z$: the path $p_{xz}$, and the concatenation $p_{xy}\ct p_{yz}$. Because we have not explicitly stated that $p_{xz}\eq{}p_{xy}\ct p_{yz}$, these two paths are not equal. Consequently, the identity type $x\eq{}z$ is not a mere proposition, and the resulting type is not a set.
 \end{rem}
 
 \begin{lem}\label{lem:truncation-functor}
@@ -1029,23 +1029,23 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \end{lem}
 
 \begin{proof}
-    Given $f\colon A\to B$, we define the map $\lVert f\rVert$ using the recursion principle $\fun{rec}_{\lVert A\rVert}$. Since the target $\lVert B\rVert$ is a subsingleton, it suffices to define its action on the canonical constructor:
+    Given $f\colon A\to B$, we define the map $\lVert f\rVert$ using the recursion principle $\fun{rec}_{\lVert A\rVert}$. Since the target $\lVert B\rVert$ is a mere proposition, it suffices to define its action on the canonical constructor:
     \[
         \lVert f\rVert\defeq\fun{rec}_{\lVert A\rVert}(\lVert B\rVert,a\mapsto\lvert f(a)\rvert).
     \]
     
-    To prove the identity and composition laws, observe that in both cases the codomains $\lVert A\rVert$ and $\lVert C\rVert$ are subsingletons. By Theorem~\ref{thm:subsingletons}~b), the function spaces $\lVert A\rVert\to\lVert A\rVert$ and $\lVert A\rVert\to\lVert C\rVert$ are also subsingletons. Because any two inhabitants of a subsingleton are equal, the homotopies $\lVert\id_A\rVert\sim\id_{\lVert A\rVert}$ and $\lVert g\circ f\rVert\sim\lVert g\rVert\circ\lVert f\rVert$ are trivially inhabited.
+    To prove the identity and composition laws, observe that in both cases the codomains $\lVert A\rVert$ and $\lVert C\rVert$ are mere propositions. By Theorem~\ref{thm:mere-propositions}~b), the function spaces $\lVert A\rVert\to\lVert A\rVert$ and $\lVert A\rVert\to\lVert C\rVert$ are also mere propositions. Because any two inhabitants of a mere proposition are equal, the homotopies $\lVert\id_A\rVert\sim\id_{\lVert A\rVert}$ and $\lVert g\circ f\rVert\sim\lVert g\rVert\circ\lVert f\rVert$ are trivially inhabited.
 
-    Finally, suppose $f\colon A\to B$ is an equivalence with quasi-inverse $f^{-1}\colon B\to A$. Functoriality gives us maps $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$ and $\lVert f^{-1}\rVert\colon\lVert B\rVert\to\lVert A\rVert$. Since the target spaces are subsingletons, the compositions $\lVert f^{-1}\rVert\circ\lVert f\rVert$ and $\lVert f\rVert\circ\lVert f^{-1}\rVert$ are homotopic to $\id_{\lVert A\rVert}$ and $\id_{\lVert B\rVert}$, respectively. Thus, $\lVert f\rVert$ is an equivalence.
+    Finally, suppose $f\colon A\to B$ is an equivalence with quasi-inverse $f^{-1}\colon B\to A$. Functoriality gives us maps $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$ and $\lVert f^{-1}\rVert\colon\lVert B\rVert\to\lVert A\rVert$. Since the target spaces are mere propositions, the compositions $\lVert f^{-1}\rVert\circ\lVert f\rVert$ and $\lVert f\rVert\circ\lVert f^{-1}\rVert$ are homotopic to $\id_{\lVert A\rVert}$ and $\id_{\lVert B\rVert}$, respectively. Thus, $\lVert f\rVert$ is an equivalence.
     
 \end{proof}
 
-\begin{lem}\label{lem:subsingletons-are-truncated}
-    If $A$ is a subsingleton, then $A\eq{\univ}\lVert A\rVert$.
+\begin{lem}\label{lem:mere-propositions-are-truncated}
+    If $A$ is a mere proposition, then $A\eq{\univ}\lVert A\rVert$.
 \end{lem}
 
 \begin{proof}
-    Since $A$ is a subsingleton, recursion yields a function
+    Since $A$ is a mere proposition, recursion yields a function
     \[
         \fun{rec}_{\lVert A\rVert}(A,\id_A)\colon\lVert A\rVert\to A.
     \]
@@ -1053,7 +1053,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     \[
         \lvert{-}\rvert\colon A\to\lVert A\rVert,\quad a\mapsto\lvert a\rvert.
     \]
-    The conclusion follows from Lemma~\ref{lem:subsingleton-equivalence} and the univalence axiom.
+    The conclusion follows from Lemma~\ref{lem:mere-proposition-equivalence} and the univalence axiom.
 \end{proof}
 
 \begin{lem}\label{lem:trucated-eq-to-set-is-set}
@@ -1063,7 +1063,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \begin{proof}
     We must construct an inhabitant of the type $\fun{isSet}(A)$. 
     
-    By recursion for propositional truncation, to define a function $\lVert X\rVert\to P$, where $P$ is a subsingleton, it suffices to construct a map from $X$ to $P$. By Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, we know that $\fun{isSet}(C)$ is a subsingleton for every $C\colon\univ$. Hence, we can apply recursion to the case $X\defeq A\eq\univ S$ and $P\defeq\fun{isSet}(A)$.
+    By recursion for propositional truncation, to define a function $\lVert X\rVert\to P$, where $P$ is a mere proposition, it suffices to construct a map from $X$ to $P$. By Proposition~\ref{prop:isSet-and-isProp-are-mere-propositions}, we know that $\fun{isSet}(C)$ is a mere proposition for every $C\colon\univ$. Hence, we can apply recursion to the case $X\defeq A\eq\univ S$ and $P\defeq\fun{isSet}(A)$.
     
     To provide the function $f\colon(A\eq\univ S)\to\fun{isSet}(A)$, fix a witness $\epsilon\colon\fun{isSet}(S)$ and define:
     \[
@@ -1078,9 +1078,9 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \end{proof}
 
 \begin{ntn}\label{ntn:logic}
-    Truncation allows us to interpret traditional logical notation via the following type-theoretic operations. Although we will not adopt this notation extensively ---reserving it primarily for contexts strictly focused on sets and propositions--- it establishes a precise dictionary between classical logic and type theory. Here, $P$ and\/ $Q$ denote subsingletons (or subsingleton families), and\/ $A$ is an arbitrary type. 
+    Truncation allows us to interpret traditional logical notation via the following type-theoretic operations. Although we will not adopt this notation extensively ---reserving it primarily for contexts strictly focused on sets and propositions--- it establishes a precise dictionary between classical logic and type theory. Here, $P$ and\/ $Q$ denote mere propositions (or mere proposition families), and\/ $A$ is an arbitrary type. 
     
-    For operations that inherently preserve subsingletons, no truncation is necessary:
+    For operations that inherently preserve mere propositions, no truncation is necessary:
     \begin{align*}
         \top\defeq\fun1&\text{\upshape\ \& }\bot\defeq\fun0
             &\neg P&\defeq P\to\fun0\\[1.9mm]
@@ -1089,7 +1089,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
         P\Rightarrow Q&\defeq P\to Q
             &P\Leftrightarrow Q&\defeq P\eq\univ Q
     \end{align*}
-    For operations that can construct spaces with multiple distinct points, we must apply propositional truncation to strictly yield a subsingleton:
+    For operations that can construct spaces with multiple distinct points, we must apply propositional truncation to strictly yield a mere proposition:
     \begin{align*}
         P\lor Q&\defeq\lVert P+Q\rVert\\
         \exists(x\colon A).\,P(x)&\defeq\Bigl\lVert\sum_{x\colon A}P(x)\Bigr\rVert
@@ -1109,7 +1109,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     For a type\/ $A$, the following are logically equivalent.
     \begin{enumerate}[a), font=\upshape]
         \item $A$ is contractible.
-        \item $A$ is a subsingleton, and there is a point\/ $a\colon A$.
+        \item $A$ is a mere proposition, and there is a point\/ $a\colon A$.
         \item $A$ is equivalent to\/ $\fun1$.
     \end{enumerate}
 \end{lem}
@@ -1146,8 +1146,8 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $p(x)$ follows.
 \end{proof}
 
-\begin{thm}\label{thm:isContr-is-a-subsingleton}
-    For any type\/ $A$, the type\/ $\fun{isContr}(A)$ is a subsingleton.
+\begin{thm}\label{thm:isContr-is-a-mere-proposition}
+    For any type\/ $A$, the type\/ $\fun{isContr}(A)$ is a mere proposition.
 \end{thm}
 
 \begin{proof}
@@ -1184,7 +1184,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     \[
         p(b)^{-1}\ct p(x)\eq{b\eq{A}x}q(x).
     \]
-    Since $c$ witnesses that $A$ is contractible, $A$ is a subsingleton. By Remark~\ref{rem:ids-in-subsingletons-are-singletons}, $b\eq{A}x$ is a subsingleton. Since both $p(b)^{-1}\ct p(x)$ and $q(x)$ are elements of $b\eq{A}x$, they are necessarily equal. This completes the proof.
+    Since $c$ witnesses that $A$ is contractible, $A$ is a mere proposition. By Remark~\ref{rem:ids-in-mere-propositions-are-singletons}, $b\eq{A}x$ is a mere proposition. Since both $p(b)^{-1}\ct p(x)$ and $q(x)$ are elements of $b\eq{A}x$, they are necessarily equal. This completes the proof.
 \end{proof}
 
 \begin{cor}
@@ -1192,7 +1192,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \end{cor}
 
 \begin{proof}
-    By the theorem, $\fun{isContr}(A)$ is a subsingleton. It is also inhabited because $A$ is contractible.  The conclusion follows from part~b) of Lemma~\ref{lem:contractible-equivalences}.
+    By the theorem, $\fun{isContr}(A)$ is a mere proposition. It is also inhabited because $A$ is contractible.  The conclusion follows from part~b) of Lemma~\ref{lem:contractible-equivalences}.
 \end{proof}
 
 \begin{rem}\label{rem:choice-free-center-construction}
@@ -1229,7 +1229,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \end{thm}
 
 \begin{proof}
-    Since Theorem~\ref{thm:isContr-is-a-subsingleton} establishes that every contractible type is a subsingleton, Theorem~\ref{thm:subsingletons} guarantees that the constructed types are subsingletons. Therefore, by Lemma~\ref{lem:contractible-equivalences}, it suffices to show that each of them is inhabited. In cases a) to f), constructing a witness from the centers of contraction of the constituent contractible types is straightforward.
+    Since Theorem~\ref{thm:isContr-is-a-mere-proposition} establishes that every contractible type is a mere proposition, Theorem~\ref{thm:mere-propositions} guarantees that the constructed types are mere propositions. Therefore, by Lemma~\ref{lem:contractible-equivalences}, it suffices to show that each of them is inhabited. In cases a) to f), constructing a witness from the centers of contraction of the constituent contractible types is straightforward.
 
     To prove $g)$, observe that by part e) the identity type $f(x)\eq{B(x)}g(x)$ is contractible, which implies that $f\sim g$ is contractible by part~a).
 \end{proof}
@@ -1272,7 +1272,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
     \[
         p_c\eq{c\eq Ac}\fun{refl}_c,
     \]
-    because every contractible type is a subsingleton, and every subsingleton is a set.
+    because every contractible type is a mere proposition, and every mere proposition is a set.
 \end{rem}
 
 \begin{thm}\label{thm:contractible-data-ignored}
@@ -1374,7 +1374,7 @@ In the case of non-dependent subsingleton families, we have the recursion princi
         \[
             \gamma(\epsilon(\fun\star))\equiv\fun\star.
         \]
-        Since $P(x)$ is a subsingleton, there is a path $p_x\colon f_x^{-1}(\fun\star)\eq{P(x)}u(x)$. Hence,
+        Since $P(x)$ is a mere proposition, there is a path $p_x\colon f_x^{-1}(\fun\star)\eq{P(x)}u(x)$. Hence,
         \begin{align*}
             \epsilon(\gamma(u))(x)
                 &\equiv f_x^{-1}(\fun\star)\\
@@ -1406,13 +1406,13 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \end{proof}
 
 \begin{lem}
-    A type\/ $A$ is a subsingleton if, and only if, for all\/ $x,y\colon A$, the type\/ $x\eq Ay$ is contractible.
+    A type\/ $A$ is a mere proposition if, and only if, for all\/ $x,y\colon A$, the type\/ $x\eq Ay$ is contractible.
 \end{lem}
 
 \begin{proof}
-    If $A$ is a subsingleton, by Lemma~\ref{lem:subsingletons-are-sets}, it is also a set. Therefore, by definition, $x\eq Ay$ is a subsingleton. Since $x$ (as well as $y$) is a witness of $A$, it follows from Lemma~\ref{lem:contractible-equivalences} that $A$ is contractible. Hence, it has a center, say $c$, and we can take $p\colon c\eq Ax$ and $q\colon c\eq Ay$ to construct $p^{-1}\ct q\colon x\eq Ay$.
+    If $A$ is a mere proposition, by Lemma~\ref{lem:mere-propositions-are-sets}, it is also a set. Therefore, by definition, $x\eq Ay$ is a mere proposition. Since $x$ (as well as $y$) is a witness of $A$, it follows from Lemma~\ref{lem:contractible-equivalences} that $A$ is contractible. Hence, it has a center, say $c$, and we can take $p\colon c\eq Ax$ and $q\colon c\eq Ay$ to construct $p^{-1}\ct q\colon x\eq Ay$.
 
-    Conversely, if $x\eq Ay$ is contractible for all $x,y\colon A$, then $A$ is a subsingleton by definition.
+    Conversely, if $x\eq Ay$ is contractible for all $x,y\colon A$, then $A$ is a mere proposition by definition.
 \end{proof}
 
 \begin{defns}\label{defn:fiber-over-y}
@@ -1434,13 +1434,13 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \end{defns}
 
 \begin{lem}
-    For any function\/ $f\colon A\to B$, the type\/ $\fun{isContrMap}(f)$ is a subsingleton.
+    For any function\/ $f\colon A\to B$, the type\/ $\fun{isContrMap}(f)$ is a mere proposition.
 \end{lem}
 
 \begin{proof}
     By definition, the type of contractible maps is the dependent type given in \eqref{eq:isContrMap}.
 
-    By Theorem~\ref{thm:isContr-is-a-subsingleton}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a subsingleton for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:subsingletons}.
+    By Theorem~\ref{thm:isContr-is-a-mere-proposition}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a mere proposition for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:mere-propositions}.
     
 \end{proof}
 
@@ -1448,23 +1448,23 @@ In the case of non-dependent subsingleton families, we have the recursion princi
 \section{The Axiom of Choice}
 
 \begin{rem}
-    A consequence of part~d) of Theorem~\ref{thm:subsingletons} applies to the universes of sets and subsingletons, $\fun{Set}_\univ$ and $\fun{Prop}_\univ$. By definition, elements of these universes are dependent pairs consisting of a base type and a witness to its particular characteristic. 
+    A consequence of part~d) of Theorem~\ref{thm:mere-propositions} applies to the universes of sets and mere propositions, $\fun{Set}_\univ$ and $\fun{Prop}_\univ$. By definition, elements of these universes are dependent pairs consisting of a base type and a witness to its particular characteristic. 
     
-    Because the types $\fun{isSet}(A)$ and $\fun{isProp}(P)$ are themselves subsingletons, part~d) guarantees that the second coordinates of these pairs add no new information. In the language of type theory, being a set or a subsingleton is a \textit{property} of a type, rather than an additional \textit{structure} placed upon it. 
+    Because the types $\fun{isSet}(A)$ and $\fun{isProp}(P)$ are themselves mere propositions, part~d) guarantees that the second coordinates of these pairs add no new information. In the language of type theory, being a set or a mere proposition is a \textit{property} of a type, rather than an additional \textit{structure} placed upon it. 
 
     Consequently, the first projections from $\fun{Set}_\univ$ and $\fun{Prop}_\univ$ into $\univ$ are embeddings. This rigorously justifies a standard, ubiquitous abuse of notation: it is perfectly valid to systematically identify pairs $A\colon\fun{Set}_\univ$ and $P\colon\fun{Prop}_\univ$ with their first coordinates, safely treating them as plain types, e.g., writing $x\colon A$ instead of $x\colon\pi_1(A)$.
 
-    In particular, a type family $A\colon X\to\univ$ such that $\fun{isSet}(A(x))$ is inhabited for every $x\colon X$, will often be denoted as a family $A\colon X\to\fun{Set}_\univ$. Similarly, the notation $P\colon X\to\fun{Prop}_\univ$ refers to a subsingleton family, i.e., a family such that $P(x)$ is a subsingleton for all $x\colon X$.
+    In particular, a type family $A\colon X\to\univ$ such that $\fun{isSet}(A(x))$ is inhabited for every $x\colon X$, will often be denoted as a family $A\colon X\to\fun{Set}_\univ$. Similarly, the notation $P\colon X\to\fun{Prop}_\univ$ refers to a mere proposition family, i.e., a family such that $P(x)$ is a mere proposition for all $x\colon X$.
 \end{rem}
 
 \separator
 
 As we have seen in \nref{lpar:axiom-of-choice}, the ``naive'' extraction of a choice function from a dependent pair is a direct consequence of the rules for $\Pi$- and $\Sigma$-types, requiring no axioms. However, this relies on having the explicit data of the elements. 
 
-To formulate the classical Axiom of Choice, we must express the proposition that a choice function exists even when the specific witnesses have been truncated into subsingletons. 
+To formulate the classical Axiom of Choice, we must express the proposition that a choice function exists even when the specific witnesses have been truncated into mere propositions. 
 
 \begin{defn}\label{defn:tac}
-    Let $X$ be a set, $A\colon X\to\fun{Set}_\univ$ be a family of sets, and $P\colon\prod_{x\colon X} A(x)\to\fun{Prop}_\univ$ be a family of subsingletons. The \textsl{axiom of choice} is the following inhabitancy assertion:
+    Let $X$ be a set, $A\colon X\to\fun{Set}_\univ$ be a family of sets, and $P\colon\prod_{x\colon X} A(x)\to\fun{Prop}_\univ$ be a family of mere propositions. The \textsl{axiom of choice} is the following inhabitancy assertion:
     \begin{equation}\label{eq:tac}
         \tac\colon
             \Bigl(
@@ -1537,14 +1537,14 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
 
 \begin{thm}\label{thm:generalized-total-space}
-    Let\/ $P\colon\univ\to\fun{Prop}_\univ$ be a subsingleton family. Then, for any\/ $u\equiv\dep{A,p}$ and\/ $v\equiv\dep{B,q}$ in\/ $\Sigma_\univ P$, there is an equivalence:
+    Let\/ $P\colon\univ\to\fun{Prop}_\univ$ be a mere proposition family. Then, for any\/ $u\equiv\dep{A,p}$ and\/ $v\equiv\dep{B,q}$ in\/ $\Sigma_\univ P$, there is an equivalence:
     \[
         (u\eq{\Sigma_\univ P}v)\simeq(A\simeq B).
     \]
 \end{thm}
 
 \begin{proof}
-    By Lemma~\ref{lem:total-space-with-subsingleton-fibers}, there is an equivalence:
+    By Lemma~\ref{lem:total-space-with-mere-proposition-fibers}, there is an equivalence:
     \[
         (u\eq{\Sigma_\univ P}v)\simeq(A\eq{\univ}B).
     \]
@@ -1610,7 +1610,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         f(\zeta)\colon\Big\lVert\prod_{x\colon X}x_0\eq Xx\Bigr\rVert.
     \]
-    Since $\fun{isContr}(X)$ is a subsingleton by Theorem~\ref{thm:isContr-is-a-subsingleton}, using recursion on the \rhs, to construct a map
+    Since $\fun{isContr}(X)$ is a mere proposition by Theorem~\ref{thm:isContr-is-a-mere-proposition}, using recursion on the \rhs, to construct a map
     \[
         \Big\lVert\prod_{x\colon X}x_0\eq Xx\Bigr\rVert\to\fun{isContr}(X),
     \]
@@ -1620,7 +1620,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     which we can do by setting $\iota(g)\defeq\dep{x_0,g}$.
 
-    Applying the recursion principle of the propositional truncation, we obtain an element of $\fun{isContr}(X)$. Since $\fun{isContr}(X)$ is a subsingleton, and every subsingleton is a set [cf.~Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}], by composition we obtain a witness
+    Applying the recursion principle of the propositional truncation, we obtain an element of $\fun{isContr}(X)$. Since $\fun{isContr}(X)$ is a mere proposition, and every mere proposition is a set [cf.~Proposition~\ref{prop:isSet-and-isProp-are-mere-propositions}], by composition we obtain a witness
     \[
         \epsilon\colon\Bigl\lVert\prod_{x\colon X}x_0\eq Xx\Bigr\rVert\to\fun0.
     \]
@@ -1641,7 +1641,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         \fun{ap}_{f^{-1}}(p),\fun{ap}_{f^{-1}}(q)
             \colon f^{-1}(x)\eq A f^{-1}(y).
     \]
-    Since $A$ is a set, its identity types are subsingletons. Therefore,
+    Since $A$ is a set, its identity types are mere propositions. Therefore,
     \[
         \fun{ap}_{f^{-1}}(p)
         \eq{f^{-1}(x)\eq A f^{-1}(y)}
@@ -1718,11 +1718,11 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}
-    Show that\/ $A$ is a subsingleton if, and only if, $A\to A$ is contractible.
+    Show that\/ $A$ is a mere proposition if, and only if, $A\to A$ is contractible.
 \end{exr}
 
 \begin{proof}
-    Suppose that $A$ is a subsingleton. By part b) of Theorem~\ref{thm:subsingletons}, the type $A\to A$ is also a subsingleton. Since $\id_A\colon A\to A$, it is inhabited. Therefore, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
+    Suppose that $A$ is a mere proposition. By part b) of Theorem~\ref{thm:mere-propositions}, the type $A\to A$ is also a mere proposition. Since $\id_A\colon A\to A$, it is inhabited. Therefore, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
 
     Conversely, assume that $A\to A$ is contractible. Define
     \begin{align*}
@@ -1749,7 +1749,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{exr}
 
 \begin{solution}
-    By Theorem~\ref{thm:isContr-is-a-subsingleton}, $\fun{isContr}(A)$ is a subsingleton. By part b) of Theorem~\ref{thm:subsingletons}, $A\to\fun{isContr}(A)$ is a subsingleton.
+    By Theorem~\ref{thm:isContr-is-a-mere-proposition}, $\fun{isContr}(A)$ is a mere proposition. By part b) of Theorem~\ref{thm:mere-propositions}, $A\to\fun{isContr}(A)$ is a mere proposition.
 
     Consider
     \begin{align*}
@@ -1771,15 +1771,15 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         \pi_2(f(x))(x)^{-1}\ct\pi_2(f(x))(y)\colon x\eq Ay.
     \]
-    The result follows from Lemma~\ref{lem:subsingleton-equivalence}.
+    The result follows from Lemma~\ref{lem:mere-proposition-equivalence}.
 \end{solution}
 
-\begin{exr}\label{exr:A+negA-is-subsingleton}
-    Show that if\/ $A$ is a subsingleton, then so is\/ $A+\neg A$. In particular, in the context of\/ {\upshape Notation~\ref{ntn:logic}}, there is no need to apply propositional truncation to define $A\lor\neg A\defeq A+\neg A$.
+\begin{exr}\label{exr:A+negA-is-mere-proposition}
+    Show that if\/ $A$ is a mere proposition, then so is\/ $A+\neg A$. In particular, in the context of\/ {\upshape Notation~\ref{ntn:logic}}, there is no need to apply propositional truncation to define $A\lor\neg A\defeq A+\neg A$.
 \end{exr}
 
 \begin{solution}
-    By part~e) of Theorem~\ref{thm:subsingletons}, it suffices to show that there is a map
+    By part~e) of Theorem~\ref{thm:mere-propositions}, it suffices to show that there is a map
     \[
         A\to((A\to\fun0)\to\fun0).
     \]
@@ -1789,16 +1789,16 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
 \end{solution}
 
-\begin{exr}\label{exr:when-isequiv-is-subsingleton}
+\begin{exr}\label{exr:when-isequiv-is-mere-proposition}
     Assume that some type\/ $\fun{isequiv}(f)$ satisfies that, for any two inhabitants\/ $e_1,e_2\colon\fun{isequiv}(f)$, we have\/ $e_1\eq{\fun{isequiv}(f)}e_2$. Show that the type\/ $\lVert\fun{qinv}(f)\rVert$ satisfies the same condition and is equivalent to\/ $\fun{isequiv}(f)$.
 \end{exr}
 
 \begin{solution}
-    The condition on $\fun{isequiv}(f)$ means that it is a subsingleton. By Lemma~\ref{lem:subsingletons-are-truncated}, $\fun{isequiv}(f)\eq\univ\lVert\fun{isequiv}(f)\rVert$. Thus, the map $\fun{qinv}(f)\to\fun{isequiv}(f)$ from Proposition~\ref{prop:qinv<->isequiv} induces a map $\lVert\fun{qinv}(f)\rVert\to\fun{isequiv}(f)$.
+    The condition on $\fun{isequiv}(f)$ means that it is a mere proposition. By Lemma~\ref{lem:mere-propositions-are-truncated}, $\fun{isequiv}(f)\eq\univ\lVert\fun{isequiv}(f)\rVert$. Thus, the map $\fun{qinv}(f)\to\fun{isequiv}(f)$ from Proposition~\ref{prop:qinv<->isequiv} induces a map $\lVert\fun{qinv}(f)\rVert\to\fun{isequiv}(f)$.
     
     On the other hand, the map $\fun{isequiv}(f)\to\fun{qinv}(f)$ from the same proposition, followed by $\fun{qinv}(f)\to\lVert\fun{qinv}(f)\rVert$, $e\mapsto\lvert e\rvert$, is a function $\fun{isequiv}(f)\to\lVert\fun{qinv}(f)\rVert$.
 
-    By Lemma~\ref{lem:subsingleton-equivalence}, we deduce that $\lVert\fun{qinv}(f)\rVert\simeq\fun{isequiv}(f)$. Moreover, $\lVert\fun{qinv}(f)\rVert$ trivially satisfies the condition because it is a subsingleton.
+    By Lemma~\ref{lem:mere-proposition-equivalence}, we deduce that $\lVert\fun{qinv}(f)\rVert\simeq\fun{isequiv}(f)$. Moreover, $\lVert\fun{qinv}(f)\rVert$ trivially satisfies the condition because it is a mere proposition.
     %
     
 \end{solution}
@@ -1812,7 +1812,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
 \begin{solution}
 
-    \textsc{Idea:} The $\Sigma$-type defines two groups of subsingleton types: the empty ones and the contractible ones.
+    \textsc{Idea:} The $\Sigma$-type defines two groups of mere proposition types: the empty ones and the contractible ones.
     
     Fix $A\colon\univ$. By hypothesis, there exists a function $\lambda\colon\fun{Lem}$ satisfying
     \[
@@ -1865,12 +1865,12 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \end{align*}
     Therefore, it suffices to prove that $\tau(c_A(z))\eq{}\dep{A,\epsilon}$ for all $z\colon A+\neg A$. By induction on $A+\neg A$, we are reduced to the cases $z\equiv\fun{inl}(a)$ and $z\equiv\fun{inr}(\zeta)$, where $a\colon A$ and $\zeta\colon A\to\fun0$.
 
-    In the first case, the goal reduces to showing that $\dep{\fun1,\epsilon_1}\eq{}\dep{A,\epsilon}$ is inhabited. Since $\epsilon\colon\fun{isProp}(A)$, $A$ is a subsingleton. By Lemma~\ref{lem:contractible-equivalences}, it is contractible because $a\colon A$. By the same lemma, it follows that $A\simeq\fun1$. Hence, the univalence axiom implies the existence of a path $p\colon\fun1\eq\univ A$. To prove the goal, we have to show that
+    In the first case, the goal reduces to showing that $\dep{\fun1,\epsilon_1}\eq{}\dep{A,\epsilon}$ is inhabited. Since $\epsilon\colon\fun{isProp}(A)$, $A$ is a mere proposition. By Lemma~\ref{lem:contractible-equivalences}, it is contractible because $a\colon A$. By the same lemma, it follows that $A\simeq\fun1$. Hence, the univalence axiom implies the existence of a path $p\colon\fun1\eq\univ A$. To prove the goal, we have to show that
     \[
         \fun{transport}^{\fun{isProp}}(p,\epsilon_1)
             \eq{\fun{isProp}(A)}\epsilon,
     \]
-    which holds trivially because, by Proposition~\ref{prop:isSet-and-isProp-are-subsingletons}, $\fun{isProp}(A)$ is a subsingleton.
+    which holds trivially because, by Proposition~\ref{prop:isSet-and-isProp-are-mere-propositions}, $\fun{isProp}(A)$ is a mere proposition.
 
     In the second case, the goal reduces to proving that $\dep{\fun0,\epsilon_0}\eq{}\dep{A,\epsilon}$.
 
@@ -1890,7 +1890,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         \fun{ind}_{\fun0}(\lambda u.\,g(u)\eq Ax,z). \tag*{\lqed}
     \]
-    It remains to be shown that $\fun{transport}^{\fun{isProp}}(p,\epsilon_0)\eq{\fun{isProp}(A)}\epsilon$, where $p\colon\fun0\eq\univ A$. Again, this is trivial because $\fun{isProp}(A)$ is a subsingleton.
+    It remains to be shown that $\fun{transport}^{\fun{isProp}}(p,\epsilon_0)\eq{\fun{isProp}(A)}\epsilon$, where $p\colon\fun0\eq\univ A$. Again, this is trivial because $\fun{isProp}(A)$ is a mere proposition.
     %
     
 \end{solution}
@@ -1946,7 +1946,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \end{align*}
     where $\lambda$ is the witness of $\fun{Lem}\colon\univ_{i+1}$ given by hypothesis, and $c_A\colon(A+\neg A)\to\fun2$ is the map of the previous exercise.
 
-    We claim that $\tau_i(c_A(z))\eq{}\dep{A,\epsilon}$ for all $A\colon\univ_i$ and $z\colon A+\neg A$. But this was proved in the previous exercise by induction on $z$, using the fact that $\fun{isProp}(A)$ is a subsingleton (and not that $\fun{Lem}\colon\univ_i$ was inhabited).
+    We claim that $\tau_i(c_A(z))\eq{}\dep{A,\epsilon}$ for all $A\colon\univ_i$ and $z\colon A+\neg A$. But this was proved in the previous exercise by induction on $z$, using the fact that $\fun{isProp}(A)$ is a mere proposition (and not that $\fun{Lem}\colon\univ_i$ was inhabited).
 
     Therefore, $\tau_i$ and $\phi$ are quasi-inverses, which implies that $\iota_i$ induces an equivalence.
     %
@@ -1954,11 +1954,11 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}
-    Show that it is not the case that for all\/ $A\colon\univ$ we have\/ $\lVert A\rVert\to A$. (However, there can be particular types for which\/ $\lVert A\rVert\to A$. {\upshape Exercise~\ref{exr:when-isequiv-is-subsingleton}} implies that\/ $\fun{qinv}(f)$ is such.)
+    Show that it is not the case that for all\/ $A\colon\univ$ we have\/ $\lVert A\rVert\to A$. (However, there can be particular types for which\/ $\lVert A\rVert\to A$. {\upshape Exercise~\ref{exr:when-isequiv-is-mere-proposition}} implies that\/ $\fun{qinv}(f)$ is such.)
 \end{exr}
 
 \begin{solution}
-    Note that if $A$ has a witness $a\colon A$, then $\lVert A\rVert$ is an inhabited subsingleton, hence equivalent to $\fun1$. Thus, we can define a map $\lVert A\rVert\to A$ as the composition $\lVert A\rVert\to\fun1\to A$, where the second map is defined by mapping $\star\colon\fun1$ to~$a$. What the exercise emphasizes is the nonexistence of a general function that would identify a witness of each inhabited type.
+    Note that if $A$ has a witness $a\colon A$, then $\lVert A\rVert$ is an inhabited mere proposition, hence equivalent to $\fun1$. Thus, we can define a map $\lVert A\rVert\to A$ as the composition $\lVert A\rVert\to\fun1\to A$, where the second map is defined by mapping $\star\colon\fun1$ to~$a$. What the exercise emphasizes is the nonexistence of a general function that would identify a witness of each inhabited type.
 
     To solve the exercise, we have to define a map
     \[
@@ -1983,7 +1983,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             \circ u(A)
             \circ\fun{transport}^{\lVert-\rVert}(p^{-1}).
     \]
-    By Theorem~\ref{thm:idtoeqv-def}, the first transport on the \rhs induces the equivalence $\fun{idtoeqv}\colon A\simeq B$. The second can be any map $\lVert B\rVert\to\lVert A\rVert$, because this function type is a subsingleton.
+    By Theorem~\ref{thm:idtoeqv-def}, the first transport on the \rhs induces the equivalence $\fun{idtoeqv}\colon A\simeq B$. The second can be any map $\lVert B\rVert\to\lVert A\rVert$, because this function type is a mere proposition.
 
     In particular, if $p\equiv\fun{ua}(e)$ for some equivalence $e\colon A\simeq B$, the path $\fun{apd}_u(p)$ induces a path
     \[
@@ -2104,7 +2104,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}\label{exr:lem-implies-neg-neg-equals-truncation}
-    Show that assuming\/ $\fun{Lem}$, the double negation\/ $\neg\neg A$ has the same recursion principle as the propositional truncation\/ $\lVert A\rVert$ but with a propositional computation rule rather than a judgmental one. In other words, prove that assuming\/ $\fun{Lem}$, if\/ $B$ is a subsingleton and we have\/ $f\colon A\to B$, then there is an induced\/ $g\colon\neg\neg A\to B$ such that\/ $g(\lambda u.\,u(a))\eq Bf(a)$ for all\/ $a\colon A$. Deduce that (assuming\/ $\fun{Lem}$) we have\/ $\neg\neg A\simeq\lVert A\rVert$. Thus, under\/ $\fun{Lem}$, the propositional truncation can be defined rather than taken as a separate type former.
+    Show that assuming\/ $\fun{Lem}$, the double negation\/ $\neg\neg A$ has the same recursion principle as the propositional truncation\/ $\lVert A\rVert$ but with a propositional computation rule rather than a judgmental one. In other words, prove that assuming\/ $\fun{Lem}$, if\/ $B$ is a mere proposition and we have\/ $f\colon A\to B$, then there is an induced\/ $g\colon\neg\neg A\to B$ such that\/ $g(\lambda u.\,u(a))\eq Bf(a)$ for all\/ $a\colon A$. Deduce that (assuming\/ $\fun{Lem}$) we have\/ $\neg\neg A\simeq\lVert A\rVert$. Thus, under\/ $\fun{Lem}$, the propositional truncation can be defined rather than taken as a separate type former.
 \end{exr}
 
 \begin{solution}
@@ -2164,13 +2164,13 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     Hence, we can define $g\defeq\theta\circ\neg\neg f$.
     
-    To verify that $g(\ev a)\eq Bf(a)$, i.e., that the square above commutes for $\theta$, recall that $B$ is a subsingleton and $\pi(g(\ev a),f(a))$ provides the required path.
+    To verify that $g(\ev a)\eq Bf(a)$, i.e., that the square above commutes for $\theta$, recall that $B$ is a mere proposition and $\pi(g(\ev a),f(a))$ provides the required path.
 
-    Note that since $\neg\neg X\equiv(\neg X\to\fun0)$, both $\neg\neg A$ and $\neg\neg B$ are subsingletons. In particular, $\ev{}$ and $\theta$ are quasi-inverses of each other by Lemma~\ref{lem:subsingleton-equivalence}.
+    Note that since $\neg\neg X\equiv(\neg X\to\fun0)$, both $\neg\neg A$ and $\neg\neg B$ are mere propositions. In particular, $\ev{}$ and $\theta$ are quasi-inverses of each other by Lemma~\ref{lem:mere-proposition-equivalence}.
 
     In the case where $B\defeq\lVert A\rVert$ and $f$ is the canonical constructor $a\mapsto\lvert a\rvert$, the map $g\colon\neg\neg A\to\lVert A\rVert$ satisfies $g(\ev a)\eq{\lVert A\rVert}\lvert a\rvert$ for all $a\colon A$.
 
-    Take an element $u\colon\neg A$. Since $u\colon A\to\fun0$ and $\fun0$ is a subsingleton, we obtain an element $\fun{rec}_{\lVert A\rVert}(\fun0,u)\colon\lVert A\rVert\to\fun0$. This defines a map
+    Take an element $u\colon\neg A$. Since $u\colon A\to\fun0$ and $\fun0$ is a mere proposition, we obtain an element $\fun{rec}_{\lVert A\rVert}(\fun0,u)\colon\lVert A\rVert\to\fun0$. This defines a map
     \begin{align*}
         \rho\colon\neg A&\to\neg\lVert A\rVert\\
         u&\mapsto\fun{rec}_{\lVert A\rVert}(\fun0,u),
@@ -2193,7 +2193,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
                     %\arrow[u,"{\ev{}[\simeq]}"']
         \end{tikzcd}
     \]
-    Now Lemma~\ref{lem:subsingleton-equivalence} implies that the top horizontal functions are mutual quasi-inverses. In particular, $g$ induces the desired equivalence $\neg\neg A\simeq\lVert A\rVert$.
+    Now Lemma~\ref{lem:mere-proposition-equivalence} implies that the top horizontal functions are mutual quasi-inverses. In particular, $g$ induces the desired equivalence $\neg\neg A\simeq\lVert A\rVert$.
     %
 
 \end{solution}
@@ -2205,15 +2205,15 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             \prod_{P\colon\fun{Prop}_\univ}(A\to P)\to P
         \]
         has the same recursion principle as\/ $\lVert A\rVert$, at least relative to propositions in\/ $\univ$, with the same judgmental computation rule.
-        \item The type considered in the previous part does not lie in the same universe\/ $\univ$, and its recursion principle only applies to subsingletons in\/ $\univ$. Show that if we assume propositional resizing, we can define a type that does lie in the same universe\/ $\univ$ and satisfies the same recursion principle as\/ $\lVert A\rVert$, albeit with only a propositional computation rule. Thus, we can also define the propositional truncation in this case.
+        \item The type considered in the previous part does not lie in the same universe\/ $\univ$, and its recursion principle only applies to mere propositions in\/ $\univ$. Show that if we assume propositional resizing, we can define a type that does lie in the same universe\/ $\univ$ and satisfies the same recursion principle as\/ $\lVert A\rVert$, albeit with only a propositional computation rule. Thus, we can also define the propositional truncation in this case.
     \end{enumerate}
 \end{exr}
 
 \begin{solution}${}$
     \begin{enumerate}[a)]
-        \item Let $\Pi$ denote the $\Pi$-type defined in the statement. We have to prove that $(\Pi\to Q)\simeq(A\to Q)$ for all subsingletons $Q\colon\univ$.
+        \item Let $\Pi$ denote the $\Pi$-type defined in the statement. We have to prove that $(\Pi\to Q)\simeq(A\to Q)$ for all mere propositions $Q\colon\univ$.
 
-        Fix a subsingleton $Q$. Define the forward map as
+        Fix a mere proposition $Q$. Define the forward map as
         \begin{align*}
             \varphi\colon(\Pi\to Q)&\to(A\to Q)\\
             \alpha&\mapsto\lambda a.\,\alpha(\lambda P.\,\ev a^P),
@@ -2242,14 +2242,14 @@ To formulate the classical Axiom of Choice, we must express the proposition that
                         \lambda a.\,\alpha(\lambda P.\,\ev a^P)
                     \bigr)\\
                 &\equiv\lambda\pi.\,\pi(Q)(\lambda a.\,\alpha(\lambda P.\,\ev a^P)).
-        \intertext{Since this cannot be definitionally reduced to $\alpha$, we resort to the fact that $\Pi\to Q$ is a subsingleton, and so}
+        \intertext{Since this cannot be definitionally reduced to $\alpha$, we resort to the fact that $\Pi\to Q$ is a mere proposition, and so}
             (\psi\circ\varphi)(\alpha)&\eq{\Pi\to Q}\alpha.
         \end{align*}
-        Given that $A\to Q$ is also a subsingleton, the equivalence follows from Lemma~\ref{lem:subsingleton-equivalence}.
+        Given that $A\to Q$ is also a mere proposition, the equivalence follows from Lemma~\ref{lem:mere-proposition-equivalence}.
 
         It remains to be shown that the recursion principle of $\Pi$ evaluates judgmentally in the same way as that of the truncation.
         
-        Before verifying this property, let us emphasize that, since $\Pi$ quantifies over all subsingletons of $\univ$, it cannot belong to $\univ$ and becomes an element of a universe above it. This differs from the type former $\lVert-\rVert$, which produces a type $\lVert A\rVert$ in the same universe as $A$.
+        Before verifying this property, let us emphasize that, since $\Pi$ quantifies over all mere propositions of $\univ$, it cannot belong to $\univ$ and becomes an element of a universe above it. This differs from the type former $\lVert-\rVert$, which produces a type $\lVert A\rVert$ in the same universe as $A$.
         
         To check the recursion principle of $\Pi$, let us define
         \begin{align*}
@@ -2286,9 +2286,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
         Let $\univ\equiv\univ_i$ and define $\univ'\defeq\univ_{i+1}$. In the case of $\Pi$, since $(A\to P)\to P\colon\univ$ for all $P\colon\fun{Prop}_{\univ}$, and the domain $\fun{Prop}_{\univ}\colon\univ'$, we deduce that $\Pi\colon\univ'$.
         
-        By part a) of Theorem~\ref{thm:subsingletons}, a product of subsingletons is a subsingleton, so $\Pi$ is a subsingleton. This means that it represents an element of $\fun{Prop}_{\univ'}$. 
+        By part a) of Theorem~\ref{thm:mere-propositions}, a product of mere propositions is a mere proposition, so $\Pi$ is a mere proposition. This means that it represents an element of $\fun{Prop}_{\univ'}$. 
         
-        If propositional resizing is assumed, the equivalence $\fun{Prop}_{\univ}\simeq\fun{Prop}_{\univ'}$ provides a subsingleton $\Pi'\colon\fun{Prop}_{\univ}$ that is equivalent to $\Pi$. Its underlying type belongs to $\univ$. Because $\Pi'$ and $\Pi$ are equivalent, maps out of $\Pi'$ into any proposition $Q\colon\univ$ are equivalent to maps out of $\Pi$, meaning $\Pi'$ satisfies the same recursion principle.
+        If propositional resizing is assumed, the equivalence $\fun{Prop}_{\univ}\simeq\fun{Prop}_{\univ'}$ provides a mere proposition $\Pi'\colon\fun{Prop}_{\univ}$ that is equivalent to $\Pi$. Its underlying type belongs to $\univ$. Because $\Pi'$ and $\Pi$ are equivalent, maps out of $\Pi'$ into any proposition $Q\colon\univ$ are equivalent to maps out of $\Pi$, meaning $\Pi'$ satisfies the same recursion principle.
         
         Because the recursion for $\Pi'$ is inherited from its equivalence with $\Pi$, its computation rule only holds propositionally.
         
@@ -2299,7 +2299,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
 
 \begin{exr}
-    Assuming $\fun{Lem}$, show that double negation commutes with universal quantification of subsingletons over sets. That is, show that if $X$ is a set and each $C(x)$ is a subsingleton, then $\fun{Lem}$ implies
+    Assuming $\fun{Lem}$, show that double negation commutes with universal quantification of mere propositions over sets. That is, show that if $X$ is a set and each $C(x)$ is a mere proposition, then $\fun{Lem}$ implies
     \[
         \Bigl(
             \prod_{x\colon X}\neg\neg C(x)
@@ -2341,7 +2341,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     which is well-typed because $e(x)(f(x))\colon C(x)$.
 
-    Let $\Pi$ be the dependent product on the \rhs of $(\dag)$. By part a) of Theorem~\ref{thm:subsingletons}, we know that $\Pi$ is a subsingleton. Hence,
+    Let $\Pi$ be the dependent product on the \rhs of $(\dag)$. By part a) of Theorem~\ref{thm:mere-propositions}, we know that $\Pi$ is a mere proposition. Hence,
     \[
         \ell(\Pi)(\zeta)\colon\Pi+\neg\Pi,
     \]
@@ -2359,7 +2359,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         \psi\colon\Bigl(\neg\neg\prod_{x\colon X}C(x)\Bigr)
             \to\prod_{x\colon X}\neg\neg C(x).
     \]
-    Given that both sides of $(\dag)$ are subsingletons, their equivalence follows from Lemma~\ref{lem:subsingleton-equivalence}.
+    Given that both sides of $(\dag)$ are mere propositions, their equivalence follows from Lemma~\ref{lem:mere-proposition-equivalence}.
 
     As proved in Exercise~\ref{exr:lem-implies-neg-neg-equals-truncation}, double negation and truncation are equivalent in $\fun{Lem}$ is assumed. Therefore, $(\dag)$ is equivalent to
     \[
@@ -2439,7 +2439,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         \fun{isProp}(A)\to(A+\neg A).
     \]
-    For any $\epsilon\colon\fun{isProp}(A)$, we have $h(A)(\epsilon)\colon\neg\neg A\to A$. By Exercise~\ref{exr:A+negA-is-subsingleton}, the type $A+\neg A$ is a subsingleton. Therefore, applying the hypothesis $h$ to $A+\neg A$ yields a map
+    For any $\epsilon\colon\fun{isProp}(A)$, we have $h(A)(\epsilon)\colon\neg\neg A\to A$. By Exercise~\ref{exr:A+negA-is-mere-proposition}, the type $A+\neg A$ is a mere proposition. Therefore, applying the hypothesis $h$ to $A+\neg A$ yields a map
     \[
         h(A+\neg A)\colon\neg\neg(A+\neg A)\to(A+\neg A).
     \]
@@ -2453,12 +2453,12 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{solution}
 
-\begin{exr}\label{exr:decidable+subsingleton-family}
-    Suppose\/ $P\colon\N\to\univ$ is a decidable family\footnote{Definition~\ref{defn:lem}.} of subsingletons. Prove that
+\begin{exr}\label{exr:decidable+mere-proposition-family}
+    Suppose\/ $P\colon\N\to\univ$ is a decidable family\footnote{Definition~\ref{defn:lem}.} of mere propositions. Prove that
     \[
         \Bigl\lVert\sum_{n\colon\N}P(n)\Bigr\rVert\to\sum_{n\colon\N}P(n).
     \]
-    {\upshape Hint: If $F\colon\N\to\univ$ is a subsingleton family such that $F(n)\eq\univ F(m)$ only when $n\eq\N m$, then $\Sigma_\N F$ is a subsingleton.}
+    {\upshape Hint: If $F\colon\N\to\univ$ is a mere proposition family such that $F(n)\eq\univ F(m)$ only when $n\eq\N m$, then $\Sigma_\N F$ is a mere proposition.}
 \end{exr}
 
 \begin{solution}
@@ -2470,24 +2470,24 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         Q(n)\defeq\prod_{k\colon\N}(k<n)\to\neg P(k)
     \]
-    is a subsingleton by Theorem~\ref{thm:subsingletons}.
+    is a mere proposition by Theorem~\ref{thm:mere-propositions}.
     The dependent type
     \[
         F(n)\defeq Q(n)\times P(n),
     \]
-    which is also a subsingleton by the same theorem, is inhabited when $n$ is the first natural number such that $P(n)$ is true.
+    which is also a mere proposition by the same theorem, is inhabited when $n$ is the first natural number such that $P(n)$ is true.
 
     Now consider
     \[
         S\defeq\sum_{n\colon\N}F(n).
     \]
-    We claim that $S$ is a subsingleton. Intuitively, it is clear that $S$ can have at most one inhabitant. Take two elements $\dep{n,f}$ and $\dep{k,g}$ of $S$. By Lemma~\ref{lem:total-space-with-subsingleton-fibers}, to show that they are equal it suffices to show that $n\eq\N k$. If $u\colon k<n$, then
+    We claim that $S$ is a mere proposition. Intuitively, it is clear that $S$ can have at most one inhabitant. Take two elements $\dep{n,f}$ and $\dep{k,g}$ of $S$. By Lemma~\ref{lem:total-space-with-mere-proposition-fibers}, to show that they are equal it suffices to show that $n\eq\N k$. If $u\colon k<n$, then
     \[
         \pi_1(f)(u)\colon\neg P(k).
     \]
     However, $\pi_2(g)\colon P(k)$, which yields $\pi_1(f)(u)(\pi_2(g))\colon\fun0$.
 
-    By symmetry, $n<k$ also yields a contradiction. Hence, by part~d) of Proposition~\ref{prop:decidability-of-equality-on-N}, we deduce that $n\eq\N k$, proving our claim that $S$ is a subsingleton.
+    By symmetry, $n<k$ also yields a contradiction. Hence, by part~d) of Proposition~\ref{prop:decidability-of-equality-on-N}, we deduce that $n\eq\N k$, proving our claim that $S$ is a mere proposition.
 
     Consequently, by recursion on the truncated type, to define a map $\lVert\Sigma_\N P\rVert\to S$, it suffices to define a map $\Sigma_\N P\to S$. And since the second projection induces a map from $S$ to $\Sigma_\N P$, the solution would be complete if we define said map.
     
@@ -2558,9 +2558,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{exr}
 
 \begin{solution}
-    As shown in Lemma~\ref{lem:subsingletons-are-truncated}, if $P$ is a subsingleton, we have a map $\fun{rec}_{\lVert P\rVert}(P,\id_P)\colon\lVert P\rVert\to P$. Since we also have the canonical injection $P\to\lVert P\rVert$, by Lemma~\ref{lem:subsingleton-equivalence}, we deduce that there is a map $\fun{isProp}(P)\to(P\simeq\lVert P\rVert)$.
+    As shown in Lemma~\ref{lem:mere-propositions-are-truncated}, if $P$ is a mere proposition, we have a map $\fun{rec}_{\lVert P\rVert}(P,\id_P)\colon\lVert P\rVert\to P$. Since we also have the canonical injection $P\to\lVert P\rVert$, by Lemma~\ref{lem:mere-proposition-equivalence}, we deduce that there is a map $\fun{isProp}(P)\to(P\simeq\lVert P\rVert)$.
 
-    By Proposition~\ref{prop:isSet-and-isProp-are-subsingletons} and part~f) of Theorem~\ref{thm:subsingletons}, both $\fun{isProp}(P)$ and $P\simeq\lVert P\rVert$ are subsingletons. Consequently, by Lemma~\ref{lem:subsingleton-equivalence}, to prove their equivalence it suffices to construct a backward map.
+    By Proposition~\ref{prop:isSet-and-isProp-are-mere-propositions} and part~f) of Theorem~\ref{thm:mere-propositions}, both $\fun{isProp}(P)$ and $P\simeq\lVert P\rVert$ are mere propositions. Consequently, by Lemma~\ref{lem:mere-proposition-equivalence}, to prove their equivalence it suffices to construct a backward map.
 
     Let $(f,\eta,\vartheta)\colon P\simeq\lVert P\rVert$, where $f\colon P \to \lVert P \rVert$ is the forward map and $g\colon \lVert P \rVert \to P$ is its quasi-inverse. Given $x,y\colon P$, we have a path
     \[
@@ -2576,7 +2576,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             &\eq{P} y
                 &&\text{by } \eta(y),
     \end{align*}
-    which proves that $P$ is a subsingleton. Thus, we can define the map
+    which proves that $P$ is a mere proposition. Thus, we can define the map
     \[
         (P\simeq\lVert P\rVert)\to\fun{isProp}(P),
             \quad\dep{f,(\eta,\vartheta)}\mapsto\epsilon,
@@ -2644,26 +2644,26 @@ To formulate the classical Axiom of Choice, we must express the proposition that
                 \lVert A\rVert\times\lVert B\rVert,r
             ),
     \end{align*}
-    which is well-defined because $r$ factors through $\lvert-\rvert$ by part c) of Theorem~\ref{thm:subsingletons}.
+    which is well-defined because $r$ factors through $\lvert-\rvert$ by part c) of Theorem~\ref{thm:mere-propositions}.
 
     To construct $v$, define the curried function
     \begin{align*}
         A&\to(B\to\lVert A\times B\rVert)\\
         a&\mapsto(b\mapsto\lvert(a,b)\rvert).
     \end{align*}
-    Since the codomain is a function type into a subsingleton, it is a subsingleton itself, and so the outer function factors through $\lVert A\rVert$. In turn, for each $a\colon A$, the inner function $b\mapsto\lvert(a,b)\rvert$ factors through $\lVert B\rVert$, yielding a map
+    Since the codomain is a function type into a mere proposition, it is a mere proposition itself, and so the outer function factors through $\lVert A\rVert$. In turn, for each $a\colon A$, the inner function $b\mapsto\lvert(a,b)\rvert$ factors through $\lVert B\rVert$, yielding a map
     \[
         \lVert A\rVert\to(\lVert B\rVert\to\lVert A\times B\rVert),
     \]
     whose uncurried form gives $v$.
     
-    The conclusion follows from Lemma~\ref{lem:subsingleton-equivalence}.
+    The conclusion follows from Lemma~\ref{lem:mere-proposition-equivalence}.
     %
     
 \end{solution}
 
 \begin{exr}\label{exr:decidable-family}
-    Show that the conclusion of\/ {\upshape Exercise~\ref{exr:decidable+subsingleton-family}} if $P\colon\N\to\univ$ is any decidable family.
+    Show that the conclusion of\/ {\upshape Exercise~\ref{exr:decidable+mere-proposition-family}} if $P\colon\N\to\univ$ is any decidable family.
 \end{exr}
 
 \begin{solution}
@@ -2676,7 +2676,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         
         For the left branch, we take the composition $\fun{inl}\circ\lvert-\rvert$.
         
-        For the right branch, observe that since $\fun0$ is a subsingleton, every map $u\colon P\to\fun0$ factors through the canonical map $\lvert-\rvert\colon P\to\lVert P\rVert$; i.e., there is a commutative triangle
+        For the right branch, observe that since $\fun0$ is a mere proposition, every map $u\colon P\to\fun0$ factors through the canonical map $\lvert-\rvert\colon P\to\lVert P\rVert$; i.e., there is a commutative triangle
         \[
             \begin{tikzcd}
                 P
@@ -2691,7 +2691,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
     \medskip
 
-    In our case, since the family $P(n)$ is decidable, we deduce that the family of types $\lVert P(n)\rVert$ satisfies the hypothesis of Exercise~\ref{exr:decidable+subsingleton-family}. Therefore, we have a map
+    In our case, since the family $P(n)$ is decidable, we deduce that the family of types $\lVert P(n)\rVert$ satisfies the hypothesis of Exercise~\ref{exr:decidable+mere-proposition-family}. Therefore, we have a map
     \[
         \Bigl\lVert
             \sum_{n\colon\N}\lVert P(n)\rVert
@@ -2711,7 +2711,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         \Bigr\rVert.
     \]}
 
-    \textsc{Proof:} Since the type on the \lhs is a subsingleton, to construct a forward map, it suffices to define it with domain in the untruncated $\Sigma$-type. The induction principle for $\Sigma$-types reduces the goal to defining, for each $a\colon A$, a map
+    \textsc{Proof:} Since the type on the \lhs is a mere proposition, to construct a forward map, it suffices to define it with domain in the untruncated $\Sigma$-type. The induction principle for $\Sigma$-types reduces the goal to defining, for each $a\colon A$, a map
     \[
         \lVert P(a)\rVert\to\Bigl\lVert\sum_{x\colon A}P(x)\Bigr\rVert.
     \]
@@ -2719,7 +2719,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
     The backward map is trivially derived from the canonical map $P(x)\to\lVert P(x)\rVert$.
     
-    Lemma~\ref{lem:subsingleton-equivalence} completes the proof. \localqed
+    Lemma~\ref{lem:mere-proposition-equivalence} completes the proof. \localqed
 
     \medskip
     As a result, by composing our derived maps, we have a witness
@@ -2738,7 +2738,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \begin{description}[font=\normalfont\scshape]
         \item[Left branch:] Here we specify the identity map $\id_{P(n)}$.
     
-        \item[Right branch:] Given $u\colon\neg P(n)$, we factor it through $\lVert P(n)\rVert$. This is possible because $u\colon P(n)\to\fun0$ yields an extension $\tilde u\colon\lVert P(n)\rVert\to\fun0$, since $\fun0$ is a subsingleton. Thus, $\tilde u(\zeta)\colon\fun0$, which allows us to specify $\fun{rec}_{\fun0}(P(n),\tilde u(\zeta))$ for the right branch.
+        \item[Right branch:] Given $u\colon\neg P(n)$, we factor it through $\lVert P(n)\rVert$. This is possible because $u\colon P(n)\to\fun0$ yields an extension $\tilde u\colon\lVert P(n)\rVert\to\fun0$, since $\fun0$ is a mere proposition. Thus, $\tilde u(\zeta)\colon\fun0$, which allows us to specify $\fun{rec}_{\fun0}(P(n),\tilde u(\zeta))$ for the right branch.
     \end{description}
     
     %
@@ -2746,13 +2746,13 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}
-    Simplify the proof of\/ {\upshape Theorem~\ref{thm:N-equality-encode-decode}} by first proving that\/ $\fun{Code}(n,m)$ is a subsingleton for all\/ $n,m\colon\N$.
+    Simplify the proof of\/ {\upshape Theorem~\ref{thm:N-equality-encode-decode}} by first proving that\/ $\fun{Code}(n,m)$ is a mere proposition for all\/ $n,m\colon\N$.
 \end{exr}
 
 \begin{solution}
-    To prove that $\fun{Code}(n,m)$ is a subsingleton for all $n,m\colon\N$, we proceed by double induction on $n$ and $m$.
+    To prove that $\fun{Code}(n,m)$ is a mere proposition for all $n,m\colon\N$, we proceed by double induction on $n$ and $m$.
     \begin{enumerate}[-]
-        \item For $n\equiv0$, we use induction on $m$ to show that $\fun{Code}(0,m)$ is a subsingleton:
+        \item For $n\equiv0$, we use induction on $m$ to show that $\fun{Code}(0,m)$ is a mere proposition:
         \begin{itemize}
             \item For $m\equiv0$, this is trivial because, by definition, $\fun{Code}(0,0)\equiv\fun1$.
             \item For $\fun{succ}(m)$, this is also trivial because $\fun{Code}(0,\fun{succ}(m))\equiv\fun0$ by definition.
@@ -2764,7 +2764,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         \end{itemize}
     \end{enumerate}
     
-    Let $n,m\colon\N$ and $c\colon\fun{Code}(n,m)$. Since both $\fun{encode}(\fun{decode}(c))$ and $c$ are inhabitants of $\fun{Code}(n,m)$, and we just proved that this type is a subsingleton, they must be equal. As a result, the homotopy $\fun{encode}\circ\fun{decode}\sim\id_{\fun{Code}(n,m)}$ is inhabited.
+    Let $n,m\colon\N$ and $c\colon\fun{Code}(n,m)$. Since both $\fun{encode}(\fun{decode}(c))$ and $c$ are inhabitants of $\fun{Code}(n,m)$, and we just proved that this type is a mere proposition, they must be equal. As a result, the homotopy $\fun{encode}\circ\fun{decode}\sim\id_{\fun{Code}(n,m)}$ is inhabited.
 
     The proof of the other composition proceeds as presented in Theorem~\ref{thm:N-equality-decode-encode}.
     %

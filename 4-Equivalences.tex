@@ -313,7 +313,7 @@
     \]
     Hence, we can define $\gamma(r,s)\defeq\omega_{r,s}$.
 
-    Given that $\fun{isSet}(x\eq Ay)$ is a subsingleton [cf.~Remark~\ref{rem:ids-in-a-set-are-subsingletons}], the map $\gamma$ factors through
+    Given that $\fun{isSet}(x\eq Ay)$ is a mere proposition [cf.~Remark~\ref{rem:ids-in-a-set-are-mere-propositions}], the map $\gamma$ factors through
     \[
         \fun{rec}_{\lVert\cdots\rVert}(\fun{isSet}(x\eq Ay),\gamma)
         \colon
@@ -327,7 +327,7 @@
         B(x)\defeq\sum_{r\colon x\eq Ax}\;\prod_{s\colon a\eq Ax}
             r\eq{x\eq Ax}s^{-1}\ct q\ct s
     \]
-    is a subsingleton.}
+    is a mere proposition.}
     
     To prove this, it suffices to construct a map
     \[
@@ -354,11 +354,11 @@
     \[
         \fun{transport}^S(e,u)(w)\eq{}u'(w)
     \]
-    in $r'\eq{x\eq Ax}w^{-1}\ct q\ct w$. But, since $x\eq Ax$ is a set, this identity type is a subsingleton, and the equality holds automatically.
+    in $r'\eq{x\eq Ax}w^{-1}\ct q\ct w$. But, since $x\eq Ax$ is a set, this identity type is a mere proposition, and the equality holds automatically.
 
     \textsc{Part 3.} {\itshape There is a homotopy\/ $\eta\colon\id_A\sim\id_A$ with\/ $\eta(a)\equiv q$.}
     
-    Because $B(x)$ is a subsingleton for any $x\colon A$, to prove that $B(x)$ is inhabited, it suffices to construct a map $(a\eq Ax)\to B(x)$, and then invoke condition b).
+    Because $B(x)$ is a mere proposition for any $x\colon A$, to prove that $B(x)$ is inhabited, it suffices to construct a map $(a\eq Ax)\to B(x)$, and then invoke condition b).
     
     Consider
     \begin{align*}
@@ -380,7 +380,7 @@
     \[
         \beta(s)\colon q\eq{a\eq Aa}s^{-1}\ct q\ct s.
     \]
-    Thus, $\dep{q,\beta}\colon B(a)$, as required. As a result, for every $x\colon A$, we obtain a map $f_x\colon(a\eq Ax)\to B(x)$. Given that $B(x)$ is a subsingleton, $f_x$ factors through $\lVert a\eq Ax\rVert$. And since this type is inhabited, we obtain a witness $b_x\colon B(x)$. Moreover, $b_a\equiv f_a(\fun{refl}_a)\equiv\dep{q,\beta}$.
+    Thus, $\dep{q,\beta}\colon B(a)$, as required. As a result, for every $x\colon A$, we obtain a map $f_x\colon(a\eq Ax)\to B(x)$. Given that $B(x)$ is a mere proposition, $f_x$ factors through $\lVert a\eq Ax\rVert$. And since this type is inhabited, we obtain a witness $b_x\colon B(x)$. Moreover, $b_a\equiv f_a(\fun{refl}_a)\equiv\dep{q,\beta}$.
     
     Therefore, we can define the homotopy $\eta\defeq\lambda x.\,\pi_1(b_x)$ that satisfies
     \[
@@ -392,7 +392,7 @@
 \end{proof}
 
 \begin{thm}
-    There exist types\/ $A$ and\/ $B$ and a function\/ $f\colon A\to B$ such that\/ $\fun{qinv}(f)$ is not a subsingleton. 
+    There exist types\/ $A$ and\/ $B$ and a function\/ $f\colon A\to B$ such that\/ $\fun{qinv}(f)$ is not a mere proposition. 
 \end{thm}
 
 \begin{proof}
@@ -407,7 +407,7 @@
     Since we intend to use Lemma~\ref{lem:conditioned-id-id-homotopy}, we need to prove the three conditions stated there.
 
     \textsc{Condition}~a)
-    By Lemma~\ref{lem:total-space-with-subsingleton-fibers} and the univalence axiom, there is an equivalence
+    By Lemma~\ref{lem:total-space-with-mere-proposition-fibers} and the univalence axiom, there is an equivalence
     \[
         (a\eq Aa)\simeq(\fun2\simeq\fun2).
     \]
@@ -420,15 +420,15 @@
     \]
     is inhabited.
     
-    We proceed by recursion on the truncated type $\lVert\fun2\eq\univ X\rVert$. Let $P\colon\univ\to\univ$ be the type family $X\mapsto\lVert\fun2\eq\univ X\rVert$. Given a path $p\colon\fun2\eq\univ X$, we can apply Lemma~\ref{lem:total-space-with-subsingleton-fibers}, to obtain a path $\epsilon_p\colon a\eq Ax$, because $P(X)$ is a subsingleton.
+    We proceed by recursion on the truncated type $\lVert\fun2\eq\univ X\rVert$. Let $P\colon\univ\to\univ$ be the type family $X\mapsto\lVert\fun2\eq\univ X\rVert$. Given a path $p\colon\fun2\eq\univ X$, we can apply Lemma~\ref{lem:total-space-with-mere-proposition-fibers}, to obtain a path $\epsilon_p\colon a\eq Ax$, because $P(X)$ is a mere proposition.
     
-    It follows that $p\mapsto\lvert\epsilon_p\rvert$ is a map of type $(\fun2\eq\univ X)\to\lVert a\eq Ax\rVert$. Since the codomain is a subsingleton, this map factors through $\lVert\fun2\eq\univ X\rVert$. Evaluating this factored map at the given $u$ provides the desired witness in $\lVert a\eq Ax\rVert$.
+    It follows that $p\mapsto\lvert\epsilon_p\rvert$ is a map of type $(\fun2\eq\univ X)\to\lVert a\eq Ax\rVert$. Since the codomain is a mere proposition, this map factors through $\lVert\fun2\eq\univ X\rVert$. Evaluating this factored map at the given $u$ provides the desired witness in $\lVert a\eq Ax\rVert$.
 
     \textsc{Condition}~c) As established in the verification of condition~a), we know that $(a\eq Aa)\simeq\fun2$ [cf.~Proposition~\ref{prop:equivalence-is-an-equivalence-relation}~c)]. Thus, the identity type has exactly two inhabitants. Besides $q$, which trivially commutes with itself, the only other element corresponds to $\fun{ua}(\id_{\fun2})$, which is the reflexivity path and also commutes with $q$. Hence, condition~c) is satisfied.
     
     Since all three conditions hold, Lemma~\ref{lem:conditioned-id-id-homotopy} provides a homotopy $\eta\colon\id_A\sim\id_A$ such that $\eta(a)\equiv q$. Since $q\ne\fun{refl}_{\fun2}$, it follows that $\eta\ne(\lambda x.\,\fun{refl}_x)$.
 
-    To complete the theorem, define $B\defeq A$ and $f\defeq\id_A$. By Proposition~\ref{prop:qinv-id-homotopy-equivalence}, the existence of the non-trivial self-homotopy $\eta$ of the identity map on $A$ implies that the type $\fun{qinv}(\id_A)$ is not a subsingleton.
+    To complete the theorem, define $B\defeq A$ and $f\defeq\id_A$. By Proposition~\ref{prop:qinv-id-homotopy-equivalence}, the existence of the non-trivial self-homotopy $\eta$ of the identity map on $A$ implies that the type $\fun{qinv}(\id_A)$ is not a mere proposition.
     %
 
 \end{proof}
@@ -444,27 +444,27 @@ Definition~\ref{defn:half-adjoint-equivalence} introduces the concept of a coher
         f\lwct\vartheta\sim\eta\rwct f.
 \end{equation}
 
-The need for this definition arises from the failure of $\fun{qinv}(f)$ to be a subsingleton. The type $\fun{qinv}(f)$ is formed by three pieces of data: a map $g$, a right homotopy $\eta$, and a left homotopy $\vartheta$. As stated in Proposition~\ref{prop:side-inverses-are-contractible}, when $f$ is an equivalence, the space $\fun{linv}(f)$ of its left inverses is contractible. As a consequence, the total space $\fun{qinv}(f)$ reduces to the space of right homotopies $\eta$ [cf.~Theorem~\ref{thm:contractible-types}~b)].
+The need for this definition arises from the failure of $\fun{qinv}(f)$ to be a mere proposition. The type $\fun{qinv}(f)$ is formed by three pieces of data: a map $g$, a right homotopy $\eta$, and a left homotopy $\vartheta$. As stated in Proposition~\ref{prop:side-inverses-are-contractible}, when $f$ is an equivalence, the space $\fun{linv}(f)$ of its left inverses is contractible. As a consequence, the total space $\fun{qinv}(f)$ reduces to the space of right homotopies $\eta$ [cf.~Theorem~\ref{thm:contractible-types}~b)].
 
 As established in Proposition~\ref{prop:qinv-id-homotopy-equivalence}, the space $\fun{qinv}(f)$ is equivalent to $\id_A\sim\id_A$. If the space $A$ is not a set, there are multiple distinct, non-homotopic loops at each point, meaning there are multiple valid choices for $\eta$. Consequently, $\fun{qinv}(f)$ can have multiple inhabitants.
 
-To ensure that the property of being an equivalence is a subsingleton, we must eliminate these extra degrees of freedom. This is achieved by introducing the coherence datum in \eqref{eq:half-adjoint-homotopy}, which tethers the right homotopy $\eta$ to the left homotopy $\vartheta$. While the space of all possible right homotopies is potentially large, the space of pairs $\dep{\eta,\tau}$, where $\tau\colon f\lwct\vartheta\sim\eta\rwct f$, is contractible. By pairing the contractible space of left inverses $\dep{g,\vartheta}$ with the contractible space of coherent right homotopies $\dep{\eta,\tau}$, all higher degrees of freedom are eliminated, and $\fun{ishae}(f)$ turns out to be a subsingleton.
+To ensure that the property of being an equivalence is a mere proposition, we must eliminate these extra degrees of freedom. This is achieved by introducing the coherence datum in \eqref{eq:half-adjoint-homotopy}, which tethers the right homotopy $\eta$ to the left homotopy $\vartheta$. While the space of all possible right homotopies is potentially large, the space of pairs $\dep{\eta,\tau}$, where $\tau\colon f\lwct\vartheta\sim\eta\rwct f$, is contractible. By pairing the contractible space of left inverses $\dep{g,\vartheta}$ with the contractible space of coherent right homotopies $\dep{\eta,\tau}$, all higher degrees of freedom are eliminated, and $\fun{ishae}(f)$ turns out to be a mere proposition.
 
-On a practical level, if $\fun{isequiv}(f)$ were not a subsingleton, every time we used the fact that $f$ is an equivalence, we would have to explicitly keep track of which specific proof we were using.
+On a practical level, if $\fun{isequiv}(f)$ were not a mere proposition, every time we used the fact that $f$ is an equivalence, we would have to explicitly keep track of which specific proof we were using.
 
-By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irrelevance}. We can construct an equivalence and immediately forget the specific construction of the right/left homotopies, because any two inhabitants of the subsingleton are  propositionally equal. This saves the theory from collapsing into an unmanageable infinite tower of coherence conditions.
+By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof irrelevance}. We can construct an equivalence and immediately forget the specific construction of the right/left homotopies, because any two inhabitants of the mere proposition are  propositionally equal. This saves the theory from collapsing into an unmanageable infinite tower of coherence conditions.
 
 
 \begin{rem}
-    As we discussed at the beginning of this section, the type of quasi-inverses reduces to the space of choices for the right homotopy $\eta$. This leaves $\eta$ as an unbound ``loose end'', meaning the type $\fun{qinv}(f)$ is not generally a subsingleton.
+    As we discussed at the beginning of this section, the type of quasi-inverses reduces to the space of choices for the right homotopy $\eta$. This leaves $\eta$ as an unbound ``loose end'', meaning the type $\fun{qinv}(f)$ is not generally a mere proposition.
     
-    The coherence condition $\tau\colon f\lwct\vartheta\sim\eta\rwct f$ fixes this loose end by tethering $\eta$ to $\vartheta$. Since the space of coherent pairs $\dep{\eta,\tau}$ is contractible, the structure becomes a pair of contractible spaces, with no degrees of freedom. Thus, the type $\fun{ishae}(f)$ is a subsingleton.
+    The coherence condition $\tau\colon f\lwct\vartheta\sim\eta\rwct f$ fixes this loose end by tethering $\eta$ to $\vartheta$. Since the space of coherent pairs $\dep{\eta,\tau}$ is contractible, the structure becomes a pair of contractible spaces, with no degrees of freedom. Thus, the type $\fun{ishae}(f)$ is a mere proposition.
     
     If we wanted to reproduce the categorical adjunction by demanding both coherence conditions, we would have to define a type containing the data $(g,\vartheta,\eta,\tau,\nu)$, where $\nu\colon g\lwct\eta\sim\vartheta\rwct g$.
     
     Since $\dep{\dep{g,(\vartheta,\eta)},\tau}$ forms a contractible space, the total space would reduce to the space of choices for $\nu$.
     
-    However, $\nu$ is a homotopy between homotopies. Just as with $\eta$ in the previous case, there can be multiple choices for $\nu$, which would re-introduce degrees of freedom. In other words, the type of full adjoint equivalences would fail to be a subsingleton.
+    However, $\nu$ is a homotopy between homotopies. Just as with $\eta$ in the previous case, there can be multiple choices for $\nu$, which would re-introduce degrees of freedom. In other words, the type of full adjoint equivalences would fail to be a mere proposition.
     
     This is why the standard definition specifies only one coherence condition, instead of (redundantly) including both.    
 \end{rem}
@@ -540,7 +540,7 @@ By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irre
             &\colon\prod_{x\colon X}\fun{fib}_v(w(x))\\
         x&\mapsto\dep{u(x),\theta(x)}.
     \end{align*}
-    Representing this in a homotopy diagram, the total space of the fibration acts as the categorical pullback\/ $X\times_Y Z$. The homotopy\/ $\theta$ witnesses the commutativity of the outer quadrangle, and\/ $\dep{u,\theta}$ is the map induced by the pair\/ $(\id_X,u)$:
+    Representing this in a homotopy diagram, the total space of the fibration acts as the categorical pullback\/ $X\times_Y Z$. The homotopy\/ $\theta$ witnesses the commutativity of the quadrangle, and\/ $\dep{u,\theta}$ is the map induced by the pair\/ $(\id_X,u)$:
     \[
         \begin{tikzcd}[arrows={|->}, column sep=1.1cm]
             x
@@ -550,7 +550,7 @@ By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irre
             & \dep{x,\dep{u(x),\theta(x)}}
                 \arrow[r, "\pi_1\circ\pi_2"]
                 \arrow[d, "\pi_1"']
-                %\arrow[rd, phantom, "\scriptstyle\theta(x)"]
+                \arrow[rd, phantom, "\scriptstyle\theta(x)"]
             & u(x)
                 \arrow[d, "v"]\\
             & x
@@ -660,8 +660,8 @@ By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irre
     For the same reasons, $\dep{\id_A,\fun{refl}\rwct f}$ is contractible. Hence, by part g) of the same theorem, we deduce that $\dep{g\circ f,\eta}\sim\dep{\id_A,\fun{refl}\rwct f}$ is contractible. The conclusion follows from Lemma~\ref{lem:side-coherences-equivalence}.
 \end{proof}
 
-\begin{thm}\label{thm:ishae-is-subsingleton}
-    For any\/ $f\colon A\to B$, the type\/ $\fun{ishae}(f)$ is a subsingleton.
+\begin{thm}\label{thm:ishae-is-mere proposition}
+    For any\/ $f\colon A\to B$, the type\/ $\fun{ishae}(f)$ is a mere proposition.
 \end{thm}
 
 \begin{proof}
@@ -688,8 +688,8 @@ By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irre
     is inhabited.
 \end{defn}
 
-\begin{thm}\label{thm:biinv-is-subsingleton}
-    For any\/ $f\colon A\to B$, the type\/ $\fun{biinv}(f)$ is a subsingleton.
+\begin{thm}\label{thm:biinv-is-mere proposition}
+    For any\/ $f\colon A\to B$, the type\/ $\fun{biinv}(f)$ is a mere proposition.
 \end{thm}
 
 \begin{proof}
@@ -699,7 +699,7 @@ By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irre
 \end{proof}
 
 \begin{rem}
-    While\/ $\fun{ishae}(f)$ requires the addition of a $2$-dimensional coherence homotopy to reach the status of a subsingleton, $\fun{biinv}(f)$ achieves the same using only $1$-dimensional homotopies.
+    While\/ $\fun{ishae}(f)$ requires the addition of a $2$-dimensional coherence homotopy to reach the status of a mere proposition, $\fun{biinv}(f)$ achieves the same using only $1$-dimensional homotopies.
 \end{rem}
 
 \begin{cor}
@@ -707,7 +707,7 @@ By constructing $\fun{ishae}(f)$ as a subsingleton, we attain \textit{proof irre
 \end{cor}
 
 \begin{proof}
-    Given that both types are subsingletons, by Lemma~\ref{lem:subsingleton-equivalence}, it suffices to show a forward and a backward map.
+    Given that both types are mere propositions, by Lemma~\ref{lem:mere-proposition-equivalence}, it suffices to show a forward and a backward map.
 
     By Theorem~\ref{thm:qinv->ishae}, there is a map $\fun{qinv}(f)\to\fun{ishae}(f)$. Composing this with the trivial map $\fun{biinv}(f)\to\fun{qinv}(f)$, one obtain a forward map.
 \end{proof}
