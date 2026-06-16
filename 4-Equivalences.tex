@@ -696,6 +696,8 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     It suffices to show that, in the case where $\fun{biinv}(f)$ is inhabited, it is contractible.
     
     If $\fun{biinv}(f)$ is inhabited, by definition, $f$ induces an equivalence. Hence, it is quasi-invertible and by Proposition~\ref{prop:side-inverses-are-contractible} both $\fun{rinv}(f)$ and $\fun{linv}(f)$ are contractible. Thus, the conclusion follows from part c) of Theorem~\ref{thm:contractible-types}.
+    %
+    
 \end{proof}
 
 \begin{rem}
@@ -710,6 +712,456 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     Given that both types are mere propositions, by Lemma~\ref{lem:mere-proposition-equivalence}, it suffices to show a forward and a backward map.
 
     By Theorem~\ref{thm:qinv->ishae}, there is a map $\fun{qinv}(f)\to\fun{ishae}(f)$. Composing this with the trivial map $\fun{biinv}(f)\to\fun{qinv}(f)$, one obtain a forward map.
+    %
+    
 \end{proof}
 
 \section{Contractible Fibers}
+Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when its fibers are contractible. As observed in Remark~\ref{rem:equivalence-fib-is-contractible}, the fibers of a half-adjoint equivalence are contractible, which means that there is a map $\fun{ishae}(f)\to\fun{isContr}(f)$.
+
+\begin{thm}\label{thm:isContr->ishae}
+    For any\/ $f\colon A\to B$, we have\/ $\fun{isContr}(f)\to\fun{ishae}(f)$.
+\end{thm}
+
+\begin{proof}
+    By abuse of notation,
+    \[
+        \fun{isContr}(f)\equiv
+            \prod_{y\colon B}\;
+            \sum_{\dep{a,p}\colon\fun{fib}_f(y)}\;
+            \prod_{\dep{x,q}\colon\fun{fib}_f(y)}
+            \dep{a,p}\eq{\fun{fib}_f(y)}\dep{x,q}.
+    \]
+    On the other hand,
+    \[
+        \fun{ishae}(f)\equiv
+            \sum_{g\colon B\to A}\;
+            \sum_{\eta\colon f\circ g\sim\id_B}\;
+            \sum_{\vartheta\colon g\circ f\sim\id_A}
+            f\lwct\vartheta\sim\eta\rwct f.
+    \]
+    Therefore, we can define the map as
+    \begin{align*}
+        \fun{isContr}(f)&\to\fun{ishae}(f)\\
+        \alpha&\mapsto\dep{g,\dep{\eta,\dep{\vartheta,\tau}}},
+    \end{align*}
+    where
+    \begin{align*}
+        g(y)
+            &\defeq\pi_1(\pi_1(\alpha(y)))\\
+            &\equiv\pi_1(\dep{a,p})\\
+            &\equiv a,\\[1ex]
+        \eta(y)
+            &\defeq\pi_2(\pi_1(\alpha(y)))\\
+            &\equiv\pi_2(\dep{a,p})\\
+            &\equiv p.
+    \end{align*}
+    To construct $\vartheta(x)\colon g(f(x))\eq A x$ and $\tau(x)\colon\fun{ap}_f(\vartheta(x))\eq{f(g(f(x)))\eq B f(x)}\eta(f(x))$, set 
+    \[
+        a\defeq\pi_1(\pi_1(\alpha(f(x))))
+        \quad\text{and}\quad
+        p\defeq\pi_2(\pi_1(\alpha(f(x)))),
+    \]
+    and observe that $a\equiv g(f(x))$ and $p\equiv\eta(f(x))$.
+    
+    Evaluating the contraction homotopy $\pi_2(\alpha(f(x)))$ at the canonical element $\dep{x,\fun{refl}_{f(x)}}$ yields a path 
+    \[
+        s\colon
+            \dep{a,p}
+            \eq{\fun{fib}_f(f(x))}
+            \dep{x,\fun{refl}_{f(x)}}.
+    \]
+    By Lemma~\ref{lem:fib-equality}, we can use $s$ to construct a dependent pair $\dep{r,q}$, where
+    \[
+        r\colon a\eq A x
+        \quad\text{and}\quad
+        q\colon
+            \fun{ap}_f(r)\ct\fun{refl}_{f(x)}
+            \eq{f(a)\eq B f(x)}
+            p.
+    \]
+    After replacing $q$ with $\fun{ru}(\fun{ap}_f(r))^{-1}\ct q$, we may assume that
+    \[
+        r\colon g(f(x))\eq A x
+        \quad\text{and}\quad
+        q\colon\fun{ap}_f(r)\eq{f(a)\eq B f(x)}\eta(f(x)),
+    \]
+    which we can use to define $\vartheta(x)\defeq r$ and $\tau(x)\defeq q$.
+\end{proof}
+
+\begin{lem}\label{lem:isContr-is-mere-proposition}
+    For any\/ $f\colon A\to B$, the type\/ $\fun{isContr}(f)$ is a mere proposition.
+\end{lem}
+
+\begin{proof}
+    By Lemma~\ref{lem:isContr-is-mere-proposition}, $\fun{isContr}(\fun{fib}_f(y))$ is a mere proposition for all $y\colon B$. Therefore, by part~a) of Theorem~\ref{thm:contractible-types}, we deduce that \eqref{eq:isContr-map} is contractible as well.
+\end{proof}
+
+\begin{thm}\label{thm:isContr-ishae-equivalence}
+    For any\/ $f\colon A\to B$, we have\/ $\fun{isContr}(f)\simeq\fun{ishae}(f)$.
+\end{thm}
+
+\begin{proof}
+    This follows from the previous lemma, Lemma~\ref{lem:mere-proposition-equivalence}, and the fact that we have maps $\fun{isContr}(f)\to\fun{ishae}(f)$ and $\fun{ishae}(f)\to\fun{isContr}(f)$.
+\end{proof}
+
+\begin{cor}\label{cor:map-followed-by-map-to-isequiv}
+    Let\/ $f\colon A\to B$ be a map, and suppose we have another map\/ $B\to\fun{isequiv}(f)$. Then\/ $f$ is an equivalence.
+\end{cor}
+
+\begin{proof}
+    By the theorem, to prove that $f$ is an equivalence, it suffices to construct a witness of
+    \[
+        \fun{isContr}(f)\equiv\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y)).
+    \]
+    Fix $y\colon b$. If $h\colon B\to\fun{isContr}(f)$ is the given map, then $h(y)\colon\fun{isContr}(f)$. In particular,
+    \[
+        h(y)(y)\colon\fun{isContr}(\fun{fib}_f(y)).
+    \]
+    Thus, $\lambda y.\,h(y)(y)$ is exactly the required witness of $\fun{isContr}(f)$.
+\end{proof}
+
+\section{Surjections and Embeddings}
+
+\begin{defn}
+    Let\/ $f\colon A\to B$. We say that\/ $f$ is
+    \begin{enumerate}[-]
+        \item \textsl{surjective} (or a \textsl{surjection}) if\/ $\lVert\fun{fib}_f(b)\rVert$ is inhabited for every\/ $b\colon B$;
+        \item an \textsl{embedding} if for every\/ $x,y\colon A$ the function
+        \[
+            \fun{ap}_f\colon(x\eq Ay)\to(f(x)\eq Bf(y))
+        \]
+        induces an equivalence.
+    \end{enumerate}
+\end{defn}
+
+\begin{rems} Suppose that $A$ and $B$ are sets, and let $f\colon A\to B$ be a function.
+    \begin{enumerate}[-]
+        \item If $f$ is a surjection, the hypothesis that every fiber is merely inhabited is expressed by the type $\prod_{b\colon B}\lVert\fun{fib}_f(b)\rVert$. In contrast, a retraction requires an explicit, constructive selection of preimages, corresponding to the untruncated product $\prod_{b\colon B}\fun{fib}_f(b)$.
+    
+        Since we cannot extract the explicit data required to build a retraction from a truncated type, AC (for sets) bridges this exact gap by asserting the implication
+        \[
+            \Bigl(
+                \prod_{b\colon B}\lVert\fun{fib}_f(b)\rVert
+            \Bigr)
+            \to\Bigl\lVert
+                \prod_{b\colon B}\fun{fib}_f(b)
+            \Bigr\rVert.
+        \]
+        This states precisely that if every fiber of a function between sets is merely inhabited, then the type of its retractions is merely inhabited as well.
+    
+        It should be noted that for every $y\colon B$, the fiber $\fun{fib}_f(y)$ is a set. This follows from part~e) of Theorem~\ref{thm:sets}, because $A$ is a set and, since $B$ is a set, the identity type $f(x)\eq B y$ is a mere proposition (and hence a set) for any $x\colon A$.
+
+        \item By Lemma~\ref{lem:mere-proposition-equivalence}, $f$ is an embedding if, and only if, the function type
+        \[
+            (f(x)\eq Bf(y))\to(x\eq Ay)
+        \]
+        is inhabited.
+    \end{enumerate}
+\end{rems}
+
+\begin{lem}\label{lem:embedding-fibers-are-mere-propositions}
+    If\/ $f\colon A\to B$ is an embedding then its fibers are mere propositions. 
+\end{lem}
+
+\begin{proof}
+    Let $b\colon B$, and let $\dep{x,p}$ and $\dep{y,q}$ be two elements in $\fun{fib}_f(b)$. To show that $\fun{fib}_f(b)$ is a mere proposition, it suffices to prove that the identity type $\dep{x,p}\eq{\fun{fib}_f(b)}\dep{y,q}$ is contractible.
+    
+    By Lemma~\ref{lem:fib-equality}, we have an equivalence
+    \[
+        \bigl(
+            \dep{x,p}\eq{\fun{fib}_f(b)}\dep{y,q}
+        \bigr)
+        \simeq
+        \sum_{q\colon x\eq Ay}
+            \fun{ap}_f(b)\ct q\eq{f(x)\eq Bb}p.
+    \]
+    Therefore,
+    \begin{align*}
+        \bigl(
+            \dep{x,p}\eq{\fun{fib}_f(b)}\dep{y,q}
+        \bigr)
+        &\simeq
+        \sum_{q\colon x\eq Ay}
+            \fun{ap}_f(b)\eq{f(x)\eq Bf(y)}p\ct q^{-1}\\
+        &\equiv\fun{fib}_{\fun{ap}_f}(p\ct q^{-1}).
+    \end{align*}    
+    Since $\fun{ap}_f$ is an equivalence, it has contractible fibers.
+\end{proof}
+
+\begin{thm}
+    A function\/ $f\colon A\to B$ induces an equivalence if, and only if, it is both surjective and an embedding.
+\end{thm}
+
+\begin{proof}
+    If $f$ induces an equivalence, it is a surjection because, by Remark~\ref{rem:equivalence-fib-is-contractible}, it fibers are contractible, hence $\lVert\fun{fib}_f(b)\rVert$ is contractible and inhabited by its center. It is an embedding because, by Proposition~\ref{prop:ap-properties}, $\fun{ap}_{f^{-1}}$ is a quasi-inverse of $\fun{ap}_f$.
+
+    To prove that $f$ is an equivalence, by Theorem~\ref{thm:isContr-ishae-equivalence}, it suffices to show that its fibers are contractible. By Lemma~\ref{lem:embedding-fibers-are-mere-propositions}, the fibers of $f$ are mere propositions. Therefore, the canonical map $\fun{squash}\colon\fun{fib}_f(b)\to\lVert\fun{fib}_f(b)\lVert$ has a quasi-inverse. Since $f$ is a surjection, it follows that $\fun{fib}_f(b)$ is inhabited, hence contractible by Lemma~\ref{lem:contractible-equivalences}.
+\end{proof}
+
+\section{Closure Properties of Equivalences}
+
+\begin{defn}\label{defn:function-retract}
+    A function $g\colon A\to B$ is said to be a \textsl{retract} of a function $f\colon X\to Y$ if there is a diagram
+    \begin{equation}\label{tik:retraction-1}
+        \begin{tikzcd}
+            A
+                    \arrow[rr,"\scriptstyle\eta"',phantom,bend left=30]
+                    \arrow[rr,"\id_A",bend left=50]
+                    \arrow[r,"s"]
+                    \arrow[d,"g"']
+                    \arrow[rd,
+                        phantom,
+                        "\scriptstyle\vartheta"]
+                &X
+                    \arrow[rd,
+                        phantom,
+                        "\scriptstyle\varepsilon"]
+                    \arrow[r,"r"]
+                    \arrow[d,"f"]
+                &A
+                    \arrow[d,"g"]\\
+            B
+                    \arrow[r,"s'"']
+                    \arrow[rr,
+                        "\scriptstyle\eta'"',
+                        bend right=25,
+                        phantom]
+                    \arrow[rr,"\id_B"',bend right=50]
+                &Y
+                    \arrow[r,"r'"']
+                &B
+        \end{tikzcd}
+        \qquad
+        \begin{aligned}
+            &\eta\hphantom'\colon r\circ s\sim\id_A\\
+            &\eta'\colon r'\circ s'\sim\id_B\\
+            &\vartheta\hphantom'\colon f\circ s\sim s'\circ g\\
+            &\varepsilon\hphantom'\colon g\circ r\sim r'\circ f
+        \end{aligned}        
+    \end{equation}
+    and a homotopy $\tau$ witnessing the commutativity of the square
+    \begin{equation}\label{tik:retraction-2}
+        \begin{tikzcd}
+            g\circ r\circ s
+                    \arrow[r,"\varepsilon\rwct s"]
+                    \arrow[d,"g\lwct\eta"']
+                    \arrow[rd,
+                        phantom,
+                        "\scriptstyle\tau"]
+                &r'\circ f\circ s
+                    \arrow[d,"r'\lwct\vartheta"]\\
+            g
+                    \arrow[r,"(\eta'\rwct g)^{-1}"']
+                &r'\circ s'\circ g.
+        \end{tikzcd}
+    \end{equation}
+\end{defn}
+
+\begin{prop}
+    Let\/ $A$ and\/ $B$ be types. Then\/ $B$ is a retract of\/ $A$ if, and only if, the constant map\/ $B\to\fun1$ is a retract of\/ $A\to\fun1$.
+\end{prop}
+
+\begin{proof}
+    Suppose that $B$ is a retract of $A$. By Definition~\ref{defn:type-retract}, there exist a section $s\colon B\to A$, a retraction $r\colon A\to B$, and a homotopy $\eta\colon r\circ s\sim\id_B$.
+
+    The data for the map retraction translates into the following diagram, which commutes trivially:
+    \[
+        \begin{tikzcd}
+            B
+                \arrow[rr, "\scriptstyle\eta"', phantom, bend left=30]
+                \arrow[rr, "\id_B", bend left=50]
+                \arrow[r, "s"]
+                \arrow[d]
+                \arrow[rd, phantom, "\scriptstyle\vartheta"]
+            & A
+                \arrow[rd, phantom, "\scriptstyle\varepsilon"]
+                \arrow[r, "r"]
+                \arrow[d]
+            & B
+                \arrow[d] \\
+            \fun1
+                \arrow[r, "\id_{\fun1}"']
+                \arrow[rr, "\scriptstyle\fun{refl}"', phantom, bend right=25]
+                \arrow[rr, "\id_{\fun1}"', bend right=50]
+            & \fun1
+                \arrow[r, "\id_{\fun1}"']
+            & \fun1
+        \end{tikzcd}
+    \]
+    where $\vartheta$ and $\varepsilon$ are the constant homotopies defined by $b\mapsto\fun{refl}_\ast$ and $a\mapsto\fun{refl}_\ast$, respectively.
+
+    The coherence condition \eqref{tik:retraction-2} is satisfied automatically since all paths in $\fun1$ are trivially equal by contractibility. Thus, by Definition~\ref{defn:function-retract}, the map $B\to\fun1$ is a retract of $A\to\fun1$.
+
+    Conversely, if $B\to\fun1$ is a retract of $A\to\fun1$, the retraction data inherently provides maps $s\colon B\to A$ and $r\colon A\to B$, along with a homotopy $\eta\colon r\circ s\sim\id_B$. This is precisely the data required by Definition~\ref{defn:type-retract} to establish that $B$ is a retract of $A$.
+\end{proof}
+
+\begin{lem}\label{lem:retract-fib}
+    Suppose that a function\/ $g\colon A\to B$ is a retract of a function\/ $f\colon X\to Y$, and let\/ $s'\colon B\to Y$ be the section provided by\/ {\upshape Definition~\ref{defn:function-retract}}. Then for every\/ $b\colon B$, the fiber\/ $\fun{fib}_g(b)$ is a retract of the fiber\/ $\fun{fib}_f(s'(b))$.
+\end{lem}
+
+\begin{proof}
+    Fix $b\colon B$. To define the forward function between the fibers, consider
+    \begin{alignat*}4
+        \sigma&\colon\fun{fib}_g(b)\to\fun{fib}_f(s'(b)),
+            &\quad\dep{a,p}
+            &\mapsto\dep{
+                s(a),
+                \vartheta(a)\ct\fun{ap}_{s'}(p)
+            }.
+    \intertext{This is well-defined because $\vartheta(a)\colon f(s(a))\eq{Y} s'(g(a))$ and $p\colon g(a)\eq{B} b$. For the backward map, consider}
+        \rho&\colon\fun{fib}_f(s'(b))\to\fun{fib}_g(b),
+            &\quad\dep{x,q}
+            &\mapsto\dep{
+                r(x),
+                \varepsilon(x)\ct\fun{ap}_{r'}(q)\ct\eta'(b)
+            },
+    \intertext{which is well-defined because}
+        q&\colon f(x)\eq{Y} s'(b),\\
+        \fun{ap}_{r'}(q)&\colon r'(f(x))\eq{B} r'(s'(b)),\\
+        \eta'(b)&\colon r'(s'(b))\eq{B} b,\\
+        \varepsilon(x)&\colon g(r(x))\eq{B} r'(f(x)).
+    \end{alignat*}
+    It remains to be shown that $\rho\circ\sigma\sim\id_{\fun{fib}_g(b)}$.
+    
+    Take $\dep{a,p}\colon\fun{fib}_g(b)$. The first component of $\rho\circ\sigma(\dep{a,p})$ is $r(s(a))$. The second component, which we will call $p'$, yields the following computation:
+    \begin{align*}
+        p' &\equiv
+                \varepsilon(s(a))
+                    \ct\fun{ap}_{r'}(
+                        \vartheta(a)
+                        \ct\fun{ap}_{s'}(p)
+                    )
+                    \ct\eta'(b)\\
+            &\eq{g(r(s(a)))\eq{B} b}
+                \varepsilon\rwct s(a)
+                    \ct r'\lwct\vartheta(a)
+                    \ct\fun{ap}_{r'}(
+                        \fun{ap}_{s'}(p)
+                    )\ct\eta'(b)\\
+            &\eq{g(r(s(a)))\eq{B} b}
+                (
+                    \varepsilon\rwct s
+                    \ct r'\lwct\vartheta
+                )(a)
+                    \ct\fun{ap}_{r'\circ s'}(p)
+                    \ct\eta'(b)\\
+            &\eq{g(r(s(a)))\eq{B} b}
+                (
+                    g\lwct\eta
+                    \ct(\eta'\rwct g)^{-1}
+                )(a)
+                    \ct\fun{ap}_{r'\circ s'}(p)
+                    \ct\eta'(b)
+                    &&\text{; by }\tau\\
+            &\eq{g(r(s(a)))\eq{B} b} 
+                \fun{ap}_g(\eta(a))
+                    \ct\eta'(g(a))^{-1}
+                    \ct\fun{ap}_{r'\circ s'}(p)
+                    \ct\eta'(b).
+    \end{align*}
+    The naturality equation \eqref{eq:nat-transformation} of the homotopy $\eta'\colon r'\circ s'\sim\id_B$ applied to $p\colon g(a)\eq{B} b$ yields
+    \[
+        \fun{ap}_{r'\circ s'}(p)\ct\eta'(b)
+        \eq{r'(s'(g(a)))\eq{B} b}\eta'(g(a))\ct p.
+    \]
+    Substituting this into the expression for $p'$ above gives:
+    \[
+        p' \eq{g(r(s(a)))\eq{B} b} \fun{ap}_g(\eta(a))\ct p.
+    \]
+    Given that $\eta(a)\colon r(s(a))\eq{A} a$, the equality $\dep{r(s(a)),p'}\eq{\fun{fib}_g(b)}\dep{a,p}$ is a direct consequence of Lemma~\ref{lem:fib-equality}. Hence, $\rho\circ\sigma(\dep{a,p})\eq{\fun{fib}_g(b)}\dep{a,p}$.
+    %
+    
+\end{proof}
+
+\begin{thm}
+    A retract of an equivalence is an equivalence.
+\end{thm}
+
+\begin{proof}
+    Let $g$ be a retract of an equivalence $f$. By Theorem~\ref{thm:equivalence-fibers-are-contractible}, every fiber of $f$ is contractible. Furthermore, Lemma~\ref{lem:retract-fib} establishes that each fiber of $g$ is a retract of a corresponding fiber of $f$. Since retracts of contractible types are themselves contractible by Lemma~\ref{lem:contractible-retracts}, it follows that all fibers of $g$ are contractible. Thus, $g$ is an equivalence by Theorem~\ref{thm:isContr->ishae}.
+    %
+
+\end{proof}
+
+\begin{defn}
+    A type family $P\colon A\to\univ$ defines the \textsl{fibration} over $A$ given by the projection
+    \[
+        \pi_1\colon\Bigl(\sum_{x\colon A}P(x)\Bigr)\to A.
+    \]
+    From this point of view, given two type families $P,Q\colon A\to\univ$, we refer to a function 
+    \[
+        f\colon\prod_{x\colon A}P(x)\to Q(x)
+    \]
+    as a \textsl{fiberwise map} or \textsl{fiberwise transformation}. Furthermore, the \textsl{total} function of such a map is defined as
+    \[
+        \fun{total}(f)\defeq
+            \lambda w.\,
+                \dep{
+                    \pi_1(w),
+                    f(\pi_1(w),\pi_2(w))
+                }
+                \colon
+                    \Bigl(
+                        \sum_{x\colon A}P(x)
+                    \Bigr)\to
+                    \Bigl(
+                        \sum_{x\colon A}Q(x)
+                    \Bigr).
+    \]
+    The map $f$ is a \textsl{fiberwise equivalence} if $f(x)\colon P(x)\to Q(x)$ is an equivalence for every $x\colon A$.
+\end{defn}
+
+\begin{thm}
+    Suppose that\/ $f$ is a fiberwise transformation between families\/ $P$ and\/ $Q$ over a type\/ $A$, and let\/ $x\colon A$ and\/ $v\colon Q(x)$. Then we have an equivalence
+    \[
+        \fun{fib}_{\fun{total}(f)}(\dep{x, v}) \simeq \fun{fib}_{f(x)}(v).
+    \]
+\end{thm}
+
+\begin{proof}
+    Let
+    \[
+        \Sigma\defeq\sum_{a\colon A}a\eq{A}x.
+    \]
+    By Lemma~\ref{lem:Sigma-identity-is-contractible}, the type\/ $\Sigma$ is contractible with center\/ $\dep{x,\fun{refl}_x}$. Then,
+    \begin{alignat*}3
+        \fun{fib}_{\fun{total}(f)}(\dep{x,v})
+            &\equiv\sum_{w\colon\Sigma_AP}
+                \dep{\pi_1(w),f(\pi_1(w),\pi_2(w))}
+                \eq{\Sigma_AQ}\dep{x,v}\\
+            &\simeq\sum_{a\colon A}\,\sum_{u\colon P(a)}
+                \dep{a,f(a,u)}\eq{\Sigma_AQ}\dep{x,v}
+                &&\quad\text{; assoc.}\\
+            &\simeq\sum_{a\colon A}\,\sum_{u\colon P(a)}
+                \sum_{p\colon a\eq{A}x}
+                    \!\!\!\!\fun{transport}^Q(p,f(a,u))
+                        \eq{Q(x)}v
+                &&\quad\text{; Thm.~\ref{thm:pair-equivalence}}\\
+            &\simeq\sum_{a\colon A}\,\sum_{p\colon a\eq{A}x}
+                \sum_{u\colon P(a)}
+                    \!\!\!\fun{transport}^Q(p,f(a,u))
+                        \eq{Q(x)}v\\
+            &\simeq\sum_{\dep{a,p}\colon\Sigma}\,
+                \sum_{u\colon P(a)}
+                    \fun{transport}^Q(p,f(a,u))\eq{Q(x)}v
+                &&\quad\text{; assoc.}\\
+            &\simeq\sum_{u\colon P(x)}
+                \fun{transport}^Q(\fun{refl}_x,f(x,u))
+                    \eq{Q(x)}v
+                &&\quad\text{; $\Sigma$-contr.}\\
+            &\equiv\sum_{u\colon P(x)}f(x,u)\eq{Q(x)}v\\
+            &\equiv\fun{fib}_{f(x)}(v),
+    \end{alignat*}
+    where the associativity refers to Exercise~\ref{exr:Sigma-associativity} and the\/ $\Sigma$ contractibility results from part~d) of Theorem~\ref{thm:contractible-types}.
+    %
+    
+\end{proof}
+
+\begin{cor}
+    Let\/ $f$ be a fiberwise transformation. Then\/ $f$ is a fiberwise equivalence if, and only if, $\fun{total}(f)$ is an equivalence.
+\end{cor}
+
+\begin{proof}
+    This is a direct consequence of the theorem and Theorem~\ref{thm:isContr->ishae}.
+\end{proof}

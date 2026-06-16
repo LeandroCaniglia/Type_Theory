@@ -226,6 +226,8 @@
 
 \begin{lpar}{Type Families.}\label{lpar:type-families}
     A \textsl{type family} is a function $B\colon A\to\univ$ whose codomain is a universe.
+
+    {\small The intuition behind a type family is that it provides a collection of types $B(x)$ indexed by the terms of a given type $A$. Defining this family as a function into $\univ$ ensures that the resulting types do not escape the range of some predefined universe. For instance, we cannot define a family such as $\lambda n.\,\univ_n$ for $n\colon\mathbb{N}$. Although this intuitively assigns a type to each natural number, the resulting types grow arbitrarily large and cannot be contained within any single, fixed universe $\univ_k$. Therefore, it cannot be typed as a function $\mathbb{N}\to\univ_k$.}
     
     There are two important examples. The first one is the \textsl{constant} type family defined by
     \[
@@ -245,17 +247,17 @@
 \end{lpar}
 
 \begin{lpar}{Dependent functions \textrm{(a.k.a.~$\Pi$-types)}.} \label{lpar:Pi-types}
-    Given a type $A\colon\univ$ and a family $B\colon A\to\univ$, we may construct the type of \textsl{dependent functions}
+    Given a type $A\colon\univ$ and a family of types $B\colon A\to\univ$, we can construct the type of \textsl{dependent functions}
     \[
-        \prod_{x\colon A}B(x)\colon\univ,
+        \prod_{x\colon A}B(x)\colon\univ
     \]
-    by means of the binder $\Pi x.\,B(x)$ (see \nref{lpar:binders}).
+    using the binder $\Pi x.\,B(x)$ (see \nref{lpar:binders}).
     
-    This type is a generalization of the function type $A\to B$, which can be recovered by taking the constant family $\lambda x\colon A.\,B$, to produce the definitional equality
+    This construction generalizes the ordinary function type $A\to B$, which is recovered by choosing the constant family $\lambda x\colon A.\,B$. This yields the definitional equality
     \begin{equation}\label{eq:function=independent-dependent-function}
-        \prod_{x\colon A}B\equiv A\to B.
+        \Bigl(\prod_{x\colon A}B\Bigr)\equiv A\to B.
     \end{equation}
-    As before, we can apply a dependent function $f\colon\prod_{x\colon A}B(x)$ to an argument $a\colon A$ and obtain an element $f(a)\colon B(a)$. In particular, we have the following computation rule: if $a\colon A$ and $f(x)\defeq\Phi$, then $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$, where $\Phi'$ is obtained by replacing all free occurrences of $x$ in $\Phi$ by $a$, i.e., avoiding dummy variable captures (see \nref{lpar:bound-variables}).
+    As with ordinary functions, applying a dependent function $f\colon\prod_{x\colon A}B(x)$ to an argument $a\colon A$ yields an element $f(a)\colon B(a)$. This application satisfies the following computation rule: if $a\colon A$ and $f\defeq\lambda x.\,\Phi$, then both $f(a)\equiv\Phi'$ and $(\lambda x.\,\Phi)(a)\equiv\Phi'$. Here, the term $\Phi'$ is the expression obtained by replacing all free occurrences of $x$ in $\Phi$ with $a$, performing appropriate renaming to avoid variable capture (see \nref{lpar:bound-variables}).\footnote{This capture-avoiding substitution is usually denoted by $\Phi[a/x]$, meaning $f(a)\equiv\Phi[a/x]$.}
 
     An example that will become useful later is the dependent function\footnote{Exercise \ref{exr:Fin}.}
     \[
@@ -482,7 +484,7 @@
     
     The \textit{unique} canonical term inhabiting the identity type\/ $\Id_A(x,x)$ is\/ $\fun{refl}_x$. Denoted as\/ $\fun{refl}_x : \Id_A(x,x)$, this term witnesses that\/ $x$ is equal to itself.
     
-    The fact that $\Id_A(x,x)$ has a unique canonical witness is the key to the identity type's elimination rule (see \nref{lpar:induction}), which states that to prove something for all equalities $p\colon x\eq{A} y$, we only need to prove it for the case $p\equiv\fun{refl}_x$. Note however that this does not mean that $\fun{refl}_x$ is the only element of $\Id(x,x)$; in fact, there are cases where there are infinitely many, as well as cases where there is only one.
+    The fact that $\Id_A(x,x)$ has a unique canonical witness is the key to the identity type's elimination rule (see \nref{lpar:path-induction}), which states that to prove something for all equalities $p\colon x\eq{A} y$, we only need to prove it for the case $p\equiv\fun{refl}_x$. Note however that this does not mean that $\fun{refl}_x$ is the only element of $\Id(x,x)$; in fact, there are cases where there are infinitely many, as well as cases where there is only one.
 \end{lpar}
 
 \begin{lpar}{Dependent functions over product.}\label{lpar:Pi-types-over-product}
@@ -823,6 +825,12 @@
     \end{align*}
     
     \textbf{Note.} Even though both the conventional existence binder $\exists\,y\,R(x,y)$ and the dependent pair type binder $\sum_yR(x,y)$ express the existence of an element~$y$, their semantics differ. While the former predicates the mere existence of $y$, the latter identifies pairs $\dep{y,w}$, where $w$ \textit{proves\/} $R(x,y)$. Thus, in Type Theory, when we evaluate the antecedent function $g$ at $x$, the result $g(x)\equiv\dep{y,w}$ already contains the element $y$ whose existence is claimed. Consequently, the \textit{choice} is trivial in this setting. This explains why, even though the translation to Logic reads as the classical Axiom of Choice, the Type Theoretic version is a theorem whose proof is a direct consequence of the definitions.
+
+    Incidentally, there is a backward map defined by
+    \[
+        \dep{f,h}\defeq\lambda x.\,\dep{f(x),h(x)},
+    \]
+    which is well-typed because $f(x)\colon B$ and $h(x)\colon R(x,f(x))$.
 \end{lpar}
 
 \begin{lpar}{Mathematical structures.}
@@ -1527,7 +1535,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     which is formally defined as $f\defeq\fun{rec}_{\eq A}(A,x)$, and satisfies $f(x,p)\eq Ax$ for any path $p$ with origin in $x$.\footnote{Compare this with the function $g\defeq\lambda x.\,\lambda p.\,x$ which satisfies $g(x)\equiv x$ for $x\colon A$.}
 \end{lpar}
 
-\begin{lpar}{General path induction.}
+\begin{lpar}{General path induction.}\label{lpar:path-induction}
     In the case of identity types, the induction principle (a.k.a.~\textsl{path induction}) conceptually requires a motive defined on the total space of paths:
     \[
         \Bigl(\sum_{x,y\colon A}x\eq A y\Bigr)\to\univ.
@@ -1552,7 +1560,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \[
         \fun{ind}_{\eq A}(C,c,a,a,\fun{refl}_a)\defeq c(a)
     \]
-    for every $a\colon A$.
+    for every $a\colon A$.\footnote{This mirrors the categorical Yoneda's lemma~\ref{thm:yoneda-general}, which states that natural transformations from a representable functor $\Hom(x,-)$ are completely determined by evaluating at the identity morphism on $x$.}
 \end{lpar}
 
 \begin{lpar}{Path symmetry.}

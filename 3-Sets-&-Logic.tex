@@ -1234,11 +1234,11 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     To prove $g)$, observe that by part e) the identity type $f(x)\eq{B(x)}g(x)$ is contractible, which implies that $f\sim g$ is contractible by part~a).
 \end{proof}
 
-\begin{defn}
-    A \textsl{retraction} is a function $r\colon A\to B$ such that there exists a function $s\colon B\to A$, called its \textsl{section}, and a homotopy $\eta\colon\prod_{y\colon B}r(s(y))\eq By$. If such a retraction exists, we say that $B$ is a \textsl{retract} of $A$.
+\begin{defn}\label{defn:type-retract}
+    A \textsl{retraction} (a.k.a.~\textsl{split surjection}) is a function $r\colon A\to B$ such that there exists a function $s\colon B\to A$, called its \textsl{section}, and a homotopy $\eta\colon r\circ s\sim\id_B$. When a retraction exists, we say that $B$ is a \textsl{retract} of~$A$.
 \end{defn}
 
-\begin{lem}
+\begin{lem}\label{lem:contractible-retracts}
     Every retract of a contractible type is contractible.
 \end{lem}
 
@@ -1254,17 +1254,17 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     
 \end{proof}
 
-\begin{lem}
-    Let\/ $A$ be a type. Given\/ $a\colon A$, the type\/ $\displaystyle\sum_{x\colon A}a\eq Ax$ is contractible.
+\begin{lem}\label{lem:Sigma-identity-is-contractible}
+    Let\/ $A$ be a type. Given\/ $a\colon A$, the type\/ $\displaystyle\sum_{x\colon A}a\eq Ax$ is contractible with center of contraction\/ $\dep{a,\fun{refl}_a}$.
 \end{lem}
 
 \begin{proof}
-    Let $X$ denote this $\Sigma$-type. We claim that $\dep{a,\fun{refl}_a}$ is a center of contraction for $X$. Given $\dep{x,p}\colon X$, we have $p\colon a\eq Ax$. Since
+    Let $\Sigma$ denote this $\Sigma$-type. Given $\dep{x,p}\colon\Sigma$, we have $p\colon a\eq Ax$. Since
     \[
         \fun{transport}^{\zeta\mapsto(a\eq A\zeta)}(p,\fun{refl}_a)
             \eq{}\fun{refl}_a\ct p\equiv p,
     \]
-    by part a) of Proposition~\ref{prop:transport-decomposition-for-paths}, the identity type $\dep{a,\fun{refl}_a}\eq X\dep{x,p}$ is inhabited.
+    by part a) of Proposition~\ref{prop:transport-decomposition-for-paths}, the identity type $\dep{a,\fun{refl}_a}\eq\Sigma\dep{x,p}$ is inhabited.
 \end{proof}
 
 \begin{rem}\label{rem:contractible-center-to-center-path}
@@ -1418,15 +1418,15 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 \begin{defns}\label{defn:fiber-over-y}
     Let $f\colon A\to B$ be a function.
     \begin{enumerate}[-]
-        \item The \textsl{fiber of\/ $f$} is the type family
+        \item The \textsl{fiber of $f$} is the type family
         \begin{align*}
             \fun{fib}_f&\colon B\to\univ\\
             \fun{fib}_f(y)&\defeq\sum_{x\colon A}f(x)\eq By.
         \end{align*}
             
-        \item The function $f$ is \textsl{contractible} if, for every\/ $y\colon B$, the fiber of\/ $f$ over\/ $y$ is contractible. In other words, the type
-        \begin{equation}\label{eq:isContrMap}
-            \fun{isContrMap}(f)
+        \item The function $f$ is \textsl{contractible} if, for every $y\colon B$, the fiber $\fun{fib}_f(y)$ of $f$ over $y$ is contractible. In other words, the type
+        \begin{equation}\label{eq:isContr-map}
+            \fun{isContr}(f)
                 \defeq\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y))
         \end{equation}
         is inhabited.
@@ -1434,11 +1434,11 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 \end{defns}
 
 \begin{lem}
-    For any function\/ $f\colon A\to B$, the type\/ $\fun{isContrMap}(f)$ is a mere proposition.
+    For any function\/ $f\colon A\to B$, the type\/ $\fun{isContr}(f)$ is a mere proposition.
 \end{lem}
 
 \begin{proof}
-    By definition, the type of contractible maps is the dependent type given in \eqref{eq:isContrMap}.
+    By definition, the type of contractible maps is the dependent type given in \eqref{eq:isContr-map}.
 
     By Theorem~\ref{thm:isContr-is-a-mere-proposition}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a mere proposition for every $y\colon B$. Then, the conclusion follows from part d) of Theorem~\ref{thm:mere-propositions}.
     

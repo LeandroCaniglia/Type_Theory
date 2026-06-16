@@ -1,0 +1,79 @@
+\chapter{Category Notes}
+
+\section{Yoneda's Lema}
+
+\begin{thm}\label{thm:yoneda-general}
+    {\upshape[Yoneda’s Lemma]} Let\/ $A$ be an object in a category\/~$\cat C$. Let\/ $F\colon\cat C\to\cat{Set}$ be a covariant functor, and let\/ $\yoneda_A=\Hom_{\cat C}(A,-)$ be the representable functor from\/ $\cat C$ to\/ $\cat{Set}$. Then the set\/ $F(A)$ is in a one-to-one correspondence with the collection of natural transformations from\/~$\yoneda_A$ to\/~$F$. This correspondence maps each natural transformation\/ $\eta\colon\yoneda_A\to F$ to the element\/ $\eta_A(\id_A)$ in\/~$F(A)$.
+\end{thm}
+
+\begin{proof}
+    Let $c\in F(A)$ be an element. For any object $Y$ define
+    \begin{align*}
+        \eta_{c,Y}\colon \yoneda_A(Y)&\to F(Y)\\
+        \zeta&\mapsto F(\zeta)(c).
+    \end{align*}
+    Given $u\colon Y\to Z$ we have $\yoneda_A(u)(\zeta)=u\circ\zeta$ for $\zeta\in\yoneda_A(Y)$. Put $(\eta_c)_Y=\eta_{c,Y}$. Then $\eta_c\colon\yoneda_A\to F$ is natural because the diagram
+    $$
+        \begin{tikzcd}
+            \yoneda_A(Y)
+                    \arrow[r,"(\eta_c)_Y"]
+                    \arrow[d,"\yoneda_A(u)"']
+                &F(Y)
+                    \arrow[d,"F(u)"]
+                &\zeta
+                    \arrow[r,mapsto]
+                    \arrow[d,mapsto]
+                &F(\zeta)(c)
+                    \arrow[d,mapsto]\\
+            \yoneda_A(Z)
+                    \arrow[r,"(\eta_c)_Z"']
+                &F(Z)&u\circ\zeta
+                    \arrow[r,mapsto]
+                &F(u\circ\zeta)(c)
+        \end{tikzcd}
+    $$
+    commutes (since $F(u)(F(\zeta)(c))=F(u\circ\zeta)(c)$ by the functoriality of $F$).
+    
+    Conversely, take a natural transformation $\eta\colon\yoneda_A\to F$. Since $\eta_A$ takes endomorphisms of $A$ to elements of $F(A)$, we know that $c_\eta=\eta_A(\id_A)$ is such an element.
+
+    It remains to be seen that both maps are reciprocal.
+
+    \begin{description}
+        \item[$\mbf{F(A)\to\op{Nat}\to F(A):}$] Take $c\in F(A)$. Then,
+        \begin{align*}
+            c&\mapsto\eta_c\mapsto c_{\eta_c}\\
+            c_{\eta_c} &= (\eta_c)_A(\id_A)\\
+                &= \eta_{c,A}(\id_A)\\
+                &= F(\id_A)(c)\\
+                &= \id_{F(A)}(c)\\
+                &= c.
+        \end{align*}
+        \item[$\mbf{\op{Nat}\to F(A)\to\op{Nat}:}$] Take $\eta\colon\yoneda_A\to F$. Given $\zeta\colon A\to Y$, we have a commutative diagram
+        $$
+            \begin{tikzcd}
+                \yoneda_A(A)
+                        \arrow[d,"\yoneda_A(\zeta)"']
+                        \arrow[r,"\eta_A"]
+                    &F(A)
+                        \arrow[d,"F(\zeta)"]
+                    &\id_A
+                        \arrow[r,mapsto]
+                        \arrow[d,mapsto]
+                    &c_\eta
+                        \arrow[d,mapsto]\\
+                \yoneda_A(Y)
+                        \arrow[r,"\eta_Y"']
+                    &F(Y)&\zeta\circ\id_A=\zeta
+                        \arrow[r,mapsto]
+                    &F(\zeta)(c_\eta)
+            \end{tikzcd}
+        $$
+        Therefore,
+        \begin{align*}
+            (\eta_{c_\eta})_Y(\zeta) &= \eta_{c_\eta,Y}(\zeta)\\
+                &= F(\zeta)(c_\eta)\\
+                &= \eta_Y(\zeta),
+        \end{align*}
+        which shows that $\eta_{c_\eta}=\eta$, as desired.
+    \end{description}
+\end{proof}
