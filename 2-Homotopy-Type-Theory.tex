@@ -3060,11 +3060,24 @@ Here is a picture illustrating the construction
             &\equiv\fun{refl}_{\dep{x,u}}
                 \ct\fun{ap}_{\fun{in}_x}(\gamma)\\
             &\equiv\fun{ap}_{\fun{in}_x}(\gamma).
-    \intertext{In particular, for $\gamma\equiv\fun{refl}_u\colon u\eq{P(x)}u$,}
-        \fun{pair}^=(\dep{\fun{refl}_x,\fun{refl}_u})
-            &\equiv\fun{refl}_{\dep{x,u}}.
-\end{align*}
+        \intertext{In particular, for $\gamma\equiv\fun{refl}_u\colon u\eq{P(x)}u$,}
+            \fun{pair}^=(\dep{\fun{refl}_x,\fun{refl}_u})
+                &\equiv\fun{refl}_{\dep{x,u}}.
+    \end{align*}
 \end{rem}
+
+\begin{lem}\label{lem:ap_pi1-pair=}
+  Let\/ $A$ be a type and\/ $B\colon A\to\univ$ a type family. Suppose\/ $w_1,w_2\colon\sum_{x:A}B(x)$ with\/ $w_1\equiv\dep{x_1,y_1}$ and\/ $w_2\equiv\dep{x_2,y_2}$. Then, for any paths\/ $p\colon x_1\eq Ax_2$ and\/ $q\colon p_*(y_1)\eq{B(x_2)}y_2$, we have
+  \[
+    \fun{ap}_{\pi_1}(\fun{pair}^=(p,q))\eq{x_1\eq Ax_2}p.
+  \]
+\end{lem}
+
+\begin{proof}
+  By path induction on $p$ we may assume that $x_2\equiv x_1$ and $p\equiv\fun{refl}_{x_1}$. In this case, the transport $p_*(y_1)$ evaluates to $y_1$, and therefore $q$ is a path of type $y_1\eq{B(x_1)}y_2$. We can now proceed by path induction on $q$, which allows us to assume $y_2\equiv y_1$ and $q\equiv\fun{refl}_{y_1}$.
+
+  Thus, the term $\fun{pair}^=(p,q)$ reduces definitionally to $\fun{refl}_{(x_1,y_1)}$. Applying the function $\pi_1$ to this path yields $\fun{ap}_{\pi_1}(\fun{refl}_{\dep{x_1,y_1}})$, which is definitionally equal to $\fun{refl}_{x_1}$. Since $p\equiv\fun{refl}_{x_1}$, both sides of the equation are definitionally equal to $\fun{refl}_{x_1}$. Thus, the identity path $\fun{refl}_{\fun{refl}_{x_1}}$ witnesses the required propositional equality.
+\end{proof}
 
 \begin{prop}\label{prop:sigma-associativity} {\upshape[\textSigma-associativity]}
     Let\/ $X\colon\univ$ be a type, $A\colon X\to\univ$ a type family over\/ $X$, and\/ $B\colon\Sigma_XA\to\univ$ a type family over the total space. Then, the map
@@ -4361,7 +4374,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     \]
 \end{rem}
 
-\begin{lem}
+\begin{lem}\label{lem:transport^A->B}
     Let\/ $A, B\colon X\to\univ$ be type families, and consider the family of function types\/ $A\to B\colon X\to\univ$ defined by\/ $(A\to B)(x)\defeq A(x)\to B(x)$. For any path\/ $p\colon x\eq Xy$, function\/ $f\colon A(x)\to B(x)$, and element\/ $v\colon A(y)$, the transport of\/ $f$ along\/ $p$ evaluates as
     \[
         \fun{transport}^{A\to B}(p,f)(v) \eq{B(y)} p_*\bigl(f((p^{-1})_*(v))\bigr),
@@ -5181,19 +5194,66 @@ The first unit laws holds definitionally
         &\eq{A\simeq B}d.
 \end{align*}
 
-
-\begin{prop}\label{prop:id-transport-and-ap}
-    Let\/ $B\colon A\to\univ$ be a type family  and\/ $x,y\colon A$. Given paths\/ $p\colon x\eq Ay$ and\/ $u\colon B(x)$, we have
-    \begin{align*}
-        \fun{transport}^B(p,u)
-            &\eq{B(y)}\fun{transport}^{\id_\univ}(\fun{ap}_B(p),u) \\
-            &\equiv\fun{idtoeqv}(\fun{ap}_B(p))(u).
-    \end{align*}
+\begin{prop}\label{prop:transport-ua-precomp}
+    Let\/ $E,A,B\colon\univ$ be types. Then, given an equivalence $e \colon E\simeq A$ and a function\/ $g\colon E\to B$, we have
+    \[
+        \fun{transport}^{\lambda X.\,(X\to B)}(\fun{ua}(e),g)
+            \sim g \circ e^{-1}.
+    \]
 \end{prop}
 
 \begin{proof}
-    The second equality is a direct consequence of the definition given in Theorem~\ref{thm:idtoeqv-def}, when $\fun{idtoeqv}\colon B(x)\simeq B(y)$ is identified with $B(x)\to B(y)$, as established in Notation~\ref{ntn:abuse-equivalence}.
+    Let $p\defeq\fun{ua}(e)$. Then $p\colon E\eq\univ A$ and $p^{-1}\eq{A\eq\univ E}\fun{ua}(e^{-1})$. By Lemma~\ref{lem:transport^A->B} applied to the identity type family $\id_\univ$ and the constant $\lambda X.\,B$, given $a\colon A$, we have
+    \begin{align*}
+        \fun{transport}^{\lambda X.\,(X\to B)}
+            (p,g)(a)
+            &\eq{B}
+                \fun{transport}^{\lambda X.\,B}
+                \bigl(
+                    p,
+                    g(
+                        \fun{transport}^{\id_\univ}
+                        (
+                            p^{-1},a
+                        )
+                    )
+                \bigr)\\
+            &\stackrel{\text{(1)}\hphantom{_B}}{\eq{B}}g
+                (
+                    \fun{transport}^{\id_\univ}(p^{-1},a)
+                )\\
+            &\stackrel{\text{(2)}\hphantom{_B}}{\eq{B}}g(\fun{idtoeqv}(p^{-1})(a))\\
+            &\eq{B}g(\fun{idtoeqv}(\fun{ua}(e^{-1}))(a))\\
+            &\equiv g(e^{-1}(a)),
+    \end{align*}
+    \begin{enumerate}[(1)]
+        \item holds because the transport of a constant family is the identity map [cf.~Exercise~\ref{exr:constant-fibration}].
+        \item follows from Theorem~\ref{thm:idtoeqv-def}. \qedhere
+    \end{enumerate}
+\end{proof}
 
+\begin{prop}\label{prop:id-transport-and-ap}
+    Let\/ $B\colon A\to\univ$ be a type family and\/ $x,y\colon A$. Given a path\/ $p\colon x\eq{A}y$ and an element\/ $u\colon B(x)$, we have
+    \begin{align*}
+        \fun{transport}^B(p,u)
+            &\eq{B(y)}\fun{transport}^{\id_\univ}(\fun{ap}_B(p),u) \\
+            &\equiv\pi_1
+                \bigl(
+                    \fun{idtoeqv}(\fun{ap}_B(p))
+                \bigr)(u),
+    \end{align*}
+    where
+    \[
+        \pi_1\colon
+            \Bigl(
+                \sum_{f\colon B(x)\to B(y)}\fun{isequiv}(f)
+            \Bigr)
+            \to\bigl(B(x)\to B(y)\bigr)
+    \]
+    is the first projection of the $\Sigma$-type.\footnote{Notation~\ref{ntn:abuse-equivalence} is sometimes used to identify $\fun{idtoeqv}(\fun{ap}_B(p))\colon B(x)\simeq B(y)$ with its projection onto $B(x)\to B(y)$.}
+\end{prop}
+
+\begin{proof}
     The types of both sides of the first equality are:
     \begin{align*}
         \fun{transport}^B(p)\colon B(x)\to B(y),\;u\colon B(x)
@@ -5222,7 +5282,8 @@ The first unit laws holds definitionally
     \end{align*}
     Here is an illustration. Compare with Remark~\ref{rem:Pf-diagram}.
     \[
-        \begin{tikzpicture}[scale=1.2,>=stealth,font=\small]
+        \hspace{2cm}
+        \begin{tikzpicture}[scale=1.0,>=stealth,font=\small]
             \draw[thick,name path=A]
                 (0.5,0) node[left] {$A$} to[out=10,in=170] (6,0);
                 

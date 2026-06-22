@@ -170,6 +170,143 @@
     of \textsl{left} and \textsl{right inverses} to $f$, respectively. We call $f$ \textsl{left invertible} if $\fun{linv}(f)$ is inhabited, and \textsl{right invertible} if $\fun{rinv}(f)$ is inhabited.
 \end{defn}
 
+\begin{lem}\label{lem:transport-Q}
+    Let\/ $B\colon\univ$ be a type and\/ $P\colon B\to\univ$ a type family. Consider two functions\/ $f,g\colon B\to\Sigma_BP$, a path\/ $p\colon f=g$, and the type family
+    \begin{align*}
+        Q\colon(B\to\Sigma_BP)&\to\univ\\
+        h&\mapsto\pi_1\circ h\sim\id_B.
+    \end{align*}
+    Then, for any\/ $\eta\colon Q(f)$ and any\/ $b\colon B$, we have
+    \[
+        \fun{transport}^Q(p,\eta)(b)
+        \eq{\pi_1(g(b))\eq Bb}\fun{transport}^{Q_b}(p,\eta(b)),
+    \]
+    where\/ $Q_b\defeq\lambda h.\,\pi_1(h(b))\eq Bb$.
+\end{lem}
+
+\begin{proof}
+    By path induction on $p$, it suffices to consider the case where $g\equiv f$ and $p\equiv\fun{refl}_f$. Since transport along reflexivity is the identity, the goal reduces to
+    \[
+        \eta(b)\eq{\pi_1(f(b))\eq Bb}\eta(b),
+    \]
+    which is witnessed by $\fun{refl}_{\eta(b)}$.
+\end{proof}
+
+\begin{thm}\label{thm:pi-sections}
+    Let $B\colon\univ$ be a type and $P\colon B\to\univ$ a type family. The type of dependent functions $\prod_{b\colon B}P(b)$ is equivalent to the type of right inverses of the first projection $\pi_1\colon\Sigma_BP\to B$. That is, there is an equivalence
+    \[
+        \Bigl(
+            \prod_{b\colon B}P(b)
+        \Bigr)
+        \simeq
+        \fun{rinv}(\pi_1).
+    \]
+\end{thm}
+
+\begin{proof}
+    We define the forward map by
+    \begin{align*}
+        \Phi\colon
+            \Bigl(
+                \prod_{b\colon B}P(b)
+            \Bigr)
+            &\to\fun{rinv}(\pi_1)\\
+        \sigma&\mapsto\dep{
+            \explain[B\to\Sigma_BP]{\lambda b.\,
+            \dep{b,\sigma(b)}},\lambda b.\,\fun{refl}_b},
+    \intertext{and the backward map by}
+        \Psi\colon
+            \fun{rinv}(\pi_1)&\to\prod_{b\colon B}P(b)\\
+        \dep{g,\eta}&\mapsto\lambda b.\,
+            \fun{transport}^P(\eta(b),\pi_2(g(b))).
+    \end{align*}
+    This definition is well-typed because $\eta(b)\colon\pi_1(g(b))\eq{B}b$, and so the transport map takes $P(\pi_1(g(b)))$ to $P(b)$.
+    
+    We must show that these maps are mutually inverse. For the forward-backward composition, we have
+    \begin{align*}
+        \Psi(\Phi(\sigma))(b)
+            &\equiv\fun{transport}^P(\fun{refl}_b,\pi_2(\dep{b,\sigma(b)}))\\
+            &\equiv\fun{transport}^P(\fun{refl}_b,\sigma(b))\\
+            &\equiv \sigma(b).
+    \end{align*}
+    Hence, $\Psi(\Phi(\sigma))\equiv\sigma$, which implies $\Psi\circ\Phi\sim\id$.
+
+    For the backward-forward composition, we obtain
+    \[
+        \Phi(\Psi(\dep{g,\eta}))
+            \equiv\bigdep{
+                \lambda b.\,\dep{b,
+                    \fun{transport}^P(\eta(b),\pi_2(g(b)))},
+                \lambda b.\,\fun{refl}_b
+            }.
+    \]
+    Let
+    \[
+        f\defeq\lambda b.\,
+            \dep{b,\fun{transport}^P(\eta(b),\pi_2(g(b)))}
+    \]
+    denote the function in the first component of the \rhs. We must show that
+    \[
+        \dep{g,\eta}
+        \eq{\fun{rinv}(\pi_1)}\dep{f,\lambda b.\,\fun{refl}_b}.
+    \]
+    To establish a path $g\eq{B\to\Sigma_BP}f$, we will construct a homotopy $\vartheta\colon g\sim f$ and then apply function extensionality to get $\fun{funext}(\vartheta)$.
+    
+    Fix $b\colon B$. To construct a path $\vartheta(b)\colon g(b)\eq{\Sigma_BP}f(b)$, we need paths for both components:
+    \begin{itemize}
+        \item a path in the first component given by
+        \[
+            \eta(b)\colon\pi_1(g(b))\eq{B}b,
+        \]
+        
+        \item a path in the second component between the transport of $\pi_2(g(b))$ along $\eta(b)$ and $\pi_2(f(b))$. Since $\pi_2(f(b))\equiv\fun{transport}^P(\eta(b),\pi_2(g(b)))$, this path is trivially produced by reflexivity.
+    \end{itemize}
+    This establishes the path $\vartheta(b)$, yielding $\fun{funext}(\vartheta)\colon g\eq{B\to\Sigma_BP}f$.
+    
+    To complete the proof, we must show that transporting the second component $\eta$ along $\fun{funext}(\vartheta)$ in the family
+    \begin{align*}
+        Q\colon(B\to\Sigma_BP)&\to\univ\\
+        h&\mapsto \pi_1\circ h\sim\id_B
+    \end{align*}
+    yields $\lambda b.\,\fun{refl}_b$. By Lemma~\ref{lem:transport-Q}, we deduce
+    \begin{align*}
+        \fun{transport}^Q(\fun{funext}(\vartheta),\eta)(b)
+            &\eq{Q_b(f)}\fun{transport}^{Q_b}
+                (\fun{funext}(\vartheta),\eta(b)),
+    \end{align*}
+    where $Q_b\defeq\lambda h.\,\pi_1(h(b))\eq{B}b$.
+    
+    Applying Transport in Identity Types ( Lemma~\ref{lem:transport-in-identity-types}) to the map $\lambda h.\,\pi_1(h(b))$ and the constant $\lambda h.\,b$, the \rhs becomes
+    \begin{align*}
+        \rhs
+            &\eq{Q_b(f)}
+                \fun{ap}_{\lambda h.\,\pi_1(h(b))}(
+                    \fun{funext}(\vartheta)
+                )^{-1}
+                \ct\eta(b)
+                \ct\fun{ap}_{\lambda h.\,b}(
+                    \fun{funext}(\vartheta)
+                )\\
+            &\eq{Q_b(f)}
+                \bigl(
+                    \fun{ap}_{\pi_1}\circ\fun{ap}_{\ev b}
+                        (\fun{funext}(\vartheta))
+                \bigr)^{-1}
+                \ct\eta(b)
+                \ct\cancel{\fun{refl}_b}\\
+            &\eq{Q_b(f)}
+                \fun{ap}_{\pi_1}(\vartheta(b))^{-1}\ct\eta(b).
+    \end{align*}
+    Since the path in the first component of $\vartheta(b)$ is $\eta(b)$, Lemma~\ref{lem:ap_pi1-pair=} implies that $\fun{ap}_{\pi_1}(\vartheta(b))\eq{}\eta(b)$. Thus, we conclude that
+    \[
+        \rhs\eq{Q_b(f)}
+            \eta(b)^{-1}\ct\eta(b)\eq{}\fun{refl}_b.
+    \]
+    By function extensionality, the transported homotopy is equal to $\lambda b.\,\fun{refl}_b$. This completes the proof.
+    %
+    
+\end{proof}
+
 \begin{prop}\label{prop:side-inverses-are-contractible}
     If\/ $f\colon A\to B$ has a quasi-inverse\/ $\dep{g,(\eta,\vartheta)}$, then the types\/ $\fun{rinv}(f)$ and\/ $\fun{linv}(f)$ are contractible with respective centers\/ $\dep{g,\eta}$ and\/ $\dep{g,\vartheta}$.
 \end{prop}
@@ -1163,5 +1300,232 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 \end{cor}
 
 \begin{proof}
-    This is a direct consequence of the theorem and Theorem~\ref{thm:isContr->ishae}.
+    This is a direct consequence of the preceding theorem and Theorem~\ref{thm:isContr->ishae}.
+    %
+    
 \end{proof}
+
+\section{The Object Classifier}
+
+In set theory theory, $\set{0,1}$ is the \textsl{subobject classifier}, representing the set of truth values. Given a base set $A$ and a subset $S \subseteq A$, this subset is perfectly described by its characteristic function $\chi_S \colon A \to \set{0,1}$. The function $\chi_S$ acts as a classifier: it points to $1$ if an element belongs to $S$, and $0$ otherwise. The subset $S$ is mathematically recovered as the preimage of $1$ under the function~$\chi_S$.
+
+In Homotopy Type Theory, the focus expands from classifying subsets to classifying arbitrary type families. Instead of a subset inclusion $S \hookrightarrow A$, we work with a total space $\Sigma_AB$ equipped with the projection map $\pi_1\colon\Sigma_AB\to A$.
+
+Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object classifier}. The type family $B \colon A \to \univ$ acts precisely like the characteristic function $\chi_S$. Rather than returning a simple truth value, evaluating $B$ at a point $a \colon A$ returns the entire fiber over that point. Just as $\chi_S$ completely determines the subset~$S$, the classifying function $B$ completely determines the structure of the fibration defined by the projection map $\pi_1$.
+
+\begin{prop}\label{prop:pi_1-fibers}
+    Let\/ $A\colon\univ$ be a type and\/ $B\colon A\to\univ$ a type family over $A$. Then, the fiber of\/ $\pi_1\colon\Sigma_AB\to A$ over\/ $a\colon A$ is equivalent to\/ $B(a)$:
+    \[
+        \fun{fib}_{\pi_1}(a) \simeq B(a).
+    \]
+\end{prop}
+
+\begin{proof}
+    \begin{align*}
+        \fun{fib}_{\pi_1}(a)
+            &\equiv\sum_{u\colon\Sigma_AB}\pi_1(u)\eq Aa\\
+            &\simeq\sum_{x\colon A}\;\sum_{u\colon B(x)}
+                x\eq Aa
+                &&\text{; assoc.}\\
+            &\simeq\sum_{x\colon A}\;\sum_{p\colon x\eq Aa}
+                B(x)
+                &&\text{; }\dep{u,p}\comm\dep{p,u}.\\
+            &\simeq\sum_{\zeta\colon\sum_{x\colon A}
+                x\eq Aa}\!\!\!B(\pi_1(\zeta))
+                &&\text{; assoc.}\\
+            &\simeq B(\pi_1(\dep{a,\fun{refl}_a})
+                &&\text{; Lem.~\ref{lem:Sigma-identity-is-contractible} \& Thm.~\ref{thm:contractible-types}~d)}\\
+            &\equiv B(a).
+    \end{align*}\qedhere
+\end{proof}
+
+\begin{lem}\label{lem:fib-reconstruction}
+    For any function\/ $f\colon A\to B$, we have
+    \[
+        A \simeq \sum_{b\colon B}\fun{fib}_f(b).
+    \]
+\end{lem}
+
+\begin{proof}
+    The map that induces the equivalence is defined by
+    \[
+        \gamma\colon A\to\sum_{b\colon B}\fun{fib}_f(b),
+        \quad a\mapsto\dep{f(a),\dep{a,\fun{refl}_{f(a)}}}.
+    \]
+    Its quasi-inverse is given by
+    \[
+        \pi\colon
+            \Bigl(
+                \sum_{b\colon B}\fun{fib}_f(b)
+            \Bigr)
+            \to A,
+            \quad\dep{b,\dep{x, p}}\mapsto x.
+    \]
+    Indeed, the compositions compute to
+    \begin{align*}
+        a\xmapsto{\gamma}
+            \dep{
+                f(a),
+                \dep{a,\fun{refl}_{f(a)}}
+            }
+            \xmapsto{\pi}a
+    \intertext{and}
+        \dep{b,\dep{x,p}}
+            \xmapsto{\pi}x
+            \xmapsto{\gamma}
+                \dep{f(x),\dep{x,\fun{refl}_{f(x)}}}.
+    \end{align*}
+    Since $p\colon f(x)\eq{B}b$, showing that 
+    \[
+        \dep{f(x),\dep{x,\fun{refl}_{f(x)}}}
+            \eq{\Sigma_B\fun{fib}_f}\dep{b,\dep{x,p}}
+    \]
+    amounts to proving that
+    \[
+        \fun{transport}^{\fun{fib}_f}
+            (
+                p,\dep{x,\fun{refl}_{f(x)}}
+            )
+            \eq{\fun{fib}_f(b)}\dep{x,p}.
+    \]
+    By applying based path induction on $p$, the goal reduces to the case $b\equiv f(x)$ and $p\equiv\fun{refl}_{f(x)}$, which yields the definitional equality
+    \[
+        \fun{transport}^{\fun{fib}_f}
+            (
+                \fun{refl}_{f(x)},\dep{x,\fun{refl}_{f(x)}}
+            )
+            \equiv\dep{x,\fun{refl}_{f(x)}}.
+    \]
+\end{proof}
+
+\begin{thm}\label{thm:HoTT-Grothendieck-construction}
+    For any type\/ $B$, there is an equivalence
+    \[
+        \chi\colon
+            \Bigl(
+                \sum_{A\colon\univ}A\to B
+            \Bigr)
+            \simeq(B\to\univ).
+    \]
+\end{thm}
+
+\begin{proof}
+    We define the forward function by
+    \begin{align*}
+        \chi\colon
+            \Bigl(
+                \sum_{A\colon\univ}A\to B
+            \Bigr)
+            &\to(B\to\univ)\\
+        \dep{A,f}&\mapsto\fun{fib}_f,
+    \intertext{where $\fun{fib}_f\defeq\lambda b.\,\fun{fib}_f(b)$. The backward function is given by}
+        \chi^{-1}\colon(B\to\univ)&\to
+            \Bigl(
+                \sum_{A\colon\univ}A\to B
+            \Bigr)\\
+        g&\mapsto\Bigdep{\sum_{b\colon B}g(b),\pi_1}.
+    \end{align*}
+    To verify that these maps are mutually inverse, we compute both compositions. Given $g\colon B\to\univ$, we have
+    \begin{align*}
+        (\chi\circ\chi^{-1})(g)
+            &\equiv\chi(\chi^{-1}(g))\\
+            &\equiv\chi
+                \Bigl(
+                    \Bigdep{\sum_{b\colon B}g(b),\pi_1}
+                \Bigr)\\
+            &\equiv\fun{fib}_{\pi_1}.
+    \end{align*}
+    By Proposition~\ref{prop:pi_1-fibers}, for each $b\colon B$ there is an equivalence $e_b\colon\fun{fib}_{\pi_1}(b)\simeq g(b)$. Therefore,
+    \[
+        \fun{ua}(e_b)\colon\fun{fib}_{\pi_1}(b)\eq{\univ}g(b).
+    \]
+    By function extensionality, this family of paths induces an equality of functions
+    \[
+        \fun{funext}(\lambda b.\,\fun{ua}(e_b))\colon
+            \fun{fib}_{\pi_1}\eq{B\to\univ}g,
+    \]
+    which yields the required path $(\chi\circ\chi^{-1})(g)\eq{B\to\univ}g$.
+
+    On the other hand, given $A\colon\univ$ and $f\colon A\to B$, we have
+    \begin{align*}
+        \chi^{-1}\circ\chi(\dep{A,f})
+            &\equiv\chi^{-1}(\fun{fib}_f)\\
+            &\equiv
+                \Bigdep{
+                    \sum_{b\colon B}\fun{fib}_f(b),\pi_1
+                }
+    \end{align*}
+    To complete the proof, we must show that
+    \[
+        \Bigdep{
+            \sum_{b\colon B}\fun{fib}_f(b),\pi_1
+        }
+        \eq{\sum_{A\colon\univ}(A\to B)}\dep{A,f}.
+    \]
+    For the first component, we take $p\defeq\fun{ua}(e^{-1})$, where $e\colon A\simeq\sum_{b\colon B}\fun{fib}_f(b)$ is the equivalence established in Lemma~\ref{lem:fib-reconstruction}. For the second component, we must show that
+    \[
+        \fun{transport}^{\lambda X.\,(X\to B)}(p,\pi_1)\eq{A\to B}f.
+    \]
+    As in the proof of Lemma~\ref{lem:fib-reconstruction}, let $\gamma$ and $\pi$ be the quasi-inverses inducing the equivalence $e$. Proposition~\ref{prop:transport-ua-precomp} implies that
+    \begin{align*}
+        \fun{transport}^{\lambda X.\,(X\to B)}(p,\pi_1)
+            &\sim\pi_1\circ\gamma.
+    \intertext{Evaluating the \rhs at an arbitrary $a\colon A$, we get}
+        \pi_1(\gamma(a))
+            &\equiv\pi_1\bigl(\dep{f(a),\dep{a,\fun{refl}_{f(a)}}}\bigr)\\
+            &\equiv f(a).
+    \end{align*}
+    Now function extensionality gives the desired equality.
+\end{proof}
+
+\begin{rem}
+    Given a type $B\colon\univ$, the total space
+    \[
+        E\defeq\sum_{A\colon\univ}A\to B
+    \]
+    is the type-theoretic equivalent of the slice category $\cat{Set}_B$.
+    
+    To understand this correspondence at the level of morphisms, let us consider how mappings between objects are defined in both contexts. As established in \S\,\ref{slice-category}, a morphism in $\cat{Set}_B$ between two objects $f\colon A\to B$ and $f'\colon A'\to B$ is a function $h\colon A\to A'$ such that the corresponding triangle commutes, i.e., $f'\circ h=f$. In Homotopy Type Theory, the type of maps over $B$ from $\dep{A,f}$ to $\dep{A',f'}$ is given precisely by
+    \[
+        \sum_{h\colon A\to A'}f'\circ h\sim f.
+    \]
+    \needspace{3\baselineskip}
+    Furthermore, the characterization of equality for $\Sigma$-types dictates that a path between $\dep{A,f}$ and $\dep{A',f'}$ consists of:
+    \begin{itemize}
+        \item a path $A\eq{\univ}A'$, which the univalence axiom reduces to an equivalence $h\colon A\simeq A'$, and
+        
+        \item a homotopy $\fun{transport}^{\lambda X.\,(X\to B)}(\fun{ua}(h),f)\sim f'$, which Proposition~\ref{prop:transport-ua-precomp} renders equivalent to a homotopy $f\circ h^{-1}\sim f'$ or $f\sim f'\circ h$.
+    \end{itemize}
+    Thus, the type-theoretic structure naturally captures the objects, the general morphisms (via the dependent pair type), and the isomorphisms (via the identity type) of the categorical slice construction.
+
+    As discussed in \S\,\ref{types-as-categories}~\nameref{types-as-categories}, we can view types as categories where the terms are the objects and the identity paths are the morphisms. Functors in this context are functions between types, which act on paths via the $\fun{ap}$ operator.
+
+    However, when we let the universe $\univ$ play the role of $\cat{Set}$, our correspondence requires a categorical shift in perspective. In $\cat{Set}$, the morphisms are arbitrary functions, not just bijections. Therefore, when viewing $\univ$ as a category, we treat types as objects, functions as morphisms, and equivalences as isomorphisms. Consequently, a type family $P\colon B\to\univ$ acts as a functor by mapping:
+    \begin{itemize}
+        \item objects: a term $b\colon B$ is mapped to the type $P(b)\colon\univ$.
+
+        \item isomorphisms: a path $p\colon b\eq{B}b'$ (which is an isomorphism in the groupoid $B$) is mapped to an equivalence in $\univ$. Specifically, $P$ transforms $p$ into the equivalence $\fun{idtoeqv}(\fun{ap}_P(p))\colon P(b)\simeq P(b')$. By Proposition~\ref{prop:id-transport-and-ap}, the underlying function of this equivalence is exactly the transport map $\fun{transport}^P(p,\dummy)\colon P(b)\to P(b')$.
+    \end{itemize}
+
+    In category theory, a natural transformation between two functors consists of two separate pieces of data:
+    \begin{enumerate}[a)]
+        \item a family of morphisms representing the object-level components, and
+        
+        \item a proof that these components make the associated naturality squares commute for every morphism in the base category.
+    \end{enumerate}
+    Given families $P, Q\colon B\to\univ$, a dependent function $\eta\colon\prod_{b\colon B}P(b)\to Q(b)$ provides exactly the object-level data required by part (a). For every $b\colon B$, it gives a function $\eta(b)\colon P(b)\to Q(b)$.
+    
+    The profound difference in type theory is that part (b) is that it is an intrinsic consequence of path induction. To verify this naturality, we must show that for any path $p\colon b\eq{}b'$ and any element $x\colon P(b)$, the evaluation of $\eta(b')$ after transporting $x$ equals the transport of the evaluation of $\eta(b)$ at $x$. This is expressed by the propositional equality
+    \[
+        \eta(b')(\fun{transport}^P(p,x)) \eq{} \fun{transport}^Q(p,\eta(b)(x)).
+    \]
+    We can construct a path witnessing this equality by induction on $p$. Assuming $b'\equiv b$ and $p\equiv\fun{refl}_b$, the transport operations reduce definitionally to the identity function. The equation then simplifies to
+    \[
+        \eta(b)(x) \eq{} \eta(b)(x),
+    \]
+    which is trivially inhabited by $\fun{refl}_{\eta(b)(x)}$. By path induction, this commutativity holds for all paths $p$. 
+    
+    Therefore, simply providing the dependent function $\eta$ is entirely sufficient. The rules of identity types guarantee that any such function is natural with respect to paths.
+
+    Under these considerations it is now clear that Theorem~\ref{thm:HoTT-Grothendieck-construction} is the type-theoretic version of the Grothendieck Construction~Theorem~\ref{thm:grothendieck-construction}.
+\end{rem}

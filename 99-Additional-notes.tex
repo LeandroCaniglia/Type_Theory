@@ -1,0 +1,205 @@
+\chapter{Additional Notes}
+
+\section{Universes and Type Families}
+
+The definition of a universe often appears circular: a universe is defined using the concept of a type family, yet type families themselves are typically formalized as functions into a universe. This apparent paradox is resolved by distinguishing between the \emph{meta-theoretic} (judgmental) framework and the \emph{object-theoretic} (internal) language of type theory.
+
+\subsection{The Meta-Level: Judgmental Type Families}
+
+Before the introduction of any universes, the type theory relies on a primitive, deductive notion of type dependence. At this foundational stage, a type family is not a mathematical object or a function that can be evaluated or composed. Rather, it is a syntactic rule, or a \textsl{judgment}, which states that under the assumption of a variable\/ $x$ of type\/ $A$, an expression\/ $P(x)$ forms a valid type. This is denoted using the turnstile as
+$$
+    x \colon A \vdash P(x) \text{ type}.
+$$
+These judgmental families are rigidly bound to the deductive rules of the system and cannot be treated as first-class entities.
+
+\subsection{The Object-Level: Internal Type Families}
+
+To perform streamlined mathematics, it is necessary to quantify over type families, compose them, and map into them. This requires internalizing the judgmental families as genuine functions. A universe\/ $\univ$ is introduced to serve as the codomain for these functions, allowing us to define an internal type family as a map
+$$
+    P \colon A \to \univ.
+$$
+In this context, the elements of\/ $\univ$ are typically viewed as ``codes'' or names for types, rather than the types themselves.
+
+\subsection{The Bridge: Tarski-Style Universes}
+
+The connection between the meta-level and the object-level is formalized via a Tarski-style universe. To define the universe\/ $\univ$ without circularity, we rely on the pre-existing judgmental framework. A Tarski universe consists of a type\/ $\univ$ alongside a decoding operation\/ $\tau$. This decoding operation is itself defined at the meta-level as a judgmental type family over\/ $\univ$:
+$$
+    X \colon \univ \vdash \tau(X) \text{ type}.
+$$
+Therefore, the foundational bootstrap proceeds sequentially: the syntactic meta-theory provides the scaffolding to define the decoding judgment\/ $\tau$, which in turn gives semantic meaning to the universe\/ $\univ$, ultimately allowing us to define flexible, object-level type families as functions\/ $A \to \univ$.
+
+\section{Yoneda's Lema}
+
+\begin{thm}\label{thm:yoneda-general}
+    {\upshape[Yoneda’s Lemma]} Let\/ $A$ be an object in a category\/~$\cat C$. Let\/ $F\colon\cat C\to\cat{Set}$ be a covariant functor, and let\/ $\yoneda_A=\Hom_{\cat C}(A,-)$ be the representable functor from\/ $\cat C$ to\/ $\cat{Set}$. Then the set\/ $F(A)$ is in a one-to-one correspondence with the collection of natural transformations from\/~$\yoneda_A$ to\/~$F$. This correspondence maps each natural transformation\/ $\eta\colon\yoneda_A\to F$ to the element\/ $\eta_A(\id_A)$ in\/~$F(A)$.
+\end{thm}
+
+\begin{proof}
+    Let $c\in F(A)$ be an element. For any object $Y$ define
+    \begin{align*}
+        \eta_{c,Y}\colon \yoneda_A(Y)&\to F(Y)\\
+        \zeta&\mapsto F(\zeta)(c).
+    \end{align*}
+    Given $u\colon Y\to Z$ we have $\yoneda_A(u)(\zeta)=u\circ\zeta$ for $\zeta\in\yoneda_A(Y)$. Put $(\eta_c)_Y=\eta_{c,Y}$. Then $\eta_c\colon\yoneda_A\to F$ is natural because the diagram
+    $$
+        \begin{tikzcd}
+            \yoneda_A(Y)
+                    \arrow[r,"(\eta_c)_Y"]
+                    \arrow[d,"\yoneda_A(u)"']
+                &F(Y)
+                    \arrow[d,"F(u)"]
+                &\zeta
+                    \arrow[r,mapsto]
+                    \arrow[d,mapsto]
+                &F(\zeta)(c)
+                    \arrow[d,mapsto]\\
+            \yoneda_A(Z)
+                    \arrow[r,"(\eta_c)_Z"']
+                &F(Z)&u\circ\zeta
+                    \arrow[r,mapsto]
+                &F(u\circ\zeta)(c)
+        \end{tikzcd}
+    $$
+    commutes (since $F(u)(F(\zeta)(c))=F(u\circ\zeta)(c)$ by the functoriality of $F$).
+    
+    Conversely, take a natural transformation $\eta\colon\yoneda_A\to F$. Since $\eta_A$ takes endomorphisms of $A$ to elements of $F(A)$, we know that $c_\eta=\eta_A(\id_A)$ is such an element.
+
+    It remains to be seen that both maps are reciprocal.
+
+    \begin{description}
+        \item[$\mbf{F(A)\to\op{Nat}\to F(A):}$] Take $c\in F(A)$. Then,
+        \begin{align*}
+            c&\mapsto\eta_c\mapsto c_{\eta_c}\\
+            c_{\eta_c} &= (\eta_c)_A(\id_A)\\
+                &= \eta_{c,A}(\id_A)\\
+                &= F(\id_A)(c)\\
+                &= \id_{F(A)}(c)\\
+                &= c.
+        \end{align*}
+        \item[$\mbf{\op{Nat}\to F(A)\to\op{Nat}:}$] Take $\eta\colon\yoneda_A\to F$. Given $\zeta\colon A\to Y$, we have a commutative diagram
+        $$
+            \begin{tikzcd}
+                \yoneda_A(A)
+                        \arrow[d,"\yoneda_A(\zeta)"']
+                        \arrow[r,"\eta_A"]
+                    &F(A)
+                        \arrow[d,"F(\zeta)"]
+                    &\id_A
+                        \arrow[r,mapsto]
+                        \arrow[d,mapsto]
+                    &c_\eta
+                        \arrow[d,mapsto]\\
+                \yoneda_A(Y)
+                        \arrow[r,"\eta_Y"']
+                    &F(Y)&\zeta\circ\id_A=\zeta
+                        \arrow[r,mapsto]
+                    &F(\zeta)(c_\eta)
+            \end{tikzcd}
+        $$
+        Therefore,
+        \begin{align*}
+            (\eta_{c_\eta})_Y(\zeta) &= \eta_{c_\eta,Y}(\zeta)\\
+                &= F(\zeta)(c_\eta)\\
+                &= \eta_Y(\zeta),
+        \end{align*}
+        which shows that $\eta_{c_\eta}=\eta$, as desired.
+    \end{description}
+\end{proof}
+
+\section{The Slice Category}\label{slice-category}
+
+\begin{defn}
+    Given a set $B$ in $\cat{Set}$, the \textsl{slice category over $B$} is the category $\cat{Set}_B$ whose objects are the function $p\colon E\to B$, and its morphisms $\Hom_{\cat{Set}_B}(p\colon E\to B,p'\colon E'\to B)$ are the functions $\phi\colon E\to E'$ that make commutative the triangle
+    \begin{equation}\label{tik:slice-morphism}
+        \begin{tikzcd}[column sep=small]
+            E
+                    \arrow[rd,"p"']
+                    \arrow[rr,"\phi"]
+                &&E'
+                    \arrow[ld,"p'"]\\
+                &B
+        \end{tikzcd}
+    \end{equation}
+\end{defn}
+
+\begin{rem}
+    Consider the set $B$ as a category whose objects are its elements and its morphisms reduce to formal identities $\id_b\colon b\to b$ for $b\in B$. Given functors $F,G\colon B\to\cat{Set}$, since the only morphisms in $B$ are the identities, a natural transformation $\eta\colon F\to G$ consists of a family of maps $\eta_b\colon F(b)\to G(b)$.
+\end{rem}
+
+\begin{ntn}
+    As usual, we will denote the functor category from $B$ to $\cat{Set}$ by $\fun{Fun}(B,\cat{Set})$.
+\end{ntn}
+
+\begin{thm}\label{thm:grothendieck-construction}
+    {\upshape[Grothendieck Construction]} Let\/ $B$ be a set. Then, there is a natural isomorphism\/ $\cat{Set}_B\simeq\fun{Fun}(B,\cat{Set})$.    
+\end{thm}
+
+\begin{proof}
+    The forward functor
+    \[
+        \mathcal F\colon\cat{Set}_B\to\fun{Fun}(B,\cat{Set})
+    \]
+    is defined on objects by
+    \[\tag{$1$}
+        \mathcal F(p)(b)=p^{-1}(b),
+    \]
+    for an object $p$ in $\cat{Set}_B$ and $b\in B$. For a morphism $\phi\colon p\to p'$ as in \eqref{tik:slice-morphism}, we define
+    \[\tag{$2$}
+        \mathcal F(\phi)_b\colon p^{-1}(b)\to (p')^{-1}(b),
+        \quad x\mapsto\phi(x),
+    \]
+    for $b\in B$ and $x\in p^{-1}(b)$.
+
+    The backward functor
+    \[
+        \mathcal G\colon\fun{Fun}(B,\cat{Set})\to\cat{Set}_B
+    \]
+    is defined on objects by the projection map
+    \[\tag{$3$}
+        \mathcal G(F)\colon\coprod_{b\in B}F(b)\to B,
+    \]
+    which maps each element of $F(b)$ to $b$ for every $b\in B$. For a natural transformation $\eta\colon F\to G$ between two functors in $\fun{Fun}(B,\cat{Set})$, we define the morphism
+    \[\tag{$4$}
+        \mathcal G(\eta)\colon\mathcal G(F)\to\mathcal G(G),
+        \quad x\mapsto\eta_b(x),
+    \]
+    for $b\in B$ and $x\in F(b)$.
+
+    To see that these functors are mutually inverse, observe that for any functor $F$ and $b\in B$,
+    \begin{align*}
+        (\mathcal F\circ\mathcal G)(F)(b)
+            &=\mathcal F(\mathcal G(F))(b)\\
+            &=\mathcal G(F)^{-1}(b)
+                &&\text{; by }(1)\\
+            &=F(b)
+                &&\text{; by }(3).
+    \intertext{For a natural transformation $\eta\colon F\to G$, evaluating at $x\in F(b)$ yields}
+        (\mathcal F\circ\mathcal G)(\eta)_b(x)
+            &=\mathcal G(\eta)(x)
+                &&\text{; by }(2)\\
+            &=\eta_b(x)
+                &&\text{; by }(4),
+    \end{align*}
+    so $\mathcal F\circ\mathcal G$ is the identity functor on $\fun{Fun}(B,\cat{Set})$.
+
+    Conversely, fix an object $p\colon E\to B$ in $\cat{Set}_B$. Then,
+    \begin{align*}
+        (\mathcal G\circ\mathcal F)(p)
+            &=\mathcal G(\mathcal F(p))\\
+            &=\coprod_{b\in B}p^{-1}(b)\xto\pi B\
+                &&\text{; by }(1)\text{ \& }(3)\\
+            &=E\xto pB\\
+            &=p.
+    \intertext{Now consider a morphism $\phi\colon p\to p'$. For $b\in B$ and $x\in p^{-1}(b)$, we have}
+        (\mathcal G\circ\mathcal F)(\phi)(x)
+            &=\mathcal G(\mathcal F(\phi))(x)\\
+            &=\mathcal F(\phi)_b(x)
+                &&\text{; by }(4)\\
+            &=\phi(x)
+                &&\text{; by }(2).
+    \end{align*}
+    Thus, $\mathcal G\circ\mathcal F=\Id$, the identity functor on $\cat{Set}_B$. This completes the proof.
+    %
+    
+\end{proof}
+    
