@@ -1,32 +1,105 @@
 \chapter{Additional Notes}
 
-\section{Universes and Type Families}
+\section{Universes and Type Families}\label{universes-and-type-families}
 
-The definition of a universe often appears circular: a universe is defined using the concept of a type family, yet type families themselves are typically formalized as functions into a universe. This apparent paradox is resolved by distinguishing between the \emph{meta-theoretic} (judgmental) framework and the \emph{object-theoretic} (internal) language of type theory.
+The definition of a universe has an apparent circularity: a universe is defined using the concept of a type family, while type families are formalized as functions into a universe. The circularity is resolved by distinguishing between the \textsl{meta-theoretic} (judgmental) framework and the \textsl{object-theoretic} (internal) language of type theory.
 
-\subsection{The Meta-Level: Judgmental Type Families}
+\subsection*{Judgmental Type Families}
 
-Before the introduction of any universes, the type theory relies on a primitive, deductive notion of type dependence. At this foundational stage, a type family is not a mathematical object or a function that can be evaluated or composed. Rather, it is a syntactic rule, or a \textsl{judgment}, which states that under the assumption of a variable\/ $x$ of type\/ $A$, an expression\/ $P(x)$ forms a valid type. This is denoted using the turnstile as
-$$
-    x \colon A \vdash P(x) \text{ type}.
-$$
+Before the introduction of any universes, the type theory relies on a primitive notion of type dependence. At this stage, a type family is not a mathematical object or a function that can be evaluated or composed: it is a syntactic rule, a \textsl{judgment}. It states that under the assumption of a variable $x$ of type $A$, an expression $P(x)$ forms a valid type. This is denoted using the notation
+\[
+    x\colon A\vdash P(x)\text{ type}.
+\]
 These judgmental families are rigidly bound to the deductive rules of the system and cannot be treated as first-class entities.
 
-\subsection{The Object-Level: Internal Type Families}
+\subsection*{Internal Type Families}
 
-To perform streamlined mathematics, it is necessary to quantify over type families, compose them, and map into them. This requires internalizing the judgmental families as genuine functions. A universe\/ $\univ$ is introduced to serve as the codomain for these functions, allowing us to define an internal type family as a map
-$$
-    P \colon A \to \univ.
-$$
-In this context, the elements of\/ $\univ$ are typically viewed as ``codes'' or names for types, rather than the types themselves.
+In order to be able to manipulate type families as mathematical objects (e.g., quantify over them, compose them, and map into them), the judgmental families need to be internalized as functions. A universe $\univ$ is introduced to serve as the codomain for these functions
+\[
+    P\colon A\to\univ.
+\]
+Under this approach, the elements of $\univ$ are typically viewed as \textsl{codes} (or \textsl{names}) for types, rather than types themselves.
 
-\subsection{The Bridge: Tarski-Style Universes}
+\subsection*{Tarski-Style Universes}
 
-The connection between the meta-level and the object-level is formalized via a Tarski-style universe. To define the universe\/ $\univ$ without circularity, we rely on the pre-existing judgmental framework. A Tarski universe consists of a type\/ $\univ$ alongside a decoding operation\/ $\tau$. This decoding operation is itself defined at the meta-level as a judgmental type family over\/ $\univ$:
-$$
-    X \colon \univ \vdash \tau(X) \text{ type}.
-$$
-Therefore, the foundational bootstrap proceeds sequentially: the syntactic meta-theory provides the scaffolding to define the decoding judgment\/ $\tau$, which in turn gives semantic meaning to the universe\/ $\univ$, ultimately allowing us to define flexible, object-level type families as functions\/ $A \to \univ$.
+To define the universe $\univ$ without circularity, we rely on the pre-existing judgmental framework.
+
+\begin{defn}
+    A \textsl{Tarski-style universe} consists of a type $\univ$ of \textsl{codes} together with a decoding function
+    \[
+        X\colon\univ\vdash\tau(X)\text{ type}
+    \]
+    that assigns a type to each code. To accurately reflect the ambient type theory, the universe must be closed under type constructors. This means there exist code-forming operators in $\univ$ which $\tau$ decodes definitionally into the standard type formations:
+    \begin{enumerate}[a),font=\upshape]
+        \item \textsc{Dependent functions:} For any code $a\colon\univ$ and any family of codes $b\colon\tau(a)\to\univ$, there is a code $\hat{\Pi}(a,b)\colon\univ$ such that
+        \[
+            \tau(\hat{\Pi}(a,b))\equiv\prod_{x\colon\tau(a)}\tau(b(x)).
+        \]
+        \item \textsc{Dependent pairs:} For any code $a\colon\univ$ and family of codes $b\colon\tau(a)\to\univ$, there is a code $\hat{\Sigma}(a,b)\colon\univ$ such that
+        \[
+            \tau(\hat{\Sigma}(a,b))\equiv\sum_{x\colon\tau(a)}\tau(b(x)).
+        \]
+        \item \textsc{Identity types:} For any code $a\colon\univ$ and terms\/ $x,y\colon\tau(a)$, there is a code $\hat\Id(a,x,y)\colon\univ$ such that
+        \[
+            \tau(\hat\Id(a,x,y))\equiv x\eq{\tau(a)}y.
+        \]
+        \item \textsc{Coproducts:} For any codes $a,b\colon\univ$, there is a code $\mathop{\hat{+}}(a,b)\colon\univ$ such that
+        \[
+            \tau(\mathop{\hat{+}}(a,b))\equiv\tau(a)+\tau(b).
+        \]
+    \end{enumerate}
+\end{defn}
+
+\begin{rem}
+    The assertion that the universe $\univ$ is itself a type cannot be derived from the decoding function $\tau$. Instead, its existence must be postulated via a primitive formation rule:
+    \[
+        \vdash \univ \text{ type}.
+    \]
+    One might naturally wonder whether $\univ$ is an element of itself, i.e., whether the judgment $\univ\colon\univ$ holds. However, positing that a universe contains its own code is notoriously inconsistent. Much like the set of all sets in classical set theory, it leads to a type-theoretic contradiction known as \textsl{Girard's paradox}.
+    
+    To circumvent this inconsistency while maintaining the ability to compute with universes, Homotopy Type Theory introduces an infinite hierarchy of universes:
+    \[
+        \univ_0, \univ_1, \univ_2, \dots
+    \]
+    where each universe is a term of the next: $\univ_i\colon\univ_{i+1}$. In a strict Tarski-style presentation, each universe $\univ_i$ has its own decoding function $\tau_i\colon\univ_i\to\univ_{i+1}$.
+    
+    In mathematical practice, managing these indices explicitly is exceedingly cumbersome. Following a convention known as \textsl{typical ambiguity}, we routinely drop the subscripts and simply write $\univ$, implicitly trusting that a consistent assignment of universe levels could be reconstructed to avoid paradoxes.
+\end{rem}
+
+\subsection*{Russell-Style Universes}
+
+While the Tarski-style separation between codes and types is necessary for foundational rigor, managing the decoding function $\tau$ explicitly becomes notationally burdensome. In mathematical practice, it is customary to adopt a \textsl{Russell-style} presentation. This is achieved by systematically omitting the decoding function, identifying the code $A\colon\univ$ with its corresponding type $\tau(A)$.
+
+Under this convention, the universe $\univ$ is treated as if it were a type whose elements are types. The decoding properties of $\tau$ ensure that this abuse of notation is perfectly safe, as the code-forming operators (such as $\hat{\Pi}$ and $\hat{\Sigma}$) become completely transparent and indistinguishable from the standard type constructors. 
+
+\begin{ntn}
+    With the Russell-style convention in place, an internal type family is simply a function
+    \[
+        P\colon B\to\univ.
+    \]
+    For any element $b\colon B$, the application $P(b)$ is an element of $\univ$, which we directly regard as a type. Consequently, we can immediately form the dependent types
+    \[
+        \prod_{b\colon B}P(b) \qquad\text{and}\qquad \sum_{b\colon B}P(b)
+    \]
+    without writing $\tau(P(b)$.
+\end{ntn}
+
+\subsection*{Types by Computation}
+
+A profound consequence of having a universe is the ability to define types by \textsl{computation}. Because $\univ$ is a valid codomain for functions, we can construct type families using the elimination principles (pattern matching and induction) of other types. This is fundamentally impossible with purely judgmental families.
+
+\begin{xmpl}
+    We can use a computed family over the boolean type $\fun2$ to formally prove that its constructors $1_{\fun2}$ and $0_{\fun2}$ are distinct. We define a function $P\colon\fun2\to\univ$ by pattern matching:
+    \begin{align*}
+        P(1_{\fun2})&\defeq\fun1\\
+        P(0_{\fun2})&\defeq\fun0.
+    \end{align*}
+    If there were a path $p\colon1_{\fun2}\eq{\fun2}0_{\fun2}$, we could transport the canonical element $\star\colon\fun1$ along $p$ in the family $P$. This transport would yield an element of the empty type:
+    \[
+        \fun{transport}^P(p,\star)\colon\fun0.
+    \]
+    Since $\fun0$ has no elements, such a path $p$ cannot exist. This standard derivation, which shows $1_{\fun2}\neq0_{\fun2}$, relies essentially on the existence of the universe $\univ$: since $\univ$ is a type, we can use it as the codomain in the induction principle for~$\fun2$.
+\end{xmpl}
 
 \section{Yoneda's Lema}
 
