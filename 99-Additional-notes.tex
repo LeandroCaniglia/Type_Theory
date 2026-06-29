@@ -196,7 +196,31 @@ A profound consequence of having a universe is the ability to define types by \t
 \end{defn}
 
 \begin{rem}
-    Consider the set $B$ as a category whose objects are its elements and its morphisms reduce to formal identities $\id_b\colon b\to b$ for $b\in B$. Given functors $F,G\colon B\to\cat{Set}$, since the only morphisms in $B$ are the identities, a natural transformation $\eta\colon F\to G$ consists of a family of maps $\eta_b\colon F(b)\to G(b)$.
+    Recall that an object $\mbf1$ in a category $\cat{C}$ is \textsl{terminal} if, for any other object $X$, there is a unique morphism $X\to\mbf1$. If such an object exists, a \textsl{global point} in an object $X$ is an arrow $s\colon\mbf1\to X$.
+\end{rem}
+
+\begin{prop}
+    The identity\/ $\id_B\colon B\to B$ is a terminal object in\/ $\cat{Set}_B$. In particular, the global points of\/ $p$ are the sections of\/~$p$.
+\end{prop}
+
+\begin{proof}
+    Let $p\colon E\to B$ be an arbitrary object of $\cat{Set}_B$. Then $p\colon E\to B$ is a morphism from $p$ to $\id_B$:
+    \[
+        \begin{tikzcd}[column sep=small]
+            E
+                    \arrow[rd,"p"']
+                    \arrow[rr,"p",dashed]
+                &&B
+                    \arrow[ll,bend right=45,"s"',dashed]
+                    \arrow[ld,"\id_B"]\\
+                &B
+        \end{tikzcd}
+    \]
+    and any morphism $s$ from $\id_B$ to $p$ is, by definition, of section of $p$.
+\end{proof}
+
+\begin{rem}
+    Consider the set $B$ as a so called \textsl{discrete category} whose objects are its elements and its morphisms reduce to formal identities $\id_b\colon b\to b$ for $b\in B$. Given two functors $F,G\colon B\to\cat{Set}$, since the only morphisms in $B$ are the identities, a natural transformation $\eta\colon F\to G$ consists of a family of maps $\eta_b\colon F(b)\to G(b)$.
 \end{rem}
 
 \begin{ntn}
@@ -276,3 +300,11 @@ A profound consequence of having a universe is the ability to define types by \t
     
 \end{proof}
     
+Even if one can take some\/ $f\colon 1\to X$ and obtain the commutative diagram:
+\[
+    \begin{tikzcd}
+        1 \arrow[d, "f"'] \arrow[dr, "y\circ f"] & \\
+        X \arrow[r, "y"'] & Y,
+    \end{tikzcd}
+\]
+there still may be other nonidentical arrows\/ $1\to X$, which provide nonequivalent `globalisations' of the local element\/ $y\in Y^X$. Hence,\/ $X$ can have non-global elements which are seen only from some stages of definition (`contexts of observation'). So, while the global elements of an object correspond to the set-theoretic idea of points, there can also be elements of an object that are not points. The importance of this idea cannot be overestimated. It provides a fresh view on many structures.

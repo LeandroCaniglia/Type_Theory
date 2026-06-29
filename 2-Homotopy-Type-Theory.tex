@@ -3079,6 +3079,31 @@ Here is a picture illustrating the construction
   Thus, the term $\fun{pair}^=(p,q)$ reduces definitionally to $\fun{refl}_{(x_1,y_1)}$. Applying the function $\pi_1$ to this path yields $\fun{ap}_{\pi_1}(\fun{refl}_{\dep{x_1,y_1}})$, which is definitionally equal to $\fun{refl}_{x_1}$. Since $p\equiv\fun{refl}_{x_1}$, both sides of the equation are definitionally equal to $\fun{refl}_{x_1}$. Thus, the identity path $\fun{refl}_{\fun{refl}_{x_1}}$ witnesses the required propositional equality.
 \end{proof}
 
+\begin{prop} {\upshape[\textSigma-conmmutativity]} \label{prop:sigma-commutativity}
+    Let $B,C\colon\univ$. Given a type family
+    \[
+        D\colon B\to C\to\univ,
+    \]
+    the map
+    \begin{align*}
+        \chi\colon\Bigl(
+            \sum_{b\colon B}\;
+            \sum_{c\colon C}D(b,c)
+        \Bigr)
+        &\to
+        \Bigl(
+            \sum_{c\colon C}\;\sum_{b\colon B}D(b,c)
+        \Bigr)\\
+        \dep{b,\dep{c,d}}&\mapsto\dep{c,\dep{b,d}}
+    \end{align*}
+    induces an equivalence.
+\end{prop}
+
+\begin{proof}
+    The map is well-defined because, in both expression the requirement is $d\colon D(b,c)$ for $b\colon B$ and $c\colon C$. The verification of the invertibility of this function is straightforward.
+
+\end{proof}
+
 \begin{prop}\label{prop:sigma-associativity} {\upshape[\textSigma-associativity]}
     Let\/ $X\colon\univ$ be a type, $A\colon X\to\univ$ a type family over\/ $X$, and\/ $B\colon\Sigma_XA\to\univ$ a type family over the total space. Then, the map
     \begin{align*}
@@ -3756,7 +3781,7 @@ The unit laws follow directly from the definitions above, namely
     
 \end{proof}
 
-\section{Function Extensionality Axiom}
+\section{Function Extensionality Axiom}\label{function-extensionality-axiom}
 
 In this section we address the question of the identity type for dependent (and non-dependent) functions. To establish the context, let\/ $A\colon\univ$ be a type and\/ $B\colon A\to\univ$ a type family. To analyze the identity in the section space\footnote{Consisting of all dependent functions\/ $s\colon A\to E$, where\/ $E$ is the total space\/ $\sum_{x\colon A}B(x)$, such that\/ $\pi_1(s(x))\eq A x$ for all\/ $x\colon A$.}
 \[
@@ -7492,7 +7517,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     See Theorem~\ref{thm:composite-transport}.
 \end{solution}
 
-\begin{exr}
+\begin{exr}\label{exr:pullback}
     Formulate the universal property of a pullback square as an equivalence of types in Homotopy Type Theory.
 \end{exr}
 

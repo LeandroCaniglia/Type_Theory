@@ -1221,7 +1221,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 
 \end{proof}
 
-\begin{defn}
+\begin{defn}\label{defn:total-map}
     A type family $P\colon A\to\univ$ defines the \textsl{fibration} over $A$ given by the projection
     \[
         \pi_1\colon\Bigl(\sum_{x\colon A}P(x)\Bigr)\to A.
@@ -1249,7 +1249,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     The map $f$ is a \textsl{fiberwise equivalence} if $f(x)\colon P(x)\to Q(x)$ is an equivalence for every $x\colon A$.
 \end{defn}
 
-\begin{thm}
+\begin{thm}\label{thm:total-fib-equivalence}
     Suppose that\/ $f$ is a fiberwise transformation between families\/ $P$ and\/ $Q$ over a type\/ $A$, and let\/ $x\colon A$ and\/ $v\colon Q(x)$. Then we have an equivalence
     \[
         \fun{fib}_{\fun{total}(f)}(\dep{x, v}) \simeq \fun{fib}_{f(x)}(v).
@@ -1257,40 +1257,37 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 \end{thm}
 
 \begin{proof}
-    Let
+    By definition, the fiber of $\fun{total}(f)$ over $\dep{x,v}$ is
     \[
-        \Sigma\defeq\sum_{a\colon A}a\eq{A}x.
-    \]
-    By Lemma~\ref{lem:Sigma-identity-is-contractible}, the type\/ $\Sigma$ is contractible with center\/ $\dep{x,\fun{refl}_x}$. Then,
-    \begin{alignat*}3
         \fun{fib}_{\fun{total}(f)}(\dep{x,v})
-            &\equiv\sum_{w\colon\Sigma_AP}
-                \dep{\pi_1(w),f(\pi_1(w),\pi_2(w))}
-                \eq{\Sigma_AQ}\dep{x,v}\\
-            &\simeq\sum_{a\colon A}\,\sum_{u\colon P(a)}
-                \dep{a,f(a,u)}\eq{\Sigma_AQ}\dep{x,v}
-                &&\quad\text{; assoc.}\\
-            &\simeq\sum_{a\colon A}\,\sum_{u\colon P(a)}
-                \sum_{p\colon a\eq{A}x}
-                    \!\!\!\!\fun{transport}^Q(p,f(a,u))
-                        \eq{Q(x)}v
-                &&\quad\text{; Thm.~\ref{thm:pair-equivalence}}\\
-            &\simeq\sum_{a\colon A}\,\sum_{p\colon a\eq{A}x}
-                \sum_{u\colon P(a)}
-                    \!\!\!\fun{transport}^Q(p,f(a,u))
-                        \eq{Q(x)}v\\
-            &\simeq\sum_{\dep{a,p}\colon\Sigma}\,
-                \sum_{u\colon P(a)}
-                    \fun{transport}^Q(p,f(a,u))\eq{Q(x)}v
-                &&\quad\text{; assoc.}\\
+        \equiv\sum_{w\colon\Sigma_AP}
+            \fun{total}(f)(w)\eq{\Sigma_AQ}\dep{x,v}.
+    \]
+    By expanding $w$ as a pair $\dep{y, u}$ and using the characterization of equality in $\Sigma$-types, we have
+    \begin{align*}
+        \fun{fib}_{\fun{total}(f)}(\dep{x,v}) 
+            &\simeq\sum_{y\colon A}\;\sum_{u\colon P(y)} 
+            \dep{y,f(y,u)}\eq{\Sigma_AQ}\dep{x,v}\\
+            &\simeq
+                \sum_{y\colon A}\;
+                \sum_{u\colon P(y)}\;
+                \sum_{p\colon y\eq Ax}p_*(f(y,u))\eq{Q(x)}v.
+    \end{align*}
+    Applying $\Sigma$-commutativity and -associativity (Propositions~\ref{prop:sigma-commutativity} and~\ref{prop:sigma-associativity}), we obtain
+    \[
+        \fun{fib}_{\fun{total}(f)}(\dep{x, v})
+        \simeq
+        \sum_{\dep{y, p}\colon\sum_{y\colon A}y\eq Ax}\;
+        \sum_{u\colon P(y)}p_*(f(y, u))\eq{Q(x)}v.
+    \]
+    By Lemma~\ref{lem:Sigma-identity-is-contractible}, the based path space $\sum_{y\colon A}y\eq Ax$ is contractible with center of contraction $\dep{x, \fun{refl}_x}$. Consequently, the entire $\Sigma$-type is equivalent to evaluating the inner sum at this center:
+    \begin{align*}
+        \fun{fib}_{\fun{total}(f)}(\dep{x,v})
             &\simeq\sum_{u\colon P(x)}
-                \fun{transport}^Q(\fun{refl}_x,f(x,u))
-                    \eq{Q(x)}v
-                &&\quad\text{; $\Sigma$-contr.}\\
+                (\fun{refl}_x)_*(f(x,u))\eq{Q(x)}v\\
             &\equiv\sum_{u\colon P(x)}f(x,u)\eq{Q(x)}v\\
-            &\equiv\fun{fib}_{f(x)}(v),
-    \end{alignat*}
-    where the associativity refers to Exercise~\ref{exr:Sigma-associativity} and the\/ $\Sigma$ contractibility results from part~d) of Theorem~\ref{thm:contractible-types}.
+            &\equiv\fun{fib}_{f(x)}(v).
+    \end{align*}
     %
     
 \end{proof}
@@ -1326,18 +1323,19 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
             &\equiv\sum_{u\colon\Sigma_AB}\pi_1(u)\eq Aa\\
             &\simeq\sum_{x\colon A}\;\sum_{u\colon B(x)}
                 x\eq Aa
-                &&\text{; assoc.}\\
+                &&\text{; Prop.~\ref{prop:sigma-associativity}}\\
             &\simeq\sum_{x\colon A}\;\sum_{p\colon x\eq Aa}
                 B(x)
-                &&\text{; }\dep{u,p}\comm\dep{p,u}.\\
+                &&\text{; Prop.~\ref{prop:sigma-commutativity}}\\
             &\simeq\sum_{\zeta\colon\sum_{x\colon A}
                 x\eq Aa}\!\!\!B(\pi_1(\zeta))
-                &&\text{; assoc.}\\
+                &&\text{; Prop.~\ref{prop:sigma-associativity}}\\
             &\simeq B(\pi_1(\dep{a,\fun{refl}_a})
                 &&\text{; Lem.~\ref{lem:Sigma-identity-is-contractible} \& Thm.~\ref{thm:contractible-types}~d)}\\
             &\equiv B(a).
     \end{align*}\qedhere
 \end{proof}
+
 
 \begin{lem}\label{lem:fib-reconstruction}
     For any function\/ $f\colon A\to B$, we have
@@ -1529,3 +1527,447 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
 
     Under these considerations it is now clear that Theorem~\ref{thm:HoTT-Grothendieck-construction} is the type-theoretic version of the Grothendieck Construction~Theorem~\ref{thm:grothendieck-construction}.
 \end{rem}
+
+\begin{ntn}
+    Let\/ $U,V,Q\colon\univ$ be types, and consider functions\/ $g_U\colon U\to Q$ and\/ $g_V\colon V\to Q$. The canonical pullback type\/ $U\times_Q V$ is defined as
+    \[
+        U\times_Q V
+            \defeq
+                \sum_{u\colon U}\;
+                \sum_{v\colon V}g_U(u)\eq{Q}g_V(v),
+    \]
+    where\/ $\pi_U\colon(U\times_Q V)\to U$ is the first projection\/ $\pi_1$, and\/ $\pi_V\colon(U\times_Q V)\to V$ is the composition\/ $\pi_1\circ\pi_2$.
+\end{ntn}
+
+\begin{lem}\label{lem:pullback}
+    With the preceding notation, the canonical construction\/ $U\times_Q V$, equipped with the projections\/ $\pi_U$ and\/ $\pi_V$, is the pullback of\/ $g_U$ and\/ $g_V$.
+\end{lem}
+
+\begin{proof}
+    By Exercise~\ref{exr:pullback}, we have to show that, for any $X\colon\univ$, there is an equivalence
+    \[
+        \bigl(X\to(U\times_Q V)\bigr)
+        \simeq
+            \biggl(
+                \sum_{(u,v)\colon X\to(U\times V)}
+                g_U\circ u\eq{X\to Q}g_V\circ v
+            \biggr).
+    \]
+    By \nref{lpar:axiom-of-choice} applied twice,
+    \begin{align*}
+        \bigl(X\to(U\times_Q V)\bigr)
+            &\equiv\prod_{x\colon X}\;
+                \sum_{u\colon U}\;
+                \sum_{v\colon V}g_U(u)\eq{Q}g_V(v)\\
+            &\simeq\sum_{u\colon X\to U}\;
+                \prod_{x\colon X}\;
+                \sum_{v\colon V}g_U(u(x))\eq{Q}g_V(v)\\
+            &\simeq\sum_{u\colon X\to U}\;
+                \sum_{v\colon X\to V}\;
+                \prod_{x\colon X}g_U(u(x))\eq{Q}g_V(v(x)).
+    \end{align*}
+    Then, by function extensionality,
+    \[
+        \rhs
+            \simeq\sum_{u\colon X\to U}\;
+                \sum_{v\colon X\to V}
+                    g_U\circ u\eq{X\to Q}g_V\circ v.
+    \]
+    Grouping $u$ and $v$ into a single map of type $X\to(U\times V)$, we obtain
+    \begin{align*}
+        \rhs
+            &\simeq\sum_{(u,v)\colon X\to(U\times V)}
+                g_U\circ u\eq{X\to Q}g_V\circ v,
+    \end{align*}
+    as required.
+\end{proof}
+
+\begin{thm}
+    Let\/ $f\colon A\to B$ be a function. Then the diagram
+    \[
+        \begin{tikzcd}
+            A
+                    \arrow[r,"\vartheta_f"]
+                    \arrow[d,"f"']
+                &\puniv
+                    \arrow[d,"\pi_1"]\\
+            B
+                    \arrow[r,"\fun{fib}_f"']
+                &\univ
+        \end{tikzcd}
+    \]
+    is a pullback square, where
+    \[
+        \vartheta_f\defeq\lambda a.\,
+            \dep{
+                \fun{fib}_f(f(a)),
+                \dep{
+                    a,
+                    \fun{refl}_{f(a)}
+                }
+            }.
+    \]
+\end{thm}
+
+\begin{proof}
+    First observe that Lemma~\ref{lem:Sigma-identity-is-contractible} implies that, for any\/ $b\colon B$, the type
+    \[
+        C_b\defeq\sum_{X\colon\univ}\fun{fib}_f(b)\eq{\univ}X
+    \]
+    is contractible with center\/ $c\defeq\dep{\fun{fib}_f(b),\fun{refl}_{\fun{fib}_f(b)}}$. By associativity of\/ $\Sigma$-types, we have
+    \[
+        \sum_{X\colon\univ}\;
+        \sum_{p\colon\fun{fib}_f(b)=X}X
+        \simeq\sum_{\omega\colon C_b}\pi_1(\omega).
+    \]
+    Therefore, by part b) of Theorem~\ref{thm:contractible-types}, evaluating the family\/ $\pi_1$ at the center of contraction yields the equivalence
+    \begin{align*}
+        \sum_{\omega\colon C_b}\pi_1(\omega)
+            \simeq\pi_1(c)\equiv\fun{fib}_f(b).
+    \end{align*}
+    It follows that
+    \[\tag{$*$}
+        \fun{fib}_f(b)\simeq
+            \sum_{X\colon\univ}\;
+            \sum_{p\colon\fun{fib}_f(b)=X}X.
+    \]
+    On the other hand, since the type family
+    \begin{align*}
+        P\colon(\fun{fib}_f(b)\eq{\univ}X)&\to\univ\\
+        p&\mapsto X   
+    \end{align*}
+    is constant, we can swap its components and obtain the equivalence
+    \begin{align*}\tag{$**$}
+        \Bigl(\sum_{p\colon\fun{fib}_f(b)=X}X\Bigr)
+        &\xto{\simeq}\sum_{x\colon X}\fun{fib}_f(b)\eq{\univ}X\\
+        \dep{p,x}&\mapsto\dep{x,p}.
+    \end{align*}
+    Then,
+    \begin{align*}
+        A
+            &\simeq\sum_{b\colon B}\fun{fib}_f(b)
+                &&\text{; Lem.~\ref{lem:fib-reconstruction}}\\
+        &\simeq
+            \sum_{b\colon B}\;
+            \sum_{X\colon\univ}\;
+            \sum_{p\colon\fun{fib}_f(b)\eq{\univ}X}X
+            &&\text{; ($*$)}\\
+        &\simeq
+            \sum_{b\colon B}\;
+            \sum_{X\colon\univ}\;
+            \sum_{x\colon X}\fun{fib}_f(b)\eq{\univ}X
+            &&\text{; ($**$)}\\
+        &\simeq
+            \sum_{b\colon B}\;
+            \sum_{Y\colon\puniv}\fun{fib}_f(b)\eq{\univ}\pi_1(Y)
+            &&\text{; Def.~of\/ }\puniv\\
+        &\equiv B\times_{\univ}\puniv,
+            &&\text{; Lem.~\ref{lem:pullback}}
+    \end{align*}
+    Let\/ $e\colon A\xto{\simeq} B\times_\univ\puniv$ be the function inducing the equivalence above. Following the composition step by step, we obtain
+    \begin{align*}
+        a&\mapsto\dep{
+            \explain[B]{f(a)},
+            \explain[\fun{fib}_f(f(a))]
+            {\dep{a,\fun{refl}_{f(a)}}}
+            }\\
+        &\mapsto
+            \dep{
+                \explain[B]{f(a)},
+                \dep{
+                    \explain[\univ]{\fun{fib}_f(f(a))},
+                    \dep{
+                        \explain[\fun{fib}_f(f(a))\eq{\univ}X]{
+                            \fun{refl}_{\fun{fib}_f(f(a))}
+                        },
+                        \explain[X]{
+                            \dep{
+                                a,
+                                \fun{refl}_{f(a)}
+                            }
+                        }
+                    }
+                }
+            }\\
+        &\mapsto
+            \dep{
+                \explain[B]{f(a)},
+                \dep{
+                    \explain[\univ]{\fun{fib}_f(f(a))},
+                    \dep{
+                        \explain[X]{\dep{a,\fun{refl}_{f(a)}}}, 
+                        \explain[\fun{fib}_f(f(a))\eq{\univ}X]{
+                            \fun{refl}_{\fun{fib}_f(f(a))}
+                        }
+                    }
+                }
+            }\\
+        &\mapsto
+            \dep{
+                \explain[B]{f(a)},
+                \dep{
+                    \explain[\puniv]{
+                        \dep{
+                            \fun{fib}_f(f(a)),
+                            \dep{a,\fun{refl}_{f(a)}}
+                        }
+                    },
+                    \explain[\fun{fib}_f(f(a))\eq{\univ}\pi_1(Y)]{
+                        \fun{refl}_{\fun{fib}_f(f(a))}
+                    }
+                }
+            }.
+    \end{align*}
+    Therefore, we get homotopies\/ $f\sim\pi_1\circ e$ and\/ $\vartheta_f\sim\pi_1\circ\pi_2\circ e$.
+\end{proof}
+
+\begin{rem}
+    The pullback square of the universal fibration $\pi_1\colon\puniv\to\univ$ establishes a direct link between the geometric universal property of limits and the logical equivalence of the Grothendieck construction. Suppose two functions $f,g\colon A\to B$ have propositionally equal fibers, meaning $\fun{fib}_f\eq{B\to\univ}\fun{fib}_g$. They therefore share the same classifying map $\chi\colon B\to\univ$ defined by their common fibers.
+
+    Because both $f$ and $g$ can be recovered as pullbacks of the universal bundle $\pi_1\colon\puniv\to\univ$ along $\chi$, they both exhibit the domain $A$ as the limit of the exact same diagram. By the universal property of pullbacks, limits are unique up to equivalence. This guarantees the existence of a canonical automorphism $\alpha\colon A\simeq A$ over $B$, yielding the homotopy $f\sim g\circ\alpha$.
+
+    This geometric uniqueness perfectly mirrors the algebraic equality within the Grothendieck construction. Under the equivalence
+    \[
+        \Bigl(\sum_{X\colon\univ}X\to B\Bigr)\simeq(B\to\univ),
+    \]
+    mapping both functions to the same family implies the equality $\dep{A,f}\eq{}\dep{A,g}$ as points in the $\Sigma$-type. Equality in this total space consists of an equivalence $\alpha\colon A\simeq A$ in the first coordinate and a path $f\eq{A\to B}g\circ\alpha^{-1}$ in the second.
+    
+    Thus, the universal property of the pullback acts as the local geometric mechanism that computes the global structural equivalence between ordinary functions mapping into a base type $B$ and dependent type families indexed by~$B$.
+\end{rem}
+
+\section{Univalence Implies Function Extensionality}
+
+\begin{defn}
+    For any type $A$ and any type family $P\colon A\to\univ$, the \textsl{weak function extensionality principle} asserts the existence of a function
+    \[
+        \Bigl(\prod_{x\colon A}\fun{isContr}(P(x))\Bigr)
+        \to\fun{isContr}\Bigl(\prod_{x\colon A}P(x)\Bigr).
+    \]
+\end{defn}
+
+\begin{rem}
+    The following lemma is proved without using the function extensionality axiom.
+\end{rem}
+
+\begin{lem}\label{lem:base-equivalence-implies-bundle-equivalence}
+    Assuming the univalence axiom, for any types\/ $A,B,X\colon\univ$ and any equivalence\/ $e\colon A\simeq B$, post-composition with\/ $e$ induces an equivalence
+    \[
+        (X\to A)\simeq(X\to B).
+    \]
+\end{lem}
+
+\begin{proof}
+    By the univalence axiom, the map $\fun{idtoeqv}\colon(A\eq{\univ}B)\to(A\simeq B)$ induces an equivalence with quasi-inverse $\fun{ua}$. Thus, to prove the statement for an arbitrary equivalence $e\colon A\simeq B$, it suffices to assume that $B\equiv A$ and that $e\equiv\fun{idtoeqv}(\fun{refl}_A)$ is the identity equivalence on~$A$.
+
+    Under this assumption, the underlying function of $e$ is $\id_A\colon A\to A$. We must provide an equivalence $(X\to A)\simeq(X\to A)$ whose underlying map is post-composition with $\id_A$.
+
+    We choose the identity equivalence on $X\to A$. Its underlying map is the identity function $\id_{X\to A}$, and for any $h\colon X\to A$, we have the judgmental equalities
+    \[
+        \id_{X\to A}(h)\equiv h\equiv\id_A\circ h.
+    \]
+    Thus, the underlying map of the identity equivalence is judgmentally equal to post-composition with the underlying map of $e$, completing the proof.
+    
+\end{proof}
+
+\begin{prop}\label{prop:projection-equivalence}
+    Let\/ $P\colon A\to\univ$ be a family of contractible types. Then the projection\/ $\pi_1\colon\Sigma_AP\to A$ is an equivalence. If\/ $\univ$ is univalent, then post-composition with\/ $\pi_1$ gives an equivalence
+    \[
+        (A\to\Sigma_AP)\simeq(A\to A).
+    \]
+\end{prop}
+
+\begin{proof}
+    By Proposition~\ref{prop:pi_1-fibers}, given $x\colon A$, we have an equivalence
+    \[
+        \fun{fib}_{\pi_1}(x)\simeq P(x).
+    \]
+    In particular, $\fun{fib}_{\pi_1}(x)$ is contractible itself by Lemma~\ref{lem:contractible-equivalences}. Thus, Theorem~\ref{thm:isContr->ishae} implies that $\pi_1$ induces an equivalence. The second conclusion is a direct consequence of Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence}.
+    %
+    
+\end{proof}
+
+\begin{thm}\label{thm:univalence-implies-weak-funext}
+    The univalence axiom implies the weak function extensionality principle.
+\end{thm}
+
+\begin{proof}
+    Suppose that $\univ$ is univalent, and let $P\colon A\to\univ$ be a family of contractible types. We must show that the dependent product $\prod_{x\colon A}P(x)$ is contractible.
+    
+    Let
+    \[
+        \alpha\colon(A\to\Sigma_AP)\simeq(A\to A)
+    \]
+    be the equivalence of Proposition~\ref{prop:projection-equivalence}. We will show that the product is a retract of $\fun{fib}_\alpha(\id_A)$.
+
+    Define the maps
+    \begin{align*}
+        \sigma&\colon\Bigl(\prod_{x\colon A}P(x)\Bigr)
+        \to
+        \fun{fib}_\alpha(\id_A)\\
+        \sigma(f)&\defeq\dep{
+            \lambda x.\,\dep{x,f(x)},
+            \fun{refl}_{\id_A}
+        },
+    \intertext{and}
+        \rho&\colon\fun{fib}_\alpha(\id_A)
+        \to
+        \prod_{x\colon A}P(x)\\
+        \rho(\dep{g,p})&\defeq
+            \lambda x.\,\fun{happly}(p, x)_*(\pi_2(g(x))).
+    \end{align*}
+    Evaluating their composition yields
+    \begin{align*}
+        \rho(\sigma(f))
+            &\equiv\rho(\dep{
+                \lambda x.\,\dep{x,f(x)},
+                \fun{refl}_{\id_A}
+                })\\
+            &\equiv\lambda x.\,
+                \fun{happly}(\fun{refl}_{\id_A},x)_*(f(x))\\
+            &\equiv\lambda x.\,
+                (\fun{refl}_{\id_A(x)})_*(f(x))
+                &&\text{; Equation \eqref{eq:happly-refl}}\\
+            &\equiv\lambda x.\,f(x)\\
+            &\equiv f,
+    \end{align*}
+    as desired. Since the fiber is contractible by Remark~\ref{rem:equivalence-fib-is-contractible}, the result follows from Lemma~\ref{lem:contractible-retracts}.
+    %
+    
+\end{proof}
+
+\begin{thm}\label{thm:weak-funext-implies-funext}
+    The weak function extensionality principle implies the function extensionality axiom.
+\end{thm}
+
+\begin{proof}
+    Let
+    \[
+        \Gamma\defeq\prod_{x\colon A}P(x).
+    \]
+    Fix $f\colon\Gamma$ and define
+    \begin{align*}
+        \gamma\colon\Bigl(
+            \sum_{g\colon\Gamma}f\eq{\Gamma}g
+        \Bigr)
+        &\to
+        \sum_{g\colon\Gamma}f\sim g\\
+        \dep{g,p}
+        &\mapsto\dep{g,\fun{happly}(p)}.
+    \end{align*}
+    By Lemma~\ref{lem:Sigma-identity-is-contractible}, the domain type of this map is contractible. For the codomain type we can apply \nref{lpar:axiom-of-choice} and obtain an equivalence
+    \begin{align*}
+        \sum_{g\colon\Gamma}f\sim g
+            &\equiv\sum_{g\colon\Gamma}\;
+                \prod_{x\colon A}f(x)\eq{P(x)}g(x)\\
+            &\simeq\prod_{x\colon A}\;
+                \sum_{u\colon P(x)}f(x)\eq{P(x)}u.
+    \end{align*}
+    Note that the inner $\Sigma$-type is contractible by the same lemma as before. From part~a) of Theorem~\ref{thm:contractible-types}, it follows that the outer $\Pi$-type is contractible as well. Hence the codomain type of $\gamma$ is contractible. Using Lemmas~\ref{lem:contractible-equivalences} and~\ref{lem:mere-proposition-equivalence}, we see that $\gamma$ induces an equivalence.
+
+    Consider the fiberwise transformation
+    \[
+        h\colon\prod_{g\colon\Gamma}\bigl((f\eq{\Gamma}g)\to(f\sim g)\bigr)
+    \]
+    defined by $h(g)\defeq\fun{happly}(f,g)$. According to Definition~\ref{defn:total-map},
+    \[
+        \gamma\equiv\fun{total}(h).
+    \]
+    By Theorem~\ref{thm:total-fib-equivalence}, for $\eta\colon f\sim g$, we have
+    \[
+        \fun{fib}_\gamma(\dep{g,\eta})
+        \simeq
+        \fun{fib}_{h(g)}(\eta).
+    \]
+    Since the fibers of $\gamma$ are contractible by Theorem~\ref{thm:isContr-ishae-equivalence}, we deduce that the fibers of $h(g)$ are contractible. Hence, by the same theorem, $h(g)$ induces an equivalence.
+    %
+    
+\end{proof}
+
+\begin{rem}
+    To facilitate the verification that the deduction of function extensionality from the univalence axiom is not circular, we provide the combined dependency tree for the proofs of Theorems~\ref{thm:univalence-implies-weak-funext} and~\ref{thm:weak-funext-implies-funext}. Nodes rendered in gray indicate repeated dependencies. Note also that there is no need to list results previous to section \S\,\ref{function-extensionality-axiom}.
+
+{\small
+\begin{itemize}[label=$\blacklozenge$]
+    \item \textbf{Theorem~\ref{thm:weak-funext-implies-funext}}
+    \begin{itemize}[label=$\triangleright$]
+        \item Lemma~\ref{lem:Sigma-identity-is-contractible}
+        \item Theorem~\ref{thm:contractible-types} part a)
+        \item Lemma~\ref{lem:contractible-equivalences}
+        \item Lemma~\ref{lem:mere-proposition-equivalence}
+        \item Definition~\ref{defn:total-map}
+        \item Theorem~\ref{thm:total-fib-equivalence}
+        \begin{itemize}[$\circ$]
+            \item Lemma~\ref{lem:Sigma-identity-is-contractible}
+        \end{itemize}
+        \item Theorem~\ref{thm:isContr-ishae-equivalence}
+        \item Theorem~\ref{thm:univalence-implies-weak-funext}
+    \end{itemize}
+\end{itemize}
+
+\begin{itemize}[label=$\diamond$]
+    \item \textbf{Theorem~\ref{thm:univalence-implies-weak-funext}}
+    \begin{itemize}[label=$\triangleright$]
+        \item Proposition~\ref{prop:projection-equivalence}
+        \begin{itemize}[label=$\star$]
+            \item Proposition~\ref{prop:pi_1-fibers}
+            \begin{itemize}[label=$\circ$]
+                %\item Proposition~\ref{prop:sigma-associativity}
+                %\item Proposition~\ref{prop:sigma-commutativity}
+                \item Lemma~\ref{lem:Sigma-identity-is-contractible}
+                \begin{enumerate}[label=$\scriptstyle\bullet$]
+                    \item Proposition~\ref{prop:transport-decomposition-for-paths}
+                \end{enumerate}
+                \item Theorem~\ref{thm:contractible-types} (part d)
+                \begin{enumerate}[label=$\scriptstyle\bullet$]
+                    \item Theorem~\ref{thm:isContr-is-a-mere-proposition}
+                    \item Theorem~\ref{thm:mere-propositions}
+                    \item Lemma~\ref{lem:contractible-equivalences}
+                    \begin{enumerate}[label=$\scriptstyle\bullet$]
+                        \item Lemma~\ref{lem:mere-prop-and-1}
+                        %\item \ref{lpar:Pi-types-over-product}
+                    \end{enumerate}
+                \end{enumerate}
+            \end{itemize}
+            \item \grayitem{Lemma~\ref{lem:contractible-equivalences}}
+            \begin{itemize}[label=$\circ$]
+                \item \grayitem{Lemma~\ref{lem:mere-prop-and-1}}
+                %\item \ref{lpar:Pi-types-over-product}
+            \end{itemize}
+            \item Theorem~\ref{thm:isContr->ishae}
+            \begin{itemize}[label=$\circ$]
+                \item Lemma~\ref{lem:fib-equality}
+                \begin{enumerate}[label=$\scriptstyle\bullet$]
+                    %\item Lemma~\ref{lem:post-composition-transport}
+                    \item \grayitem{Proposition~\ref{prop:transport-decomposition-for-paths}}
+                \end{enumerate}
+            \end{itemize}
+            \item Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence}
+        \end{itemize}
+        \item Equation~\eqref{eq:happly-refl}
+        \item Equation~\eqref{eq:happly-basecode}
+        \item Remark~\ref{rem:equivalence-fib-is-contractible}
+        \begin{itemize}
+            \item Theorem~\ref{thm:equivalence-fibers-are-contractible}
+            \begin{itemize}[label=$\circ$]
+                \item Corollary~\ref{cor:coherent-quasi-inverse-2}
+                \begin{enumerate}[label=$\scriptstyle\bullet$]
+                    %\item Theorem~\ref{thm:coherent-quasi-inverse}
+                    \item Proposition~\ref{prop:coherence-swap}
+                    \begin{enumerate}[label=$\scriptstyle\bullet$]
+                        \item Lemma~\ref{lem:X->X-id-homotopy}
+                    \end{enumerate}
+                \end{enumerate}
+                \item Definition~\ref{defn:fiber-over-y}
+                %\item Lemma~\ref{lem:post-composition-transport}
+                \item \grayitem{Proposition~\ref{prop:transport-decomposition-for-paths}}
+            \end{itemize}
+        \end{itemize}
+        \item Lemma~\ref{lem:contractible-retracts}
+    \end{itemize}
+\end{itemize}
+}
+\end{rem}
+
+
+
+
