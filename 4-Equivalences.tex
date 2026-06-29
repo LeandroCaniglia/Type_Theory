@@ -1024,6 +1024,8 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
         &\equiv\fun{fib}_{\fun{ap}_f}(p\ct q^{-1}).
     \end{align*}    
     Since $\fun{ap}_f$ is an equivalence, it has contractible fibers.
+    %
+    
 \end{proof}
 
 \begin{thm}
@@ -1034,6 +1036,8 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     If $f$ induces an equivalence, it is a surjection because, by Remark~\ref{rem:equivalence-fib-is-contractible}, it fibers are contractible, hence $\lVert\fun{fib}_f(b)\rVert$ is contractible and inhabited by its center. It is an embedding because, by Proposition~\ref{prop:ap-properties}, $\fun{ap}_{f^{-1}}$ is a quasi-inverse of $\fun{ap}_f$.
 
     To prove that $f$ is an equivalence, by Theorem~\ref{thm:isContr-ishae-equivalence}, it suffices to show that its fibers are contractible. By Lemma~\ref{lem:embedding-fibers-are-mere-propositions}, the fibers of $f$ are mere propositions. Therefore, the canonical map $\fun{squash}\colon\fun{fib}_f(b)\to\lVert\fun{fib}_f(b)\lVert$ has a quasi-inverse. Since $f$ is a surjection, it follows that $\fun{fib}_f(b)$ is inhabited, hence contractible by Lemma~\ref{lem:contractible-equivalences}.
+    %
+    
 \end{proof}
 
 \section{Closure Properties of Equivalences}
@@ -1969,5 +1973,20 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
 \end{rem}
 
 
+\section{Exercises}
 
+\begin{exr}
+    Consider the type of ``two-sided adjoint equivalence data'' for\/ $f\colon A\to B$,
+    \[
+        \sum_{g\colon B\to A}\;
+        \sum_{\eta\colon g\circ f\sim\id_A}\;
+        \sum_{\vartheta\colon f\circ g\sim\id_B}
+            (f\lwct\eta\sim\vartheta\rwct f)
+            \times
+            (g\lwct\vartheta\sim\eta\rwct g).
+    \]
+    By\/ {\upshape Proposition~\ref{prop:coherence-swap}}, we know that if\/ $f$ is an equivalence, then this type is inhabited. Give a characterization of this type analogous to\/ {\upshape Proposition~\ref{prop:qinv-id-homotopy-equivalence}}.
+
+    Can you give an example showing that this type is not generally a mere proposition? (This will be easier after\/ {\upshape Chapter~6}.)
+\end{exr}
 

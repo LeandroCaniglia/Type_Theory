@@ -5521,7 +5521,7 @@ Before working the details of this observation in concrete cases, we need two re
     \]
     Composing $\fun{ap}_{\fun{encode}}$ with $\fun{enc}$ yields the desired equivalence:
     \[
-        \begin{tikzcd}[row sep=huge]
+        \begin{tikzcd}[row sep=2cm]
             p\eq{\omega\eq{\Sigma_AB}\omega'}q
                     \arrow[r,"\fun{ap}_{\fun{encode}}"]
                     \arrow[rd,dashed,"\varepsilon"']
@@ -5546,13 +5546,13 @@ Before working the details of this observation in concrete cases, we need two re
         \end{align*}
 
         \item \textbf{Dependent Pair Types:} For a dependent pair type $\Sigma_AB$, consider two paths $p,q\colon\omega\eq{\Sigma_AB}\omega'$. Let us denote the projections of the endpoints as 
-        \[
-            a\defeq\pi_1(\omega),\quad
-            u\defeq\pi_2(\omega)
-            \quad\text{and}\quad
-            a'\defeq\pi_1(\omega'),
-            \quad u'\defeq\pi_2(\omega').
-        \]
+        \begin{alignat*}2
+            a&\defeq\pi_1(\omega),\quad
+            u&\defeq\pi_2(\omega)
+            \intertext{and}
+            a'&\defeq\pi_1(\omega'),
+            \quad u'&\defeq\pi_2(\omega').
+        \end{alignat*}
         For any path $r\colon a\eq Aa'$, let us define the transport function
         \[
             T(r)\defeq\fun{transport}^B(r,u).
