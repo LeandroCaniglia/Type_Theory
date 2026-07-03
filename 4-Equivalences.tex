@@ -58,7 +58,7 @@
         &\sim g\lwct\eta\rwct(f\circ g) && \text{; via $g\lwct\tau\rwct g$}\\
         &\sim(g\circ f\circ g)\lwct\eta && \text{; via $g\lwct N_\eta$},
     \end{align*}
-    which constructs $\alpha\colon\vartheta\rwct(g\circ f\circ g)\sim(g\circ f\circ g)\lwct\eta$.
+    yielding a homotopy $\alpha\colon\vartheta\rwct(g\circ f\circ g)\sim(g\circ f\circ g)\lwct\eta$.
 
     Now consider the naturality of $\vartheta\colon g\circ f\sim\id_A$ evaluated on the homotopy $g\lwct\eta\colon g\circ f\circ g\sim g$, as described in \S\,\ref{homotopy-evaluated-on-homotopy}. In this case, diagram~\eqref{tik:homotopy-evaluated-on-homotopy} yields the following commutative square of homotopies:
     \[
@@ -84,7 +84,9 @@
 \end{cor}
 
 \begin{proof}
-    The hypothesis implies that $\dep{f,(\vartheta,\eta)}$ is a quasi-inverse of $g$. By Theorem~\ref{thm:coherent-quasi-inverse}, there is a homotopy $\vartheta'$ such that $\dep{f,(\vartheta',\eta)}$ is a coherent quasi-inverse. This means that we have $\tau\colon g\lwct\vartheta'\sim\eta\rwct g$. Applying Proposition~\ref{prop:coherence-swap}, we deduce that $f\lwct\vartheta'\sim\eta\rwct f$ is inhabited, as desired.
+    The hypothesis implies that $\dep{f,(\vartheta,\eta)}$ is a quasi-inverse of $g$.
+    By Theorem~\ref{thm:coherent-quasi-inverse}, there is a homotopy $\vartheta'$ such that $\dep{f,(\vartheta',\eta)}$ is a coherent quasi-inverse.
+    This means that we have $\tau\colon g\lwct\eta\sim\vartheta'\rwct g$. Applying Proposition~\ref{prop:coherence-swap}, we deduce that $f\lwct\vartheta'\sim\eta\rwct f$ is inhabited, as desired.
 \end{proof}
 
 \begin{thm}\label{thm:equivalence-fibers-are-contractible}
@@ -142,7 +144,7 @@
         \begin{tikzcd}[column sep=large]
             f(g(f(x)))
                     \arrow[r,"\fun{ap}_{f\circ g}(p)"]
-                    \arrow[d,"\eta_{f(x)}"']
+                    \arrow[d,"\eta(f(x))"']
                 &f(g(y))
                     \arrow[d,"\eta(y)"]\\
             f(x)
@@ -152,7 +154,7 @@
     \]
     Using that $\fun{ap}_{f\circ g}\equiv\fun{ap}_f\circ\fun{ap}_g$ and $\fun{ap}_{\id_B}\equiv\id$, the diagram translates into
     \[
-        \fun{ap}_f(\fun{ap}_g(p))^{-1}\ct\eta_{f(x)}\ct p
+        \fun{ap}_f(\fun{ap}_g(p))^{-1}\ct\eta(f(x))\ct p
         \eq{f(g(y))\eq By}
         \eta(y).
     \]
@@ -276,7 +278,7 @@
     \end{align*}
     where $Q_b\defeq\lambda h.\,\pi_1(h(b))\eq{B}b$.
     
-    Applying Transport in Identity Types ( Lemma~\ref{lem:transport-in-identity-types}) to the map $\lambda h.\,\pi_1(h(b))$ and the constant $\lambda h.\,b$, the \rhs becomes
+    Applying Transport in Identity Types (Lemma~\ref{lem:transport-in-identity-types}) to the map $\lambda h.\,\pi_1(h(b))$ and the constant $\lambda h.\,b$, the \rhs becomes
     \begin{align*}
         \rhs
             &\eq{Q_b(f)}
@@ -324,13 +326,13 @@
         \fun{rinv}(f)
             &\simeq\Bigl(
                 \sum_{g\colon B\to A}
-                    (f\circ g)\eq{B\to B}\id_B
+                    f\circ g\eq{B\to B}\id_B
             \Bigr)
             \equiv\fun{fib}_{f\circ\dummy}(\id_B)\\
         \fun{linv}(f)
             &\simeq\Bigl(
                 \sum_{g\colon B\to A}
-                    (g\circ f)\eq{A\to A}\id_A
+                    g\circ f\eq{A\to A}\id_A
             \Bigr)
             \equiv\fun{fib}_{\dummy\circ f}(\id_A).
     \end{align*}
@@ -351,7 +353,7 @@
         \fun{qinv}(f)\equiv\sum_{h\colon B\to A}
             (f\circ h\sim\id_B)\times(h\circ f\sim\id_A).
     \]
-    By expressing the cartesian product as a non-dependent $\Sigma$-type, this is definitionally equivalent to
+    By expanding the cartesian product into a non-dependent $\Sigma$-type, this becomes definitionally equivalent to
     \[
         \sum_{h\colon B\to A}\;\sum_{\theta\colon f\circ h\sim\id_B}h\circ f\sim\id_A.
     \]
@@ -487,7 +489,8 @@
         S(p)\defeq\prod_{w\colon a\eq Ax}
             p\eq{x\eq Ax}w^{-1}\ct q\ct w,
     \]
-    we have $\fun{transport}^S(e,u)\eq{}u'$. By function extensibility, this reduces to showing that for all $w\colon a\eq Ax$,
+    we have $\fun{transport}^S(e,u)\eq{}u'$.
+    By function extensionality, this reduces to showing that for all $w\colon a\eq Ax$,
     \[
         \fun{transport}^S(e,u)(w)\eq{}u'(w)
     \]
@@ -557,7 +560,7 @@
     \]
     is inhabited.
     
-    We proceed by recursion on the truncated type $\lVert\fun2\eq\univ X\rVert$. Let $P\colon\univ\to\univ$ be the type family $X\mapsto\lVert\fun2\eq\univ X\rVert$. Given a path $p\colon\fun2\eq\univ X$, we can apply Lemma~\ref{lem:total-space-with-mere-proposition-fibers}, to obtain a path $\epsilon_p\colon a\eq Ax$, because $P(X)$ is a mere proposition.
+    We proceed by recursion on the truncated type $\lVert\fun2\eq\univ X\rVert$. Let $P\colon\univ\to\univ$ be the type family $X\mapsto\lVert\fun2\eq\univ X\rVert$. Given a path $p\colon\fun2\eq\univ X$, we can apply Lemma~\ref{lem:total-space-with-mere-proposition-fibers} to obtain a path $\epsilon_p\colon a\eq Ax$, because $P(X)$ is a mere proposition.
     
     It follows that $p\mapsto\lvert\epsilon_p\rvert$ is a map of type $(\fun2\eq\univ X)\to\lVert a\eq Ax\rVert$. Since the codomain is a mere proposition, this map factors through $\lVert\fun2\eq\univ X\rVert$. Evaluating this factored map at the given $u$ provides the desired witness in $\lVert a\eq Ax\rVert$.
 
@@ -589,21 +592,21 @@ To ensure that the property of being an equivalence is a mere proposition, we mu
 
 On a practical level, if $\fun{isequiv}(f)$ were not a mere proposition, every time we used the fact that $f$ is an equivalence, we would have to explicitly keep track of which specific proof we were using.
 
-By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof irrelevance}. We can construct an equivalence and immediately forget the specific construction of the right/left homotopies, because any two inhabitants of the mere proposition are  propositionally equal. This saves the theory from collapsing into an unmanageable infinite tower of coherence conditions.
+By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof irrelevance}. We can construct an equivalence and immediately forget the specific construction of the right/left homotopies, because any two inhabitants of the mere proposition are propositionally equal. This saves the theory from collapsing into an unmanageable infinite tower of coherence conditions.
 
 
-\begin{rem}
-    As we discussed at the beginning of this section, the type of quasi-inverses reduces to the space of choices for the right homotopy $\eta$. This leaves $\eta$ as an unbound ``loose end'', meaning the type $\fun{qinv}(f)$ is not generally a mere proposition.
+\begin{rem}\label{rem:why-half}
+    As we discussed at the beginning of this section, the type of quasi-inverses reduces to the space of choices for the right homotopy $\eta$. This leaves $\eta$ as an unbound ``loose end,'' meaning the type $\fun{qinv}(f)$ is not generally a mere proposition.
     
-    The coherence condition $\tau\colon f\lwct\vartheta\sim\eta\rwct f$ fixes this loose end by tethering $\eta$ to $\vartheta$. Since the space of coherent pairs $\dep{\eta,\tau}$ is contractible, the structure becomes a pair of contractible spaces, with no degrees of freedom. Thus, the type $\fun{ishae}(f)$ is a mere proposition.
+    The left coherence condition $\tau\colon f\lwct\vartheta\sim\eta\rwct f$ fixes this loose end by tethering $\eta$ to $\vartheta$. Since the space of such coherent pairs $\dep{\eta,\tau}$ is contractible, the entire structure becomes a sequence of contractible extensions, leaving no degrees of freedom. Thus, the type $\fun{ishae}(f)$ is a mere proposition.
     
-    If we wanted to reproduce the categorical adjunction by demanding both coherence conditions, we would have to define a type containing the data $(g,\vartheta,\eta,\tau,\nu)$, where $\nu\colon g\lwct\eta\sim\vartheta\rwct g$.
+    If we wanted to reproduce the standard categorical adjunction by demanding both coherence conditions, we would have to define a type containing the data $\dep{g,\vartheta,\eta,\tau,\nu}$, where $\nu\colon g\lwct\eta\sim\vartheta\rwct g$.
     
-    Since $\dep{\dep{g,(\vartheta,\eta)},\tau}$ forms a contractible space, the total space would reduce to the space of choices for $\nu$.
+    Since the base space of half-adjoint data $\dep{g,\vartheta,\eta,\tau}$ is contractible, the total space of this two-sided structure would reduce entirely to the space of choices for~$\nu$.
     
-    However, $\nu$ is a homotopy between homotopies. Just as with $\eta$ in the previous case, there can be multiple choices for $\nu$, which would re-introduce degrees of freedom. In other words, the type of full adjoint equivalences would fail to be a mere proposition.
+    However, $\nu$ is a homotopy between homotopies (a 2-path). Just as with $\eta$ in the case of quasi-inverses, there can be multiple choices for $\nu$, which re-introduces degrees of freedom in higher homotopy levels. In other words, the type of full two-sided adjoint equivalences generally fails to be a mere proposition.
     
-    This is why the standard definition specifies only one coherence condition, instead of (redundantly) including both.    
+    This is why the type-theoretic definition specifies only one coherence condition, rather than redundantly including both.
 \end{rem}
 
 \begin{thm}\label{thm:qinv->ishae}
@@ -664,7 +667,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     For any function\/ $f\colon A\to B$, a right inverse\/ $\dep{g,\eta}\colon\fun{rinv}(f)$, and a left inverse\/ $\dep{g,\vartheta}\colon\fun{linv}(f)$, we define the types of \textsl{right coherences} and \textsl{left coherences} as
     \begin{align*}
         \fun{rcoh}_f(\dep{g,\eta})
-            &\defeq \sum_{\vartheta\colon g\circ f\sim\id_A} f\lwct\vartheta\sim\eta\rwct f, \\
+            &\defeq \sum_{\vartheta\colon g\circ f\sim\id_A} f\lwct\vartheta\sim\eta\rwct f,\\
         \fun{lcoh}_f(\dep{g,\vartheta})
             &\defeq \sum_{\eta\colon f\circ g\sim\id_B} g\lwct\eta\sim\vartheta\rwct g.
     \end{align*}
@@ -797,7 +800,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     For the same reasons, $\dep{\id_A,\fun{refl}\rwct f}$ is contractible. Hence, by part g) of the same theorem, we deduce that $\dep{g\circ f,\eta}\sim\dep{\id_A,\fun{refl}\rwct f}$ is contractible. The conclusion follows from Lemma~\ref{lem:side-coherences-equivalence}.
 \end{proof}
 
-\begin{thm}\label{thm:ishae-is-mere proposition}
+\begin{thm}\label{thm:ishae-is-mere-proposition}
     For any\/ $f\colon A\to B$, the type\/ $\fun{ishae}(f)$ is a mere proposition.
 \end{thm}
 
@@ -808,9 +811,9 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
             &\defeq
                 \sum_{g\colon B\to A}\;
                 \sum_{\eta\colon f\circ g\sim\id_B}
-                    \fun{rcoh}(\dep{\fun{g,\eta}})\\
+                    \fun{rcoh}_f(\dep{\fun{g,\eta}})\\
             &\eq{}
-                \sum_{\omega\colon\fun{rinv}(f)}\fun{rcoh}(\omega).
+                \sum_{\omega\colon\fun{rinv}(f)}\fun{rcoh}_f(\omega).
     \end{align*}
     If $\fun{ishae}(f)$ is inhabited, then $\fun{rinv}(f)$ is contractible by Proposition~\ref{prop:side-inverses-are-contractible}, and $\fun{rcoh}(f)$ is contractible by Lemma~\ref{lem:rcoh-is-contractible}. Thus, the conclusion follows from part~d) of Theorem~\ref{thm:contractible-types}.
 \end{proof}
@@ -825,14 +828,16 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     is inhabited.
 \end{defn}
 
-\begin{thm}\label{thm:biinv-is-mere proposition}
+\begin{thm}\label{thm:biinv-is-mere-proposition}
     For any\/ $f\colon A\to B$, the type\/ $\fun{biinv}(f)$ is a mere proposition.
 \end{thm}
 
 \begin{proof}
     It suffices to show that, in the case where $\fun{biinv}(f)$ is inhabited, it is contractible.
+    If $\fun{biinv}(f)$ is inhabited, $f$ has both a left and a right inverse. This implies that $f$ is quasi-invertible.
+    Hence, by Proposition~\ref{prop:side-inverses-are-contractible}, both $\fun{rinv}(f)$ and $\fun{linv}(f)$ are contractible.
+    Thus, the conclusion follows from part c) of Theorem~\ref{thm:contractible-types}.
     
-    If $\fun{biinv}(f)$ is inhabited, by definition, $f$ induces an equivalence. Hence, it is quasi-invertible and by Proposition~\ref{prop:side-inverses-are-contractible} both $\fun{rinv}(f)$ and $\fun{linv}(f)$ are contractible. Thus, the conclusion follows from part c) of Theorem~\ref{thm:contractible-types}.
     %
     
 \end{proof}
@@ -848,7 +853,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
 \begin{proof}
     Given that both types are mere propositions, by Lemma~\ref{lem:mere-proposition-equivalence}, it suffices to show a forward and a backward map.
 
-    By Theorem~\ref{thm:qinv->ishae}, there is a map $\fun{qinv}(f)\to\fun{ishae}(f)$. Composing this with the trivial map $\fun{biinv}(f)\to\fun{qinv}(f)$, one obtain a forward map.
+    By Theorem~\ref{thm:qinv->ishae}, there is a map $\fun{qinv}(f)\to\fun{ishae}(f)$. Composing this with the trivial map $\fun{biinv}(f)\to\fun{qinv}(f)$, one obtains a forward map.
     %
     
 \end{proof}
@@ -924,6 +929,8 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
         q\colon\fun{ap}_f(r)\eq{f(a)\eq B f(x)}\eta(f(x)),
     \]
     which we can use to define $\vartheta(x)\defeq r$ and $\tau(x)\defeq q$.
+    %
+    
 \end{proof}
 
 \begin{lem}\label{lem:isContr-is-mere-proposition}
@@ -931,7 +938,9 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 \end{lem}
 
 \begin{proof}
-    By Lemma~\ref{lem:isContr-is-mere-proposition}, $\fun{isContr}(\fun{fib}_f(y))$ is a mere proposition for all $y\colon B$. Therefore, by part~a) of Theorem~\ref{thm:contractible-types}, we deduce that \eqref{eq:isContr-map} is contractible as well.
+    By Theorem~\ref{thm:isContr-is-a-mere-proposition}, $\fun{isContr}(\fun{fib}_f(y))$ is a mere proposition for all $y\colon B$. Therefore, by part~a) of Theorem~\ref{thm:contractible-types}, we deduce that \eqref{eq:isContr-map} is contractible as well.
+    %
+    
 \end{proof}
 
 \begin{thm}\label{thm:isContr-ishae-equivalence}
@@ -940,6 +949,8 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 
 \begin{proof}
     This follows from the previous lemma, Lemma~\ref{lem:mere-proposition-equivalence}, and the fact that we have maps $\fun{isContr}(f)\to\fun{ishae}(f)$ and $\fun{ishae}(f)\to\fun{isContr}(f)$.
+    %
+    
 \end{proof}
 
 \begin{cor}\label{cor:map-followed-by-map-to-isequiv}
@@ -951,11 +962,13 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     \[
         \fun{isContr}(f)\equiv\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y)).
     \]
-    Fix $y\colon b$. If $h\colon B\to\fun{isContr}(f)$ is the given map, then $h(y)\colon\fun{isContr}(f)$. In particular,
+    Fix $y\colon B$. If $h\colon B\to\fun{isContr}(f)$ is the given map, then $h(y)\colon\fun{isContr}(f)$. In particular,
     \[
         h(y)(y)\colon\fun{isContr}(\fun{fib}_f(y)).
     \]
     Thus, $\lambda y.\,h(y)(y)$ is exactly the required witness of $\fun{isContr}(f)$.
+    %
+    
 \end{proof}
 
 \section{Surjections and Embeddings}
@@ -998,20 +1011,20 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 \end{rems}
 
 \begin{lem}\label{lem:embedding-fibers-are-mere-propositions}
-    If\/ $f\colon A\to B$ is an embedding then its fibers are mere propositions. 
+    If\/ $f\colon A\to B$ is an embedding, then its fibers are mere propositions. 
 \end{lem}
 
 \begin{proof}
-    Let $b\colon B$, and let $\dep{x,p}$ and $\dep{y,q}$ be two elements in $\fun{fib}_f(b)$. To show that $\fun{fib}_f(b)$ is a mere proposition, it suffices to prove that the identity type $\dep{x,p}\eq{\fun{fib}_f(b)}\dep{y,q}$ is contractible.
-    
+    Let $b\colon B$, and let $\dep{x,p}$ and $\dep{y,q}$ be two elements in $\fun{fib}_f(b)$.
+    To show that $\fun{fib}_f(b)$ is a mere proposition, it suffices to prove that the identity type $\dep{x,p}\eq{\fun{fib}_f(b)}\dep{y,q}$ is contractible.
     By Lemma~\ref{lem:fib-equality}, we have an equivalence
     \[
         \bigl(
             \dep{x,p}\eq{\fun{fib}_f(b)}\dep{y,q}
         \bigr)
         \simeq
-        \sum_{q\colon x\eq Ay}
-            \fun{ap}_f(b)\ct q\eq{f(x)\eq Bb}p.
+        \sum_{r\colon x\eq Ay}
+            \fun{ap}_f(r)\ct q\eq{f(x)\eq Bb}p.
     \]
     Therefore,
     \begin{align*}
@@ -1019,8 +1032,8 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
             \dep{x,p}\eq{\fun{fib}_f(b)}\dep{y,q}
         \bigr)
         &\simeq
-        \sum_{q\colon x\eq Ay}
-            \fun{ap}_f(b)\eq{f(x)\eq Bf(y)}p\ct q^{-1}\\
+        \sum_{r\colon x\eq Ay}
+            \fun{ap}_f(r)\eq{f(x)\eq Bf(y)}p\ct q^{-1}\\
         &\equiv\fun{fib}_{\fun{ap}_f}(p\ct q^{-1}).
     \end{align*}    
     Since $\fun{ap}_f$ is an equivalence, it has contractible fibers.
@@ -1033,9 +1046,9 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 \end{thm}
 
 \begin{proof}
-    If $f$ induces an equivalence, it is a surjection because, by Remark~\ref{rem:equivalence-fib-is-contractible}, it fibers are contractible, hence $\lVert\fun{fib}_f(b)\rVert$ is contractible and inhabited by its center. It is an embedding because, by Proposition~\ref{prop:ap-properties}, $\fun{ap}_{f^{-1}}$ is a quasi-inverse of $\fun{ap}_f$.
+    If $f$ induces an equivalence, it is a surjection because, by Remark~\ref{rem:equivalence-fib-is-contractible}, its fibers are contractible, hence $\lVert\fun{fib}_f(b)\rVert$ is contractible and inhabited by its center. It is an embedding because, by Proposition~\ref{prop:ap-properties}, $\fun{ap}_{f^{-1}}$ is a quasi-inverse of $\fun{ap}_f$.
 
-    To prove that $f$ is an equivalence, by Theorem~\ref{thm:isContr-ishae-equivalence}, it suffices to show that its fibers are contractible. By Lemma~\ref{lem:embedding-fibers-are-mere-propositions}, the fibers of $f$ are mere propositions. Therefore, the canonical map $\fun{squash}\colon\fun{fib}_f(b)\to\lVert\fun{fib}_f(b)\lVert$ has a quasi-inverse. Since $f$ is a surjection, it follows that $\fun{fib}_f(b)$ is inhabited, hence contractible by Lemma~\ref{lem:contractible-equivalences}.
+    To prove that $f$ is an equivalence, by Theorem~\ref{thm:isContr-ishae-equivalence}, it suffices to show that its fibers are contractible. By Lemma~\ref{lem:embedding-fibers-are-mere-propositions}, the fibers of $f$ are mere propositions. Therefore, the canonical map $\fun{squash}\colon\fun{fib}_f(b)\to\lVert\fun{fib}_f(b)\rVert$ has a quasi-inverse. Since $f$ is a surjection, it follows that $\fun{fib}_f(b)$ is inhabited, hence contractible by Lemma~\ref{lem:contractible-equivalences}.
     %
     
 \end{proof}
@@ -1308,7 +1321,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 
 \section{The Object Classifier}
 
-In set theory theory, $\set{0,1}$ is the \textsl{subobject classifier}, representing the set of truth values. Given a base set $A$ and a subset $S \subseteq A$, this subset is perfectly described by its characteristic function $\chi_S \colon A \to \set{0,1}$. The function $\chi_S$ acts as a classifier: it points to $1$ if an element belongs to $S$, and $0$ otherwise. The subset $S$ is mathematically recovered as the preimage of $1$ under the function~$\chi_S$.
+In set theory, $\set{0,1}$ is the \textsl{subobject classifier}, representing the set of truth values. Given a base set $A$ and a subset $S \subseteq A$, this subset is perfectly described by its characteristic function $\chi_S \colon A \to \set{0,1}$. The function $\chi_S$ acts as a classifier: it points to $1$ if an element belongs to $S$, and $0$ otherwise. The subset $S$ is mathematically recovered as the preimage of $1$ under the function~$\chi_S$.
 
 In Homotopy Type Theory, the focus expands from classifying subsets to classifying arbitrary type families. Instead of a subset inclusion $S \hookrightarrow A$, we work with a total space $\Sigma_AB$ equipped with the projection map $\pi_1\colon\Sigma_AB\to A$.
 
@@ -1334,7 +1347,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
             &\simeq\sum_{\zeta\colon\sum_{x\colon A}
                 x\eq Aa}\!\!\!B(\pi_1(\zeta))
                 &&\text{; Prop.~\ref{prop:sigma-associativity}}\\
-            &\simeq B(\pi_1(\dep{a,\fun{refl}_a})
+            &\simeq B(\pi_1(\dep{a,\fun{refl}_a}))
                 &&\text{; Lem.~\ref{lem:Sigma-identity-is-contractible} \& Thm.~\ref{thm:contractible-types}~d)}\\
             &\equiv B(a).
     \end{align*}\qedhere
@@ -1517,7 +1530,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     \end{enumerate}
     Given families $P, Q\colon B\to\univ$, a dependent function $\eta\colon\prod_{b\colon B}P(b)\to Q(b)$ provides exactly the object-level data required by part (a). For every $b\colon B$, it gives a function $\eta(b)\colon P(b)\to Q(b)$.
     
-    The profound difference in type theory is that part (b) is that it is an intrinsic consequence of path induction. To verify this naturality, we must show that for any path $p\colon b\eq{}b'$ and any element $x\colon P(b)$, the evaluation of $\eta(b')$ after transporting $x$ equals the transport of the evaluation of $\eta(b)$ at $x$. This is expressed by the propositional equality
+    The profound difference in type theory is that part (b) is an intrinsic consequence of path induction. To verify this naturality, we must show that for any path $p\colon b\eq{}b'$ and any element $x\colon P(b)$, the evaluation of $\eta(b')$ after transporting $x$ equals the transport of the evaluation of $\eta(b)$ at $x$. This is expressed by the propositional equality
     \[
         \eta(b')(\fun{transport}^P(p,x)) \eq{} \fun{transport}^Q(p,\eta(b)(x)).
     \]
@@ -1895,8 +1908,12 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     \item \textbf{Theorem~\ref{thm:weak-funext-implies-funext}}
     \begin{itemize}[label=$\triangleright$]
         \item Lemma~\ref{lem:Sigma-identity-is-contractible}
-        \item Theorem~\ref{thm:contractible-types} part a)
+        \item Theorem~\ref{thm:contractible-types} (part a)
         \item Lemma~\ref{lem:contractible-equivalences}
+        \begin{enumerate}[label=$\scriptstyle\bullet$]
+                        \item Lemma~\ref{lem:mere-prop-and-1}
+                        %\item \ref{lpar:Pi-types-over-product}
+        \end{enumerate}
         \item Lemma~\ref{lem:mere-proposition-equivalence}
         \item Definition~\ref{defn:total-map}
         \item Theorem~\ref{thm:total-fib-equivalence}
@@ -1917,24 +1934,24 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
             \begin{itemize}[label=$\circ$]
                 %\item Proposition~\ref{prop:sigma-associativity}
                 %\item Proposition~\ref{prop:sigma-commutativity}
-                \item Lemma~\ref{lem:Sigma-identity-is-contractible}
+                \item\gref{Lemma~\ref{lem:Sigma-identity-is-contractible}}
                 \begin{enumerate}[label=$\scriptstyle\bullet$]
-                    \item Proposition~\ref{prop:transport-decomposition-for-paths}
+                    \item\gref {Proposition~\ref{prop:transport-decomposition-for-paths}}
                 \end{enumerate}
                 \item Theorem~\ref{thm:contractible-types} (part d)
                 \begin{enumerate}[label=$\scriptstyle\bullet$]
                     \item Theorem~\ref{thm:isContr-is-a-mere-proposition}
                     \item Theorem~\ref{thm:mere-propositions}
-                    \item Lemma~\ref{lem:contractible-equivalences}
-                    \begin{enumerate}[label=$\scriptstyle\bullet$]
-                        \item Lemma~\ref{lem:mere-prop-and-1}
+                    \item\gref{Lemma~\ref{lem:contractible-equivalences}}
+                    \begin{enumerate}[label=$\scriptstyle-$]
+                        \item\gref{Lemma~\ref{lem:mere-prop-and-1}}
                         %\item \ref{lpar:Pi-types-over-product}
                     \end{enumerate}
                 \end{enumerate}
             \end{itemize}
-            \item \grayitem{Lemma~\ref{lem:contractible-equivalences}}
+            \item \gref{Lemma~\ref{lem:contractible-equivalences}}
             \begin{itemize}[label=$\circ$]
-                \item \grayitem{Lemma~\ref{lem:mere-prop-and-1}}
+                \item \gref{Lemma~\ref{lem:mere-prop-and-1}}
                 %\item \ref{lpar:Pi-types-over-product}
             \end{itemize}
             \item Theorem~\ref{thm:isContr->ishae}
@@ -1942,7 +1959,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
                 \item Lemma~\ref{lem:fib-equality}
                 \begin{enumerate}[label=$\scriptstyle\bullet$]
                     %\item Lemma~\ref{lem:post-composition-transport}
-                    \item \grayitem{Proposition~\ref{prop:transport-decomposition-for-paths}}
+                    \item \gref{Proposition~\ref{prop:transport-decomposition-for-paths}}
                 \end{enumerate}
             \end{itemize}
             \item Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence}
@@ -1963,7 +1980,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
                 \end{enumerate}
                 \item Definition~\ref{defn:fiber-over-y}
                 %\item Lemma~\ref{lem:post-composition-transport}
-                \item \grayitem{Proposition~\ref{prop:transport-decomposition-for-paths}}
+                \item \gref{Proposition~\ref{prop:transport-decomposition-for-paths}}
             \end{itemize}
         \end{itemize}
         \item Lemma~\ref{lem:contractible-retracts}
@@ -1979,14 +1996,117 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     Consider the type of ``two-sided adjoint equivalence data'' for\/ $f\colon A\to B$,
     \[
         \sum_{g\colon B\to A}\;
-        \sum_{\eta\colon g\circ f\sim\id_A}\;
-        \sum_{\vartheta\colon f\circ g\sim\id_B}
-            (f\lwct\eta\sim\vartheta\rwct f)
+        \sum_{\eta\colon f\circ g\sim\id_B}\;
+        \sum_{\vartheta\colon g\circ f\sim\id_A}
+            (f\lwct\vartheta\sim\eta\rwct f)
             \times
-            (g\lwct\vartheta\sim\eta\rwct g).
+            (g\lwct\eta\sim\vartheta\rwct g).
     \]
     By\/ {\upshape Proposition~\ref{prop:coherence-swap}}, we know that if\/ $f$ is an equivalence, then this type is inhabited. Give a characterization of this type analogous to\/ {\upshape Proposition~\ref{prop:qinv-id-homotopy-equivalence}}.
 
     Can you give an example showing that this type is not generally a mere proposition? (This will be easier after\/ {\upshape Chapter~6}.)
 \end{exr}
 
+\begin{solution}
+    Recall that
+    \begin{align*}
+        \fun{rcoh}_f\colon\fun{rinv}(f)&\to\univ\\
+        \dep{g,\eta}&\mapsto
+            \sum_{\vartheta\colon g\circ f\sim\id_A}
+                f\lwct\vartheta\sim\eta\rwct f.
+    \end{align*}
+    Let $G$ denote the target type. By $\Sigma$-associativity, we can expand $G$ as
+    \begin{align*}
+        G
+            &\equiv
+                \sum_{\dep{g,\eta}\colon\fun{rinv}(f)}\;
+                \sum_{\vartheta\colon g\circ f\sim\id_A}
+                    (f\lwct\vartheta\sim\eta\rwct f)
+                    \times
+                    (g\lwct\eta\sim\vartheta\rwct g).
+    \end{align*}
+    Consider the type of right-half-adjoint equivalence data,
+    \begin{align*}
+        G'\defeq
+            \sum_{\dep{g,\eta}\colon\fun{rinv}(f)}\;
+            \fun{rcoh}_f(\dep{g,\eta}).
+    \end{align*}
+    There is an equivalence
+    \begin{align*}
+        G&\simeq
+        \sum_{
+            \dep{
+                \dep{g,\eta},
+                \dep{\vartheta,\tau}
+            }\colon G'
+        }
+        g\lwct\eta\sim\vartheta\rwct g,
+    \end{align*}
+    induced by the canonical mapping
+    \[
+        \bigdep{
+            \dep{g,\eta},
+            \dep{\vartheta,(\tau,\sigma)}
+        }
+        \mapsto
+        \bigdep{
+            \dep{
+                \dep{g,\eta},
+                \dep{\vartheta,\tau}},
+            \sigma
+        }.
+    \]
+    As we saw in the proof of Theorem~\ref{thm:ishae-is-mere-proposition}, $G'\simeq\fun{ishae}(f)$. In particular, if $f$ is an equivalence, then $G'$ is contractible. By evaluating the sum at the center of contraction $\dep{\dep{g,\eta}, \dep{\vartheta,\tau}}$ of $G'$, we obtain the equivalence
+    \[
+        G\simeq (g\lwct\eta\sim\vartheta\rwct g).
+    \]
+    Thus, $G$ is equivalent to the space of choices for this secondary coherence condition—a ``loose end,'' as described in Remark~\ref{rem:why-half}.
+
+    Regarding the second part of the exercise, a counterexample can be provided by any type whose identity type is not always a set. Since we have not yet seen such a type, we postpone a complete solution to a later chapter.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that for any types\/ $A, B\colon\univ$, the following type is equivalent to\/ $A\simeq B$.
+    \[
+        \sum_{R\colon A\to B\to\univ}
+        \Bigl(
+            \prod_{a\colon A}
+            \fun{isContr}\Bigl(\sum_{b\colon B}R(a,b)\Bigr)
+        \Bigr)
+        \times
+        \Bigl(
+            \prod_{b\colon B}
+            \fun{isContr}\Bigl(\sum_{a\colon A}R(a,b)\Bigr)
+        \Bigr).
+    \]
+    Can you extract from this a definition of a type satisfying the three desiderata of\/ $\fun{isequiv}(f)$?
+\end{exr}
+
+\begin{solution}
+    Let $Z$ denote the target type. Expanding the definition of contractibility, the first half of the condition on $R$ is given by
+    \begin{align*}
+        \prod_{a\colon A}\fun{isContr}(\Sigma_BR(a,\dummy))
+            &\equiv\prod_{a\colon A}\;
+                \sum_{u\colon\Sigma_BR(a,\dummy)}\;
+                \prod_{v\colon\Sigma_BR(a,\dummy)}u\eq{}v\\
+            &\simeq\prod_{a\colon A}\;
+                \sum_{b\colon B}\;
+                \sum_{r\colon R(a,b)}\;
+                \prod_{v\colon\Sigma_BR(a,\dummy)}
+                    \dep{b,r}\eq{}v
+                &&\text{; $\Sigma$-assoc.}.
+    \end{align*}
+    Applying the type-theoretic axiom of choice, the \rhs satisfies
+    \begin{align*}
+        \rhs
+            &\simeq\sum_{f\colon A\to B}\;
+                \prod_{a\colon A}\;
+                \sum_{r\colon R(a,f(a))}\;
+                \prod_{v\colon\Sigma_BR(a,\dummy)}
+                    \dep{f(a),r}\eq{}v.
+    \end{align*}
+    By applying this same reasoning symmetrically to the second half of the condition, we extract a function $g\colon B\to A$.
+    %
+\end{solution}
