@@ -194,7 +194,7 @@
     which is witnessed by $\fun{refl}_{\eta(b)}$.
 \end{proof}
 
-\begin{thm}\label{thm:pi-sections}
+\begin{thm}\fe\label{thm:pi-sections}
     Let $B\colon\univ$ be a type and $P\colon B\to\univ$ a type family. The type of dependent functions $\prod_{b\colon B}P(b)$ is equivalent to the type of right inverses of the first projection $\pi_1\colon\Sigma_BP\to B$. That is, there is an equivalence
     \[
         \Bigl(
@@ -309,7 +309,7 @@
     
 \end{proof}
 
-\begin{prop}\label{prop:side-inverses-are-contractible}
+\begin{prop}\fe\label{prop:side-inverses-are-contractible}
     If\/ $f\colon A\to B$ has a quasi-inverse\/ $\dep{g,(\eta,\vartheta)}$, then the types\/ $\fun{rinv}(f)$ and\/ $\fun{linv}(f)$ are contractible with respective centers\/ $\dep{g,\eta}$ and\/ $\dep{g,\vartheta}$.
 \end{prop}
 
@@ -389,7 +389,7 @@
     \]
 \end{proof}
 
-\begin{prop}\label{prop:qinv-id-homotopy-equivalence}
+\begin{prop}\fe\label{prop:qinv-id-homotopy-equivalence}
     If\/ $f\colon A\to B$ is such that\/ $\fun{qinv}(f)$ is inhabited, then
     \[
         \fun{qinv}(f)\simeq(\id_A\sim\id_A).
@@ -414,7 +414,7 @@
     yields an equivalence $\fun{qinv}(f)\simeq(g\circ f\sim\id_A)$, which, combined with the equivalence induced by $\sigma$, completes the proof.
 \end{proof}
 
-\begin{lem}\label{lem:conditioned-id-id-homotopy}
+\begin{lem}\fe\label{lem:conditioned-id-id-homotopy}
     Suppose we have a type\/ $A$ with\/ $a\colon A$ and\/ $q\colon a\eq Aa$ such that
     \begin{enumerate}[a),font=\upshape]
         \item The type\/ $a\eq Aa$ is a set.
@@ -531,7 +531,7 @@
     \]
 \end{proof}
 
-\begin{thm}
+\begin{thm}\fe\label{thm:qinv-is-not-mere-proposition}
     There exist types\/ $A$ and\/ $B$ and a function\/ $f\colon A\to B$ such that\/ $\fun{qinv}(f)$ is not a mere proposition. 
 \end{thm}
 
@@ -785,7 +785,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     Verifying that these maps are quasi-inverses of each other is straightforward.
 \end{proof}
 
-\begin{lem}\label{lem:rcoh-is-contractible}
+\begin{lem}\fe\label{lem:rcoh-is-contractible}
     If\/ $f\colon A\to B$ is an equivalence, then for any\/ $\dep{g,\eta}\colon\fun{rinv}(f)$, the type\/ $\fun{rcoh}_f(\dep{g,\eta})$ is contractible.
 \end{lem}
 
@@ -800,7 +800,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     For the same reasons, $\dep{\id_A,\fun{refl}\rwct f}$ is contractible. Hence, by part g) of the same theorem, we deduce that $\dep{g\circ f,\eta}\sim\dep{\id_A,\fun{refl}\rwct f}$ is contractible. The conclusion follows from Lemma~\ref{lem:side-coherences-equivalence}.
 \end{proof}
 
-\begin{thm}\label{thm:ishae-is-mere-proposition}
+\begin{thm}\fe\label{thm:ishae-is-mere-proposition}
     For any\/ $f\colon A\to B$, the type\/ $\fun{ishae}(f)$ is a mere proposition.
 \end{thm}
 
@@ -828,7 +828,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     is inhabited.
 \end{defn}
 
-\begin{thm}\label{thm:biinv-is-mere-proposition}
+\begin{thm}\fe\label{thm:biinv-is-mere-proposition}
     For any\/ $f\colon A\to B$, the type\/ $\fun{biinv}(f)$ is a mere proposition.
 \end{thm}
 
@@ -846,7 +846,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     While\/ $\fun{ishae}(f)$ requires the addition of a $2$-dimensional coherence homotopy to reach the status of a mere proposition, $\fun{biinv}(f)$ achieves the same using only $1$-dimensional homotopies.
 \end{rem}
 
-\begin{cor}
+\begin{cor}\fe
     Let\/ $f\colon A\to B$ be a function. Then\/ $\fun{biinv}(f)\simeq\fun{ishae}(f)$.
 \end{cor}
 
@@ -859,16 +859,16 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
 \end{proof}
 
 \section{Contractible Fibers}
-Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when its fibers are contractible. As observed in Remark~\ref{rem:equivalence-fib-is-contractible}, the fibers of a half-adjoint equivalence are contractible, which means that there is a map $\fun{ishae}(f)\to\fun{isContr}(f)$.
+Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when its fibers are contractible. As observed in Remark~\ref{rem:equivalence-fib-is-contractible}, the fibers of a half-adjoint equivalence are contractible, which means that there is a map $\fun{ishae}(f)\to\fun{isContrMap}(f)$.
 
 \begin{thm}\label{thm:isContr->ishae}
-    For any\/ $f\colon A\to B$, we have\/ $\fun{isContr}(f)\to\fun{ishae}(f)$.
+    For any\/ $f\colon A\to B$, we have\/ $\fun{isContrMap}(f)\to\fun{ishae}(f)$.
 \end{thm}
 
 \begin{proof}
     By abuse of notation,
     \[
-        \fun{isContr}(f)\equiv
+        \fun{isContrMap}(f)\equiv
             \prod_{y\colon B}\;
             \sum_{\dep{a,p}\colon\fun{fib}_f(y)}\;
             \prod_{\dep{x,q}\colon\fun{fib}_f(y)}
@@ -884,7 +884,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     \]
     Therefore, we can define the map as
     \begin{align*}
-        \fun{isContr}(f)&\to\fun{ishae}(f)\\
+        \fun{isContrMap}(f)&\to\fun{ishae}(f)\\
         \alpha&\mapsto\dep{g,\dep{\eta,\dep{\vartheta,\tau}}},
     \end{align*}
     where
@@ -933,8 +933,8 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     
 \end{proof}
 
-\begin{lem}\label{lem:isContr-is-mere-proposition}
-    For any\/ $f\colon A\to B$, the type\/ $\fun{isContr}(f)$ is a mere proposition.
+\begin{lem}\fe\label{lem:isContr-is-mere-proposition}
+    For any\/ $f\colon A\to B$, the type\/ $\fun{isContrMap}(f)$ is a mere proposition.
 \end{lem}
 
 \begin{proof}
@@ -943,30 +943,30 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     
 \end{proof}
 
-\begin{thm}\label{thm:isContr-ishae-equivalence}
-    For any\/ $f\colon A\to B$, we have\/ $\fun{isContr}(f)\simeq\fun{ishae}(f)$.
+\begin{thm}\fe\label{thm:isContr-ishae-equivalence}
+    For any\/ $f\colon A\to B$, we have\/ $\fun{isContrMap}(f)\simeq\fun{ishae}(f)$.
 \end{thm}
 
 \begin{proof}
-    This follows from the previous lemma, Lemma~\ref{lem:mere-proposition-equivalence}, and the fact that we have maps $\fun{isContr}(f)\to\fun{ishae}(f)$ and $\fun{ishae}(f)\to\fun{isContr}(f)$.
+    This follows from the previous lemma, Lemma~\ref{lem:mere-proposition-equivalence}, and the fact that we have maps $\fun{isContrMap}(f)\to\fun{ishae}(f)$ and $\fun{ishae}(f)\to\fun{isContrMap}(f)$.
     %
     
 \end{proof}
 
-\begin{cor}\label{cor:map-followed-by-map-to-isequiv}
+\begin{cor}\fe\label{cor:map-followed-by-map-to-isequiv}
     Let\/ $f\colon A\to B$ be a map, and suppose we have another map\/ $B\to\fun{isequiv}(f)$. Then\/ $f$ is an equivalence.
 \end{cor}
 
 \begin{proof}
     By the theorem, to prove that $f$ is an equivalence, it suffices to construct a witness of
     \[
-        \fun{isContr}(f)\equiv\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y)).
+        \fun{isContrMap}(f)\equiv\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y)).
     \]
-    Fix $y\colon B$. If $h\colon B\to\fun{isContr}(f)$ is the given map, then $h(y)\colon\fun{isContr}(f)$. In particular,
+    Fix $y\colon B$. If $h\colon B\to\fun{isContrMap}(f)$ is the given map, then $h(y)\colon\fun{isContrMap}(f)$. In particular,
     \[
         h(y)(y)\colon\fun{isContr}(\fun{fib}_f(y)).
     \]
-    Thus, $\lambda y.\,h(y)(y)$ is exactly the required witness of $\fun{isContr}(f)$.
+    Thus, $\lambda y.\,h(y)(y)$ is exactly the required witness of $\fun{isContrMap}(f)$.
     %
     
 \end{proof}
@@ -1041,7 +1041,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     
 \end{proof}
 
-\begin{thm}
+\begin{thm}\fe
     A function\/ $f\colon A\to B$ induces an equivalence if, and only if, it is both surjective and an embedding.
 \end{thm}
 
@@ -1413,7 +1413,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     \]
 \end{proof}
 
-\begin{thm}\label{thm:HoTT-Grothendieck-construction}
+\begin{thm}\fe\label{thm:HoTT-Grothendieck-construction}
     For any type\/ $B$, there is an equivalence
     \[
         \chi\colon
@@ -1556,7 +1556,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     where\/ $\pi_U\colon(U\times_Q V)\to U$ is the first projection\/ $\pi_1$, and\/ $\pi_V\colon(U\times_Q V)\to V$ is the composition\/ $\pi_1\circ\pi_2$.
 \end{ntn}
 
-\begin{lem}\label{lem:pullback}
+\begin{lem}\fe\label{lem:pullback}
     With the preceding notation, the canonical construction\/ $U\times_Q V$, equipped with the projections\/ $\pi_U$ and\/ $\pi_V$, is the pullback of\/ $g_U$ and\/ $g_V$.
 \end{lem}
 
@@ -1599,7 +1599,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     as required.
 \end{proof}
 
-\begin{thm}
+\begin{thm}\fe
     Let\/ $f\colon A\to B$ be a function. Then the diagram
     \[
         \begin{tikzcd}
@@ -1752,7 +1752,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     Thus, the universal property of the pullback acts as the local geometric mechanism that computes the global structural equivalence between ordinary functions mapping into a base type $B$ and dependent type families indexed by~$B$.
 \end{rem}
 
-\section{Univalence Implies Function Extensionality}
+\section{Univalence Implies Function Extensionality}\label{UA-implies-FE}
 
 \begin{defn}
     For any type $A$ and any type family $P\colon A\to\univ$, the \textsl{weak function extensionality principle} asserts the existence of a function
@@ -1843,7 +1843,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
                 \fun{happly}(\fun{refl}_{\id_A},x)_*(f(x))\\
             &\equiv\lambda x.\,
                 (\fun{refl}_{\id_A(x)})_*(f(x))
-                &&\text{; Equation \eqref{eq:happly-refl}}\\
+                &&\text{; Eq.~\eqref{eq:happly-refl}}\\
             &\equiv\lambda x.\,f(x)\\
             &\equiv f,
     \end{align*}
@@ -1992,7 +1992,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
 
 \section{Exercises}
 
-\begin{exr}
+\begin{exr}\fe
     Consider the type of ``two-sided adjoint equivalence data'' for\/ $f\colon A\to B$,
     \[
         \sum_{g\colon B\to A}\;
@@ -2067,7 +2067,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     
 \end{solution}
 
-\begin{exr}
+\begin{exr}\fe
     Show that for any types\/ $A, B\colon\univ$, the following type is equivalent to\/ $A\simeq B$.
     \[
         \sum_{R\colon A\to B\to\univ}
@@ -2081,11 +2081,31 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
             \fun{isContr}\Bigl(\sum_{a\colon A}R(a,b)\Bigr)
         \Bigr).
     \]
-    Can you extract from this a definition of a type satisfying the three desiderata of\/ $\fun{isequiv}(f)$?
+    Can you extract from this a definition of a type satisfying the three desiderata of\/ $\fun{isequiv}(f)$? Given a type family $\fun E\colon(A\to B)\to\univ$, these are:
+    \begin{enumerate}[i),font=\upshape]
+        \item For each\/ $f\colon A\to B$ there is a function\/ $\fun{qinv}(f)\to\fun{E}(f)$.
+        
+        \item For each\/ $f\colon A\to B$ there is a function\/ $\fun{E}(f)\to\fun{qinv}(f)$.
+        
+        \item $\fun{E}(f)$ is a mere proposition.
+    \end{enumerate}
 \end{exr}
 
 \begin{solution}
-    Let $Z$ denote the target type. Expanding the definition of contractibility, the first half of the condition on $R$ is given by
+    With abbreviated notation we can rewrite the target type as
+    \[
+        \sum_{R\colon A\to B\to\univ}
+            \Bigl(
+                \prod_{a\colon A}
+                    \fun{isContr}(\Sigma_BR(a,\dummy))
+            \Bigr)
+            \times
+            \Bigl(
+                \prod_{b\colon B}
+                    \fun{isContr}(\Sigma_AR(\dummy,b))
+            \Bigr).
+    \]
+    Expanding the definition of contractibility, the first part of the Cartesian product is given by
     \begin{align*}
         \prod_{a\colon A}\fun{isContr}(\Sigma_BR(a,\dummy))
             &\equiv\prod_{a\colon A}\;
@@ -2098,15 +2118,438 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
                     \dep{b,r}\eq{}v
                 &&\text{; $\Sigma$-assoc.}.
     \end{align*}
-    Applying the type-theoretic axiom of choice, the \rhs satisfies
-    \begin{align*}
+    Applying \nref{lpar:axiom-of-choice}, the \rhs satisfies
+    \[\tag{$1$}
         \rhs
-            &\simeq\sum_{f\colon A\to B}\;
+            \simeq\sum_{f\colon A\to B}\;
                 \prod_{a\colon A}\;
                 \sum_{r\colon R(a,f(a))}\;
                 \prod_{v\colon\Sigma_BR(a,\dummy)}
-                    \dep{f(a),r}\eq{}v.
-    \end{align*}
-    By applying this same reasoning symmetrically to the second half of the condition, we extract a function $g\colon B\to A$.
+                    \dep{f(a),r}\eq{}v,
+    \]
+    which allows us to extract, via the first projection of the outer $\Sigma$-type, a function $f\colon A\to B$ and a proof that the type
+    \[
+        \prod_{a\colon A}R(a,f(a))
+    \]
+    is inhabited.\footnote{Given $a\colon A$, since $P(a)\defeq\Sigma_BR(a,\dummy)$ is contractible we might have defined $f(a)$ as its center of contraction. Similarly for the center $g(b)$ of $Q(b)\defeq\Sigma_AR(\dummy,b)$.}
+    
+    Repeating this same reasoning for the second part of the product, we extract a function $g\colon B\to A$ and proof that the type 
+    \[\tag{$2$}
+        \prod_{b\colon B}R(g(b),b)
+    \]
+    is inhabited.
+    
+    Fix $b\colon B$. From $(2)$ we obtain a term $s\colon R(g(b),b)$. the evaluation of~($1$) at $a\defeq g(b)$ produces a term $r\colon R(g(b),f(g(b)))$ and a map
+    \[
+        \rho\colon\prod_{v\colon\Sigma_BR(g(b),\dummy)}
+            \dep{f(g(b)),r}\eq{} v.
+    \]
+    Because $s\colon R(g(b),b)$, we can form the pair $v\defeq\dep{b,s}\colon\Sigma_BR(g(b),\dummy)$. Evaluating $\rho$ at this $v$, we arrive at the equality
+    \[
+        \dep{f(g(b)),r}\eq{}\dep{b,s}.
+    \]
+    In particular, $f(g(b))\eq Bb$. Since $b\colon B$ was arbitrarily chosen, this constructs the right homotopy $f\circ g\sim\id_B$. The left homotopy $g\circ f\sim\id_A$ follows symmetrically.
+
+    Conversely, if $g\colon B\to A$ induces an equivalence, we have a relation
+    \[
+        R\colon A\to B\to\univ,\quad
+        R(a,b)\defeq g(b)\eq{A}a.
+    \]
+    Since the fibers of $g$ are contractible, we obtain a witness for the first part of the product:
+    \[
+        \prod_{a\colon A}\fun{isContr}
+            \Bigl(
+                \sum_{b\colon B}g(b)\eq{A}a
+            \Bigr).
+    \]
+    For the second part, observe that for any fixed $b\colon B$, the sum
+    \[
+        \sum_{a\colon A}g(b)\eq{A}a
+    \]
+    is also contractible by Lemma~\ref{lem:Sigma-identity-is-contractible} applied to $g(b)\colon A$. Therefore, the second part of the Cartesian product is inhabited for all $b\colon B$. This shows that the entire target type has a witness.
+
+    \bigskip
+
+    For the final question, fix\/ $f\colon A\to B$, and consider the relation
+    \[
+        R(a,b)\defeq f(a)\eq Bb.
+    \]
+    By definition, the target type computes to
+    \[
+        \fun{E}(f)
+            \defeq
+                \prod_{a\colon A}\;
+                \fun{isContr}
+                    \Bigl(
+                        \sum_{b\colon B}f(a)\eq Bb
+                    \Bigr)
+                \times
+                \prod_{b\colon B}
+                    \fun{isContr}
+                        \Bigl(
+                            \sum_{a\colon A}f(a)\eq Bb
+                        \Bigr).
+    \]
+    By Lemma~\ref{lem:Sigma-identity-is-contractible}, the first part of this Cartesian product is inhabited. Thus, by Corollary~\ref{cor:A-contractible-implies-isContr(A)-contractible} and part a) of Theorem~\ref{thm:contractible-types}, it is contractible. The second part of the Cartesian product is definitionally equal to\/ $\fun{isContrMap}(f)$. Therefore, we obtain an equivalence
+    \[
+        \fun{E}(f)\simeq\fun{isContrMap}(f),
+    \]
+    which is equivalent to\/ $\fun{ishae}(f)$ by Theorem~\ref{thm:isContr->ishae} and its preceding comment.
     %
+    
 \end{solution}
+
+\begin{exr}
+    Reformulate the proof of\/ {\upshape Proposition~\ref{prop:qinv-id-homotopy-equivalence}} without using univalence.
+\end{exr}
+
+\begin{solution}
+    Our proof doesn't use the univalence axiom.
+\end{solution}
+
+\begin{exr}{\upshape[The unstable octahedral axiom]}
+    Let\/ $f\colon A\to B$ and\/ $g\colon B\to C$ be functions, and fix an element\/ $b\colon B$.
+    \begin{enumerate}[a),font=\upshape]
+        \item Construct a natural map\/ $\fun{fib}_{g\circ f}(g(b))\to\fun{fib}_g(g(b))$ and prove that its fiber over the point\/ $\dep{b,\fun{refl}_{g(b)}}$ is equivalent to\/ $\fun{fib}_f(b)$.
+        \item Show that for any\/ $c\colon C$, there is an equivalence
+        \[
+            \fun{fib}_{g\circ f}(c)\simeq\sum_{w\colon\fun{fib}_g(c)}\fun{fib}_f(\pi_1(w)).
+        \]
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}
+    \begin{enumerate}[a),font=\upshape]
+        \item Let $\dep{x,p}\colon\fun{fib}_{g\circ f}(g(b))$. By definition, $p\colon g(f(x))\eq{C}g(b)$. It follows that $\dep{f(x),p}\colon\fun{fib}_g(g(b))$, and we can define
+        \begin{align*}
+            \phi\colon\fun{fib}_{g\circ f}(g(b))
+                &\to\fun{fib}_g(g(b))\\
+            \dep{x,p}&\mapsto\dep{f(x),p}.
+        \end{align*}
+        In particular,
+        \begin{align*}
+            \fun{fib}_\phi(\dep{b,\fun{refl}_{g(b)}})
+            &\equiv
+                \sum_{w\colon\fun{fib}_{g\circ f}(g(b))}
+                    \dep{f(\pi_1(w)),\pi_2(w)}
+                    \eq{\fun{fib}_g(g(b))}
+                    \dep{b,\fun{refl}_{g(b)}}\\
+            &\simeq
+                \sum_{x\colon A}\;
+                \sum_{p\colon g(f(x))\eq{C}g(b)}
+                    \dep{f(x),p}
+                    \eq{\fun{fib}_g(g(b))}
+                    \dep{b,\fun{refl}_{g(b)}}\\
+            &\simeq
+                \sum_{x\colon A}\;
+                \sum_{p\colon g(f(x))\eq{C}g(b)}\;
+                \sum_{q\colon f(x)\eq{B}b}
+                    \!\!\!q_*(p)
+                    \eq{g(b)\eq{C}g(b)}
+                    \fun{refl}_{g(b)}                    
+        \end{align*}
+        where
+        \begin{align*}
+            q_*(p)&\equiv
+                \fun{transport}^{y\mapsto g(y)\eq{C}g(b)}
+                    (q,p)\\
+            &\eq{g(b)\eq{C}g(b)}
+                \fun{transport}^{z\mapsto z\eq{C}g(b)}
+                    (\fun{ap}_g(q),p)
+                &&\text{; Lem.~\ref{lem:post-composition-transport}}\\
+            &\eq{g(b)\eq{C}g(b)}
+                \fun{ap}_g(q)^{-1}\ct p
+                &&\text{; Prop.~\ref{prop:transport-decomposition-for-paths}.}
+        \end{align*}
+        Hence,
+        \begin{align*}
+            \fun{fib}_\phi(\dep{b,\fun{refl}_{g(b)}})
+            &\simeq
+                \sum_{x\colon A}\;
+                \sum_{p\colon g(f(x))\eq{C}g(b)}\;
+                \sum_{q\colon f(x)\eq{B}b}
+                    p
+                    \eq{g(f(x))\eq{C}g(b)}
+                    \fun{ap}_g(q)\\
+            &\simeq
+                \sum_{x\colon A}\;
+                \sum_{p\colon g(f(x))\eq{C}g(b)}\;
+                \sum_{q\colon f(x)\eq{B}b}
+                    \fun{ap}_g(q)
+                    \eq{g(f(x))\eq{C}g(b)}
+                    p\\
+            &\simeq
+                \sum_{x\colon A}\;
+                \sum_{q\colon f(x)\eq{B}b}\;
+                \explain[\text{Contractible by Lem.~\ref{lem:Sigma-identity-is-contractible}}]{
+                \sum_{p\colon g(f(x))\eq{C}g(b)}
+                    \fun{ap}_g(q)
+                    \eq{g(f(x))\eq{C}g(b)}
+                    p}\\
+            &\simeq
+                \sum_{x\colon A}\;
+                \sum_{q\colon f(x)\eq{B}b}
+                    \fun1\\
+            &\simeq\sum_{x\colon A}f(x)\eq{B}b\\
+            &\equiv\fun{fib}_f(b).
+        \end{align*}
+
+        \textbf{Note.} The sequence
+        \[
+            \fun{fib}_f(b)\to\fun{fib}_{g\circ f}(g(b))\xrightarrow{\phi}\fun{fib}_g(g(b))
+        \]
+        shows that $\fun{fib}_f(b)$ behaves as the ``kernel'' of $\phi$. It is what in algebraic topology is called a \textsl{fiber sequence}, the geometric analogue of an algebraic exact sequence.
+
+
+        \item Given $c\colon C$, we have
+        \begin{align*}
+            \sum_{w\colon\fun{fib}_g(c)}
+                \fun{fib}_f(\pi_1(w))
+                &\simeq
+                    \sum_{y\colon B}\;
+                    \sum_{q\colon g(y)\eq{C}c}\;
+                    \sum_{x\colon A}f(x)\eq{B}y\\
+                &\simeq
+                    \sum_{x\colon A}\;
+                    \sum_{y\colon B}\;
+                    \sum_{q\colon g(y)\eq{C}c}
+                    f(x)\eq{B}y\\
+                &\simeq
+                    \sum_{x\colon A}\;
+                    \sum_{y\colon B}\;
+                    (f(x)\eq{B}y)\times(g(y)\eq{C}c).
+        \end{align*}
+        Since
+        \[
+            \sum_{y\colon B}f(x)\eq{B}y
+        \]
+        is contractible with center $\dep{f(x),\fun{refl}_{f(x)}}$ by Lemma~\ref{lem:Sigma-identity-is-contractible}, we can apply Lemma~\ref{lem:contractible-sigma-product} and replace the inner $\Sigma$-type with
+        \[
+            g(f(x))\eq{C}c,
+        \]
+        which yields $\fun{fib}_{g\circ f}(c)$, as desired.
+
+        \textbf{Note.} The equivalence
+        \[
+            \fun{fib}_{g\circ f}(c)\simeq\sum_{w\colon\fun{fib}_g(c)}\fun{fib}_f(\pi_1(w))
+        \]
+        geometrically describes how the fibers of $g\circ f$ can be recovered from the fibers of~$f$ and~$g$.
+
+    \end{enumerate}
+\end{solution}
+
+\begin{exr}
+    Prove that equivalences satisfy the $2$-out-of-$6$ property: given\/ $f\colon A\to B$ and\/ $g\colon B\to C$ and\/ $h\colon C\to D$, if\/ $g\circ f$ and\/ $h\circ g$ are equivalences, so are\/ $f$, $g$, $h$, and\/ $h\circ g\circ f$. Use this to give a higher-level proof of\/ {\upshape Theorem~\ref{thm:f-equiv-implies-apf-equiv}}.
+\end{exr}
+
+\begin{solution}\ 
+
+    \textsc{First part.}
+    Suppose that $\dep{u,(\eta,\vartheta)}$ is a quasi-inverse of $g\circ f$ and $\dep{v,(\rho,\theta)}$ is a quasi-inverse of $h\circ g$. Then
+    \begin{align*}
+        \eta\colon g\circ f\circ u\sim\id_C
+        \quad\text{and}\quad
+        \theta\colon v\circ h\circ g\sim\id_A,
+    \end{align*}
+    which show that
+    \[
+        (\dep{f\circ u,\eta},\dep{v\circ h,\theta})
+        \colon\fun{isequiv}(g).
+    \]
+    Hence, $g$ has a quasi-inverse $g^{-1}$, and so $f\sim g^{-1}\circ(g\circ f)$ and $h\sim(h\circ g)\circ g^{-1}$ have quasi-inverses as well.
+
+    \medskip
+
+    \textsc{Second part.} We give two proofs. The first one following the approach suggested by the exercise. The second, derived from the previous exercise. In both cases we suppose that\/ $\dep{g,(\eta,\vartheta)}$ is a quasi-inverse of\/ $f$.
+
+    \textit{First proof.}
+    Given $x,y\colon A$ and $p\colon x\eq{A}y$, the naturality of $\vartheta\colon g\circ f\sim\id_A$ yields
+    \[
+        \vartheta_x\ct p\eq{}\fun{ap}_{g\circ f}(p)\ct\vartheta_y.
+    \]
+    By right-multiplying by $\vartheta_y^{-1}$, we obtain
+    \begin{align*}
+        \fun{ap}_g(\fun{ap}_f(p))
+            &\eq{}\fun{ap}_{g\circ f}(p)\\
+            &\eq{}\vartheta_x\ct p\ct\vartheta_y^{-1}.
+    \end{align*}
+    Thus, the function $\fun{ap}_g\circ\fun{ap}_f$ is given by pre- and post-composition with fixed paths, which is an equivalence with quasi-inverse
+    \[
+        q\mapsto\vartheta_x^{-1}\ct q\ct\vartheta_y.
+    \]
+    By a symmetric argument using the right homotopy $\eta\colon f\circ g\sim\id_B$, the composition $\fun{ap}_f\circ\fun{ap}_g$ is also an equivalence.
+
+    The conclusion follows by applying the $2$-out-of-$6$ property to the following sequence of maps:
+    \[
+    \begin{tikzcd}
+        f(x)\eq{B}f(y)
+                \arrow[r,"\fun{ap}_g"]
+            &g(f(x))\eq{A}g(f(y))
+                \arrow[d,"\fun{ap}_f"]\\
+        x\eq{A}y
+                \arrow[u,"\fun{ap}_f"]
+            &f(g(f(x))\eq{B}f(g(f(y)))).
+    \end{tikzcd}
+    \]
+
+    \textit{Second proof.}
+    As established in part~a) of the previous exercise, we have
+    \begin{align*}
+        \fun{fib}_\phi(\dep{b,\fun{refl}_{g(b)}})
+        &\simeq
+            \sum_{x\colon A}\;
+            \sum_{p\colon g(f(x))\eq{A}g(b)}\;
+            \sum_{q\colon f(x)\eq{B}b}
+                p
+                \eq{g(f(x))\eq{A}g(b)}
+                \fun{ap}_g(q).
+    \end{align*}
+    By path inversion, the innermost\/ $\Sigma$-type is equivalent to the fiber\/ $\fun{fib}_{\fun{ap}_g}(p)$. Hence, we obtain
+    \begin{align*}
+        \fun{fib}_\phi(\dep{b,\fun{refl}_{g(b)}})
+            &\simeq
+                \sum_{x\colon A}\;
+                \sum_{p\colon g(f(x))\eq{A}g(b)}
+                    \fun{fib}_{\fun{ap}_g}(p)\\
+            &\simeq
+                \sum_{w\colon\fun{fib}_{g\circ f}(g(b))}
+                    \fun{fib}_{\fun{ap}_g}(\pi_2(w))
+                &&\text{; $\Sigma$-assoc.}
+    \end{align*}
+    As $f$ is an equivalence, $\fun{fib}_f(b)$ is contractible. Since $\fun{fib}_\phi(\dep{b,\fun{refl}_{g(b)}})\simeq\fun{fib}_f(b)$, it follows that the $\Sigma$-type above is also contractible. Because $g\circ f$ is an equivalence, the base space $\fun{fib}_{g\circ f}(g(b))$ is contractible as well. Hence, the projection
+    \[
+        \pi_1\colon
+            \Bigl(
+            \sum_{w\colon\fun{fib}_{g\circ f}(g(b))}
+                \fun{fib}_{\fun{ap}_g}(\pi_2(w))
+            \Bigr)
+            \to
+            \fun{fib}_{g\circ f}(g(b))
+    \]
+    is a map between contractible spaces, which implies it is an equivalence. Consequently, it has contractible fibers. By Proposition~\ref{prop:pi_1-fibers}, the fiber over $w$ is equivalent to $\fun{fib}_{\fun{ap}_g}(\pi_2(w))$. 
+
+    Let $w\defeq\dep{x,p}$. Then the fiber $\fun{fib}_{\fun{ap}_g}(p)$ is contractible for all $x\colon A$ and $p\colon g(f(x))\eq{A}g(b)$. 
+    
+    To show that this holds for an arbitrary $y\colon B$ and $q\colon g(y)\eq{A}g(b)$, consider $x\defeq g(y)$. Then, $\eta(y)\colon f(x)\eq{B}y$. We can define the property of having contractible fibers as a type family over $B$:
+    \[
+        P(z)\defeq\prod_{p\colon g(z)\eq{A}g(b)}\fun{isContr}(\fun{fib}_{\fun{ap}_g}(p)).
+    \]
+    Since we established that $P(f(x))$ is inhabited, we can transport this witness along the path $\eta(y)$ to obtain a witness for $P(y)$. Because $y$ was arbitrarily chosen, the fibers of $\fun{ap}_g$ are contractible everywhere. Hence, $\fun{ap}_g$ is an equivalence. By symmetry, $\fun{ap}_f$ is also an equivalence.    
+    %
+    
+\end{solution}
+
+\begin{exr}
+    For\/ $A,B\colon\univ$, define
+    \[
+        \fun{idtoqinv}_{A,B}\colon(A\eq\univ B)
+            \to
+            \sum_{f\colon A\to B}\fun{qinv}(f)
+    \]
+    by path induction in the obvious way. Let \textsl{$\fun{qinv}$-univalence} denote the modified form of the univalence axiom which asserts that for all\/ $A,B\colon\univ$ the function\/ $\fun{idtoqinv}_{A,B}$ has a quasi-inverse.
+    \begin{enumerate}[a),font=\upshape]
+        \item Show that $\fun{qinv}$-univalence can be used instead of univalence in the proof of function extensionality in\/ {\upshape\S\,\ref{UA-implies-FE}}.
+        
+        \item Show that $\fun{qinv}$-univalence can be used instead of univalence in the proof of\/ {\upshape Theorem~\ref{thm:qinv-is-not-mere-proposition}}.
+        
+        \item Show that $\fun{qinv}$-univalence is inconsistent (i.e.\ allows construction of an inhabitant of\/ $\fun0$).
+
+        {\upshape Hint: Consider the fiber $\fun{fib}_{\fun{idtoqinv}_{A,A}}(\dep{\id_A,(\fun{refl},\fun{refl})})$.}
+    \end{enumerate}
+    Thus, the use of a ``good'' version of\/ $\fun{isequiv}$ is essential in the statement of univalence.
+\end{exr}
+
+\begin{solution}
+    Let us begin by observing that $\fun{idtoqinv}$ is defined by path induction because, in the case $B\equiv A$ and $p\equiv\fun{refl}_A$, the identity map $\id_A\colon A\to A$ has the quasi-inverse $\dep{\id_A,(\fun{refl},\fun{refl})}$.
+
+    \begin{enumerate}[a)]
+        \item We need to analyze the following results:
+        \begin{itemize}
+            \item Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence}. To derive this lemma from $\fun{qinv}$-univalence, it suffices to show that $e\colon A\simeq B$ implies $A\eq\univ B$, because the rest of the proof proceeds exactly as it does with standard univalence. From $e$, we can extract its underlying function $f\colon A\to B$ along with a quasi-inverse $\dep{g,(\eta,\vartheta)}\colon\fun{qinv}(f)$. This gives us the pair
+            \[
+                \dep{f,\dep{g,(\eta,\vartheta)}}
+                \colon\sum_{f\colon A\to B}\fun{qinv}(f).
+            \]
+            Applying the inverse of $\fun{idtoqinv}_{A,B}$ to this pair produces the desired path $A\eq\univ B$.
+            
+            \item Proposition~\ref{prop:projection-equivalence}. This proposition holds under $\fun{qinv}$-univalence because it relies on univalence exclusively through Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence}.
+            
+            \item Theorem~\ref{thm:univalence-implies-weak-funext}. The proof of this theorem invokes univalence only via Proposition~\ref{prop:projection-equivalence}.
+            
+            \item Theorem~\ref{thm:weak-funext-implies-funext}. The proof of this theorem does not rely on univalence at all.
+        \end{itemize}
+
+        \item We need to show that condition~a) of Lemma~\ref{lem:total-space-with-mere-proposition-fibers} follows from $\fun{qinv}$-univalence, i.e., that $\fun2\eq\univ\fun2$ is a set, provided $\fun{qinv}$-univalence.
+
+        Hence, it suffices to prove that the type
+        \[
+            \sum_{f\colon\fun2\to\fun2}\fun{qinv}(f)
+        \]
+        is a set.
+        
+        Since $\fun2$ is a set by Theorem~\ref{thm:boolean-type-is-set}, the function type $\fun2\to\fun2$ is a set by part~f) of Theorem~\ref{thm:sets}. Note that we can use this part of the theorem because it relies on function extensionality, which we derived from $\fun{qinv}$-univalence in the previous part of this exercise that it follows from $\fun{qinv}$-univalence.
+        
+        In addition, $\fun{qinv}(f)$ is a set by Proposition~\ref{prop:qinv-is-a-set}, because that proposition is based on part~a) of Theorem~\ref{thm:mere-propositions}, which also requires function extensionality. Therefore, the result follows from part~e) of Theorem~\ref{thm:sets}.
+            
+        \item Consider the propositionally commutative triangle
+        \[
+            \begin{tikzcd}[row sep=large]
+                A\eq\univ B
+                        \arrow[r,"{\fun{idtoqinv}_{A,B}}"]
+                        \arrow[rd,"\fun{idtoeqv}_{A,B}"']
+                    &[4em]\sum_{f\colon A\to B}\fun{qinv}(f)
+                        \arrow[d,"\phi"]
+                    &[-2.5em]\scriptstyle\dep{f,\dep{g,(\eta,\vartheta)}}
+                        \arrow[d,mapsto]\\
+                    &\sum_{f\colon A\to B}\fun{isequiv}(f)
+                    &\scriptstyle\dep{f,(\dep{g,\eta},\dep{g,\vartheta})}
+            \end{tikzcd}
+        \]
+        
+        
+        As suggested, let $e\defeq\dep{\id_A,(\fun{refl},\fun{refl})}$, and consider
+        \[
+            \fun{fib}_{\fun{idtoqinv}_{A,A}}(e)
+                \equiv \sum_{p\colon A\eq{\univ}A}
+                    \fun{idtoqinv}_{A,A}(p)\eq{\Sigma_{A\to A}\fun{qinv}}e.
+        \]
+        By Theorem~\ref{thm:equivalence-fibers-are-contractible}, this type is contractible, with center of contraction $\dep{\fun{refl}_A,\fun{refl}_e}$. Let $\dep{p,\epsilon}$ be an arbitrary point in the fiber. Then,
+        \[
+            p\colon A\eq{\univ}A
+            \quad\text{and}\quad
+            \epsilon\colon\fun{idtoqinv}_{A,A}(p)\eq{}e,
+        \]
+        and we have a path
+        \[
+            \dep{p,\epsilon}
+            \eq{\fun{fib}_{\fun{idtoqinv}_{A,A}}(e)}
+            \dep{\fun{refl}_A,\fun{refl}_e}.
+        \]
+        Consequently, there exists a path $\alpha\colon p\eq{}\fun{refl}_A$ such that
+        \[
+            \fun{transport}^P(\alpha,\epsilon) \eq{} \fun{refl}_e,
+        \]
+        where the type family $P\colon(A\eq{\univ}A)\to\univ$ is defined by
+        \[
+            P(q)\defeq\fun{idtoqinv}_{A,A}(q) \eq{\Sigma_{A\to A}\fun{qinv}} e.
+        \]
+        Let $Q\colon\Sigma_{A\to A}\fun{qinv}\to\univ$ be defined as
+        \[
+            Q(\zeta)\defeq\zeta\eq{\Sigma_{A\to A}\fun{qinv}}e.
+        \]
+        Then $P\equiv Q\circ\fun{idtoqinv}_{A,A}$, and by Lemma~\ref{lem:post-composition-transport} and Proposition~\ref{prop:transport-decomposition-for-paths}, we have
+        \[
+            \fun{transport}^P(\alpha,\epsilon)
+            \eq{} \fun{transport}^Q(\fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha),\epsilon)
+            \eq{} \fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha)^{-1}\ct\epsilon.
+        \]
+        Hence, since the transported path equals $\fun{refl}_e$, we conclude that
+        \[
+            \epsilon\eq{}\fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha).
+        \]
+        It follows that given any $p\colon A\eq\univ A$, there is a path $\alpha\colon p\eq{}\fun{refl}_e$, such that the dependent pair $\dep{p,\fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha)}$ is a term in the fiber of $\fun{idtoqinv}_{A,A}$ at $e$.
+    \end{enumerate}
+
+\end{solution}
+    %
+

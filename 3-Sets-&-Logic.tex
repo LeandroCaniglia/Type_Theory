@@ -12,7 +12,7 @@
 \end{defn}
 
 
-\begin{thm}\label{thm:sets}
+\begin{thm}\fe\label{thm:sets}
     The following closure properties of sets hold:
     \begin{enumerate}[a),font=\upshape]
         \item The empty product\/ $\fun1$ is a set.
@@ -20,7 +20,7 @@
         \item The type\/ $\N$ of natural numbers is a set.
         \item If\/ $A$ and\/ $B$ are sets, then\/ $A\times B$ is a set.
         \item If\/ $A\colon\univ$ is a set and\/ $P\colon A\to\univ$ is a type family such that\/ $P(a)$ is a set for all\/ $a\colon A$, then\/ $\Sigma_AP$ is a set.
-        \item If\/ $A$ is any type and\/ $B\colon A\to\univ$ is a type family such that each\/ $B(x)$ is a set, then\/ $\prod_{x\colon A}B(x)$ is a set.
+        \item If\/ $A$ is any type and\/ $B\colon A\to\univ$ is a type family such that each\/ $B(x)$ is a set, then\/ $\prod_{x\colon A}B(x)$ is a set.\footnote{Function extensionality is used here.}
     \end{enumerate}
 \end{thm}
 
@@ -269,7 +269,7 @@
     
 \end{proof}
 
-\begin{xmpl}
+\begin{xmpl}\label{xmpl:univ-isnt-a-set}
     The universe is not a set.
     
     To see this, consider the Boolean type $\fun2$. As shown in Exercise~\ref{exr:2-simeq-2-simeq-2}, we have an equivalence $(\fun2\simeq\fun2)\simeq\fun2$. Since the lemma in that exercise shows that $0_{\fun2}\ne1_{\fun2}$, we deduce that there are two distinct equivalences from $\fun2$ to $\fun2$ (namely, the identity and the swap function). By the univalence axiom, these two equivalences correspond to two distinct paths in the identity type $\fun2\eq{\univ}\fun2$, contradicting the definition of a set.
@@ -303,7 +303,7 @@
 \end{proof}
 
 
-\begin{thm}
+\begin{thm}\fe
     It is not the case that for all\/ $A\colon\univ$ we have\/ $\neg\neg A\to A$.
 \end{thm}
 
@@ -537,7 +537,7 @@
     \end{enumerate}
 \end{proof}
 
-\begin{prop}\label{prop:isSet-and-isProp-are-mere-propositions}
+\begin{prop}\fe\label{prop:isSet-and-isProp-are-mere-propositions}
     For any type\/ $A$, the types\/ $\fun{isProp}(A)$ and\/ $\fun{isSet}(A)$ are mere propositions.
 \end{prop}
 
@@ -765,10 +765,10 @@
 \end{ntn}
 
 \needspace{3\baselineskip}
-\begin{thm}\label{thm:mere-propositions}
-    Mere propositions are closed under the following constructions:
+\begin{thm}\fe\label{thm:mere-propositions}
+    Mere propositions are closed under the following constructions:\footnote{Function extensionality is used in parts a) and b).}
     \begin{enumerate}[a),font=\upshape]
-        \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of mere propositions\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is a mere proposition. 
+        \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of mere propositions\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is a mere proposition.
         
         \item \textsc{\upshape Functions \& Negation:} If\/ $Q$ is a mere proposition, the type\/ $A\to Q$ is a mere proposition for any arbitrary type\/ $A$. In particular, the negation\/ $\neg A$ is always a mere proposition.
         
@@ -930,7 +930,7 @@
     The proof effectively \textit{integrated} over the cross-quadrants $P\times Q$ and $Q\times P$ using $\zeta$ and $\zeta^{-1}$, and over the squares $P\times P$ and $Q\times Q$ using the internal mere proposition witnesses $\epsilon$ and $\delta$.
 \end{rem}
 
-\begin{cor}
+\begin{cor}\fe
     Let\/ $f,g\colon A\to P$ be two functions. If\/ $P$ is a mere proposition, then\/ $f\sim g$ is a mere proposition as well.
 \end{cor}
 
@@ -942,10 +942,8 @@
     By Remark~\ref{rem:ids-in-mere-propositions-are-singletons}, we deduce that $\eta(x)\eq{f(x)\eq Pg(x)}\vartheta(x)$ for all\/ $x\colon A$. Then, function extensionality yields $\eta\eq{f\sim g}\vartheta$. The conclusion follows.
 \end{proof}
 
-\begin{cor}\label{cor:isequiv(f)-is-set}
-    Let\/ $A$ and\/ $B$ be sets, and let\/ $f\colon A\to B$ be a function. Then the type\/ $\fun{isequiv}(f)$ is a set.
-
-    Moreover, if\/ $A$ and\/ $B$ are mere propositions, then $\fun{isequiv}(f)$ is a mere proposition.
+\begin{cor}\fe\label{cor:isequiv(f)-is-set}
+    Let\/ $A$ and\/ $B$ be sets, and let\/ $f\colon A\to B$ be a function. Then the type\/ $\fun{isequiv}(f)$ is a set. If\/ $A$ and\/ $B$ are mere propositions, then $\fun{isequiv}(f)$ is a mere proposition.
 \end{cor}
 
 \begin{proof}
@@ -988,6 +986,32 @@
     The first requirement is covered by part~f) of said theorem. The second by Corollary~\ref{cor:isequiv(f)-is-set}.
 \end{proof}
 
+\begin{prop}\label{prop:qinv-is-a-set}
+    Let\/ $A$ and\/ $B$ be sets, and let\/ $f\colon A\to B$ be a function. Then the type\/ $\fun{qinv}(f)$ is a set.
+\end{prop}
+
+\begin{proof}
+    By definition,
+    \[
+        \fun{qinv}(f) \equiv \sum_{g\colon B\to A} (f\circ g \sim \id_B) \times (g\circ f \sim \id_A).
+    \]
+    By part e) of Theorem~\ref{thm:sets}, to show that $\fun{qinv}(f)$ is a set, it suffices to show that the base type $B\to A$ is a set, and that for each $g\colon B\to A$, the fiber $(f\circ g \sim \id_B) \times (g\circ f \sim \id_A)$ is a set.
+
+    The former type is a set by part f) of the same theorem .
+    
+    For the latter type, since the Cartesian product of sets is a set (same theorem part d), we need to show that both factors are set. Consider the first one:
+    \[
+        f\circ g\sim\id_B
+            \equiv\prod_{y\colon B}f(g(y))\eq By.
+    \]
+    Because $B$ is a set, given $y\colon B$, the identity type $f(g(y)) \eq{B} y$ is a mere proposition by Remark~\ref{rem:ids-in-a-set-are-mere-propositions}. By part a) of Theorem~\ref{thm:mere-propositions}, a dependent product of mere propositions is a mere proposition, hence, a set. Thus, $f\circ g \sim \id_B$ is a set.
+
+    By symmetry, the second factor
+    \[
+        g\circ f \sim \id_A
+    \]
+    is a set as well.
+\end{proof}
 
 
 \section{Propositional Truncation}\label{propositional-truncation}
@@ -1022,11 +1046,11 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 \begin{lem}\label{lem:truncation-functor}
     Truncation is a functorial operation. That is,
     \begin{enumerate}[a),font=\upshape]
-        \item Every map\/ $f\colon A\to B$ produces a map\/ $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$.
-        \item For any type\/ $A$, we have\/ $\lVert\id_A\rVert\sim\id_{\lVert A\rVert}$.
-        \item For any\/ $f\colon A\to B$ and\/ $g\colon B\to C$, we have\/ $\lVert g\circ f\rVert\sim\lVert g\rVert\circ\lVert f\rVert$.
+        \item Every map $f\colon A\to B$ produces a map $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$.
+        \item For any type $A$, we have $\lVert\id_A\rVert\sim\id_{\lVert A\rVert}$.
+        \item For any $f\colon A\to B$ and $g\colon B\to C$, we have $\lVert g\circ f\rVert\sim\lVert g\rVert\circ\lVert f\rVert$.
     \end{enumerate}
-    Consequently, if\/ $A\simeq B$, then\/ $\lVert A\rVert\simeq\lVert B\rVert$.
+    Consequently, if $A\simeq B$, then $\lVert A\rVert\simeq\lVert B\rVert$.
 \end{lem}
 
 \begin{proof}
@@ -1035,9 +1059,12 @@ In the case of non-dependent mere proposition families, we have the recursion pr
         \lVert f\rVert\defeq\fun{rec}_{\lVert A\rVert}(\lVert B\rVert,a\mapsto\lvert f(a)\rvert).
     \]
     
-    To prove the identity and composition laws, observe that in both cases the codomains $\lVert A\rVert$ and $\lVert C\rVert$ are mere propositions. By Theorem~\ref{thm:mere-propositions}~b), the function spaces $\lVert A\rVert\to\lVert A\rVert$ and $\lVert A\rVert\to\lVert C\rVert$ are also mere propositions. Because any two inhabitants of a mere proposition are equal, the homotopies $\lVert\id_A\rVert\sim\id_{\lVert A\rVert}$ and $\lVert g\circ f\rVert\sim\lVert g\rVert\circ\lVert f\rVert$ are trivially inhabited.
+    For b), let $x\colon\lVert A\rVert$. We must show that $\lVert\id_A\rVert(x)\eq{\lVert A\rVert}x$. By part~d) of Theorem~\ref{thm:mere-propositions} applied to the constant family $P(x)\defeq A$, the identity type of a mere proposition is itself a mere proposition. Therefore, we can proceed by induction on $x$. It suffices to consider the case $x\equiv\lvert a\rvert$ for some $a\colon A$. In this case, $\lVert\id_A\rVert(\lvert a\rvert)$ reduces definitionally to $\lvert\id_A(a)\rvert\equiv\lvert a\rvert$, so the equality holds by reflexivity.
 
-    Finally, suppose $f\colon A\to B$ is an equivalence with quasi-inverse $f^{-1}\colon B\to A$. Functoriality gives us maps $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$ and $\lVert f^{-1}\rVert\colon\lVert B\rVert\to\lVert A\rVert$. Since the target spaces are mere propositions, the compositions $\lVert f^{-1}\rVert\circ\lVert f\rVert$ and $\lVert f\rVert\circ\lVert f^{-1}\rVert$ are homotopic to $\id_{\lVert A\rVert}$ and $\id_{\lVert B\rVert}$, respectively. Thus, $\lVert f\rVert$ is an equivalence.
+    For c), by induction on $x\colon\lVert A\rVert$, we only need to check the base case $x\equiv\lvert a\rvert$. Since both $\lVert g\circ f\rVert(\lvert a\rvert)$ and $\lVert g\rVert(\lVert f\rVert(\lvert a\rvert))$ compute definitionally to $\lvert g(f(a))\rvert$, the required path is simply reflexivity.
+
+    Finally, suppose that $f\colon A\to B$ induces an equivalence and let $f^{-1}\colon B\to A$ be a quasi-inverse. By a), we obtain $\lVert f\rVert\colon\lVert A\rVert\to\lVert B\rVert$ and $\lVert f^{-1}\rVert\colon\lVert B\rVert\to\lVert A\rVert$. Since the target spaces are mere propositions, invoking Theorem~\ref{thm:mere-propositions} as before, we deduce that both compositions $\lVert f^{-1}\rVert\circ\lVert f\rVert$ and $\lVert f\rVert\circ\lVert f^{-1}\rVert$ are trivially homotopic to $\id_{\lVert A\rVert}$ and $\id_{\lVert B\rVert}$, respectively. Thus, $\lVert f\rVert$ is an equivalence.
+    %
     
 \end{proof}
 
@@ -1147,7 +1174,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $p(x)$ follows.
 \end{proof}
 
-\begin{thm}\label{thm:isContr-is-a-mere-proposition}
+\begin{thm}\fe\label{thm:isContr-is-a-mere-proposition}
     For any type\/ $A$, the type\/ $\fun{isContr}(A)$ is a mere proposition.
 \end{thm}
 
@@ -1188,7 +1215,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     Since $c$ witnesses that $A$ is contractible, $A$ is a mere proposition. By Remark~\ref{rem:ids-in-mere-propositions-are-singletons}, $b\eq{A}x$ is a mere proposition. Since both $p(b)^{-1}\ct p(x)$ and $q(x)$ are elements of $b\eq{A}x$, they are necessarily equal. This completes the proof.
 \end{proof}
 
-\begin{cor}
+\begin{cor}\label{cor:A-contractible-implies-isContr(A)-contractible}
     If\/ $A$ is contractible, $\fun{isContr}(A)$ is also contractible.
 \end{cor}
 
@@ -1209,8 +1236,8 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     In particular, given $x\colon A$, the term $c_x\defeq\pi_1(h(x))$ is a center of contraction for $P(x)$. In other words, picking the center of contraction for every contractible fiber of $P$ is a constructive, choice-free operation.
 \end{rem}
 
-\begin{thm}\label{thm:contractible-types}
-    Contractible types are closed under the following type-theoretic constructions:
+\begin{thm}\fe\label{thm:contractible-types}
+    Contractible types are closed under the following type-theoretic constructions:\footnote{Function extensionality is needed in parts a), b), f), and g).}
     \begin{enumerate}[a),font=\upshape]
         \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of contractible types\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is contractible. 
         
@@ -1276,8 +1303,8 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     because every contractible type is a mere proposition, and every mere proposition is a set.
 \end{rem}
 
-\begin{thm}\label{thm:contractible-data-ignored}
-    The principle that contractible data can be freely ignored up to equivalence manifests in the following equivalences. Let\/ $A$ and\/ $B$ be types, and let\/ $P\colon A\to\univ$ be a type family.
+\begin{thm}\fe\label{thm:contractible-data-ignored}
+    The principle that contractible data can be freely ignored up to equivalence manifests in the following equivalences. Let\/ $A$ and\/ $B$ be types, and let\/ $P\colon A\to\univ$ be a type family.\footnote{Function extensionality is needed in parts c), d), f), and g).}
     \begin{enumerate}[a), font=\upshape]
         \item \textsc{\upshape Dependent Pairs (Right):} If for every\/ $x\colon A$, the type\/ $P(x)$ is contractible, then\/ $\sum_{x\colon A}P(x)\simeq A$.
         
@@ -1427,7 +1454,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
             
         \item The function $f$ is \textsl{contractible} if, for every $y\colon B$, the fiber $\fun{fib}_f(y)$ of $f$ over $y$ is contractible. In other words, the type
         \begin{equation}\label{eq:isContr-map}
-            \fun{isContr}(f)
+            \fun{isContrMap}(f)
                 \defeq\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y))
         \end{equation}
         is inhabited.
@@ -1435,7 +1462,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 \end{defns}
 
 \begin{lem}
-    For any function\/ $f\colon A\to B$, the type\/ $\fun{isContr}(f)$ is a mere proposition.
+    For any function\/ $f\colon A\to B$, the type\/ $\fun{isContrMap}(f)$ is a mere proposition.
 \end{lem}
 
 \begin{proof}
@@ -1478,7 +1505,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \end{equation}
 \end{defn}
 
-\begin{lem}\label{lem:traditional-tac}
+\begin{lem}\fe\label{lem:traditional-tac}
     The axiom of choice is equivalent to the statement that for any set\/ $X$ and any family of sets\/ $C\colon X\to\fun{Set}_\univ$, the function type
     \begin{equation}\label{eq:traditional-tac}
         \Bigl(\prod_{x\colon X}\lVert C(x)\rVert\Bigr)
@@ -1516,7 +1543,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             \equiv(X\to\fun1)
             \simeq\fun1,
     \]
-    where the equivalence follows from Lemma~\ref{lem:mere-prop-and-1} because $X\to\fun1$ is inhabited by $x\mapsto\fun\star$.
+    where the equivalence follows from part b) of Theorem~\ref{thm:mere-propositions} and Lemma~\ref{lem:mere-prop-and-1} because $X\to\fun1$ is inhabited by $x\mapsto\fun\star$.
     
     Consequently, the total space inside the truncation on the \rhs of \eqref{eq:tac} reduces to
     \[
@@ -1533,7 +1560,6 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         \Bigr).
     \]
     Because equivalences are preserved under truncation [cf.~Lemma~\ref{lem:truncation-functor}], the map provided by \eqref{eq:tac} constructs an inhabitant of \eqref{eq:traditional-tac}.
-    
 \end{proof}
 
 
@@ -1632,7 +1658,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
 \section{Exercises}
 
-\begin{exr}\label{exr:equivalent-to-set-is-set}
+\begin{exr}\fe\label{exr:equivalent-to-set-is-set}
     Prove that if\/ $A\simeq B$ and\/ $A$ is a set, then so is\/ $B$.
 \end{exr}
 
@@ -1683,13 +1709,19 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         \sigma\colon\prod_{u,v\colon A+B}\;\prod_{p,q\colon u\eq{A+B}v}
             p\eq{u\eq{A+B}v}q.
     \]
-    Let $\sigma_A\colon\fun{isSet}(A)$ and $\sigma_B\colon\fun{isSet}(B)$. By double induction on $u$ and $v$, we have
+    Let $\sigma_A\colon\fun{isSet}(A)$ and $\sigma_B\colon\fun{isSet}(B)$. By double induction on $u$ and $v$, we first consider the case where both are in the left component. With the homotopy
+    \[
+        \eta(p)\colon\fun{decode}(\fun{encode}(p))\eq{u\eq{A+B}v}p
+    \]
+    established by path induction, we define
     \[
         \sigma(\fun{inl}(x),\fun{inl}(y))(p,q)\defeq
+            \eta(p)^{-1}\ct
             \fun{ap}_{\fun{decode}}
-                \bigl(
-                    \sigma_A(x,y)(\fun{encode}(p),\fun{encode}(q))
-                \bigr),
+            \bigl(
+                \sigma_A(x,y)(\fun{encode}(p),\fun{encode}(q))
+            \bigr)
+            \ct\eta(q),
     \]
     where $\fun{encode}$ and $\fun{decode}$ are the functions defined in \nref{equality-in-coproducts}. This is well-defined because, in this case,
     \[
@@ -1706,10 +1738,12 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     A similar construction yields
     \[
         \sigma(\fun{inr}(x),\fun{inr}(y))(p,q)\defeq
+            \eta(p)^{-1}\ct
             \fun{ap}_{\fun{decode}}
-                \bigl(
-                    \sigma_B(x,y)(\fun{encode}(p),\fun{encode}(q))
-                \bigr).
+            \bigl(
+                \sigma_B(x,y)(\fun{encode}(p),\fun{encode}(q))
+            \bigr)
+            \ct\eta(q).
     \]
     In the cases $u\equiv\fun{inl}(x)$ and $v\equiv\fun{inr}(y)$, or $u\equiv\fun{inr}(x)$ and $v\equiv\fun{inl}(y)$, considering that $\fun{encode}(p),\fun{encode}(q)\colon\fun0$, we simply define
     \[
@@ -1718,11 +1752,11 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
 \end{solution}
 
-\begin{exr}
+\begin{exr}\fe
     Show that\/ $A$ is a mere proposition if, and only if, $A\to A$ is contractible.
 \end{exr}
 
-\begin{proof}
+\begin{solution}
     Suppose that $A$ is a mere proposition. By part b) of Theorem~\ref{thm:mere-propositions}, the type $A\to A$ is also a mere proposition. Since $\id_A\colon A\to A$, it is inhabited. Therefore, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
 
     Conversely, assume that $A\to A$ is contractible. Define
@@ -1743,9 +1777,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         \fun{ap}_{\fun{ev}_a}(h(a,\iota(x)))\colon a\eq Ax.
     \]
-\end{proof}
+\end{solution}
 
-\begin{exr}
+\begin{exr}\fe
     Show that\/ $\fun{isProp}(A)\simeq(A\to\fun{isContr}(A))$.
 \end{exr}
 
@@ -1775,16 +1809,18 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     The result follows from Lemma~\ref{lem:mere-proposition-equivalence}.
 \end{solution}
 
-\begin{exr}\label{exr:A+negA-is-mere-proposition}
-    Show that if\/ $A$ is a mere proposition, then so is\/ $A+\neg A$. In particular, in the context of\/ {\upshape Notation~\ref{ntn:logic}}, there is no need to apply propositional truncation to define $A\lor\neg A\defeq A+\neg A$.
+\begin{exr}\fe\label{exr:A+negA-is-mere-proposition}
+    Show that if\/ $A$ is a mere proposition, then so is\/ $A+\neg A$. In particular, in the context of\/ {\upshape Notation~\ref{ntn:logic}}, there is no need to apply propositional truncation to define\/ $A\lor\neg A\defeq A+\neg A$.
 \end{exr}
 
 \begin{solution}
-    By part~e) of Theorem~\ref{thm:mere-propositions}, it suffices to show that there is a map
+    To apply part~e) of Theorem~\ref{thm:mere-propositions}, we must first ensure that both components of the coproduct are mere propositions. We are given that\/ $A$ is a mere proposition. The second component is\/ $\neg A\equiv A\to\fun0$. To see that this is a mere proposition, let\/ $f,g\colon A\to\fun0$. For any\/ $x\colon A$, the terms\/ $f(x)$ and\/ $g(x)$ belong to\/ $\fun0$. Since\/ $\fun0$ is a mere proposition, we have a pointwise equality\/ $f(x)\eq{\fun0}g(x)$. By function extensionality, this pointwise equality yields a path\/ $f\eq{A\to\fun0}g$. Thus,\/ $\neg A$ is a mere proposition.
+
+    Since both\/ $A$ and\/ $\neg A$ are mere propositions, it suffices to show that they are mutually exclusive. That is, we must provide a map
     \[
         A\to((A\to\fun0)\to\fun0).
     \]
-    Given $a\colon A$ and $f\colon A\to\fun0$, we define such a map by
+    Given\/ $a\colon A$ and\/ $f\colon A\to\fun0$, we define such a map by
     \[
         \fun{ev}(a)(f)\defeq f(a).
     \]
@@ -1795,13 +1831,11 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{exr}
 
 \begin{solution}
-    The condition on $\fun{isequiv}(f)$ means that it is a mere proposition. By Lemma~\ref{lem:mere-propositions-are-truncated}, $\fun{isequiv}(f)\eq\univ\lVert\fun{isequiv}(f)\rVert$. Thus, the map $\fun{qinv}(f)\to\fun{isequiv}(f)$ from Proposition~\ref{prop:qinv<->isequiv} induces a map $\lVert\fun{qinv}(f)\rVert\to\fun{isequiv}(f)$.
+    The condition on\/ $\fun{isequiv}(f)$ means that it is a mere proposition. By the universal property of propositional truncation, since\/ $\fun{isequiv}(f)$ is a mere proposition, the map\/ $\fun{qinv}(f)\to\fun{isequiv}(f)$ from Proposition~\ref{prop:qinv<->isequiv} induces a map\/ $\lVert\fun{qinv}(f)\rVert\to\fun{isequiv}(f)$.
     
-    On the other hand, the map $\fun{isequiv}(f)\to\fun{qinv}(f)$ from the same proposition, followed by $\fun{qinv}(f)\to\lVert\fun{qinv}(f)\rVert$, $e\mapsto\lvert e\rvert$, is a function $\fun{isequiv}(f)\to\lVert\fun{qinv}(f)\rVert$.
+    On the other hand, the map\/ $\fun{isequiv}(f)\to\fun{qinv}(f)$ from the same proposition, followed by the constructor\/ $\fun{qinv}(f)\to\lVert\fun{qinv}(f)\rVert$, $e\mapsto\lvert e\rvert$, is a function\/ $\fun{isequiv}(f)\to\lVert\fun{qinv}(f)\rVert$.
 
-    By Lemma~\ref{lem:mere-proposition-equivalence}, we deduce that $\lVert\fun{qinv}(f)\rVert\simeq\fun{isequiv}(f)$. Moreover, $\lVert\fun{qinv}(f)\rVert$ trivially satisfies the condition because it is a mere proposition.
-    %
-    
+    By Lemma~\ref{lem:mere-proposition-equivalence}, having functions in both directions between mere propositions establishes an equivalence, so we deduce that\/ $\lVert\fun{qinv}(f)\rVert\simeq\fun{isequiv}(f)$. Moreover,\/ $\lVert\fun{qinv}(f)\rVert$ trivially satisfies the condition because propositional truncations are mere propositions by definition.
 \end{solution}
 
 \begin{exr}\label{exr:Lem-implies-2-props}
@@ -1812,14 +1846,13 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{exr}
 
 \begin{solution}
-
-    \textsc{Idea:} The $\Sigma$-type defines two groups of mere proposition types: the empty ones and the contractible ones.
+    \textsc{Idea:} The $\Sigma$-type classifies mere propositions into two groups: the empty ones and the contractible ones.
     
     Fix $A\colon\univ$. By hypothesis, there exists a function $\lambda\colon\fun{Lem}$ satisfying
     \[
         \lambda(A)\colon\fun{isProp}(A)\to(A+\neg A).
     \]
-    Let $c_1\colon A\to\fun2$ be the constant map $c_1(a)\defeq1_{\fun2}$. Similarly, let $c_0\colon\neg A\to\fun2$ be the constant map $c_0(z)\defeq 0_{\fun2}$. These maps construct a function $c_A\colon(A+\neg A)\to\fun2$. Then, we can define
+    Let $c_1\colon A\to\fun2$ and $c_0\colon\neg A\to\fun2$ be the constant maps taking values $1_{\fun2}$ and $0_{\fun2}$, respectively. These maps induce a function $c_A\colon A+\neg A\to\fun2$ via the coproduct recursor. Then, we can define
     \begin{align*}
         f\colon\Bigl(\sum_{A\colon\univ}\fun{isProp}(A)\Bigr)
             &\to\fun2\\
@@ -1847,23 +1880,26 @@ To formulate the classical Axiom of Choice, we must express the proposition that
                     \Bigr)
             \Bigr).
     \]
-    Let us now compute both compositions.
-    \begin{align*}
+    Let us now evaluate both compositions. For $f\circ\tau$, we claim that $(f\circ\tau)(0_{\fun2})\eq{}0_{\fun2}$ and $(f\circ\tau)(1_{\fun2})\eq{}1_{\fun2}$. Since $\lambda$ is an abstract function, the term $\lambda(\fun0)(\epsilon_0)$ does not compute definitionally. However, we can prove $c_{\fun0}(z)\eq{}0_{\fun2}$ for all $z\colon\fun0+\neg\fun0$ by induction on the coproduct. If $z\equiv\fun{inl}(x)$, the context is contradictory since $x\colon\fun0$. If $z\equiv\fun{inr}(y)$, then $c_{\fun0}(\fun{inr}(y))\equiv c_0(y)\equiv 0_{\fun2}$. Thus,
+    \[
         (f\circ\tau)(0_{\fun2})
-            &\equiv f(\dep{\fun0,\epsilon_0})\\
-            &\equiv c_0(\lambda(\fun0)(\epsilon_0))\\
-            &\equiv 0_{\fun2}
-                &&\text{; $c_0$ is constant.}\\
+            \equiv f(\dep{\fun0,\epsilon_0})
+            \equiv c_{\fun0}(\lambda(\fun0)(\epsilon_0))
+            \eq{} 0_{\fun2}.
+    \]
+    By a symmetric argument on $\fun1+\neg\fun1$, any left injection maps to $1_{\fun2}$ definitionally, and the right injection is contradictory since $\neg\fun1$ is empty. Thus, $c_{\fun1}(z)\eq{}1_{\fun2}$ for all $z\colon\fun1+\neg\fun1$, which yields
+    \[
         (f\circ\tau)(1_{\fun2})
-            &\equiv f(\dep{\fun1,\epsilon_1})\\
-            &\equiv c_1(\lambda(\fun1)(\epsilon_1))\\
-            &\equiv 1_{\fun2}
-                &&\text{; $c_1$ is constant.}
-    \intertext{For the other composition, we need to prove that}
+            \equiv f(\dep{\fun1,\epsilon_1})
+            \equiv c_{\fun1}(\lambda(\fun1)(\epsilon_1))
+            \eq{} 1_{\fun2}.
+    \]
+    For the other composition, we need to prove that
+    \[
         \tau(f(\dep{A,\epsilon}))
-            &\equiv\tau(c_A(\lambda(A)(\epsilon)))\\
-            &\eq{}\dep{A,\epsilon}.
-    \end{align*}
+            \equiv\tau(c_A(\lambda(A)(\epsilon)))
+            \eq{}\dep{A,\epsilon}.
+    \]
     Therefore, it suffices to prove that $\tau(c_A(z))\eq{}\dep{A,\epsilon}$ for all $z\colon A+\neg A$. By induction on $A+\neg A$, we are reduced to the cases $z\equiv\fun{inl}(a)$ and $z\equiv\fun{inr}(\zeta)$, where $a\colon A$ and $\zeta\colon A\to\fun0$.
 
     In the first case, the goal reduces to showing that $\dep{\fun1,\epsilon_1}\eq{}\dep{A,\epsilon}$ is inhabited. Since $\epsilon\colon\fun{isProp}(A)$, $A$ is a mere proposition. By Lemma~\ref{lem:contractible-equivalences}, it is contractible because $a\colon A$. By the same lemma, it follows that $A\simeq\fun1$. Hence, the univalence axiom implies the existence of a path $p\colon\fun1\eq\univ A$. To prove the goal, we have to show that
@@ -1879,21 +1915,25 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
     \medskip
 
-    \textbf{Lemma.} \textit{If\/ $A\to\fun0$ is inhabited, then\/ $A\eq\univ\fun0$.}
+    \textbf{Lemma.} \textit{If $A\to\fun0$ is inhabited, then $A\eq\univ\fun0$.}
     
     \textsc{Proof:} By univalence, it suffices to find an equivalence $A\simeq\fun0$.
     
     Let $f\colon A\to\fun0$ be the function given by hypothesis. We claim that $g\defeq\fun{rec}_{\fun0}(A)$ is a quasi-inverse of $f$.
-    
-    First, observe that $f\circ g\colon\fun0\to\fun0$ equals the identity function $\id_{\fun0}$ because $\fun0\to\fun0$ is contractible by part~b) of Theorem~\ref{thm:contractible-types}.
-    
-    Second, to prove that $g(f(x))\eq Ax$, it suffices to prove that $g(z)\eq Ax$ for all $z\colon\fun0$. This trivially follows by induction on $\fun0$ by means of
+
+    We must construct a right homotopy $\eta\colon f\circ g\sim\id_{\fun0}$ and a left homotopy $\vartheta\colon g\circ f\sim\id_A$.
+
+    By \nref{lpar:coproduct-induction}, for $\eta$ we have $\fun{ind}_{\fun0}(P)$, where $P\colon\fun0\to\univ$ is defined as $P(y)\defeq f(g(y))\eq{\fun0}y$. For $\vartheta$, fix $x\colon A$ and consider the type
     \[
-        \fun{ind}_{\fun0}(\lambda u.\,g(u)\eq Ax,z). \tag*{\lqed}
+        Q_x\defeq g(f(x))\eq{A}x.
     \]
+    This defines the function $\fun{rec}_{\fun0}(Q_x)\colon\fun0\to Q_x$. Applying it to $f(x)$ yields a witness for $g(f(x))\eq{A}x$.
+
+    Since we have maps in both directions and their corresponding homotopies, we conclude that $A\simeq\fun0$. The result follows from the univalence axiom. \hfill\lqed
+
+    \medskip
+
     It remains to be shown that $\fun{transport}^{\fun{isProp}}(p,\epsilon_0)\eq{\fun{isProp}(A)}\epsilon$, where $p\colon\fun0\eq\univ A$. Again, this is trivial because $\fun{isProp}(A)$ is a mere proposition.
-    %
-    
 \end{solution}
 
 \begin{exr}\label{exr:propositional-resizing}
@@ -1955,11 +1995,11 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}
-    Show that it is not the case that for all\/ $A\colon\univ$ we have\/ $\lVert A\rVert\to A$. (However, there can be particular types for which\/ $\lVert A\rVert\to A$. {\upshape Exercise~\ref{exr:when-isequiv-is-mere-proposition}} implies that\/ $\fun{qinv}(f)$ is such.)
+    Prove that, in general, there is no map\/ $\lVert A\rVert\to A$ for an arbitrary type\/ $A\colon\univ$. (Note, however, that such maps do exist for specific types; for example, {\upshape Exercise~\ref{exr:when-isequiv-is-mere-proposition}} implies that\/ $\fun{qinv}(f)$ is one such type.)
 \end{exr}
 
 \begin{solution}
-    Note that if $A$ has a witness $a\colon A$, then $\lVert A\rVert$ is an inhabited mere proposition, hence equivalent to $\fun1$. Thus, we can define a map $\lVert A\rVert\to A$ as the composition $\lVert A\rVert\to\fun1\to A$, where the second map is defined by mapping $\star\colon\fun1$ to~$a$. What the exercise emphasizes is the nonexistence of a general function that would identify a witness of each inhabited type.
+    Note that if $A$ has a witness $a\colon A$, then $\lVert A\rVert$ is an inhabited mere proposition, hence equivalent to $\fun1$. Thus, we can define a map $\lVert A\rVert\to A$ as the composition $\lVert A\rVert\to\fun1\to A$, where the second map is defined by mapping $\star\colon\fun1$ to $a$. What the exercise emphasizes is the nonexistence of a general function that would identify a witness for each inhabited type.
 
     To solve the exercise, we have to define a map
     \[
@@ -1976,7 +2016,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         \fun{apd}_u(p)\colon
             \fun{transport}^P(p,u(A))\eq{\lVert B\rVert\to B}u(B),
     \]
-    where $P\colon\univ\to\univ$ is defined as $P\defeq\lVert-\rVert\to\id_\univ$, i.e., $P(X)\defeq\lVert X\rVert\to X$. Applying Proposition~\ref{prop:non-dependent-transport-composition} to the case $(A\to B)\equiv(\lVert-\rVert\to\id_\univ)$ and $f\equiv u(A)$, we obtain
+    where $P\colon\univ\to\univ$ is defined as $P(X)\defeq\lVert X\rVert\to X$. Applying Proposition~\ref{prop:non-dependent-transport-composition} to the case $(A\to B)\equiv(\lVert-\rVert\to\id_\univ)$ and $f\equiv u(A)$, we obtain
     \[
         \fun{transport}^P(p,u(A))
         \eq{\lVert B\rVert\to B}
@@ -1984,27 +2024,34 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             \circ u(A)
             \circ\fun{transport}^{\lVert-\rVert}(p^{-1}).
     \]
-    By Theorem~\ref{thm:idtoeqv-def}, the first transport on the \rhs induces the equivalence $\fun{idtoeqv}\colon A\simeq B$. The second can be any map $\lVert B\rVert\to\lVert A\rVert$, because this function type is a mere proposition.
+    By Theorem~\ref{thm:idtoeqv-def}, the first transport on the \rhs induces the equivalence $\fun{idtoeqv}(p)\colon A\simeq B$. The second transport is an equivalence between $\lVert B\rVert$ and $\lVert A\rVert$.
 
-    In particular, if $p\equiv\fun{ua}(e)$ for some equivalence $e\colon A\simeq B$, the path $\fun{apd}_u(p)$ induces a path
+    In particular, if $p\equiv\fun{ua}(e)$ for some equivalence $e\colon A\simeq B$, then $\fun{idtoeqv}(p)\equiv e$. Applying $\fun{happly}$ to the path $\fun{apd}_u(p)$ yields, for any $y\colon\lVert B\rVert$, a pointwise path
     \[
-        q\colon e\circ u(A)\circ\lVert e\rVert^{-1} \eq{\lVert B\rVert\to B} u(B).
+        q_y\colon e\bigl(u(A)(\lVert e\rVert^{-1}(y))\bigr) \eq{B} u(B)(y).
     \]
-    Specializing this generic setting to the case where $B\defeq A\defeq\fun2$ and $e\equiv\fun{not}$, we obtain
+    Specializing this to the case where $B\defeq A\defeq\fun2$, $e\equiv\fun{not}$, and $y\equiv\lvert 1_{\fun2}\rvert$, we obtain a path
     \[
-        \fun{not}\circ u(\fun2)\eq{\lVert\fun2\rVert\to\fun2}u(\fun2),
+        q_{\lvert 1_{\fun2}\rvert}\colon
+            \fun{not}\bigl(u(\fun2)(\lVert\fun{not}\rVert^{-1}(\lvert 1_{\fun2}\rvert))\bigr)
+            \eq{\fun2}
+            u(\fun2)(\lvert 1_{\fun2}\rvert).
     \]
-    since $\lVert\fun{not}\rVert\eq{\lVert\fun2\rVert\to\lVert\fun2\rVert}\id_{\lVert\fun2\rVert}$. In particular, we obtain a path
+    Since $\lVert\fun2\rVert$ is a mere proposition, there is a path $s\colon\lVert\fun{not}\rVert^{-1}(\lvert 1_{\fun2}\rvert)\eq{\lVert\fun2\rVert}\lvert 1_{\fun2}\rvert$. Applying the function $\lambda z.\,\fun{not}(u(\fun2)(z))$ to $s$ yields a path
     \[
-        r\colon\fun{not}(u(\fun2)(\lvert 1_{\fun2}\rvert))\eq{\fun2}u(\fun2)(\lvert 1_{\fun2}\rvert),
+        s'\colon \fun{not}\bigl(u(\fun2)(\lVert\fun{not}\rVert^{-1}(\lvert 1_{\fun2}\rvert))\bigr)
+        \eq{\fun2}
+        \fun{not}(u(\fun2)(\lvert 1_{\fun2}\rvert)).
     \]
-    and we can define
+    Concatenating $(s')^{-1}$ with $q_{\lvert 1_{\fun2}\rvert}$, we obtain a path
+    \[
+        r\colon\fun{not}(u(\fun2)(\lvert 1_{\fun2}\rvert))\eq{\fun2}u(\fun2)(\lvert 1_{\fun2}\rvert).
+    \]
+    Thus, we can define
     \[
         \epsilon(u)\defeq\fun{notid}(u(\fun2)(\lvert 1_{\fun2}\rvert),r),
     \]
     where $\fun{notid}$ is the function defined in Remark~\ref{rem:notid}.
-    %
-    
 \end{solution}
 
 \begin{exr}
@@ -2045,7 +2092,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     For $\beta$, take $u\colon\lVert A\rVert\to\fun0$. Then,
     \[
         \beta(u)\defeq
-            \lvert z\mapsto\fun{rec}_{\fun0}(A,u(z))\rvert.
+            \lvert z\mapsto\fun{rec}_{\fun0}(A)(u(z))\rvert.
     \]
     Since $\alpha$ and $\beta$ are well defined, they induce a map
     \[
@@ -2060,7 +2107,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{solution}
 
-\begin{exr}
+\begin{exr}\fe
     {\upshape Corollary~\ref{cor:A+negA-not-always-true}} shows that the following naive form of\/ $\fun{Lem}$ is inconsistent with univalence:
     \[
         \prod_{A\colon\univ}(A+\neg A).
@@ -2199,7 +2246,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
 \end{solution}
 
-\begin{exr}${}$
+\begin{exr}\fe${}$
     \begin{enumerate}[a),font=\upshape]
         \item Show that for any\/ $A\colon\univ$, the type
         \[
@@ -2227,27 +2274,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             f&\mapsto\lambda\pi.\,\pi(Q)(f).
         \end{align*}
         Since $\pi(Q)\colon(A\to Q)\to Q$, its value at $f$ inhabits $Q$.
-    
-        For the first composition, we have
-        \begin{align*}
-            \varphi\circ\psi(f)
-                &\equiv\varphi\bigl(\lambda\pi.\,\pi(Q)(f)\bigr)\\
-                &\equiv\lambda a.\,(\lambda P.\,\ev a^P)(Q)(f)\\
-                &\equiv\lambda a.\,\ev a^Q(f)\\
-                &\equiv\lambda a.\, f(a)\\
-                &\equiv f.
-        \intertext{For the second composition,}
-            \psi\circ\varphi(\alpha)
-                &\equiv\psi
-                    \bigl(
-                        \lambda a.\,\alpha(\lambda P.\,\ev a^P)
-                    \bigr)\\
-                &\equiv\lambda\pi.\,\pi(Q)(\lambda a.\,\alpha(\lambda P.\,\ev a^P)).
-        \intertext{Since this cannot be definitionally reduced to $\alpha$, we resort to the fact that $\Pi\to Q$ is a mere proposition, and so}
-            (\psi\circ\varphi)(\alpha)&\eq{\Pi\to Q}\alpha.
-        \end{align*}
-        Given that $A\to Q$ is also a mere proposition, the equivalence follows from Lemma~\ref{lem:mere-proposition-equivalence}.
 
+        By part~b) of Theorem~\ref{thm:mere-propositions}, since $Q$ is a mere proposition, the function types $\Pi\to Q$ and $A\to Q$ are also mere propositions. Given that we have constructed maps in both directions, the equivalence follows directly from Lemma~\ref{lem:mere-proposition-equivalence}.
+        
         It remains to be shown that the recursion principle of $\Pi$ evaluates judgmentally in the same way as that of the truncation.
         
         Before verifying this property, let us emphasize that, since $\Pi$ quantifies over all mere propositions of $\univ$, it cannot belong to $\univ$ and becomes an element of a universe above it. This differs from the type former $\lVert-\rVert$, which produces a type $\lVert A\rVert$ in the same universe as $A$.
@@ -2299,7 +2328,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}    
 
 
-\begin{exr}
+\begin{exr}\fe
     Assuming $\fun{Lem}$, show that double negation commutes with universal quantification of mere propositions over sets. That is, show that if $X$ is a set and each $C(x)$ is a mere proposition, then $\fun{Lem}$ implies
     \[
         \Bigl(
@@ -2414,7 +2443,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{solution}
 
-\begin{exr}
+\begin{exr}\fe
     Show that the law of excluded middle\/ {\upshape[cf.~Definition~\ref{defn:lem}]} and the law of double negation, which states that
     \begin{equation}\label{eq:double-negation}
         \prod_{A\colon\univ}\fun{isProp}(A)\to(\neg\neg A\to A),
@@ -2454,7 +2483,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{solution}
 
-\begin{exr}\label{exr:decidable+mere-proposition-family}
+\begin{exr}\fe\label{exr:decidable+mere-proposition-family}
     Suppose\/ $P\colon\N\to\univ$ is a decidable family\footnote{Definition~\ref{defn:lem}.} of mere propositions. Prove that
     \[
         \Bigl\lVert\sum_{n\colon\N}P(n)\Bigr\rVert\to\sum_{n\colon\N}P(n).
@@ -2471,7 +2500,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         Q(n)\defeq\prod_{k\colon\N}(k<n)\to\neg P(k)
     \]
-    is a mere proposition by Theorem~\ref{thm:mere-propositions}.
+    is a mere proposition by parts b) and a) of Theorem~\ref{thm:mere-propositions}.
     The dependent type
     \[
         F(n)\defeq Q(n)\times P(n),
@@ -2554,7 +2583,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 
-\begin{exr}
+\begin{exr}\fe
     Prove that\/ $\fun{isProp}(P)\simeq(P\simeq\lVert P\rVert)$.
 \end{exr}
 
@@ -2585,7 +2614,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     where $\epsilon\colon \fun{isProp}(P)$ is the witness constructed from the equality chain above.    
 \end{solution}
 
-\begin{exr}\label{exr:finite-axiom-of-choice}
+\begin{exr}\fe\label{exr:finite-axiom-of-choice}
     As in classical set theory, the finite version of the axiom of choice is a theorem. Prove that the axiom of choice \eqref{eq:traditional-tac} holds when\/ $X$ is a finite type\/ $\fun{Fin}(n)$, as defined in\/ {\upshape Exercise~\ref{exr:Fin}}.
 \end{exr}
 
@@ -2652,7 +2681,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
         A&\to(B\to\lVert A\times B\rVert)\\
         a&\mapsto(b\mapsto\lvert(a,b)\rvert).
     \end{align*}
-    Since the codomain is a function type into a mere proposition, it is a mere proposition itself, and so the outer function factors through $\lVert A\rVert$. In turn, for each $a\colon A$, the inner function $b\mapsto\lvert(a,b)\rvert$ factors through $\lVert B\rVert$, yielding a map
+    Since the codomain is a function type into a mere proposition, by part~b) of Theorem~\ref{thm:mere-propositions}, it is a mere proposition itself, and so the outer function factors through $\lVert A\rVert$. In turn, for each $a\colon A$, the inner function $b\mapsto\lvert(a,b)\rvert$ factors through $\lVert B\rVert$, yielding a map
     \[
         \lVert A\rVert\to(\lVert B\rVert\to\lVert A\times B\rVert),
     \]

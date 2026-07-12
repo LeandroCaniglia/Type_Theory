@@ -1868,9 +1868,9 @@ Let\/ $f\colon A\to B$. Then:
 \end{thm}
 
 \begin{proof}
-    Let $\dep{f^{-1},(\eta,\vartheta)}$ be a quasi-inverse of $f$. By Theorem~\ref{thm:coherent-quasi-inverse}, we may assume this quasi-inverse is coherent, providing a homotopy $\tau\colon f\lwct\vartheta\sim\eta\rwct f$. Evaluated at any $x\colon A$, this gives $\tau_x\colon\fun{ap}_f(\vartheta_x) = \eta_{f(x)}$.
+    Let $\dep{f^{-1},(\eta,\vartheta)}$ be a quasi-inverse of $f$. By Theorem~\ref{thm:coherent-quasi-inverse}, we may assume this quasi-inverse is coherent, providing a homotopy $\tau\colon f\lwct\vartheta\sim\eta\rwct f$.
 
-    We construct an inverse function $h\colon(f(a)\eq Bf(a'))\to(a\eq Aa')$ by defining
+    For the inverse function $h\colon(f(a)\eq Bf(a'))\to(a\eq Aa')$ consider
     \[
         h(q)\defeq\vartheta_a^{-1}\ct\fun{ap}_{f^{-1}}(q)\ct\vartheta_{a'}.
     \]
@@ -1897,7 +1897,7 @@ Let\/ $f\colon A\to B$. Then:
         \eq{f(f^{-1}(f(a)))\eq Bf(a')}
         \eta_{f(a)}\ct q.
     \]
-    Left-concatenating with $\eta_{f(a)}^{-1}$, we obtain the \rhs of the previous equation. Thus,
+    Left-concatenating with $\eta_{f(a)}^{-1}$, we recover the \rhs of the previous equation. Thus,
     \[
         \fun{ap}_f(h(q))\eq{f(a)\eq Bf(a')}q.
     \]
@@ -2997,7 +2997,7 @@ Here is a picture illustrating the construction
     \end{enumerate}
 \end{proof}
 
-\begin{rem}
+\begin{rem}\label{rem:total-space-of-constant}
     If the type family $P\colon A\to\univ$ is constant, say $P(x)\equiv B$ for all $x\colon A$, then the total space $E$ becomes $A\times B$ and, by Lemma~\ref{lem:constant-fibration}, we have $p_*(b)\eq Bb$ for $b\colon B$. Thus, the backward function of the equivalence reduces to
     \[
         g\colon\sum_{q\colon\pi_1(\omega)\eq A\pi_1(\omega')}
@@ -3896,7 +3896,11 @@ The unit laws follow immediately from the definitional properties of path invers
         &\equiv\eta.
 \end{align*}
 
-\begin{prop}\label{prop:funext-functoriality}
+\begin{ntn}
+    From now on, we will use the superscript $^\textsc{fe}$ to indicate that a result depends on the function extensionality axiom.
+\end{ntn}
+
+\begin{prop}\label{prop:funext-functoriality}\fe
     Let\/ $A$,\/ $B$, and\/ $\Gamma$ be as above. If\/ $f, g\colon\Gamma$, then
     \begin{enumerate}[a),font=\upshape]
         \item $\fun{funext}(f,f,\lambda x.\,\fun{refl}_{f(x)})\eq{f\eq\Gamma f}\fun{refl}_f$
@@ -3922,7 +3926,7 @@ The unit laws follow immediately from the definitional properties of path invers
 
 Recall from Definition~\ref{defn:qinv-composition} that quasi-inverses can be composed.
 
-\begin{prop}
+\begin{prop}\fe
     Let\/ $f\colon A\to B$. Suppose that\/ $\dep{f^{-1},(\eta,\vartheta)}\colon\fun{qinv}(f)$. Then\/ $\dep{f^{-1},(\eta,\vartheta\ct\fun{refl}_{\id_A})}\colon\fun{qinv}(f)$ and both quasi-inverses are (propositionally) equal.
 \end{prop}
 
@@ -3955,7 +3959,7 @@ Recall from Definition~\ref{defn:qinv-composition} that quasi-inverses can be co
     \]
 \end{proof}
 
-\begin{cor}\label{cor:propositional-qinv-composition-with-id}
+\begin{cor}\fe\label{cor:propositional-qinv-composition-with-id}
     In the particular case where one of the functions is the identity, we have
     \begin{enumerate}[a),font=\upshape]
         \item $\dep{\id_A,(\fun{refl}_{\id_A},\fun{refl}_{\id_A})}\circ\dep{f^{-1},(\eta_f,\vartheta_f)}\eq{\fun{qinv}(f)}(f^{-1}
@@ -4008,10 +4012,10 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 \end{equation}
 
 \begin{prop}\label{prop:non-dependent-transport-composition}
-    The diagram~\eqref{tik:non-dependent-transport-composition} propositionally commutes in the function type\/ $A(x)\to B(y)$. In particular,
+    The diagram~\eqref{tik:non-dependent-transport-composition} propositionally commutes in the function type\/ $A(y)\to B(y)$. In particular,
     \[
         \fun{transport}^{A\to B}(p,f)
-            \eq{A(x)\to B(y)}
+            \eq{A(y)\to B(y)}
             \fun{transport}^B(p)
                 \circ f
                 \circ 
@@ -4448,7 +4452,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     \]
 \end{proof}
 
-\begin{thm}\label{thm:function-equality-equivalence}
+\begin{thm}\fe\label{thm:function-equality-equivalence}
     Let\/ $A\colon X\to\univ$ be a type family and\/ $p\colon x\eq Xy$ a path in $X$. Then, given a second type family $B\colon X\to\univ$ and two functions\/ $f\colon A(x)\to B(x)$ and\/ $g\colon A(y)\to B(y)$, there is an equivalence
     \begin{align*}
         \bigl(p_*(f)\eq{A(y)\to B(y)}g\bigr)
@@ -4523,7 +4527,7 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 
         \item $i(\fun{refl}_x,u)\equiv\fun{refl}_{f(u)}$ and $j(\fun{refl}_x,u)\equiv\fun{refl}_{f(u)}$.
 
-        \item We choose $e\defeq\fun{happly}$, which is an equivalence by the Function Extensionality Axiom.
+        \item We choose $e\defeq\fun{happly}$, which is an equivalence by the function extensionality axiom.
         The type $\fun E(x,\fun{refl}_x,g,\fun{happly})$ requires us to verify that for every $q\colon f\eq{A(x)\to B(x)}g$ and $u\colon A(x)$,
         \[
             \fun{happly}(q,u)
@@ -4632,7 +4636,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
     \end{description}
 \end{proof}
 
-\begin{thm}\label{thm:dependent-function-equality-equivalence}
+\begin{thm}\fe\label{thm:dependent-function-equality-equivalence}
     Let\/ $A\colon X\to\univ$ and\/ $B\colon\prod_{x\colon X}A(x)\to\univ$ be two type families. Given a path $p\colon x\eq Xy$ and two functions\/ $f\colon\Pi_AB(x)$ and\/ $g\colon\Pi_AB(y)$, there is an equivalence
     \[
         \bigl(p_*(f)\eq{\Pi_AB(y)}g\bigr)
@@ -4726,7 +4730,7 @@ What follows is a generalization of Lemma~\ref{lem:non-dependent-i-j-paths} and 
     
             \item $i(\fun{refl}_x,u)$ and $j(\fun{refl}_x,u)$ reduce to $\fun{refl}_{f(u)}$.
     
-            \item Take $e\defeq\fun{happly}$. The type $\fun E(x,\fun{refl}_x,g,\fun{happly})$ requires us to verify that for every $q\colon f\eq{\Pi_AB}g$ and $u\colon A(x)$,
+            \item Take $e\defeq\fun{happly}$, which is an equivalence by function extensionality. The type $\fun E(x,\fun{refl}_x,g,\fun{happly})$ requires us to verify that for every $q\colon f\eq{\Pi_AB}g$ and $u\colon A(x)$,
             \[
                 \fun{happly}(q,u)
                 \eq{B(x,u)}
@@ -4849,8 +4853,7 @@ Analogously, based on the definition of right homotpy whiskering
     \end{align*}
 \end{proof}
 
-\begin{thm}\label{thm:funext-naturality}
-    {\upshape[Naturality of function extensionality]}
+\begin{thm}\label{thm:funext-naturality}\fe{\upshape[Naturality of function extensionality]}
     With the preceding notation, given $\eta\colon f\sim g$, we have
     \begin{align*}
         \fun{funext}(h\lwct\eta)&\eq{}h\lwct\fun{funext}(\eta)
@@ -5064,7 +5067,7 @@ the \textsl{horizontal composition} $\beta\hct\alpha$ is defined using whiskerin
         \colon(f'\circ f)\sim(g'\circ g). 
 \]
 
-\begin{prop}\label{prop:homotopy-whiskering}
+\begin{prop}\label{prop:homotopy-whiskering}\fe
     With the preceding notation,
     \begin{enumerate}[a),font=\upshape]
         \item $\beta\hct\alpha\eq{(f'\circ f)\sim(g'\circ g)}(f'\lwct\alpha)\ct(\beta\rwct g)$
@@ -6555,7 +6558,7 @@ These universal properties can generally be categorized by whether they characte
 
 As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\times B$ admits two characterizations: one by means of a function into $A\times B$, and another by means of a function out of $A\times B$. In each of these cases, the associated commutative diagram can be represented as an equivalence of types. In this section, we generalize this approach to different basic types.
 
-\begin{thm}
+\begin{thm}\fe
     Let\/ $X,A,B\colon\univ$ be types. Then the function\footnote{By an abuse of notation, we omit irrelevant parentheses.}
     \begin{align*}
         \sigma\colon(X\to A\times B)&\to(X\to A)\times(X\to B)\\
@@ -6592,7 +6595,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     which completes the proof by showing that $\tau$ is a quasi-inverse of~$\sigma$.
 \end{proof}
 
-\begin{thm}
+\begin{thm}\fe
     Let\/ $X\colon\univ$ be a type, and let\/ $A,B\colon X\to\univ$ be type families. Then the function
     \begin{align*}
         \sigma\colon
@@ -6656,7 +6659,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \]
 \end{proof}
 
-\begin{thm}{\upshape[Axiom of Choice]}\label{thm:ac-generalized}
+\begin{thm}\fe{\upshape[Axiom of Choice]}\label{thm:ac-generalized}
     Let\/ $X\colon\univ$ be a type, $A\colon X\to\univ$ a type family, and\/ $P\colon\prod_{x\colon X}A(x)\to\univ$ a dependent type family. Then the function
     \begin{align*}
         \fun{ac}\colon
@@ -6742,7 +6745,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     It is worth noting that the axiom of function extensionality was used to prove that the map $\fun{ac}$ is an equivalence. However, no axiom was needed for the construction of the global choice function $g\colon\prod_{x\colon X}A(x)$.
 \end{rem}
 
-\begin{thm}
+\begin{thm}\fe
     Let\/ $A,B,C\colon\univ$ be types. Then the map
     \begin{align*}
         \fun{curry}\colon((A\times B)\to C)&\to(A\to(B\to C))\\
@@ -6762,8 +6765,8 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         \fun{curry}(\fun{uncurry}(g))
             &\equiv
                 \fun{curry}
-                    \bigl(\
-                        lambda \omega.\,g(\pi_1(\omega))(\pi_2(\omega))
+                    \bigl(
+                        \lambda \omega.\,g(\pi_1(\omega))(\pi_2(\omega))
                     \bigr)\\
             &\equiv\lambda x.\,\lambda y.\,
                 \bigl(
@@ -6802,7 +6805,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     which completes the proof.
 \end{proof}
 
-\begin{thm}
+\begin{thm}\fe
     Let\/ $A,B\colon\univ$ be types, and let\/ $C\colon A\times B\to\univ$ be a dependent type family. Then the map
     \begin{align*}
         \fun{curry}\colon\biggl(\prod_{\omega\colon A\times B}C(\omega)\biggr)&\to\prod_{x\colon A}\prod_{y\colon B}C((x,y))\\
@@ -6886,7 +6889,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     and the result follows by function extensionality.
 \end{proof}
 
-\begin{thm}\label{thm:universal-property-of-product-over-coproduct}
+\begin{thm}\fe\label{thm:universal-property-of-product-over-coproduct}
     Let\/ $A$ and\/ $B$ be types, and let\/ $C\colon A+B\to\univ$ be a type family. Then there is an equivalence
     \[
         \prod_{z\colon A+B}C(z)\simeq
@@ -6925,10 +6928,10 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
         \fun{merge}(\fun{split}(f))
             \equiv\fun{ind}_{A+B}(C,f\circ\fun{inl},f\circ\fun{inr}),
     \]
-    which equals $f$ by the computation rules of $\fun{ind}_{A+B}$, because both functions yield the same results when precomposed with $\fun{inl}$ and $\fun{inr}$.
+    which, by function extensionality, equals $f$ because both functions yield the same results when precomposed with $\fun{inl}$ and $\fun{inr}$.
 \end{proof}
 
-\begin{thm}
+\begin{thm}\fe
     Let\/ $A\colon\univ$ be a type and $B\colon A\to\univ$ a type family. Given a dependent type family\/ $C\colon\Sigma_AB\to\univ$ over the total space $\Sigma_AB$, the map
     \begin{align*}
         \fun{curry}\colon
@@ -7095,7 +7098,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     
 \end{solution}
 
-\begin{exr}
+\begin{exr}\fe
     Show that if we define\/ $A\times B\defeq\prod_{z\colon\fun2}\fun{rec}_{\fun2}(\univ,A,B,z)$, then we can give a definition of\/ $\fun{ind}_{A\times' B}$ for which the definitional equalities stated in\/ {\upshape\nref{lpar:induction}} hold propositionally, i.e., using equality types.
 \end{exr}
 
@@ -7426,7 +7429,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     See Theorem \ref{thm:pair-f+g}.
 \end{solution}
 
-\begin{exr}
+\begin{exr}\fe
     Prove that coproducts have the expected universal property, 
     \[
         ((A+B)\to X)\simeq(A\to X)\times(B\to X).
@@ -7946,7 +7949,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
 
 \end{solution}
 
-\begin{exr}\label{exr:2-simeq-2-simeq-2}
+\begin{exr}\fe\label{exr:2-simeq-2-simeq-2}
     Show that\/ $(\fun2\simeq\fun2)\simeq\fun2$.
 \end{exr}
 
@@ -8171,11 +8174,11 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
 \end{solution}
 
 
-\begin{exr}${}$
+\begin{exr}${}$\fe
     \begin{enumerate}[a),font=\upshape]
         \item Show that if\/ $A\simeq B$ and\/ $A'\simeq B'$, then\/ $(A\times A')\simeq(B\times B')$.
         \item Give two proofs of this fact, one using univalence and one not using it, and show that the two proofs are equal.
-        \item Formulate and prove analogous results for the other type formers:\/ $\Sigma$, $\to$, $\Pi$, and\/ $+$.
+        \item Formulate and prove analogous results for the other type formers:\/ $\Sigma$, $\to$, $\Pi$, and\/ $+$.\footnote{Function extensionality is used for $\Pi$-types.}
     \end{enumerate}
 \end{exr}
 
@@ -8954,7 +8957,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     The lemma in {\upshape Exercise~\ref{exr:2-simeq-2-simeq-2}} shows that $0_{\fun2}\ne_{\fun2}1_{\fun2}$. Show that, nevertheless, 
     \[
         \dep{\fun2,0_{\fun2}}
-        \eq{\sum_{A\colon\univ}A}
+        \eq\puniv
         \dep{\fun2,1_{\fun2}}.
     \]
 \end{exr}
@@ -8966,7 +8969,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \begin{align*}
         \bigl(
             \dep{\fun2,0_{\fun2}}
-            \eq{\sum_{A\colon\univ}A}
+            \eq\puniv
             \dep{\fun2,1_{\fun2}}
         \bigr)
             \simeq\sum_{p\colon\fun2\eq\univ\fun2}

@@ -491,3 +491,59 @@
 \newcommand{\yoneda}{\mbf{\mathit h}}
 
 \newcommand{\gref}[1]{{\hypersetup{linkcolor=gray}\textcolor{gray}{#1}}}
+
+
+\usepackage{imakeidx}
+
+% Define the command that takes one argument and completely ignores it
+\newcommand{\emptyindexheading}[1]{}
+
+% Set layout configurations
+\indexsetup{level=\emptyindexheading, noclearpage}
+
+% Declare both indexes
+\makeindex[name=fe, columns=2, options=-s custom.ist]
+%intoc, options=-s fe.ist]
+\makeindex[name=ua, columns=1, options=-s custom.ist]
+
+\newcounter{axiomsortcount}
+
+\makeatletter
+\def\idxname@thm{Theorem}
+\def\idxname@lem{Lemma}
+\def\idxname@prop{Proposition}
+\def\idxname@cor{Corollary}
+\def\idxname@exr{Exercise}
+\def\idxname@rem{Remark}
+
+\newcommand{\usesaxiom}[1]{%
+  \ifcsname idxname@\@currenvir\endcsname
+    \edef\indexed@name{\csname idxname@\@currenvir\endcsname}%
+  \else
+    \def\indexed@name{Theorem}%
+  \fi% <--- Blank line removed here
+  \stepcounter{axiomsortcount}%
+  \edef\sortkey{%
+    \ifnum\c@axiomsortcount<1000 0\fi
+    \ifnum\c@axiomsortcount<100 0\fi
+    \ifnum\c@axiomsortcount<10 0\fi
+    \the\c@axiomsortcount
+  }%
+  \edef\doindex{\noexpand\index[#1]{\sortkey @\indexed@name\space\csname the\@currenvir\endcsname|hyperpage}}%
+  \doindex
+}
+\makeatother
+
+% Generic macro for the visual marker and spacing
+% #1 = Index internal name (e.g., fe)
+% #2 = Printed text (e.g., fe)
+\newcommand{\axiommark}[2]{%
+  \hspace*{-0.15cm}%
+  \smash{\raisebox{0.6ex}{\normalfont\upshape\textsc{\scriptsize #2}}}%
+  \hspace*{0.15cm}%
+  \usesaxiom{#1}%
+}
+
+% Define your context-aware shortcuts
+\newcommand{\fe}{\axiommark{fe}{fe}}
+\newcommand{\ua}{\axiommark{ua}{ua}}
