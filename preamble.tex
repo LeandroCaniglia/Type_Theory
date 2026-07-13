@@ -503,8 +503,8 @@
 
 % Declare both indexes
 \makeindex[name=fe, columns=2, options=-s custom.ist]
-%intoc, options=-s fe.ist]
-\makeindex[name=ua, columns=1, options=-s custom.ist]
+\makeindex[name=we, columns=2, options=-s custom.ist]
+\makeindex[name=ua, columns=2, options=-s custom.ist]
 
 \newcounter{axiomsortcount}
 
@@ -546,4 +546,9 @@
 
 % Define your context-aware shortcuts
 \newcommand{\fe}{\axiommark{fe}{fe}}
+\newcommand{\we}{\axiommark{we}{we}}
 \newcommand{\ua}{\axiommark{ua}{ua}}
+
+\newcommand{\FE}{\text{\upshape\textsc{fe}}}
+\newcommand{\WE}{\text{\upshape\textsc{we}}}
+\newcommand{\UA}{\text{\upshape\textsc{ua}}}

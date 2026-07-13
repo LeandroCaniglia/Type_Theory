@@ -1124,14 +1124,27 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     \end{align*}
 \end{ntn}
 
+
 \section{Contractibility}
 
-\begin{defn}
-    A type $A$ is \textsl{contractible} (a.k.a.~a \textsl{singleton}) if there is an element $a\colon A$, called the \textsl{center of contraction}, such that every element in $A$ is equal to $a$. We define the type of such witnesses as
-    \[
-        \fun{isContr}(A)\defeq\sum_{a\colon A}\;\prod_{x\colon A}a\eq{A}x.
-    \]
-\end{defn}
+\begin{defns}\ 
+    \begin{enumerate}[-]
+        \item A type $A$ is \textsl{contractible} (a.k.a.~a \textsl{singleton}) if there is an element $a\colon A$, called the \textsl{center of contraction}, such that every element in $A$ is equal to $a$. We define the type of such witnesses as
+        \[
+            \fun{isContr}(A)\defeq\sum_{a\colon A}\;\prod_{x\colon A}a\eq{A}x.
+        \]
+        
+        \item For any type $A$ and any type family $P\colon A\to\univ$, the \textsl{weak function extensionality axiom} asserts the existence of a function
+        \[
+            \Bigl(\prod_{x\colon A}\fun{isContr}(P(x))\Bigr)
+            \to\fun{isContr}\Bigl(\prod_{x\colon A}P(x)\Bigr).
+        \]
+    \end{enumerate}
+\end{defns}
+
+\begin{ntn}
+    From now on we will tag with {\upshape\textsc{we}} results that rely on weak function extensionality.
+\end{ntn}
 
 \begin{lem}\label{lem:contractible-equivalences}
     For a type\/ $A$, the following are logically equivalent.
@@ -1174,7 +1187,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $p(x)$ follows.
 \end{proof}
 
-\begin{thm}\fe\label{thm:isContr-is-a-mere-proposition}
+\begin{thm}\we\label{thm:isContr-is-a-mere-proposition}
     For any type\/ $A$, the type\/ $\fun{isContr}(A)$ is a mere proposition.
 \end{thm}
 
@@ -1202,20 +1215,13 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     \[
         \fun{transport}^P(p(b),p)\eq{P(b)}q.
     \]
-    By Lemma~\ref{lem:transport-prod-id} the transport in the \lhs satisfies
-    \[
-        \fun{transport}^P(p(b),p)(x)\eq{b\eq Ax}p(b)^{-1}\ct p(x),
-    \]
-    for $x\colon A$.
-        
-    Thus, by function extensionality, the goal reduces to showing
-    \[
-        p(b)^{-1}\ct p(x)\eq{b\eq{A}x}q(x).
-    \]
-    Since $c$ witnesses that $A$ is contractible, $A$ is a mere proposition. By Remark~\ref{rem:ids-in-mere-propositions-are-singletons}, $b\eq{A}x$ is a mere proposition. Since both $p(b)^{-1}\ct p(x)$ and $q(x)$ are elements of $b\eq{A}x$, they are necessarily equal. This completes the proof.
+    Since $d$ witnesses that $A$ is contractible with center $b$, for any $x\colon A$, the identity type $b\eq{A}x$ is contractible. By the weak function extensionality axiom, the product type $\prod_{x\colon A}b\eq{A}x$, which is exactly $P(b)$, is also contractible. 
+
+    Because every contractible type is a mere proposition, any two of its elements are equal. Consequently, the equality $\fun{transport}^P(p(b),p)\eq{P(b)}q$ holds.
 \end{proof}
 
-\begin{cor}\label{cor:A-contractible-implies-isContr(A)-contractible}
+
+\begin{cor}\we\label{cor:A-contractible-implies-isContr(A)-contractible}
     If\/ $A$ is contractible, $\fun{isContr}(A)$ is also contractible.
 \end{cor}
 
@@ -1235,6 +1241,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     \]
     In particular, given $x\colon A$, the term $c_x\defeq\pi_1(h(x))$ is a center of contraction for $P(x)$. In other words, picking the center of contraction for every contractible fiber of $P$ is a constructive, choice-free operation.
 \end{rem}
+
 
 \begin{thm}\fe\label{thm:contractible-types}
     Contractible types are closed under the following type-theoretic constructions:\footnote{Function extensionality is needed in parts a), b), f), and g).}
@@ -1256,19 +1263,31 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     \end{enumerate}
 \end{thm}
 
-\begin{proof}
-    Since Theorem~\ref{thm:isContr-is-a-mere-proposition} establishes that every contractible type is a mere proposition, Theorem~\ref{thm:mere-propositions} guarantees that the constructed types are mere propositions. Therefore, by Lemma~\ref{lem:contractible-equivalences}, it suffices to show that each of them is inhabited. In cases a) to f), constructing a witness from the centers of contraction of the constituent contractible types is straightforward.
-
-    To prove $g)$, observe that by part e) the identity type $f(x)\eq{B(x)}g(x)$ is contractible, which implies that $f\sim g$ is contractible by part~a).
+\begin{proof}\ 
+    \begin{enumerate}[a),font=\upshape]
+        \item Set $\Gamma\defeq\prod_{x\colon A}P(x)$. Given $x\colon A$, let $c_x\colon P(x)$ be a center of contraction, and $\eta_x\colon c_x\sim\id_{P(x)}$ be the corresponding homotopy for the constant function $c_x$. Define $c\defeq\lambda x.\,c(x)$. Given $f\colon\Gamma$, the homotopy $\eta_x\rwct f\colon c\sim f$ induces, by function extensionality, a path $c\eq\Gamma f$.
+        
+        \item This is a direct corollary of part a) for the constant type family $P(x)\defeq Q$ for all $x\colon A$.
+        
+        \item Let $c$ and $d$ be the centers of contraction for $P$ and $Q$. Given $(p,q)\colon P\times Q$, we have paths $\alpha\colon c\eq{P}p$ and $\beta\colon d\eq{Q}q$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path in $(c,d)\eq{P\times Q}(p,q)$.
+        
+        \item Let $c$ be the center of $A$, and $d$ the center of $P(c)$. Given $\dep{x,u}\colon\Sigma_AP$, there exists a path $\alpha\colon c\eq Ax$. Since $P(x)$ is contractible, there is a path $\beta\colon\fun{transport}^P(\alpha,d)\eq{P(x)}u$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path $\dep{c,d}\eq{\Sigma_AP}\dep{x,u}$.
+        
+        \item Let $c$ be a center of $A$. There exist paths $p\colon c\eq Ax$ and $q\colon c\eq Ay$. Then, $p^{-1}\ct q\colon x\eq Ay$, meaning the identity type is inhabited. Since $A$ is a mere proposition, $x\eq Ay$ is also mere proposition by Remark~\ref{rem:ids-in-mere-propositions-are-singletons}. Considering that it is inhabited, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
+        
+        \item By part b), $P\to Q$ is contractible. Now, $P\simeq Q\equiv\Sigma_{P\to Q}\fun{isequiv}$. By Corollary~\ref{cor:isequiv(f)-is-set}, the type $\fun{isequiv}(f)$ is a mere proposition. Because $P$ and $Q$ are both contractible, any function between them is an equivalence [cf.~Lemma~\ref{lem:mere-proposition-equivalence}]. Hence, $\fun{isequiv}(f)$ is inhabited and thus contractible for any $f$. By part d), the total space $P\simeq Q$ is contractible. Finally, by the univalence axiom, the identity type $P\eq\univ Q$ is equivalent to $P\simeq Q$. Since contractibility is preserved under equivalence by Proposition~\ref{prop:contractible-retracts}, $P\eq \univ Q$ is also contractible.
+        
+        \item By definition, $f\sim g\equiv\prod_{x\colon A}f(x)\eq{B(x)}g(x)$. Since each $B(x)$ is contractible, by part e)  $f(x)\eq{B(x)}g(x)$ is contractible for every $x\colon A$. The conclusion follows from part~a). 
+    \end{enumerate}
 \end{proof}
 
 \begin{defn}\label{defn:type-retract}
     A \textsl{retraction} (a.k.a.~\textsl{split surjection}) is a function $r\colon A\to B$ such that there exists a function $s\colon B\to A$, called its \textsl{section}, and a homotopy $\eta\colon r\circ s\sim\id_B$. When a retraction exists, we say that $B$ is a \textsl{retract} of~$A$.
 \end{defn}
 
-\begin{lem}\label{lem:contractible-retracts}
+\begin{prop}\label{prop:contractible-retracts}
     Every retract of a contractible type is contractible.
-\end{lem}
+\end{prop}
 
 \begin{proof}
     Let\/ $A$ be contractible and\/ $r\colon A\to B$ a retraction. If\/ $a\colon A$ denotes its center of contraction, we claim that\/ $b\defeq r(a)$ is a center of contraction for\/ $B$. This means that we must construct a witness of

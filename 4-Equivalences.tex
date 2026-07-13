@@ -933,17 +933,61 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     
 \end{proof}
 
-\begin{lem}\fe\label{lem:isContr-is-mere-proposition}
+\begin{lem}\label{lem:mere-prop-iff-inhabitable->contractibe}
+    For any type\/ $A\colon\univ$, the types\/ $\fun{isProp}(A)$ and\/ $A\to\fun{isContr}(A)$ are logically equivalent.
+\end{lem}
+
+\begin{proof}
+    For the forward map, consider the assignment
+    \begin{align*}
+        \fun{isProp}(A)&\to(A\to\fun{isContr}(A))\\
+        p&\mapsto\lambda x.\,\dep{x,p(x)},
+    \end{align*}
+    which is well-defined because
+    \[
+        p\colon\prod_{x\colon A}\prod_{y\colon A}x\eq Ay.
+    \]
+    For the backward map, fix $f\colon A\to\fun{isContr}(A)$. To produce a witness of $\fun{isProp}(A)$, we must construct a path $x\eq Ay$ for any given elements $x,y\colon A$. 
+    
+    Since $x\colon A$, evaluating $f$ at $x$ yields a proof that $A$ is contractible. Therefore, $c\defeq\pi_1(f(x))$ is a center of contraction and
+    \[
+        \pi_2(f(x))\colon\prod_{z\colon A}c\eq Az.
+    \]
+    Hence,
+    \[
+        \explain[x\eq Ac]{\pi_2(f(x))(x)^{-1}}
+        \ct
+        \explain[c\eq Ay]{\pi_2(f(x))(y)}\colon x\eq Ay
+    \]
+    is the required path.
+\end{proof}
+
+\begin{lem}\we\label{lem:isContrMap-is-mere-proposition}
     For any\/ $f\colon A\to B$, the type\/ $\fun{isContrMap}(f)$ is a mere proposition.
 \end{lem}
 
 \begin{proof}
-    By Theorem~\ref{thm:isContr-is-a-mere-proposition}, $\fun{isContr}(\fun{fib}_f(y))$ is a mere proposition for all $y\colon B$. Therefore, by part~a) of Theorem~\ref{thm:contractible-types}, we deduce that \eqref{eq:isContr-map} is contractible as well.
-    %
+    By Lemma~\ref{lem:mere-prop-iff-inhabitable->contractibe}, to prove that $\fun{isContrMap}(f)$ is a mere proposition, we assume that there is an element
+    \[
+        c\colon\fun{isContrMap}(f).
+    \]
+    By definition,
+    \[
+        \fun{isContrMap}(f)\equiv\prod_{y\colon B}\fun{isContr}(\fun{fib}_f(y)).
+    \]
+    Hence, $c(y)$ is a proof that $\fun{fib}_f(y)$ is contractible for every $y\colon B$. 
+    
+    By Theorem~\ref{thm:isContr-is-a-mere-proposition}, the type $\fun{isContr}(\fun{fib}_f(y))$ is a mere proposition for each $y\colon B$. 
+    
+    Since $\fun{isContr}(\fun{fib}_f(y))$ is both a mere proposition and inhabited by $c(y)$, it is contractible for every $y\colon B$. 
+    
+    We can now apply the weak function extensionality axiom to the family of types $P(y)\equiv\fun{isContr}(\fun{fib}_f(y))$. Since each fiber $P(y)$ is contractible, the product type $\prod_{y\colon B}P(y)$ is contractible.
+    
+    Because this product type is definitionally equal to $\fun{isContrMap}(f)$, we conclude that $\fun{isContrMap}(f)$ is contractible, hence, is a mere proposition.
     
 \end{proof}
 
-\begin{thm}\fe\label{thm:isContr-ishae-equivalence}
+\begin{thm}\we\label{thm:isContr-ishae-equivalence}
     For any\/ $f\colon A\to B$, we have\/ $\fun{isContrMap}(f)\simeq\fun{ishae}(f)$.
 \end{thm}
 
@@ -1233,7 +1277,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
 \end{thm}
 
 \begin{proof}
-    Let $g$ be a retract of an equivalence $f$. By Theorem~\ref{thm:equivalence-fibers-are-contractible}, every fiber of $f$ is contractible. Furthermore, Lemma~\ref{lem:retract-fib} establishes that each fiber of $g$ is a retract of a corresponding fiber of $f$. Since retracts of contractible types are themselves contractible by Lemma~\ref{lem:contractible-retracts}, it follows that all fibers of $g$ are contractible. Thus, $g$ is an equivalence by Theorem~\ref{thm:isContr->ishae}.
+    Let $g$ be a retract of an equivalence $f$. By Theorem~\ref{thm:equivalence-fibers-are-contractible}, every fiber of $f$ is contractible. Furthermore, Lemma~\ref{lem:retract-fib} establishes that each fiber of $g$ is a retract of a corresponding fiber of $f$. Since retracts of contractible types are themselves contractible by Proposition~\ref{prop:contractible-retracts}, it follows that all fibers of $g$ are contractible. Thus, $g$ is an equivalence by Theorem~\ref{thm:isContr->ishae}.
     %
 
 \end{proof}
@@ -1754,13 +1798,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
 
 \section{Univalence Implies Function Extensionality}\label{UA-implies-FE}
 
-\begin{defn}
-    For any type $A$ and any type family $P\colon A\to\univ$, the \textsl{weak function extensionality principle} asserts the existence of a function
-    \[
-        \Bigl(\prod_{x\colon A}\fun{isContr}(P(x))\Bigr)
-        \to\fun{isContr}\Bigl(\prod_{x\colon A}P(x)\Bigr).
-    \]
-\end{defn}
+In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
 
 \begin{rem}
     The following lemma is proved without using the function extensionality axiom.
@@ -1847,7 +1885,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
             &\equiv\lambda x.\,f(x)\\
             &\equiv f,
     \end{align*}
-    as desired. Since the fiber is contractible by Remark~\ref{rem:equivalence-fib-is-contractible}, the result follows from Lemma~\ref{lem:contractible-retracts}.
+    as desired. Since the fiber is contractible by Remark~\ref{rem:equivalence-fib-is-contractible}, the result follows from Proposition~\ref{prop:contractible-retracts}.
     %
     
 \end{proof}
@@ -1879,7 +1917,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
             &\simeq\prod_{x\colon A}\;
                 \sum_{u\colon P(x)}f(x)\eq{P(x)}u.
     \end{align*}
-    Note that the inner $\Sigma$-type is contractible by the same lemma as before. From part~a) of Theorem~\ref{thm:contractible-types}, it follows that the outer $\Pi$-type is contractible as well. Hence the codomain type of $\gamma$ is contractible. Using Lemmas~\ref{lem:contractible-equivalences} and~\ref{lem:mere-proposition-equivalence}, we see that $\gamma$ induces an equivalence.
+    Note that the inner $\Sigma$-type is contractible by the same lemma as before. From weak function extensionality, it follows that the outer $\Pi$-type is contractible as well. Hence the codomain type of $\gamma$ is contractible. Using Lemmas~\ref{lem:contractible-equivalences} and~\ref{lem:mere-proposition-equivalence}, we see that $\gamma$ induces an equivalence.
 
     Consider the fiberwise transformation
     \[
@@ -1904,29 +1942,9 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     To facilitate the verification that the deduction of function extensionality from the univalence axiom is not circular, we provide the combined dependency tree for the proofs of Theorems~\ref{thm:univalence-implies-weak-funext} and~\ref{thm:weak-funext-implies-funext}. Nodes rendered in gray indicate repeated dependencies. Note also that there is no need to list results previous to section \S\,\ref{function-extensionality-axiom}.
 
 {\small
-\begin{itemize}[label=$\blacklozenge$]
-    \item \textbf{Theorem~\ref{thm:weak-funext-implies-funext}}
-    \begin{itemize}[label=$\triangleright$]
-        \item Lemma~\ref{lem:Sigma-identity-is-contractible}
-        \item Theorem~\ref{thm:contractible-types} (part a)
-        \item Lemma~\ref{lem:contractible-equivalences}
-        \begin{enumerate}[label=$\scriptstyle\bullet$]
-                        \item Lemma~\ref{lem:mere-prop-and-1}
-                        %\item \ref{lpar:Pi-types-over-product}
-        \end{enumerate}
-        \item Lemma~\ref{lem:mere-proposition-equivalence}
-        \item Definition~\ref{defn:total-map}
-        \item Theorem~\ref{thm:total-fib-equivalence}
-        \begin{itemize}[$\circ$]
-            \item Lemma~\ref{lem:Sigma-identity-is-contractible}
-        \end{itemize}
-        \item Theorem~\ref{thm:isContr-ishae-equivalence}
-        \item Theorem~\ref{thm:univalence-implies-weak-funext}
-    \end{itemize}
-\end{itemize}
-
 \begin{itemize}[label=$\diamond$]
     \item \textbf{Theorem~\ref{thm:univalence-implies-weak-funext}}
+        ($\UA\Rightarrow\WE$)
     \begin{itemize}[label=$\triangleright$]
         \item Proposition~\ref{prop:projection-equivalence}
         \begin{itemize}[label=$\star$]
@@ -1934,17 +1952,19 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
             \begin{itemize}[label=$\circ$]
                 %\item Proposition~\ref{prop:sigma-associativity}
                 %\item Proposition~\ref{prop:sigma-commutativity}
-                \item\gref{Lemma~\ref{lem:Sigma-identity-is-contractible}}
+                \item {Lemma~\ref{lem:Sigma-identity-is-contractible}}
                 \begin{enumerate}[label=$\scriptstyle\bullet$]
-                    \item\gref {Proposition~\ref{prop:transport-decomposition-for-paths}}
+                    \item {Proposition~\ref{prop:transport-decomposition-for-paths}}
                 \end{enumerate}
                 \item Theorem~\ref{thm:contractible-types} (part d)
                 \begin{enumerate}[label=$\scriptstyle\bullet$]
                     \item Theorem~\ref{thm:isContr-is-a-mere-proposition}
+                        (not used in part d)
                     \item Theorem~\ref{thm:mere-propositions}
-                    \item\gref{Lemma~\ref{lem:contractible-equivalences}}
+                        (part d)
+                    \item {Lemma~\ref{lem:contractible-equivalences}}
                     \begin{enumerate}[label=$\scriptstyle-$]
-                        \item\gref{Lemma~\ref{lem:mere-prop-and-1}}
+                        \item{Lemma~\ref{lem:mere-prop-and-1}}
                         %\item \ref{lpar:Pi-types-over-product}
                     \end{enumerate}
                 \end{enumerate}
@@ -1983,9 +2003,37 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
                 \item \gref{Proposition~\ref{prop:transport-decomposition-for-paths}}
             \end{itemize}
         \end{itemize}
-        \item Lemma~\ref{lem:contractible-retracts}
+        \item Proposition~\ref{prop:contractible-retracts}
     \end{itemize}
 \end{itemize}
+It is easy to check that none of these results use \WE\ or \FE.
+
+\needspace{3\baselineskip}
+\begin{itemize}[label=$\blacklozenge$]
+    \item \textbf{Theorem~\ref{thm:weak-funext-implies-funext}}
+        ($\WE\Rightarrow\FE$)
+    \begin{itemize}[label=$\triangleright$]
+        \item Lemma~\ref{lem:Sigma-identity-is-contractible}
+        %\item Theorem~\ref{thm:contractible-types} (part a)
+        \item \gref{Lemma~\ref{lem:contractible-equivalences}}
+        \begin{enumerate}[label=$\scriptstyle\bullet$]
+                        \item \gref{Lemma~\ref{lem:mere-prop-and-1}}
+                        %\item \ref{lpar:Pi-types-over-product}
+        \end{enumerate}
+        \item Lemma~\ref{lem:mere-proposition-equivalence}
+        \item Definition~\ref{defn:total-map}
+        \item Theorem~\ref{thm:total-fib-equivalence}
+        \begin{itemize}[$\circ$]
+            \item Lemma~\ref{lem:Sigma-identity-is-contractible}
+        \end{itemize}
+        \item Theorem~\ref{thm:isContr-ishae-equivalence} (\WE)
+        %\begin{itemize}[$\circ$]
+            %\item \gref{Lemma~\ref{lem:isContrMap-is-mere-proposition}}
+        %\end{itemize}
+        %\item Theorem~\ref{thm:univalence-implies-weak-funext}
+    \end{itemize}
+\end{itemize}
+As we can see, the dependency on $\WE$ happens in Theorem~\ref{thm:isContr-ishae-equivalence}.\footnote{For further revision see \S\,\ref{FE-dependencies}.}
 }
 \end{rem}
 
