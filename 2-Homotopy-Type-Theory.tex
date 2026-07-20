@@ -369,7 +369,7 @@
     Given a pointed type $(A,a)$, we define the \textsl{loop space} of $(A,a)$ as the following pointed type:
     \begin{align*}
         \Omega&\colon\puniv\to\puniv\\
-        \Omega(\dep{A,a})&\defeq\dep{(a\eq Aa),\fun{refl}_a}.        
+        \Omega(\dep{A,a})&\defeq\dep{a\eq Aa,\fun{refl}_a}.        
     \end{align*}
     An element of the underlying type $a\eq Aa$ is called a \textsl{loop} at $a$.
     
@@ -392,6 +392,10 @@
             \equiv\Omega^n(\Omega(\dep{A,a})).
     \]
 \end{defn}
+
+\begin{ntn}\label{ntn:loop-space}
+    By abuse of notation, we will sometimes identify $\Omega(\dep{A,a})$ with $\pi_1(\Omega(\dep{A,a}))\equiv a\eq Aa$. The following definition is an example.
+\end{ntn}
 
 \begin{defn}
     Given a function $f\colon A\to B$ and a point $a\colon A$, the \textsl{induced map on loops} is the function
@@ -1513,6 +1517,14 @@ Let\/ $f\colon A\to B$. Then:
         A\simeq B\defeq\!\!\!\sum_{f\colon A\to B}\fun{isequiv}(f).
     \]
 \end{defn}
+
+\begin{rem}
+    Two types $A$ and $B$ are \textsl{logically equivalent} when the type
+    \[
+        (A\to B)\times(B\to A)
+    \]
+    is inhabited. While equivalent types are logically equivalent, the reciprocal is not generally true.\footnote{See, however, Lemma~\ref{lem:mere-proposition-equivalence}.}
+\end{rem}
 
 \begin{prop}\label{prop:qinv-composition}
     The following properties hold
@@ -3861,12 +3873,12 @@ Because of the base code we defined in \eqref{eq:happly-basecode}, we have
 
 Since the basic rules of type theory do not provide a way to construct a quasi-inverse for\/ $\fun{happly}$, we introduce the Function Extensionality axiom to formally establish the equivalence between function equality and pointwise homotopy.
 
-\textbf{Axiom.} [Function Extensionality] The homotopy application function \eqref{eq:homotopy-application} is an equivalence.\footnote{We will see in later chapters that this axiom follows both from univalence and from the interval type.}
+\textbf{Axiom.} [Function Extensionality]. The homotopy application function \eqref{eq:homotopy-application} is an equivalence.\footnote{We will see in later chapters that this axiom follows both from univalence and from the interval type.}
 
 The axiom asserts that\/ $\fun{happly}$ has a quasi-inverse
-\begin{align*}
+\begin{align}\label{axiom:FE}
     \fun{funext}&\colon\fun{Code}(f,g)\to(f\eq\Gamma g),
-\end{align*}
+\end{align}
 which, by definition, satisfies the following homotopies for any path\/ $p\colon f\eq\Gamma g$ and any pointwise homotopy\/ $\eta\colon\fun{Code}(f,g)$:
 \begin{align*}
     \fun{funext}(\fun{happly}(p))
@@ -5222,7 +5234,7 @@ The first unit laws holds definitionally
         &\eq{A\simeq B}d.
 \end{align*}
 
-\begin{prop}\label{prop:transport-ua-precomp}
+\begin{prop}\ua\label{prop:transport-ua-precomp}
     Let\/ $E,A,B\colon\univ$ be types. Then, given an equivalence $e \colon E\simeq A$ and a function\/ $g\colon E\to B$, we have
     \[
         \fun{transport}^{\lambda X.\,(X\to B)}(\fun{ua}(e),g)
@@ -6536,13 +6548,14 @@ where
 \end{align*}
 Note that
 \[
-    \fun{pair}^=(p,\fun{refl}_{m'})\colon(A,m)\eq{\Sigma_\univ M}(B,m')
+    \fun{pair}^=(p,\fun{refl}_{m'})\colon(\dep{A,m})
+        \eq{\Sigma_\univ M}(\dep{B,m'})
 \]
 serves as the base path to transport the associativity proof $a$ into its new fiber $\fun{Assoc}_{\Sigma}(B,m')$.
 
 We have proven the following
-\begin{thm}
-    Let\/ $A$ and\/ $B$ be types, and let\/ $(m,a)$ be a semigroup structure on\/ $A$. Given an equivalence\/ $e\colon A\simeq B$, the univalence axiom induces a semigroup structure\/ $(m',a')$ on\/ $B$ defined by
+\begin{thm}\ua
+    Let\/ $A$ and\/ $B$ be types, and let\/ $\dep{m,a}$ be a semigroup structure on\/ $A$. Given an equivalence\/ $e\colon A\simeq B$, the univalence axiom induces a semigroup structure\/ $(m',a')$ on\/ $B$ defined by
     \begin{align*}
         m'&\defeq\fun{transport}^M(\fun{ua}(e),m)\\
         a'&\defeq\fun{transport}^{\fun{Assoc}_{\Sigma}}
@@ -8174,7 +8187,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
 \end{solution}
 
 
-\begin{exr}${}$\fe
+\begin{exr}${}$\fe\ \ua
     \begin{enumerate}[a),font=\upshape]
         \item Show that if\/ $A\simeq B$ and\/ $A'\simeq B'$, then\/ $(A\times A')\simeq(B\times B')$.
         \item Give two proofs of this fact, one using univalence and one not using it, and show that the two proofs are equal.
@@ -8953,7 +8966,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \]
 \end{solution}
 
-\begin{exr}
+\begin{exr}\ua
     The lemma in {\upshape Exercise~\ref{exr:2-simeq-2-simeq-2}} shows that $0_{\fun2}\ne_{\fun2}1_{\fun2}$. Show that, nevertheless, 
     \[
         \dep{\fun2,0_{\fun2}}
