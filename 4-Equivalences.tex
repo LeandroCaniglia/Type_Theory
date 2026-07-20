@@ -531,18 +531,26 @@
     \]
 \end{proof}
 
-\begin{thm}\fe\label{thm:qinv-is-not-mere-proposition}
-    There exist types\/ $A$ and\/ $B$ and a function\/ $f\colon A\to B$ such that\/ $\fun{qinv}(f)$ is not a mere proposition. 
+\begin{thm}\fe\ \ua\label{thm:qinv-is-not-mere-proposition}
+    There exists a type\/ $A$ such that\/ $\fun{qinv}(\id_A)$ is not a mere proposition. 
 \end{thm}
 
 \begin{proof}
     By Proposition~\ref{prop:qinv-id-homotopy-equivalence}, it suffices to construct a type $A$ and a homotopy $\eta\colon\id_A\sim\id_A$ with $\eta\ne(\lambda x.\,\fun{refl}_x)$.
 
-    For the type, we set
+    For the type we set
     \[
         A\defeq\sum_{X\colon\univ}\lVert\fun2\eq\univ X\rVert.
     \]
-    Let $a\defeq\dep{\fun2,\lvert\fun{refl}_{\fun2}\rvert}\colon A$, and consider the equivalence $e\colon\fun2\simeq\fun2$ induced by the map $\fun{not}$ introduced in Exercise~\ref{exr:not}. By the lemma included in the solution to Exercise~\ref{exr:2-simeq-2-simeq-2}, $\fun{not}\ne\id_{\fun2}$. Consequently, $e$ is not the identity equivalence, meaning that the path $q\defeq\fun{ua}(e)$ satisfies $q\ne\fun{refl}_{\fun2}$.
+    Let $a\defeq\dep{\fun2,\lvert\fun{refl}_{\fun2}\rvert}\colon A$, and consider the equivalence $e\colon\fun2\simeq\fun2$ induced by the map $\fun{not}$ introduced in Exercise~\ref{exr:not}. The lemma included in the solution to Exercise~\ref{exr:2-simeq-2-simeq-2} shows that $\fun{not}\ne\id_{\fun2}$.
+    
+    Let $e_{\id}\colon\fun2\simeq\fun2$ be the identity equivalence. Since $\pi_1(e)\equiv\fun{not}$ and $\pi_1(e_{\id})\equiv\id_{\fun2}$, we deduce that $e\ne e_{\id}$.
+    
+    On the other hand, by definition, we have $\fun{idtoeqv}(\fun{refl}_{\fun2})\equiv e_{\id}$. Because $\fun{ua}$ and $\fun{idtoeqv}$ are quasi-inverses, this yields the propositional equality
+    \[
+        \fun{refl}_{\fun2}=\fun{ua}(\fun{idtoeqv}(\fun{refl}_{\fun2}))\equiv\fun{ua}(e_{\id}).
+    \]
+    Thus, defining $q\defeq\fun{ua}(e)$, we obtain $q\ne\fun{refl}_{\fun2}$.
 
     Since we intend to use Lemma~\ref{lem:conditioned-id-id-homotopy}, we need to prove the three conditions stated there.
 
@@ -997,7 +1005,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     
 \end{proof}
 
-\begin{cor}\fe\label{cor:map-followed-by-map-to-isequiv}
+\begin{cor}\we\label{cor:map-followed-by-map-to-isequiv}
     Let\/ $f\colon A\to B$ be a map, and suppose we have another map\/ $B\to\fun{isequiv}(f)$. Then\/ $f$ is an equivalence.
 \end{cor}
 
@@ -1085,7 +1093,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     
 \end{proof}
 
-\begin{thm}\fe
+\begin{thm}\fe\label{thm:equivalence-iff-embedding+surjective}
     A function\/ $f\colon A\to B$ induces an equivalence if, and only if, it is both surjective and an embedding.
 \end{thm}
 
@@ -1353,7 +1361,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     
 \end{proof}
 
-\begin{cor}
+\begin{cor}\label{cor:total(f)-isequiv-iff-f-is-equiv}
     Let\/ $f$ be a fiberwise transformation. Then\/ $f$ is a fiberwise equivalence if, and only if, $\fun{total}(f)$ is an equivalence.
 \end{cor}
 
@@ -1361,6 +1369,55 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
     This is a direct consequence of the preceding theorem and Theorem~\ref{thm:isContr->ishae}.
     %
     
+\end{proof}
+
+\begin{cor}\label{cor:total-extension}
+    Let\/ $A$ and\/ $B$ be types, and let\/ $\phi\colon A\simeq B$ be an equivalence. Given type families\/ $P\colon A\to\univ$ and\/ $Q\colon B\to\univ$, along with a family of equivalences
+    \[
+        f\colon\prod_{x\colon A}P(x)\simeq Q(\phi(x)),
+    \]
+    there is an equivalence
+    \[
+        \sum_{x\colon A}P(x)\simeq\sum_{y\colon B}Q(y)
+    \]
+    whose underlying function maps\/ $\dep{x,p}$ to\/ $\dep{\phi(x),f(x)(p)}$.
+\end{cor}
+
+\begin{proof}
+    By the theorem, the family of equivalences $f$ induces an equivalence of total spaces over $A$,
+    \[
+        \fun{total}(f)\colon
+            \Bigl(
+                \sum_{x\colon A}P(x)
+            \Bigr)
+            \simeq
+            \Bigl(
+                \sum_{x\colon A}Q(\phi(x))
+            \Bigr).
+    \]
+    Furthermore, since $\phi\colon A\simeq B$ is an equivalence, reindexing the total space along $\phi$ yields another equivalence,
+    \[
+        e\colon\Bigl(\sum_{x\colon A}Q(\phi(x))\Bigr)\simeq\Bigl(\sum_{y\colon B}Q(y)\Bigr),
+    \]
+    defined by $e(\dep{x,q})\defeq\dep{\phi(x), q}$.
+
+    By composition we obtain the equivalence
+    \[
+        e\circ\fun{total}(f)\colon
+            \Bigl(
+                \sum_{x\colon A}P(x)
+            \Bigr)
+            \simeq
+            \Bigl(
+                \sum_{y\colon B}Q(y)
+            \Bigr).
+    \]
+    Evaluating this composition at an arbitrary pair $\dep{x,p}$ gives
+    \[
+        (e\circ\fun{total}(f))(\dep{x,p})\equiv e(\dep{x,f(x)(p)})
+            \equiv\dep{\phi(x),f(x)(p)},
+    \]
+    as stated.
 \end{proof}
 
 \section{The Object Classifier}
@@ -1457,7 +1514,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     \]
 \end{proof}
 
-\begin{thm}\fe\label{thm:HoTT-Grothendieck-construction}
+\begin{thm}\fe\ \ua\label{thm:HoTT-Grothendieck-construction}
     For any type\/ $B$, there is an equivalence
     \[
         \chi\colon
@@ -1537,7 +1594,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     Now function extensionality gives the desired equality.
 \end{proof}
 
-\begin{rem}
+\begin{rem}\ua
     Given a type $B\colon\univ$, the total space
     \[
         E\defeq\sum_{A\colon\univ}A\to B
@@ -1804,7 +1861,7 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
     The following lemma is proved without using the function extensionality axiom.
 \end{rem}
 
-\begin{lem}\label{lem:base-equivalence-implies-bundle-equivalence}
+\begin{lem}\ua\label{lem:base-equivalence-implies-bundle-equivalence}
     Assuming the univalence axiom, for any types\/ $A,B,X\colon\univ$ and any equivalence\/ $e\colon A\simeq B$, post-composition with\/ $e$ induces an equivalence
     \[
         (X\to A)\simeq(X\to B).
@@ -1812,19 +1869,20 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
 \end{lem}
 
 \begin{proof}
-    By the univalence axiom, the map $\fun{idtoeqv}\colon(A\eq{\univ}B)\to(A\simeq B)$ induces an equivalence with quasi-inverse $\fun{ua}$. Thus, to prove the statement for an arbitrary equivalence $e\colon A\simeq B$, it suffices to assume that $B\equiv A$ and that $e\equiv\fun{idtoeqv}(\fun{refl}_A)$ is the identity equivalence on~$A$.
-
-    Under this assumption, the underlying function of $e$ is $\id_A\colon A\to A$. We must provide an equivalence $(X\to A)\simeq(X\to A)$ whose underlying map is post-composition with $\id_A$.
-
-    We choose the identity equivalence on $X\to A$. Its underlying map is the identity function $\id_{X\to A}$, and for any $h\colon X\to A$, we have the judgmental equalities
+    By the univalence axiom, the map $\fun{idtoeqv}\colon(A\eq{\univ}B)\to(A\simeq B)$ is an equivalence. Therefore, to prove a property for an arbitrary equivalence $e\colon A\simeq B$, it suffices to prove it for an equivalence of the form $\fun{idtoeqv}(p)$ for some path $p\colon A\eq{\univ}B$. 
+    
+    By path induction on $p$, we may assume that $B\equiv A$ and $p\equiv\fun{refl}_A$. Under this assumption, the equivalence $e\equiv\fun{idtoeqv}(\fun{refl}_A)$ is the identity equivalence on $A$, whose underlying function is $\id_A\colon A\to A$. 
+    
+    For any function $h\colon X\to A$, post-composition with the underlying map of $e$ yields
     \[
-        \id_{X\to A}(h)\equiv h\equiv\id_A\circ h.
+        \id_A\circ h\equiv h.
     \]
-    Thus, the underlying map of the identity equivalence is judgmentally equal to post-composition with the underlying map of $e$, completing the proof.
+    Thus, the post-composition map is definitionally equal to the identity function $\id_{X\to A}$. Since the identity function is an equivalence, the proof is complete.
+    %
     
 \end{proof}
 
-\begin{prop}\label{prop:projection-equivalence}
+\begin{prop}\ua\label{prop:projection-equivalence}
     Let\/ $P\colon A\to\univ$ be a family of contractible types. Then the projection\/ $\pi_1\colon\Sigma_AP\to A$ is an equivalence. If\/ $\univ$ is univalent, then post-composition with\/ $\pi_1$ gives an equivalence
     \[
         (A\to\Sigma_AP)\simeq(A\to A).
@@ -1837,11 +1895,9 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
         \fun{fib}_{\pi_1}(x)\simeq P(x).
     \]
     In particular, $\fun{fib}_{\pi_1}(x)$ is contractible itself by Lemma~\ref{lem:contractible-equivalences}. Thus, Theorem~\ref{thm:isContr->ishae} implies that $\pi_1$ induces an equivalence. The second conclusion is a direct consequence of Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence}.
-    %
-    
 \end{proof}
 
-\begin{thm}\label{thm:univalence-implies-weak-funext}
+\begin{thm}\ua\label{thm:univalence-implies-weak-funext}
     The univalence axiom implies the weak function extensionality principle.
 \end{thm}
 
@@ -1890,7 +1946,7 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
     
 \end{proof}
 
-\begin{thm}\label{thm:weak-funext-implies-funext}
+\begin{thm}\we\label{thm:weak-funext-implies-funext}
     The weak function extensionality principle implies the function extensionality axiom.
 \end{thm}
 
@@ -1938,7 +1994,7 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
     
 \end{proof}
 
-\begin{rem}
+\begin{rem}\label{rem:dependency-trees}
     To facilitate the verification that the deduction of function extensionality from the univalence axiom is not circular, we provide the combined dependency tree for the proofs of Theorems~\ref{thm:univalence-implies-weak-funext} and~\ref{thm:weak-funext-implies-funext}. Nodes rendered in gray indicate repeated dependencies. Note also that there is no need to list results previous to section \S\,\ref{function-extensionality-axiom}.
 
 {\small
@@ -1946,7 +2002,7 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
     \item \textbf{Theorem~\ref{thm:univalence-implies-weak-funext}}
         ($\UA\Rightarrow\WE$)
     \begin{itemize}[label=$\triangleright$]
-        \item Proposition~\ref{prop:projection-equivalence}
+        \item Proposition~\ref{prop:projection-equivalence} (\UA)
         \begin{itemize}[label=$\star$]
             \item Proposition~\ref{prop:pi_1-fibers}
             \begin{itemize}[label=$\circ$]
@@ -1982,7 +2038,7 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
                     \item \gref{Proposition~\ref{prop:transport-decomposition-for-paths}}
                 \end{enumerate}
             \end{itemize}
-            \item Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence}
+            \item Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence} (\UA)
         \end{itemize}
         \item Equation~\eqref{eq:happly-refl}
         \item Equation~\eqref{eq:happly-basecode}
@@ -1998,7 +2054,6 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
                         \item Lemma~\ref{lem:X->X-id-homotopy}
                     \end{enumerate}
                 \end{enumerate}
-                \item Definition~\ref{defn:fiber-over-y}
                 %\item Lemma~\ref{lem:post-composition-transport}
                 \item \gref{Proposition~\ref{prop:transport-decomposition-for-paths}}
             \end{itemize}
@@ -2006,7 +2061,7 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
         \item Proposition~\ref{prop:contractible-retracts}
     \end{itemize}
 \end{itemize}
-It is easy to check that none of these results use \WE\ or \FE.
+It is easy to check that none of these results depend on \WE\ or \FE.
 
 \needspace{3\baselineskip}
 \begin{itemize}[label=$\blacklozenge$]
@@ -2386,7 +2441,7 @@ As we can see, the dependency on $\WE$ happens in Theorem~\ref{thm:isContr-ishae
     \end{enumerate}
 \end{solution}
 
-\begin{exr}
+\begin{exr}\label{exr:f-equiv-implies-apf-equiv}
     Prove that equivalences satisfy the $2$-out-of-$6$ property: given\/ $f\colon A\to B$ and\/ $g\colon B\to C$ and\/ $h\colon C\to D$, if\/ $g\circ f$ and\/ $h\circ g$ are equivalences, so are\/ $f$, $g$, $h$, and\/ $h\circ g\circ f$. Use this to give a higher-level proof of\/ {\upshape Theorem~\ref{thm:f-equiv-implies-apf-equiv}}.
 \end{exr}
 
@@ -2496,13 +2551,13 @@ As we can see, the dependency on $\WE$ happens in Theorem~\ref{thm:isContr-ishae
     \]
     by path induction in the obvious way. Let \textsl{$\fun{qinv}$-univalence} denote the modified form of the univalence axiom which asserts that for all\/ $A,B\colon\univ$ the function\/ $\fun{idtoqinv}_{A,B}$ has a quasi-inverse.
     \begin{enumerate}[a),font=\upshape]
-        \item Show that $\fun{qinv}$-univalence can be used instead of univalence in the proof of function extensionality in\/ {\upshape\S\,\ref{UA-implies-FE}}.
+        \item Show that\/ $\fun{qinv}$-univalence can be used instead of univalence in the proof of function extensionality in\/ {\upshape\S\,\ref{UA-implies-FE}}.
         
-        \item Show that $\fun{qinv}$-univalence can be used instead of univalence in the proof of\/ {\upshape Theorem~\ref{thm:qinv-is-not-mere-proposition}}.
+        \item Show that\/ $\fun{qinv}$-univalence can be used instead of univalence in the proof of\/ {\upshape Theorem~\ref{thm:qinv-is-not-mere-proposition}}.
         
-        \item Show that $\fun{qinv}$-univalence is inconsistent (i.e.\ allows construction of an inhabitant of\/ $\fun0$).
+        \item Show that\/ $\fun{qinv}$-univalence is inconsistent (i.e.\ allows construction of an inhabitant of\/ $\fun0$).
 
-        {\upshape Hint: Consider the fiber $\fun{fib}_{\fun{idtoqinv}_{A,A}}(\dep{\id_A,(\fun{refl},\fun{refl})})$.}
+       {\upshape Hint: Fix $A$ and apply the dependent functor $(\sum_{B\colon\univ},\fun{total})$.}
     \end{enumerate}
     Thus, the use of a ``good'' version of\/ $\fun{isequiv}$ is essential in the statement of univalence.
 \end{exr}
@@ -2527,77 +2582,310 @@ As we can see, the dependency on $\WE$ happens in Theorem~\ref{thm:isContr-ishae
             \item Theorem~\ref{thm:weak-funext-implies-funext}. The proof of this theorem does not rely on univalence at all.
         \end{itemize}
 
-        \item We need to show that condition~a) of Lemma~\ref{lem:total-space-with-mere-proposition-fibers} follows from $\fun{qinv}$-univalence, i.e., that $\fun2\eq\univ\fun2$ is a set, provided $\fun{qinv}$-univalence.
-
-        Hence, it suffices to prove that the type
+        \item Let $\fun{ua'}$ denote the inverse of $\fun{idtoqinv}_{\fun2,\fun2}$ given by $\fun{qinv}$-univalence. First, observe that the same deduction included in the proof of Theorem~\ref{thm:qinv-is-not-mere-proposition} showing that $q\ne\fun{refl}_{\fun2}$ works for $q\defeq\fun{ua'}(e)$.
+        
+        Therefore, to prove that condition~a) of the theorem holds under $\fun{qinv}$-univalence, we must show that the identity type $\fun2\eq\univ\fun2$ is a set. Under $\fun{qinv}$-univalence, this goal reduces to proving that the type
         \[
             \sum_{f\colon\fun2\to\fun2}\fun{qinv}(f)
         \]
         is a set.
         
-        Since $\fun2$ is a set by Theorem~\ref{thm:boolean-type-is-set}, the function type $\fun2\to\fun2$ is a set by part~f) of Theorem~\ref{thm:sets}. Note that we can use this part of the theorem because it relies on function extensionality, which we derived from $\fun{qinv}$-univalence in the previous part of this exercise that it follows from $\fun{qinv}$-univalence.
+        Since $\fun2$ is a set by Theorem~\ref{thm:boolean-type-is-set}, the function type $\fun2\to\fun2$ is a set by part~f) of Theorem~\ref{thm:sets}. Note that we can use this part of the theorem because it relies on function extensionality, which we derived from $\fun{qinv}$-univalence in the previous part of this exercise.
         
-        In addition, $\fun{qinv}(f)$ is a set by Proposition~\ref{prop:qinv-is-a-set}, because that proposition is based on part~a) of Theorem~\ref{thm:mere-propositions}, which also requires function extensionality. Therefore, the result follows from part~e) of Theorem~\ref{thm:sets}.
+        In addition, $\fun{qinv}(f)$ is a set by Proposition~\ref{prop:qinv-is-a-set}, which also requires function extensionality.
+        
+        Thus, condition~a) follows from part~e) of Theorem~\ref{thm:sets}.
+
+        Condition~b) does not depend on univalence.
+
+        Condition~c) can be proved as in the theorem because, in our case, the definitional equality $\fun{idtoqinv}_{\fun2,\fun2}(\fun{refl}_{\fun2})\equiv e_\id$ implies the propositional equality $\fun{ua'}(e_\id)=\fun{refl}_{\fun2}$.
             
-        \item Consider the propositionally commutative triangle
+        \item Fix $A\colon\univ$ and let $B$ run over $\univ$.
+        
+        Let $\phi_f\colon\fun{qinv}(f)\to\fun{ishae}(f)$ and $\psi_f\colon\fun{ishae}(f)\to\fun{qinv}(f)$ be the maps given by Theorem~\ref{thm:qinv->ishae}. Note that
         \[
-            \begin{tikzcd}[row sep=large]
+            \phi_B(\dep{f,q})\equiv\dep{f,\phi_f(q)}
+            \quad\text{and}\quad
+            \psi_B(\dep{f,e})\equiv\dep{f,\psi_f(e)}.
+        \]
+        Consider the triangle
+        \[
+            \begin{tikzcd}[column sep=large,row sep=large]
                 A\eq\univ B
-                        \arrow[r,"{\fun{idtoqinv}_{A,B}}"]
-                        \arrow[rd,"\fun{idtoeqv}_{A,B}"']
-                    &[4em]\sum_{f\colon A\to B}\fun{qinv}(f)
-                        \arrow[d,"\phi"]
-                    &[-2.5em]\scriptstyle\dep{f,\dep{g,(\eta,\vartheta)}}
-                        \arrow[d,mapsto]\\
-                    &\sum_{f\colon A\to B}\fun{isequiv}(f)
-                    &\scriptstyle\dep{f,(\dep{g,\eta},\dep{g,\vartheta})}
+                        \arrow[r,"\fun{idtoqinv}"]
+                        \arrow[rd,"\fun{idtoeqv}"']
+                    &\sum_{f\colon A\to B}\fun{qinv}(f)
+                        \arrow[d,"\phi_B"]
+                        \arrow[l,dotted,bend right=30,"\fun{ua'}"']\\
+                    &A\simeq B
+                        \arrow[u,dotted,bend right=50,"\psi_B"']
             \end{tikzcd}
         \]
-        
-        
-        As suggested, let $e\defeq\dep{\id_A,(\fun{refl},\fun{refl})}$, and consider
+        The propositional commutativity of the solid triangle follows from path induction on $A\eq\univ B$.
+
+        Since $\fun{ishae}(f)$ is a mere proposition, we have
         \[
-            \fun{fib}_{\fun{idtoqinv}_{A,A}}(e)
-                \equiv \sum_{p\colon A\eq{\univ}A}
-                    \fun{idtoqinv}_{A,A}(p)\eq{\Sigma_{A\to A}\fun{qinv}}e.
+            \phi_f(\psi_f(e))\eq{\fun{ishae}(f)}e,
         \]
-        By Theorem~\ref{thm:equivalence-fibers-are-contractible}, this type is contractible, with center of contraction $\dep{\fun{refl}_A,\fun{refl}_e}$. Let $\dep{p,\epsilon}$ be an arbitrary point in the fiber. Then,
+        for $e\colon\fun{ishae}(f)$. This means that $\phi_f\circ\psi_f\sim\id_{\fun{ishae}(f)}$. From part~a) we know that $\fun{qinv}$-univalence implies function extensionality. It follows that $\phi_f\circ\psi_f\eq{}\id_{\fun{ishae}(f)}$.
+
+        Therefore,
+        \begin{align*}
+            \phi_B(\psi_B(\dep{f,e}))
+                &\equiv\phi_B(\dep{f,\psi_f(e)})\\
+                &\equiv\dep{f,\phi_f(\psi_f(e))}\\
+                &\eq{A\simeq B}\dep{f,e}.
+        \end{align*}
+        By function extensionality,
         \[
-            p\colon A\eq{\univ}A
+            \phi_B\circ\psi_B\eq{}\id_{A\simeq B}
+                \quad\text{in }(A\simeq B)\to(A\simeq B).
+        \]
+        If we fix $A$ and let $B$ run over $\univ$, the type
+        \[
+            E\defeq\sum_{B\colon\univ}A\eq\univ B
+        \]
+        is contractible with center $\dep{A,\fun{refl}_A}$ by Lemma~\ref{lem:Sigma-identity-is-contractible}. It follows that the total space
+        \[
+            \sum_{B\colon\univ}\sum_{f\colon A\to B}\fun{qinv}(f)
+        \]
+        is contractible as well, because of the equivalence with the type $E$ induced by $\fun{idtoqinv}$. Similarly to what we did above, $\phi_B$ and $\psi_B$ induce maps
+        \[
+            \begin{tikzcd}[column sep=huge]
+                \sum_{B\colon\univ}\sum_{f\colon A\to B}\fun{qinv}(f)
+                        \arrow[r,"\Phi",bend left]
+                    &\sum_{B\colon\univ}A\simeq B
+                        \arrow[l,"\Psi",bend left]
+            \end{tikzcd}
+        \]
+        that satisfy, by function extensionality,
+        \[
+            \Phi\circ\Psi\eq{}\id_{\sum_{B\colon\univ}A\simeq B}.
+        \]
+        Thus, $\Phi$ is a retraction out of a contractible type. By Proposition~\ref{prop:contractible-retracts}, the type $\sum_{B\colon\univ}A\simeq B$ must be contractible as well.\footnote{In other words, we have proved that $\fun{qinv}$-univalence implies univalence.} It follows that $\Phi$ is quasi-invertible.
+        
+        Now, according to Definition~\ref{defn:total-map},
+        \[
+            \Phi\equiv\fun{total}(\lambda B.\,\phi_B)
             \quad\text{and}\quad
-            \epsilon\colon\fun{idtoqinv}_{A,A}(p)\eq{}e,
+            \phi_B\equiv\fun{total}(\lambda f.\,\phi_f).
         \]
-        and we have a path
+        Since $\Phi$ induces an equivalence, Corollary~\ref{cor:total(f)-isequiv-iff-f-is-equiv}, applied twice, implies that $\phi_f$ is an equivalence for all $f$.
+
+        By part b), there is a type\/ $A\colon\univ$ and a map\/ $f\colon A\to A$ such that\/ $\fun{qinv}(f)$ is not a mere proposition. Since the type\/ $A$ was fixed arbitrarily earlier, we can now specialize to this particular\/ $A$ for which there exist elements\/ $q,q'\colon\fun{qinv}(f)$ and a map
         \[
-            \dep{p,\epsilon}
-            \eq{\fun{fib}_{\fun{idtoqinv}_{A,A}}(e)}
-            \dep{\fun{refl}_A,\fun{refl}_e}.
+            \epsilon\colon(q\eq{\fun{qinv}(f)}q')\to\fun0.
         \]
-        Consequently, there exists a path $\alpha\colon p\eq{}\fun{refl}_A$ such that
+        Let $e\defeq\phi_f(q)$ and $e'\defeq\phi_f(q')$. Since $\fun{ishae}(f)$ is a mere proposition, there is a witness $p\colon e\eq{\fun{ishae}(f)}e'$. By the action on paths, we obtain a witness
         \[
-            \fun{transport}^P(\alpha,\epsilon) \eq{} \fun{refl}_e,
+            \fun{ap}_{\psi_f}(p)\colon
+                \psi_f(e)
+                \eq{\fun{qinv}(f)}
+                \psi_f(e').
         \]
-        where the type family $P\colon(A\eq{\univ}A)\to\univ$ is defined by
-        \[
-            P(q)\defeq\fun{idtoqinv}_{A,A}(q) \eq{\Sigma_{A\to A}\fun{qinv}} e.
-        \]
-        Let $Q\colon\Sigma_{A\to A}\fun{qinv}\to\univ$ be defined as
-        \[
-            Q(\zeta)\defeq\zeta\eq{\Sigma_{A\to A}\fun{qinv}}e.
-        \]
-        Then $P\equiv Q\circ\fun{idtoqinv}_{A,A}$, and by Lemma~\ref{lem:post-composition-transport} and Proposition~\ref{prop:transport-decomposition-for-paths}, we have
-        \[
-            \fun{transport}^P(\alpha,\epsilon)
-            \eq{} \fun{transport}^Q(\fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha),\epsilon)
-            \eq{} \fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha)^{-1}\ct\epsilon.
-        \]
-        Hence, since the transported path equals $\fun{refl}_e$, we conclude that
-        \[
-            \epsilon\eq{}\fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha).
-        \]
-        It follows that given any $p\colon A\eq\univ A$, there is a path $\alpha\colon p\eq{}\fun{refl}_e$, such that the dependent pair $\dep{p,\fun{ap}_{\fun{idtoqinv}_{A,A}}(\alpha)}$ is a term in the fiber of $\fun{idtoqinv}_{A,A}$ at $e$.
+        Because $\psi_f$ is the quasi-inverse of $\phi_f$, we have paths $\psi_f(e)\eq{\fun{qinv}(f)}q$ and $\psi_f(e')\eq{\fun{qinv}(f)}q'$. Concatenating these paths yields a witness of $q\eq{\fun{qinv}(f)}q'$, which $\epsilon$ maps to a witness of $\fun0$.
     \end{enumerate}
-
 \end{solution}
-    %
 
+\begin{exr}\label{exr:embedding-equivalence}
+    Show that a function\/ $f\colon A\to B$ is an embedding if, and only if, the following two conditions hold:
+    \begin{enumerate}[a),font=\upshape]
+        \item The function\/ $f$ is left-cancellable, i.e., for any\/ $x,y\colon A$, if\/ $f(x)\eq{B}f(y)$ then\/ $x\eq{A}y$.
+        \item For any\/ $x\colon A$, the map\/ $\fun{ap}_f\colon\Omega(\dep{A,x})\to\Omega(\dep{B,f(x)})$ is an equivalence.\footnote{See Notation~\ref{ntn:loop-space}.}
+    \end{enumerate}
+    (In particular, if\/ $A$ is a set, then\/ $f$ is an embedding if, and only if, it is left-cancellable and\/ $\Omega(\dep{B,f(x)})$ is contractible for all\/ $x\colon A$.) Give examples to show that neither part\/ {\upshape a)} nor part\/ {\upshape b)} implies the other.
+\end{exr}
+
+\begin{solution}
+    Suppose that $f\colon A\to B$ is an embedding. By definition 
+    \[
+        \fun{ap}_f\colon(x\eq Ay)\to(f(x)\eq Bf(y))
+    \]
+    is an equivalence. Let $\fun{ap}_f^{-1}$ be a quasi-inverse of $\fun{ap}_f$.
+    
+    For part a), given $q\colon f(x)\eq Bf(y)$, by definition, $\fun{ap}_f^{-1}(q)\colon x\eq Ay$. Part~a) follows.
+
+    Part b) is trivial because embeddings produce equivalences from all pairs of elements $x,y\colon A$.
+
+    Conversely, suppose that $f\colon A\to B$ satisfies conditions a) and b). We have to prove that $\fun{ap}_f\colon(x\eq Ay)\to(f(x)\eq Bf(y))$ is an equivalence.
+
+    Fix $x\colon A$, and let $y$ run over $A$. We have
+    \[
+    \fun{total}(\fun{ap}_f)\colon
+        \Bigl(\sum_{y\colon A}x\eq Ay\Bigr)
+        \to
+        \Bigl(\sum_{y\colon A}f(x)\eq Bf(y)\Bigr).
+    \]
+    Since part a) establishes the existence of a map $u_{x,y}\colon(f(x)\eq Bf(y))\to(x\eq Ay)$, the map $\fun{total}(\lambda y.\,u_{x,y})$ goes in the backward direction.
+    
+    Because $\sum_{y\colon A}x\eq Ay$ is contractible, the composition $\fun{total}(\lambda y.\,u_{x,y})\circ\fun{total}(\fun{ap}_f)$ is an equivalence.
+
+    By the functoriality of $\fun{total}$ and Corollary~\ref{cor:total(f)-isequiv-iff-f-is-equiv}, we deduce that $u_{x,y}\circ\fun{ap}_f$ is an equivalence. It follows that $\fun{ap}_f$ is an embedding.
+
+    By Theorem~\ref{thm:equivalence-iff-embedding+surjective}, it suffices to show that $\fun{ap}_f\colon(x\eq Ay)\to(f(x)\eq Bf(y))$ is surjective for all $x,y\colon A$.
+
+    Let $q\colon f(x)\eq Bf(y)$ be a target path. We have to prove that $\lVert\fun{fib}_{\fun{ap}_f}(q)\rVert$ is inhabited.
+    
+    Let $p\defeq u_{x,y}(q)$. Then $p\colon x\eq Ay$ and $\fun{ap}_f(p)\colon f(x)\eq Bf(y)$. It follows that $q\ct\fun{ap}_f(p)^{-1}\colon f(x)\eq Bf(x)$. By part~b), there is a path $r\colon x\eq Ax$ such that
+    \[
+        \fun{ap}_f(r)\eq Bq\ct\fun{ap}_f(p)^{-1}.
+    \]
+    Consequently, $\fun{ap}_f(r\ct p)\eq Bq$. Thus, $\fun{fib}_{\fun{ap}_f}(q)$ is inhabited, and the conclusion follows.
+
+    (In the case where $A$ is a set, the type $\Omega(\dep{A,x})$ is, by definition, contractible. Hence, the map $\Omega(\dep{A,x})\to\Omega(\dep{B,f(x)})$ is an equivalence if, and only if, the target type is contractible.)
+
+    Let $A$ be any inhabited non-contractible type. Define the function
+    \begin{align*}
+        f\colon\fun2&\to\univ\\
+        1_{\fun2}&\mapsto A\\
+        0_{\fun2}&\mapsto\fun0.
+    \end{align*}
+    To see that $f$ is left-cancellable, fix $a\colon A$ and let
+    \begin{align*}
+        \zeta\colon(A\eq\univ\fun0)&\to\fun0\\
+        p&\mapsto\fun{idtoeqv}(p)(a),\\[2mm]
+        \zeta'\colon(\fun0\eq\univ A)&\to\fun0\\
+        p&\mapsto\zeta(p^{-1}).
+    \end{align*}
+    Next define the dependent functions
+    \begin{align*}
+        \epsilon_1&\colon\prod_{y\colon\fun2}
+            (A\eq\univ f(y))\to(1_{\fun2}\eq{\fun2}y)\\
+        \epsilon_1(y)&\defeq
+            \fun{ind}_{\fun2}
+                (
+                    P_1,
+                    \fun{rec}_{\fun0}(1_{\fun2}\eq{\fun2}0_{\fun2})
+                        \circ\zeta,
+                    \lambda q.\,\fun{refl}_{1_{\fun2}},
+                    y
+                ),\\[2mm]
+        \epsilon_0&\colon\prod_{y\colon\fun2}
+            (\fun0\eq\univ f(y))\to(0_{\fun2}\eq{\fun2}y)\\
+        \epsilon_0(y)&\defeq
+            \fun{ind}_{\fun2}
+                (
+                    P_0,
+                    \lambda q.\,\fun{refl}_{0_{\fun2}},
+                    \fun{rec}_{\fun0}(0_{\fun2}\eq{\fun2}1_{\fun2})
+                        \circ\zeta',
+                    y
+                ),
+    \end{align*}
+    where $P_0$ and $P_1$ are the type families defined in the products. Then we can define
+    \begin{align*}
+        \epsilon&\colon\prod_{x\colon\fun2}\;\prod_{y\colon\fun2}
+                (f(x)\eq\univ f(y))\to(x\eq{\fun2}y)\\
+            \epsilon(x,y)&\defeq\fun{ind}_{\fun2}
+                (
+                    P,
+                    \epsilon_0(y),
+                    \epsilon_1(y),
+                    x
+                ),
+    \intertext{with}
+        P&\defeq\lambda x.\,\prod_{y\colon\fun2}
+            (f(x)\eq\univ f(y))\to(x\eq{\fun2}y).
+    \end{align*}
+    Thus, $f$ satisfies condition a). However, it does not satisfy b) because, in that case, it would be an embedding, which is generally false. The reason is that $A\eq\univ A$ would have to be contractible, which fails to be true for $A\defeq\fun2$ because $(\fun2\eq\univ\fun2)\simeq\fun2$.
+
+    For the other example, consider $f\colon\fun2\to\fun1$. This function is clearly not left-cancellable. However, it satisfies condition~b) because $\fun2$ is a set.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that the type of left-cancellable functions\/ $\fun2\to B$ (see {\upshape Exercise~\ref{exr:embedding-equivalence}}) is equivalent to\/ $\sum_{x,y\colon B}x\neq y$. Give a similar explicit characterization of the type of embeddings\/ $\fun2\to B$.
+\end{exr}
+
+\begin{solution}
+    We have to define an equivalence
+    \[
+        \Bigl(
+            \sum_{f\colon\fun2\to B}\;
+            \prod_{x,y\colon\fun2}(f(x)\eq Bf(y))\to(x\eq{\fun2}y)
+        \Bigr)
+        \simeq
+        \sum_{u,v\colon B}u\neq v.
+    \]
+    Intuitively, the \lhs represents the functions that satisfy $f(0_{\fun2})\neq f(1_{\fun2})$. Since a function from $\fun2$ to $B$ is nothing but a pair of terms in $B$, the property translates into pairs of distinct elements.
+
+    Consider the map
+    \begin{align*}
+        \alpha\colon(\fun2\to B)&\to B\times B\\
+        f&\mapsto(f(1_{\fun2}),f(0_{\fun2})).
+    \intertext{Its quasi-inverse is}
+        \beta\colon B\times B&\to(\fun2\to B)\\
+        (u,v)&\mapsto\fun{rec}_{\fun2}(B,v,u).
+    \end{align*}
+    The recursion principle for the boolean type $\fun2$ implies that the composition $\alpha\circ\beta$ is the identity. Moreover,
+    \begin{align*}
+        \beta(\alpha(f))&\equiv
+            \fun{rec}_{\fun2}(B,f(0_{\fun2}),f(1_{\fun2}))\\
+            &\eq{\fun2\to B}f.
+    \end{align*}
+
+    Fix $\dep{f,c}$ in the \lhs. Let $\fun{neq}\colon(1_{\fun2}\eq{\fun2}0_{\fun2})\to\fun0$ be the function defined in the lemma of Exercise~\ref{exr:2-simeq-2-simeq-2}. Then 
+    \begin{align*}
+        \fun{neq}\circ c(1_{\fun2},0_{\fun2})
+            &\colon(f(1_{\fun2})\eq Bf(0_{\fun2}))\to\fun0,
+    \end{align*}
+    and we can define the forward function as
+    \begin{align*}
+        \phi(f)\colon
+            \Bigl(
+                \prod_{x,y\colon\fun2}(f(x)\eq Bf(y))\to(x\eq{\fun2}y)
+            \Bigr)
+            &\to
+            \bigl(
+                (f(1_{\fun2})\eq Bf(0_{\fun2}))\to\fun0
+            \bigr)\\
+        c&\mapsto\fun{neq}\circ c(1_{\fun2},0_{\fun2}).
+    \end{align*}
+    For the backward map, fix $\zeta\colon(f(1_{\fun2})\eq Bf(0_{\fun2}))\to\fun0$. Define the dependent function $c(x,y)\colon(f(x)\eq Bf(y))\to(x\eq{\fun2}y)$ by double induction on $x,y\colon\fun2$:
+    \begin{align*}
+        c(1_{\fun2},1_{\fun2})&\defeq\lambda p.\,\fun{refl}_{1_{\fun2}}\\
+        c(0_{\fun2},0_{\fun2})&\defeq\lambda p.\,\fun{refl}_{0_{\fun2}}\\
+        c(1_{\fun2},0_{\fun2})&\defeq\fun{rec}_{\fun0}(1_{\fun2}\eq{\fun2}0_{\fun2})\circ\zeta\\
+        c(0_{\fun2},1_{\fun2})&\defeq\lambda p.\,\fun{rec}_{\fun0}(0_{\fun2}\eq{\fun2}1_{\fun2})(\zeta(p^{-1})).
+    \end{align*}
+    The \lhs is a mere proposition by part~a) of Theorem~\ref{thm:mere-propositions} because of part~b) of the same theorem and the fact that $x\eq{\fun2}y$ is a mere proposition since $\fun2$ is a set. The \rhs is also a mere proposition because $\fun0$ is a mere proposition. Consequently, $\phi(f)$ is an equivalence because we have a map in the other direction.
+    
+    The conclusion follows by Corollary~\ref{cor:total-extension}.
+\end{solution}
+
+
+\begin{exr}
+    The \textsl{na\"ive} non-dependent function extensionality axiom says that for\/ $A,B\colon\univ$ and\/ $f,g\colon A\to B$ there is a function\/ $(f\sim g)\to(f\eq{A\to B}g)$. Modify the argument of\/ {\upshape\S\,\ref{UA-implies-FE}} to show that this axiom implies the full function extensionality axiom\/ {\upshape\ref{axiom:FE}}.
+\end{exr}
+
+\begin{solution}
+    Let us first prove that Lemma~\ref{lem:base-equivalence-implies-bundle-equivalence} can be derived from na\"ive extensionality (\NE).
+    
+    Let $f\colon A\to B$ be quasi-invertible and let $\dep{g,(\eta,\vartheta)}\colon\fun{qinv}(f)$. Since $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$, we deduce from \NE\ that $f\circ g\eq{B\to B}\id_B$ and $g\circ f\eq{A\to A}\id_A$.
+
+    Define
+    \begin{align*}
+        \phi\colon(X\to A)&\to(X\to B)\\
+        u&\mapsto f\circ u,
+    \intertext{and}
+        \psi\colon(X\to B)&\to(X\to A)\\
+        v&\mapsto g\circ v.
+    \end{align*}
+    Then, for any $u\colon X\to A$, we have
+    \begin{align*}
+        (\psi\circ\phi)(u)
+            &\equiv \psi(f\circ u)\\
+            &\equiv g\circ f\circ u\\
+            &\eq{X\to A}\id_A\circ u
+                &&\text{; by }\fun{ap}_{\dummy\circ u}\\
+            &\equiv u.
+    \end{align*}
+    Thus, $\psi\circ\phi\sim\id_{X\to A}$ and, by \NE, we obtain $\psi\circ\phi\eq{(X\to A)\to(X\to A)}\id_{X\to A}$. Equality for the other composition follows by symmetry.
+
+    By the dependency tree for Theorem~\ref{UA-implies-FE} shown in Remark~\ref{rem:dependency-trees}, we deduce $\NE\Rightarrow\WE$.
+
+    Since the implication $\WE\Rightarrow\FE$ does not depend on \UA\ (as shown in the dependency tree of Theorem~\ref{thm:weak-funext-implies-funext}) but rather on \WE, which we have already deduced from \NE, the proof is complete.
+    %
+    
+\end{solution}

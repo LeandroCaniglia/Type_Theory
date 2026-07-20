@@ -269,7 +269,7 @@
     
 \end{proof}
 
-\begin{xmpl}\label{xmpl:univ-isnt-a-set}
+\begin{xmpl}\ua\label{xmpl:univ-isnt-a-set}
     The universe is not a set.
     
     To see this, consider the Boolean type $\fun2$. As shown in Exercise~\ref{exr:2-simeq-2-simeq-2}, we have an equivalence $(\fun2\simeq\fun2)\simeq\fun2$. Since the lemma in that exercise shows that $0_{\fun2}\ne1_{\fun2}$, we deduce that there are two distinct equivalences from $\fun2$ to $\fun2$ (namely, the identity and the swap function). By the univalence axiom, these two equivalences correspond to two distinct paths in the identity type $\fun2\eq{\univ}\fun2$, contradicting the definition of a set.
@@ -303,7 +303,7 @@
 \end{proof}
 
 
-\begin{thm}\fe
+\begin{thm}\fe\ \ua
     It is not the case that for all\/ $A\colon\univ$ we have\/ $\neg\neg A\to A$.
 \end{thm}
 
@@ -398,7 +398,7 @@
     \end{align*}
 \end{rem}
 
-\begin{cor}\label{cor:A+negA-not-always-true}
+\begin{cor}\fe\ \ua\label{cor:A+negA-not-always-true}
     It is not the case that for all\/ $A\colon\univ$ we have\/ $A+\neg A$.
 \end{cor}
 
@@ -765,8 +765,8 @@
 \end{ntn}
 
 \needspace{3\baselineskip}
-\begin{thm}\fe\label{thm:mere-propositions}
-    Mere propositions are closed under the following constructions:\footnote{Function extensionality is used in parts a) and b).}
+\begin{thm}\fe\ \ua\label{thm:mere-propositions}
+    Mere propositions are closed under the following constructions:\footnote{Function extensionality is used in parts a) and b). Univalance in part f).}
     \begin{enumerate}[a),font=\upshape]
         \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of mere propositions\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is a mere proposition.
         
@@ -907,7 +907,7 @@
         \[
             (P\eq{\fun{Prop}_\univ}Q)\simeq\sum_{h\colon P_0\eq{\univ}Q_0}h_*(f)\eq{\fun{isProp}(Q_0)}g.
         \]
-        By the Univalence Axiom, $(P_0\eq{\univ}Q_0)\simeq(P_0\simeq Q_0)$. Since $P_0$ and $Q_0$ are mere propositions, the first claim of this part implies that $P_0\simeq Q_0$ is a mere proposition. Thus, its equivalent type $P_0\eq{\univ}Q_0$ is also a mere proposition.
+        By the univalence axiom, $(P_0\eq{\univ}Q_0)\simeq(P_0\simeq Q_0)$. Since $P_0$ and $Q_0$ are mere propositions, the first claim of this part implies that $P_0\simeq Q_0$ is a mere proposition. Thus, its equivalent type $P_0\eq{\univ}Q_0$ is also a mere proposition.
         
         Furthermore, by Proposition~\ref{prop:isSet-and-isProp-are-mere-propositions}, $\fun{isProp}(Q_0)$ is a mere proposition, which implies by Remark~\ref{rem:ids-in-mere-propositions-are-singletons} that the identity type $h_*(f)\eq{\fun{isProp}(Q_0)}g$ is a mere proposition for any $h$.
         
@@ -972,7 +972,7 @@
     In the case where $A$ and $B$ are mere propositions, since they are also sets, the fact that $f\circ g\sim\id_B$ is a mere proposition allows us to invoke part~d) of Theorem~\ref{thm:mere-propositions}, because $B\to A$ is a mere proposition by part~b) of the same theorem. By symmetry, the second $\Sigma$-type is also a mere proposition, and since the product of mere propositions is a mere proposition (part~c), the type $\fun{isequiv}(f)$ is a mere proposition.
 \end{proof}
 
-\begin{cor}\label{cor:set-simeq-set-is-set}
+\begin{cor}\fe\label{cor:set-simeq-set-is-set}
     Let\/ $A$ and\/ $B$ be sets. Then the type\/ $A\simeq B$ is a set.
 \end{cor}
 
@@ -986,7 +986,7 @@
     The first requirement is covered by part~f) of said theorem. The second by Corollary~\ref{cor:isequiv(f)-is-set}.
 \end{proof}
 
-\begin{prop}\label{prop:qinv-is-a-set}
+\begin{prop}\fe\label{prop:qinv-is-a-set}
     Let\/ $A$ and\/ $B$ be sets, and let\/ $f\colon A\to B$ be a function. Then the type\/ $\fun{qinv}(f)$ is a set.
 \end{prop}
 
@@ -1068,7 +1068,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     
 \end{proof}
 
-\begin{lem}\label{lem:mere-propositions-are-truncated}
+\begin{lem}\ua\label{lem:mere-propositions-are-truncated}
     If $A$ is a mere proposition, then $A\eq{\univ}\lVert A\rVert$.
 \end{lem}
 
@@ -1084,7 +1084,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     The conclusion follows from Lemma~\ref{lem:mere-proposition-equivalence} and the univalence axiom.
 \end{proof}
 
-\begin{lem}\label{lem:trucated-eq-to-set-is-set}
+\begin{lem}\fe\label{lem:trucated-eq-to-set-is-set}
     Let\/ $S$ be a set, and let\/ $A\colon\univ$ be a type. If\/ $\lVert A\eq\univ S\rVert$ is inhabited, then\/ $A$ is a set.
 \end{lem}
 
@@ -1129,10 +1129,15 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 
 \begin{defns}\ 
     \begin{enumerate}[-]
-        \item A type $A$ is \textsl{contractible} (a.k.a.~a \textsl{singleton}) if there is an element $a\colon A$, called the \textsl{center of contraction}, such that every element in $A$ is equal to $a$. We define the type of such witnesses as
+        \item A type $A$ is \textsl{contractible} (a.k.a.~a \textsl{singleton}) if there is an element $a\colon A$, called the \textsl{center of contraction}, such that every element in $A$ is equal to~$a$. We define the type of such witnesses as
         \[
             \fun{isContr}(A)\defeq\sum_{a\colon A}\;\prod_{x\colon A}a\eq{A}x.
         \]
+        Identifying the element $a\colon A$ with the constant function $\lambda x.\,a$, we can rewrite the definition as
+        \[
+            \fun{isContr}(A)\defeq\sum_{a\colon A}a\sim\id_A.
+        \]
+        If $a$ is a center of contraction, i.e., there is a pair $\dep{a,\eta}\colon\fun{isContr}(A)$, the homotopy $\eta$ is called the \textsl{contraction homotopy}.
         
         \item For any type $A$ and any type family $P\colon A\to\univ$, the \textsl{weak function extensionality axiom} asserts the existence of a function
         \[
@@ -1169,22 +1174,22 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 \begin{lem}\label{lem:transport-prod-id}
     Let\/ $A$ be a type, $a,b\colon A$, and define the type family
     \[
-        P\colon A\to\univ,\quad P(z)\defeq\prod_{x\colon A}z\eq{A}x.
+        H\colon A\to\univ,\quad H(z)\defeq z\sim\id_A.
     \]
-    Given\/ $p\colon P(a)$ and\/ $\gamma\colon a\eq{A}b$, we have for any\/ $x\colon A$
+    Then, given\/ $\eta\colon H(a)$ and\/ $\gamma\colon a\eq{A}b$, we have for any\/ $x\colon A$
     \[
-        \fun{transport}^P(\gamma,p)(x)\eq{b\eq{A}x}\gamma^{-1}\ct p(x).
+        \fun{transport}^H(\gamma,\eta)(x)\eq{b\eq{A}x}\gamma^{-1}\ct\eta(x).
     \]
 \end{lem}
 
 \begin{proof}
-    The transport on the \lhs is an element of $P(b)$. Its evaluation at $x$ yields a path in $b\eq{A}x$. On the other hand, the \rhs concatenates a path from $b$ to $a$ with a path from $a$ to $x$, yielding a path from $b$ to $x$. Thus, both sides inhabit the type $b\eq{A}x$.
+    The transport on the \lhs is an element of $H(b)$. Its evaluation at $x$ yields a path in $b\eq{A}x$. On the other hand, the \rhs concatenates a path from $b$ to $a$ with a path from $a$ to $x$, yielding a path from $b$ to $x$. Thus, both sides inhabit the type $b\eq{A}x$.
 
     By based path induction on $\gamma\colon a\eq{A}b$ it suffices to assume that $b\equiv a$ and $\gamma\equiv\fun{refl}_a$. Under this assumption, the \lhs reduces trivially:
     \[
-        \fun{transport}^P(\fun{refl}_a,p)(x)\equiv p(x).
+        \fun{transport}^H(\fun{refl}_a,\eta)(x)\equiv\eta(x).
     \]
-    For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $p(x)$ follows.
+    For the \rhs, the inverse of reflexivity is definitionally reflexivity, and since reflexivity acts trivially on the left, the equality with $\eta(x)$ follows.
 \end{proof}
 
 \begin{thm}\we\label{thm:isContr-is-a-mere-proposition}
@@ -1194,30 +1199,30 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 \begin{proof}
     Let $c,d\colon\fun{isContr}(A)$. Set
     \[
-        a\defeq\pi_1(c),\quad p\defeq\pi_2(c)
+        a\defeq\pi_1(c),\quad\eta\defeq\pi_2(c)
         \quad\text{and}\quad
-        b\defeq\pi_1(d),\quad q\defeq\pi_2(d).
+        b\defeq\pi_1(d),\quad\vartheta\defeq\pi_2(d).
     \]
     Then,
     \[
-        p\colon\prod_{x\colon A}a\eq{A}x
+        \eta\colon a\sim\id_A
         \quad\text{and}\quad
-        q\colon\prod_{x\colon A}b\eq{A}x.
+        \vartheta\colon b\sim\id_A.
     \]
-    Evaluating $p$ at $b$ yields a path $p(b)\colon a\eq{A}b$, which provides the equality of the first components. 
+    Evaluating $\eta$ at $b$ yields a path $\eta(b)\colon a\eq Ab$, which provides the equality of the first components. 
 
     Let
     \[
         P\colon A\to\univ,
-        \quad P(z)\defeq\prod_{x\colon A}z\eq{A}x.
+        \quad P(z)\defeq z\sim\id_A.
     \]
     To prove $c\eq{\fun{isContr}(A)}d$ we need to show that
     \[
-        \fun{transport}^P(p(b),p)\eq{P(b)}q.
+        \fun{transport}^P(\eta(b),\eta)\eq{P(b)}\vartheta.
     \]
-    Since $d$ witnesses that $A$ is contractible with center $b$, for any $x\colon A$, the identity type $b\eq{A}x$ is contractible. By the weak function extensionality axiom, the product type $\prod_{x\colon A}b\eq{A}x$, which is exactly $P(b)$, is also contractible. 
+    Since $d$ witnesses that $A$ is contractible with center $b$, for any $x\colon A$, the identity type $b\eq{A}x$ is contractible, by Remark~\ref{rem:ids-in-mere-propositions-are-singletons} and Lemma~\ref{lem:contractible-equivalences}. By the weak function extensionality axiom, the homotopy type $b\sim\id_A$, which is exactly $P(b)$, is also contractible. 
 
-    Because every contractible type is a mere proposition, any two of its elements are equal. Consequently, the equality $\fun{transport}^P(p(b),p)\eq{P(b)}q$ holds.
+    Because every contractible type is a mere proposition, any two of its elements are equal. Consequently, the equality $\fun{transport}^P(\eta(b),\eta)\eq{P(b)}\vartheta$ holds.
 \end{proof}
 
 
@@ -1237,18 +1242,18 @@ In the case of non-dependent mere proposition families, we have the recursion pr
     i.e.,
     \[
         h\colon\prod_{x\colon A}\;
-            \sum_{c\colon P(x)}\;\prod_{z\colon P(x)}c\eq{P(x)}z.
+            \sum_{c\colon P(x)}c\sim\id_{P(z)}.
     \]
     In particular, given $x\colon A$, the term $c_x\defeq\pi_1(h(x))$ is a center of contraction for $P(x)$. In other words, picking the center of contraction for every contractible fiber of $P$ is a constructive, choice-free operation.
 \end{rem}
 
 
-\begin{thm}\fe\label{thm:contractible-types}
-    Contractible types are closed under the following type-theoretic constructions:\footnote{Function extensionality is needed in parts a), b), f), and g).}
+\begin{thm}\fe\ \ua\label{thm:contractible-types}
+    Contractible types are closed under the following type-theoretic constructions:\footnote{Function extensionality is needed in parts a), b), f), and g). Univalence in part f).}
     \begin{enumerate}[a),font=\upshape]
-        \item \textsc{\upshape Dependent Functions:} For any arbitrary type\/ $A$ and any family of contractible types\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is contractible. 
+        \item \textsc{\upshape Dependent Functions:} For any type\/ $A$ and any family of contractible types\/ $P\colon A\to\univ$, the dependent product\/ $\prod_{x\colon A}P(x)$ is contractible. 
         
-        \item \textsc{\upshape Functions:} If\/ $Q$ is contractible, the type\/ $A\to Q$ is contractible for any arbitrary type\/ $A$.
+        \item \textsc{\upshape Functions:} If\/ $Q$ is contractible, the type\/ $A\to Q$ is contractible for any type\/ $A$.
         
         \item \textsc{\upshape Products:} If\/ $P$ and\/ $Q$ are contractible, then their Cartesian product\/ $P\times Q$ is contractible.
         
@@ -1258,26 +1263,27 @@ In the case of non-dependent mere proposition families, we have the recursion pr
         
         \item \textsc{\upshape Equivalences \& Identity:} If\/ $P$ and\/ $Q$ are contractible, the type of equivalences\/ $P\simeq Q$ and their propositional equality\/ $P\eq{\univ}Q$ are contractible.
 
-        \item \textsc{\upshape Homotopies:} If $f,g\colon\prod_{x\colon A}B(x)$, where $B(x)$ is contractible for $x\colon A$, then the type $f\sim g$ is contractible.
+        \item \textsc{\upshape Homotopies:} If\/ $f,g\colon\prod_{x\colon A}B(x)$, where\/ $B(x)$ is contractible for\/ $x\colon A$, then the type\/ $f\sim g$ is contractible.
 
     \end{enumerate}
 \end{thm}
 
 \begin{proof}\ 
+
     \begin{enumerate}[a),font=\upshape]
-        \item Set $\Gamma\defeq\prod_{x\colon A}P(x)$. Given $x\colon A$, let $c_x\colon P(x)$ be a center of contraction, and $\eta_x\colon c_x\sim\id_{P(x)}$ be the corresponding homotopy for the constant function $c_x$. Define $c\defeq\lambda x.\,c(x)$. Given $f\colon\Gamma$, the homotopy $\eta_x\rwct f\colon c\sim f$ induces, by function extensionality, a path $c\eq\Gamma f$.
+        \item Set $\Gamma\defeq\prod_{x\colon A}P(x)$. Given $x\colon A$, let $c_x\colon P(x)$ be the center of contraction, and let $\eta_x\colon c_x\sim\id_{P(x)}$ be the corresponding contraction homotopy. Define $c\defeq\lambda x.\,c_x$. For any function $f\colon\Gamma$, the pointwise equality $\eta_x\rwct f\colon c\sim f$ induces, by function extensionality, a path $c\eq{\Gamma}f$.
         
-        \item This is a direct corollary of part a) for the constant type family $P(x)\defeq Q$ for all $x\colon A$.
+        \item This is a direct consequence of part a), applied to the constant type family $P(x)\defeq Q$ for all $x\colon A$.
         
-        \item Let $c$ and $d$ be the centers of contraction for $P$ and $Q$. Given $(p,q)\colon P\times Q$, we have paths $\alpha\colon c\eq{P}p$ and $\beta\colon d\eq{Q}q$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path in $(c,d)\eq{P\times Q}(p,q)$.
+        \item Let $c$ and $d$ be the centers of contraction for $P$ and $Q$, respectively. Given $(p,q)\colon P\times Q$, we have paths $\alpha\colon c\eq{P}p$ and $\beta\colon d\eq{Q}q$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path $(c,d)\eq{P\times Q}(p,q)$.
         
-        \item Let $c$ be the center of $A$, and $d$ the center of $P(c)$. Given $\dep{x,u}\colon\Sigma_AP$, there exists a path $\alpha\colon c\eq Ax$. Since $P(x)$ is contractible, there is a path $\beta\colon\fun{transport}^P(\alpha,d)\eq{P(x)}u$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path $\dep{c,d}\eq{\Sigma_AP}\dep{x,u}$.
+        \item Let $c$ be the center of $A$, and let $d$ be the center of $P(c)$. Given $\dep{x,u}\colon\Sigma_AP$, the contractibility of $A$ yields a path $\alpha\colon c\eq Ax$. Since the fiber $P(x)$ is contractible, there is a path $\beta\colon\fun{transport}^P(\alpha,d)\eq{P(x)}u$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path $\dep{c,d}\eq{\Sigma_AP}\dep{x,u}$.
         
-        \item Let $c$ be a center of $A$. There exist paths $p\colon c\eq Ax$ and $q\colon c\eq Ay$. Then, $p^{-1}\ct q\colon x\eq Ay$, meaning the identity type is inhabited. Since $A$ is a mere proposition, $x\eq Ay$ is also mere proposition by Remark~\ref{rem:ids-in-mere-propositions-are-singletons}. Considering that it is inhabited, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
+        \item Let $c$ be the center of $A$. For any $x,y\colon A$, there exist paths $p\colon c\eq Ax$ and $q\colon c\eq Ay$. Then $p^{-1}\ct q\colon x\eq Ay$, meaning the identity type is inhabited. Since $A$ is a mere proposition, the identity type $x\eq Ay$ is also a mere proposition by Remark~\ref{rem:ids-in-mere-propositions-are-singletons}. Because it is an inhabited mere proposition, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
         
-        \item By part b), $P\to Q$ is contractible. Now, $P\simeq Q\equiv\Sigma_{P\to Q}\fun{isequiv}$. By Corollary~\ref{cor:isequiv(f)-is-set}, the type $\fun{isequiv}(f)$ is a mere proposition. Because $P$ and $Q$ are both contractible, any function between them is an equivalence [cf.~Lemma~\ref{lem:mere-proposition-equivalence}]. Hence, $\fun{isequiv}(f)$ is inhabited and thus contractible for any $f$. By part d), the total space $P\simeq Q$ is contractible. Finally, by the univalence axiom, the identity type $P\eq\univ Q$ is equivalent to $P\simeq Q$. Since contractibility is preserved under equivalence by Proposition~\ref{prop:contractible-retracts}, $P\eq \univ Q$ is also contractible.
+        \item By part b), the type $P\to Q$ is contractible. The type of equivalences is defined as $P\simeq Q\equiv\sum_{f\colon P\to Q}\fun{isequiv}(f)$. By Corollary~\ref{cor:isequiv(f)-is-set}, the type $\fun{isequiv}(f)$ is a mere proposition. Because $P$ and $Q$ are both contractible, any function between them is an equivalence [cf.~Lemma~\ref{lem:mere-proposition-equivalence}]. Hence, $\fun{isequiv}(f)$ is inhabited and thus contractible for any $f$. By part d), the total space $P\simeq Q$ is contractible. Finally, by the univalence axiom, the identity type $P\eq{\univ}Q$ is equivalent to $P\simeq Q$. Since contractibility is preserved under equivalence by Proposition~\ref{prop:contractible-retracts}, the type $P\eq{\univ}Q$ is also contractible.
         
-        \item By definition, $f\sim g\equiv\prod_{x\colon A}f(x)\eq{B(x)}g(x)$. Since each $B(x)$ is contractible, by part e)  $f(x)\eq{B(x)}g(x)$ is contractible for every $x\colon A$. The conclusion follows from part~a). 
+        \item By definition, $f\sim g\equiv\prod_{x\colon A}f(x)\eq{B(x)}g(x)$. Since each $B(x)$ is contractible, part e) implies that the identity type $f(x)\eq{B(x)}g(x)$ is contractible for every $x\colon A$. The conclusion follows from part~a). 
     \end{enumerate}
 \end{proof}
 
@@ -1356,7 +1362,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 
         \item Let
         \[
-            h\colon\fun{isContr}(A)\equiv\sum_{c\colon A}\;\prod_{x\colon A}c\eq Ax.
+            h\colon\fun{isContr}(A)\equiv\sum_{c\colon A}c\sim\id_A.
         \]
         Then $c\defeq\pi_1(h)$ is a center for $A$, and given $x\colon A$, $p_x\defeq\pi_2(h)(x)$ satisfies $p_x\colon c\eq Ax$. Thus, we can introduce
         \begin{align*}
@@ -1582,7 +1588,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{proof}
 
 
-\begin{thm}\label{thm:generalized-total-space}
+\begin{thm}\ua\label{thm:generalized-total-space}
     Let\/ $P\colon\univ\to\fun{Prop}_\univ$ be a mere proposition family. Then, for any\/ $u\equiv\dep{A,p}$ and\/ $v\equiv\dep{B,q}$ in\/ $\Sigma_\univ P$, there is an equivalence:
     \[
         (u\eq{\Sigma_\univ P}v)\simeq(A\simeq B).
@@ -1601,7 +1607,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{proof}
 
 
-\begin{cor}\label{cor:general-tac-is-false}
+\begin{cor}\ua\ \fe\ \we\label{cor:general-tac-is-false}
     The following type is inhabited:
     \[
         \sum_{X\colon\univ}\;\sum_{C\colon X\to\fun{Set}_\univ}
@@ -1850,14 +1856,14 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{exr}
 
 \begin{solution}
-    The condition on\/ $\fun{isequiv}(f)$ means that it is a mere proposition. By the universal property of propositional truncation, since\/ $\fun{isequiv}(f)$ is a mere proposition, the map\/ $\fun{qinv}(f)\to\fun{isequiv}(f)$ from Proposition~\ref{prop:qinv<->isequiv} induces a map\/ $\lVert\fun{qinv}(f)\rVert\to\fun{isequiv}(f)$.
+    The condition on $\fun{isequiv}(f)$ means that it is a mere proposition. By the universal property of propositional truncation, since $\fun{isequiv}(f)$ is a mere proposition, the map $\fun{qinv}(f)\to\fun{isequiv}(f)$ from Proposition~\ref{prop:qinv<->isequiv} induces a map $\lVert\fun{qinv}(f)\rVert\to\fun{isequiv}(f)$.
     
-    On the other hand, the map\/ $\fun{isequiv}(f)\to\fun{qinv}(f)$ from the same proposition, followed by the constructor\/ $\fun{qinv}(f)\to\lVert\fun{qinv}(f)\rVert$, $e\mapsto\lvert e\rvert$, is a function\/ $\fun{isequiv}(f)\to\lVert\fun{qinv}(f)\rVert$.
+    On the other hand, the map $\fun{isequiv}(f)\to\fun{qinv}(f)$ from the same proposition, followed by the constructor $\fun{qinv}(f)\to\lVert\fun{qinv}(f)\rVert$, $e\mapsto\lvert e\rvert$, is a function $\fun{isequiv}(f)\to\lVert\fun{qinv}(f)\rVert$.
 
-    By Lemma~\ref{lem:mere-proposition-equivalence}, having functions in both directions between mere propositions establishes an equivalence, so we deduce that\/ $\lVert\fun{qinv}(f)\rVert\simeq\fun{isequiv}(f)$. Moreover,\/ $\lVert\fun{qinv}(f)\rVert$ trivially satisfies the condition because propositional truncations are mere propositions by definition.
+    By Lemma~\ref{lem:mere-proposition-equivalence}, having functions in both directions between mere propositions establishes an equivalence, so we deduce that $\lVert\fun{qinv}(f)\rVert\simeq\fun{isequiv}(f)$. Moreover, $\lVert\fun{qinv}(f)\rVert$ trivially satisfies the condition because propositional truncations are mere propositions by definition.
 \end{solution}
 
-\begin{exr}\label{exr:Lem-implies-2-props}
+\begin{exr}\ua\ \fe\label{exr:Lem-implies-2-props}
     Show that if\/ $\fun{Lem}$ {\upshape[Definition~\ref{defn:lem}]} holds, then
     \[
         \Bigl(\sum_{A\colon\univ}\fun{isProp}(A)\Bigr)\simeq\fun2.
@@ -1955,7 +1961,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     It remains to be shown that $\fun{transport}^{\fun{isProp}}(p,\epsilon_0)\eq{\fun{isProp}(A)}\epsilon$, where $p\colon\fun0\eq\univ A$. Again, this is trivial because $\fun{isProp}(A)$ is a mere proposition.
 \end{solution}
 
-\begin{exr}\label{exr:propositional-resizing}
+\begin{exr}\ua\ \fe\label{exr:propositional-resizing}
     Show that if\/ $\univ_{i+1}$ satisfies\/ $\fun{Lem}$, then the canonical inclusion\/ $\fun{Prop}_{\univ_i}\to\fun{Prop}_{\univ_{i+1}}$ is an equivalence.
 \end{exr}
 
@@ -2013,7 +2019,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{solution}
 
-\begin{exr}
+\begin{exr}\ua
     Prove that, in general, there is no map\/ $\lVert A\rVert\to A$ for an arbitrary type\/ $A\colon\univ$. (Note, however, that such maps do exist for specific types; for example, {\upshape Exercise~\ref{exr:when-isequiv-is-mere-proposition}} implies that\/ $\fun{qinv}(f)$ is one such type.)
 \end{exr}
 
@@ -2129,7 +2135,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \begin{exr}\fe
     {\upshape Corollary~\ref{cor:A+negA-not-always-true}} shows that the following naive form of\/ $\fun{Lem}$ is inconsistent with univalence:
     \[
-        \prod_{A\colon\univ}(A+\neg A).
+        \prod_{A\colon\univ}A+\neg A.
     \]
     Assuming this axiom (which is known to be consistent in the absence of univalence), show that it implies the axiom of choice.
 \end{exr}
@@ -2711,7 +2717,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{solution}
 
-\begin{exr}\label{exr:decidable-family}
+\begin{exr}\fe\label{exr:decidable-family}
     Show that the conclusion of\/ {\upshape Exercise~\ref{exr:decidable+mere-proposition-family}} if $P\colon\N\to\univ$ is any decidable family.
 \end{exr}
 
