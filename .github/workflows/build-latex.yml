@@ -16,4 +16,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PDF
-          path: Type_Theory.pdf
+          path: "**/*.pdf"
