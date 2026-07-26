@@ -553,3 +553,10 @@
 \newcommand{\WE}{\text{\upshape\textsc{we}}}
 \newcommand{\UA}{\text{\upshape\textsc{ua}}}
 \newcommand{\NE}{\text{\upshape\textsc{ne}}}
+
+\makeatletter
+\newcommand{\customlabel}[2]{%
+  \protected@edef\@currentlabel{#2}%
+  \label{#1}%
+}
+\makeatother
