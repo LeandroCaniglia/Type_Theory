@@ -2397,12 +2397,24 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{solution}
 
 
-\begin{exr}
+\begin{exr}\label{exr:A+B-from-rec2}
     Show that if we define\/ $A+B\defeq\sum_{x\colon\fun2}\fun{rec}_{\fun2}(\univ,A,B,x)$, then we can give a definition of\/ $\fun{ind}_{A+B}$ for which the definitional equalities stated in {\upshape\nref{lpar:coproduct-induction}} hold.
 \end{exr}
 
 \begin{solution}
-    This is a complement to \nref{lpar:coproduct-as-disjoint-union}, where the notation for the coproduct is $A\oplus B$. The induction function we have to define is
+    This is a complement to \nref{lpar:coproduct-as-disjoint-union}, where the notation for the coproduct is $A\oplus B$. To formulate the induction principle, we must first define the injection functions for this specific $\Sigma$-type construction. The definitional equalities
+    \[
+        \fun{rec}_{\fun2}(\univ,A,B,0_{\fun2})\equiv A
+        \quad\text{and}\quad
+        \fun{rec}_{\fun2}(\univ,A,B,1_{\fun2})\equiv B,
+    \]
+    imply that we can define the injections into $A\oplus B$ as
+    \[
+        \fun{in}_A(x)\defeq\dep{0_{\fun2},x}
+        \quad\text{and}\quad
+        \fun{in}_B(y)\defeq\dep{1_{\fun2},y}.
+    \]
+    The induction function we have to define is
     \[
         \fun{ind}_{A\oplus B}\colon\prod_{C\colon A\oplus B\to\univ}\;
             \prod_{x\colon A}C(\fun{in}_A(x))
@@ -2417,11 +2429,11 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \quad\text{and}\quad
         g_1\colon\prod_{y\colon B}C(\fun{in}_B(y)),
     \]
-    we have to define a function with signature
+    we need to define a function with signature
     \[
         f\colon\prod_{s\colon A\oplus B} C(s).
     \]
-    To do this we must use the induction principle of the $\Sigma$-type, which requires (see \nref{lpar:Sigma-type-rec-and-ind}) constructing a function $g$ with the following signature 
+    To do this, we must use the induction principle of the $\Sigma$-type, which requires (see \nref{lpar:Sigma-type-rec-and-ind}) constructing a function $g$ with the following signature:
     \[
         g\colon
             \prod_{t\colon\fun2\vphantom{\univ y}}\;
@@ -2433,23 +2445,25 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         f \defeq\fun{ind}_{\sum_{t\colon\fun2}\fun{rec}_{\fun2}(\univ,A,B,t)}
             (C,g).
     \]
-    Now, by \nref{lpar:boolean-type}, we have
+    We can construct this $g$ using boolean induction:
+    \[
+        g\defeq\lambda t\colon\fun2.\,\fun{ind}_{\fun2}(D,g_0,g_1,t),
+    \]
+    where the motive $D\colon\fun2\to\univ$ is given by
+    \[
+        D(t)\defeq\prod_{z\colon\fun{rec}_{\fun2}(\univ,A,B,t)}C(\dep{t,z}).
+    \]
+    Applying the definitional equalities of $\fun{rec}_{\fun2}$, we obtain $D(0_{\fun2})\equiv \prod_{x\colon A}C(\fun{in}_A(x))$ and $D(1_{\fun2})\equiv \prod_{y\colon B}C(\fun{in}_B(y))$.
+
+    Finally, we must verify that the definitional equalities hold. For any $x\colon A$, the evaluation rules for the $\Sigma$-type and the boolean type yield
     \begin{align*}
-        \fun{rec}_{\fun2}(\univ,A,B)\colon\fun2&\to\univ\\
-        0_{\fun2}&\mapsto A\\
-        1_{\fun2}&\mapsto B.
+        f(\fun{in}_A(x)) 
+        &\equiv f(\dep{0_{\fun2}, x}) \\
+        &\equiv g(0_{\fun2}, x) \\
+        &\equiv \fun{ind}_{\fun2}(D,g_0,g_1,0_{\fun2})(x) \\
+        &\equiv g_0(x).
     \end{align*}
-    Therefore, by \nref{lpar:boolean-type}, we can define $g$ as
-    \[
-        g\defeq\lambda t\colon\fun2.\,\fun{ind}_{\fun2}(D,g_0,g_1,t).
-    \]
-    where $D\colon\fun2\to\univ$ is given by
-    \[
-        D(t)\defeq\prod_{z\colon\fun{rec}_{\fun2}(\univ,A,B,t)}C(\dep{t,z}),
-    \]
-    which, according to \eqref{eq:inA-inB}, confirms the required typing judgments $g_0\colon D(0_{\fun2})$ and $g_1\colon D(1_{\fun2})$.
-    %
-    
+    By a symmetric argument, for any $y\colon B$, we have $f(\fun{in}_B(y))\equiv g_1(y)$. This completes the construction.
 \end{solution}
 
 \begin{exr}${}$

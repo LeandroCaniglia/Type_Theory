@@ -1,1 +1,480 @@
 \chapter{Induction}
+
+\section{Intuition for Uniqueness}
+
+The principles of induction and recursion do more than guarantee the existence of certain functions; they completely characterize them by providing a uniqueness principle. Here we present two examples: natural numbers and lists.
+
+Recall that the type $\N$ of natural numbers has two constructors
+\begin{itemize}
+    \item $0\colon\N$
+    \item $\fun{succ}\colon\N\to\N$.
+\end{itemize}
+A similar example is the type $\fun{List}(A)$ of finite lists of elements of some type $A$, which has constructors
+\begin{itemize}
+    \item $\fun{nil}\colon\fun{List}(A)$
+    \item $\fun{cons}\colon A\to\fun{List}(A)\to\fun{List}(A)$,
+\end{itemize}
+where $\fun{nil}$ represents the empty list, and $\fun{cons}(a,\ell)$ the list with head $a$ and tail $\ell$.
+
+The induction principle for this type states that, given a family $E\colon\fun{List}(A)\to\univ$, to construct a dependent function
+\[
+    f\colon\prod_{\ell\colon\fun{List}(A)}E(\ell),
+\]
+it is sufficient to provide the following data:
+\begin{itemize}
+    \item\phantomsection\label{itm:list-induction} a term $e_{\fun{nil}}\colon E(\fun{nil})$ and
+    \item a dependent function $e_{\fun{cons}}\colon\prod_{a\colon A}\prod_{\ell\colon\fun{List}(A)}E(\ell)\to E(\fun{cons}(a,\ell))$.
+\end{itemize}
+This principle also specifies that the constructed function $f$ computes as expected on the constructors, meaning that we have the definitional equalities
+\begin{equation}\label{eq:list-recurrences}
+    f(\fun{nil})\equiv e_{\fun{nil}}
+    \quad\text{and}\quad
+    f(\fun{cons}(a,\ell))
+        \equiv e_{\fun{cons}}(a,\ell,f(\ell)).
+\end{equation}
+
+\begin{xmpl}\label{xmpl:list-append}
+    To define the function
+    \[
+        \fun{append}\colon\fun{List}(A)\to\fun{List}(A)\to\fun{List}(A)
+    \]
+    that joins two lists, we define:
+    \begin{itemize}
+        \item the motive $E(\ell)\defeq\fun{List}(A)\to\fun{List}(A)$,
+        \item $e_{\fun{nil}}\defeq\id_{\fun{List}(A)}$, and
+        \item $e_{\fun{cons}}(a,\ell,g)\defeq\lambda y.\,\fun{cons}(a,g(y))$.
+    \end{itemize}
+    Then $\fun{append}\defeq\fun{ind}_{\fun{List}(A)}(E,e_{\fun{nil}},e_{\fun{cons}})$ satisfies
+    \[
+        \fun{append}(\fun{nil},y)\equiv y
+    \]
+    and
+    \[
+        \fun{append}(\fun{cons}(a,\ell),y)
+        \equiv
+        \fun{cons}(a,\fun{append}(\ell,y)).
+    \]
+\end{xmpl}
+
+\begin{thm}\label{thm:N-induction-uniqueness}
+    Let\/ $f,g\colon\prod_{x\colon\N}E(x)$ be functions satisfying the recurrences
+    \[
+        e_z\colon E(0)
+        \quad\text{and}\quad
+        e_s\colon\prod_{n\colon\N}E(n)\to E(\fun{succ}(n))
+    \]
+    up to propositional equality. That is, assume that
+    \[
+        f(0)\eq{E(0)}e_z
+        \quad\text{and}\quad
+        g(0)\eq{E(0)}e_z,
+    \]
+    and that
+    \begin{align*}
+        \prod_{n\colon\N}
+            f(\fun{succ}(n))
+            &\eq{E(\fun{succ}(n))}
+            e_s(n,f(n))
+    \intertext{and}
+        \prod_{n\colon\N}
+            g(\fun{succ}(n))
+            &\eq{E(\fun{succ}(n))}
+            e_s(n,g(n)).
+    \end{align*}
+    Then\/ $f\sim g$.
+\end{thm}
+
+\begin{proof}
+    Let $C\colon\N\to\univ$ be the type family defined by $C(n)\defeq f(n)\eq{E(n)}g(n)$. To prove the theorem, it suffices to produce a dependent function in $\prod_{n\colon\N}C(n)$.
+
+    \needspace{2\baselineskip}
+    By the induction principle of $\N$, we need to provide the following data:
+    \begin{itemize}
+        \item a term $c_z\colon C(0)$ and
+        \item a function $c_s\colon\prod_{n\colon\N}C(n)\to C(\fun{succ}(n))$.
+    \end{itemize}
+    The first part of our hypothesis gives us paths 
+    \[
+        p_0\colon f(0)\eq{E(0)}e_z
+        \quad\text{and}\quad
+        q_0\colon g(0)\eq{E(0)}e_z,
+    \]
+    which we can use to produce $c_z\defeq p_0\ct q_0^{-1}\colon C(0)$.
+
+    To define $c_s$, given $n\colon\N$ and $h\colon C(n)$, we must construct $c_s(n,h)\colon C(\fun{succ}(n))$. Since $h\colon f(n)\eq{E(n)}g(n)$, we can use the action on paths to obtain
+    \[
+        \fun{ap}_{e_s(n,\dummy)}(h)\colon
+            e_s(n,f(n))\eq{E(\fun{succ}(n))} e_s(n,g(n)).
+    \]
+    The second part of the hypothesis yields paths
+    \[
+        p_n\colon
+            f(\fun{succ}(n))
+            \eq{E(\fun{succ}(n))}
+            e_s(n,f(n))
+    \]
+    and
+    \[
+        q_n\colon
+            g(\fun{succ}(n))
+            \eq{E(\fun{succ}(n))}
+            e_s(n,g(n)).
+    \]
+    Concatenating these paths yields
+    \[
+        p_n\ct\fun{ap}_{e_s(n,\dummy)}(h)\ct q_n^{-1}\colon
+            f(\fun{succ}(n))
+            \eq{E(\fun{succ}(n))}
+            g(\fun{succ}(n)),
+    \]
+    which is definitionally equal to $C(\fun{succ}(n))$. To complete the proof, we set $c_s(n,h)$ to be this concatenation.
+\end{proof}
+
+\begin{rem}\label{rem:List-induction-uniqueness}
+    A similar theorem holds for lists: \textit{If\/ $f,g\colon\prod_{x\colon\fun{List}(A)}E(x)$ propositionally satisfy the recurrences \eqref{eq:list-recurrences}, then\/ $f\sim g$}.
+
+    The proof proceeds exactly as in the theorem, introducing
+    \[
+        C(\ell)\defeq f(\ell)\eq{E(\ell)}g(\ell),
+    \]
+    and then defining $c_{\fun{nil}}$ by concatenating the paths
+    \[
+        f(\fun{nil})\eq{E(\fun{nil})}e_{\fun{nil}}
+        \quad\text{and}\quad
+        g(\fun{nil})\eq{E(\fun{nil})}e_{\fun{nil}}.
+    \]
+    The definition of $c_{\fun{cons}}(a,\ell,\eta)$ comes from
+    \[
+        \fun{ap}_{e_{\fun{cons}}(a,\ell,\dummy)}(\eta)
+            \colon e_{\fun{cons}}(a,\ell,f(\ell))
+                \eq{E(\fun{cons}(a,\ell))}
+                e_{\fun{cons}}(a,\ell,g(\ell))
+    \]
+    and the equalities
+    \[
+        f(\fun{cons}(a,\ell))\eq{E(\fun{cons}(a,\ell))}
+        e_{\fun{cons}}(a,\ell,f(\ell))
+    \]
+    and
+    \[
+        g(\fun{cons}(a,\ell))\eq{E(\fun{cons}(a,\ell))}
+        e_{\fun{cons}}(a,\ell,g(\ell)).
+    \]
+\end{rem}
+
+Suppose we have a different construction of the natural numbers:
+\begin{itemize}
+    \item $0'\colon\N'$
+    \item $\fun{succ'}\colon\N'\to\N'$,
+\end{itemize}
+along with an induction principle
+\[
+    \fun{ind}_{\N'}\colon\prod_{E\colon\N'\to\univ}
+        E(0')\to\Bigl(\prod_{n'\colon\N'}E(n') \to E(\fun{succ'}(n'))\Bigr)
+        \to \prod_{n'\colon\N'}E(n')
+\]
+and the definitional equalities
+\begin{align*}
+    \fun{ind}_{\N'}(E, e_0, e_s, 0') &\defeq e_0,\\
+    \fun{ind}_{\N'}(E, e_0, e_s, \fun{succ'}(n')) &\defeq e_s(n', \fun{ind}_{\N'}(E, e_0, e_s, n')).
+\end{align*}
+We can use the constant families $E(n)\defeq\N'$ and $E'(n')\defeq\N$ to define
+\begin{align*}
+    f\colon\N\to\N'&\defeq\fun{ind}_\N
+        (
+            E,
+            0',
+            \lambda n.\,\fun{succ'}
+        )
+\intertext{and}
+    g\colon\N'\to\N&\defeq\fun{ind}_{\N'}
+        (
+            E',
+            0,
+            \lambda n'.\,\fun{succ}
+        ).
+\end{align*}
+First, observe that
+\[
+    g\circ f(0)\equiv g(0')\equiv 0\equiv\id_\N(0)
+\]
+and also
+\[
+    g\circ f(\fun{succ}(n))
+        \equiv g(\fun{succ'}(f(n)))
+        \equiv \fun{succ}(g(f(n)))
+        \equiv \fun{succ}(g\circ f(n)).
+\]
+Since $\id_\N(\fun{succ}(n))\equiv\fun{succ}(\id_\N(n))$, by setting $e_s(x,y)\defeq \fun{succ}(y)$ we can rewrite the equivalences above as
+\[
+    g\circ f(\fun{succ}(n))\equiv e_s(n,g\circ f(n))
+    \quad\text{and}\quad
+    \id_\N(\fun{succ}(n))\equiv e_s(n,\id_\N(n)).
+\]
+Therefore, by Theorem~\ref{thm:N-induction-uniqueness}, we obtain a homotopy $\vartheta\colon g\circ f\sim\id_{\N}$.
+
+A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Consequently, $f$ and $g$ are quasi-inverses and so $\N\simeq\N'$. Thus, the univalence axiom constructs a path $\N\eq{\univ}\N'$.
+
+\begin{xmpl}
+    A concrete example of an alternative construction of $\N$ is the following:
+    \begin{itemize}
+        \item $\N'\defeq\fun{List}(\fun1)$,
+        \item $0'\defeq\fun{nil}$, and
+        \item $\fun{succ'}(\ell)\defeq\fun{cons}(\ast,\ell)$,
+    \end{itemize}
+    with the induction principle
+    \begin{align*}
+        \fun{ind}_{\N'}&\colon\prod_{E\colon\N'\to\univ}
+            E(\fun{nil})
+            \to\Bigl(\prod_{\ell\colon\N'}E(\ell)
+                \to E(\fun{succ'}(\ell))\Bigr)
+            \to \prod_{y\colon\N'}E(y)\\
+        \fun{ind}_{\N'}
+            (
+                E,
+                e_{\fun{nil}},
+                g
+            )
+        &\defeq
+        \fun{ind}_{\fun{List}(\fun1)}
+            (
+                E,
+                e_{\fun{nil}},
+                \lambda z\colon\fun1.\,g_z
+            ),
+    \end{align*}
+    which fulfills the requirements of $\fun{ind}_{\fun{List}(\fun1)}$ because
+    \[
+        (\lambda z\colon\fun1.\,g_z)\colon
+            \prod_{z\colon\fun1}\;\prod_{\ell\colon\fun{List}(\fun1)}E(\ell)\to E(\fun{cons}(z,\ell))
+    \]
+    is defined as follows. For a given path $p_z\colon\ast\eq{\fun1}z$, the action on paths yields
+    \[
+        \fun{ap}_{\fun{cons}(\dummy,\ell)}(p_z)\colon
+        \fun{cons}(\ast,\ell)\eq{\N'}\fun{cons}(z,\ell).
+    \]
+    Since $g(\ell)\colon E(\ell)\to E(\fun{cons}(\ast,\ell))$, we can define $g_z(\ell)$ by composing $g(\ell)$ with the transport function along this path:
+    \[
+        g_z(\ell)\defeq
+            \fun{transport}^E(\fun{ap}_{\fun{cons}(\dummy,\ell)}(p_z), \dummy)
+                \circ g(\ell).
+    \]
+\end{xmpl}
+
+\begin{rem}
+    The same ideas can be applied to other inductive types. For instance, as shown in Exercise~\ref{exr:A+B-from-rec2}, the coproduct $A+B$ can be implemented as
+    \[
+        A\oplus B\defeq\sum_{x\colon\fun2}
+            \fun{rec}_{\fun2}(\univ,A,B,x)
+    \]
+    with constructors
+    \begin{itemize}
+        \item $\fun{in}_A(x)\defeq\dep{0_{\fun2},x}$ and
+        \item $\fun{in}_B(y)\defeq\dep{1_{\fun2},y}$,
+    \end{itemize}
+    which are well-defined because $\fun{rec}_{\fun2}(\univ,A,B,0_{\fun2})\equiv A$ and $\fun{rec}_{\fun2}(\univ,A,B,1_{\fun2})\equiv B$.
+    
+    In this case, the induction principle for $A\oplus B$ is given by
+    \[
+        \fun{ind}_{A\oplus B}(C,g_0,g_1)
+        \defeq
+        \fun{ind}_{\sum_{t\colon\fun2}\fun{rec}_{\fun2}(\univ,A,B,t)}
+        \bigl(
+            C,
+            \fun{ind}_{\fun2}(D,g_0,g_1)
+        \bigr),
+    \]
+    where the motive $D\colon\fun2\to\univ$ is defined as
+    \[
+        D(t)\defeq\prod_{z\colon\fun{rec}_{\fun2}(\univ,A,B,t)}C(\dep{t,z}).
+    \]
+    The associated computation rules evaluate as follows:
+    \begin{align*}
+        \fun{ind}_{A\oplus B}(C,g_0,g_1,\fun{in}_A(x)) &\equiv g_0(x),\\
+        \fun{ind}_{A\oplus B}(C,g_0,g_1,\fun{in}_B(y)) &\equiv g_1(y).
+    \end{align*}
+    Since $A\oplus B$ satisfies the same induction principle as $A+B$, they are canonically equivalent.
+\end{rem}
+
+\section{Well-Founded Trees}
+
+\textsl{Well-founded trees}, a.k.a.~\textsl{$\fun W$-trees}, generalize inductive data structures such as natural numbers and lists. The term ``well-founded'' means that there are no infinite downward paths in these trees.
+
+A $\fun W$-tree has two basic ingredients: a \textsl{label} type $A$ and an \textsl{arity} type family $B\colon A\to\univ$. The $\fun W$-type models $\fun W$-trees. It is denoted $\fun W_{x\colon A}B(x)$, or simply $\fun W_AB$.
+
+The term-construction process has two steps. First, we choose a label $a\colon A$ for the root. The type $A$ encodes the possible node constructors.
+
+Second, the type family $B(a)$ dictates the branches hanging from that node. If $B(a)$ is the empty type, the node is a leaf: it has zero branches. If $B(a)$ is the boolean type, the node has two branches, and so forth. 
+
+If the node has branches, a fully formed subtree hangs from each of them. As illustrated below, the branches are indexed by the elements $b_1,b_2,\dots,b$ of $B(a)$. The function $f\colon B(a)\to\fun W_{x\colon A}B(x)$ attaches a subtree $f(b)$ to each branch, represented by the dotted triangles.
+\[
+    \begin{tikzpicture}[>=stealth, thick]
+        % Root node labeled by a in A
+        \node[circle, draw, minimum size=8mm] (a) at (0,0) {$a$};
+    
+        % Apexes of the subtrees
+        \coordinate (t1) at (-2.5, -2);
+        \coordinate (t2) at (-0.7, -2);
+        \coordinate (tb) at (2.5, -2);
+    
+        % Branches indexed by elements of B(a)
+        \draw[->] (a) -- node[above left] {$b_1$} (t1);
+        \draw[->] (a) -- node[left] {$b_2$} (t2);
+        \draw[->] (a) -- node[above right] {$b$} (tb);
+    
+        % Ellipsis indicating B(a)-many arguments
+        \node at (1, -2) {$\cdots$};
+    
+        % Dotted triangles representing the well-founded subtrees f(b_i)
+        \draw[dotted, thick] (t1) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
+        \node at (-2.5, -2.9) {$\scriptstyle f(b_1)$};
+    
+        \draw[dotted, thick] (t2) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
+        \node at (-0.7, -2.9) {$\scriptstyle f(b_2)$};
+    
+        \draw[dotted, thick] (tb) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
+        \node at (2.5, -2.9) {$\scriptstyle f(b)$};
+    \end{tikzpicture}
+\]
+The induction principle of the $\fun W$-type ensures that each of these triangles is itself a well-founded tree. Thus, the branching process repeats inside each triangle and terminates at leaves after a finite number of steps.
+
+Because $\fun W$-types serve as a universal generalization of inductive types, all the distinct constructors of a given type are unified into a single constructor, namely the function:
+\[
+    \fun{sup}\colon
+        \prod_{a\colon A}\;
+        \bigl(
+            B(a)\to\fun W_AB
+        \bigr)
+            \to\fun W_AB.
+\]
+When a term is built using $\fun{sup}(a,f)$, the label $a\colon A$ acts as the indicator for which constructor is being applied, while the function $f\colon B(a)\to\fun W_AB$ supplies the subtrees required by that specific constructor.
+
+In this way, the single constructor $\fun{sup}$ expresses the behavior of any number of individual constructors by delegating the choice of the operation to the label type~$A$.
+
+\begin{xmpl}\label{xmpl:W-tree-for-List(X)}
+    To illustrate how $\fun W$-trees are appropriate for generalizing inductive types, let us use them to produce a new definition of $\fun{List}(X)$.
+
+    The core idea is that, when using $\fun W$-trees, \textbf{constructors are labeled by elements, and their recursive arguments (if any) by types}. This strictly separates the non-recursive data of a constructor from its recursive structure. The elements act as labels belonging to a type $A$, and the shape of the recursive arguments is dictated by an \textsl{arity} type family $B\colon A\to\univ$.
+
+    In our case, the constructors are $\fun{nil}$ and $\fun{cons}$. Since $\fun{nil}$ carries no non-recursive data, we can associate it to the nullary label $\ast\colon\fun1$. For $\fun{cons}$, we have two arguments: $x\colon X$ and $\ell\colon\fun{List}(X)$. The first one is not recursive, so we must tag it directly as a label; thus, we use a whole family of unary labels provided by the type $X$ to represent the constructor family $x\mapsto\fun{cons}(x,\dummy)$.
+
+    The second argument $\ell\colon\fun{List}(X)$ is recursive. Since each specific constructor $\fun{cons}(x,\dummy)$ expects exactly one recursive argument, it is assigned an arity of the unit type $\fun1$. Similarly, since $\fun{nil}$ expects zero recursive arguments, its arity is the empty type~$\fun0$.
+
+    Summarizing, our proposal is to define $A\defeq\fun1+X$ and specify the arity family $B\colon A\to\univ$ by cases: $B(\fun{inl}(\ast))\defeq\fun0$ and $B(\fun{inr}(x))\defeq\fun1$.
+    \[
+        % Generic structure of a cons(x, \ell) node
+        \begin{tikzpicture}[
+            scale=0.75,
+            >=stealth,
+            thick,
+            baseline=0]
+            % Root node labeled by x in X
+            \node[circle, draw, minimum size=8mm] (x) at (0,0) {$x$};
+        
+            % Apex of the subtree \ell
+            \coordinate (t) at (0, -2);
+        
+            % Single branch indexed by the element of B(x) = 1
+            \draw[->] (x) -- node[right] {$\ast$} (t);
+        
+            % Dotted triangle representing the well-founded subtree \ell
+            \draw[dotted, thick] (t) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
+            \node at (0, -2.9) {$\scriptstyle \ell$};
+        \end{tikzpicture}
+        \hspace{3cm}
+        % Fully expanded 3-element list
+        \begin{tikzpicture}[
+            scale=0.75,
+            >=stealth,
+            thick,
+            baseline=0]
+            % Nodes for the elements of the list (arity 1)
+            \node[circle, draw, minimum size=8mm] (x1) at (0,0) {$x_1$};
+            \node[circle, draw, minimum size=8mm] (x2) at (0,-2) {$x_2$};
+            \node[circle, draw, minimum size=8mm] (x3) at (0,-4) {$x_3$};
+            
+            % Leaf node representing nil (arity 0)
+            \node[circle, draw, minimum size=8mm] (nil) at (0,-6) {$\ast$};
+        
+            % Branches indexed by the single element of the unit type
+            \draw[->] (x1) -- node[right] {$\ast$} (x2);
+            \draw[->] (x2) -- node[right] {$\ast$} (x3);
+            \draw[->] (x3) -- node[right] {$\ast$} (nil);
+        \end{tikzpicture}
+    \]
+    The first graph depicts the recursive step for the constructor\/ $\fun{cons}(x,\ell)$. The root is labeled by\/ $x$, representing\/ $\fun{inr}(x)\colon A$. Since the arity of this label is\/ $B(\fun{inr}(x))\defeq\fun1$, there is exactly one downward edge emerging from the node. This edge is indexed by\/ $\ast$, and the subtree-assigning function\/ $f\colon\fun1\to\fun W_AB$ attaches the recursive argument by defining\/ $f(\ast)\defeq\ell$. With this, we can formally redefine:
+    \begin{itemize}
+        \item\phantomsection\label{itm:list-from-W}
+        $\fun{List'}(X)\defeq\fun W_{\fun1+X}B$,
+        \item $\fun{nil'}\defeq\fun{sup}(\fun{inl}(\ast),\fun{rec}_{\fun0}(\fun{List'}(X)))$, and
+        \item $\fun{cons'}(x,\ell')\defeq\fun{sup}(\fun{inr}(x),\lambda{\ast}.\,\ell')$.
+    \end{itemize}
+
+    The second graph illustrates a list of three elements. Each node $x_i$ has arity $\fun1$, creating a single downward branch. The list terminates at the node representing the $\fun{nil}$ constructor. This leaf node is labeled by $\ast$, which stands for $\fun{inl}(\ast)\colon A$. Because its arity is the empty type, no edges depart from it.
+\end{xmpl}
+
+\begin{defn}
+    The formal definition of the $\fun W$-type is given by its rules for formation, introduction, elimination, and computation. Let $A\colon\univ$ be a type and $B\colon A\to\univ$ be a type family.
+    
+    \textsc{Formation:} The type is formed by the binder $\fun W$, yielding a type in the universe:
+    \[
+        \fun W_{x\colon A}B(x)\colon\univ.
+    \]
+    
+    \textsc{Introduction:} The elements of the $\fun W$-type are built using the constructor $\fun{sup}$. Given a label $a\colon A$ and a subtree-assigning function $f\colon B(a)\to \fun W_AB$, we can form a new tree $\fun{sup}(a,f)$, where
+    \begin{equation}\label{eq:W-constructor}
+        \fun{sup}\colon
+            \prod_{a\colon A}\;
+            \bigl(
+                B(a)\to\fun W_AB
+            \bigr)
+                \to\fun W_AB.
+    \end{equation}
+    
+    \textsc{Elimination:} To construct a dependent function over the $\fun W$-type, we use its induction principle. Given a motive $E\colon\fun W_AB\to\univ$, we must provide an inductive step function $e_s$ that constructs a term in $E(\fun{sup}(a,f))$ assuming we already have terms in $E(f(b))$ for all $b\colon B(a)$. The required signature for $e_s$ is
+    \begin{equation}\label{eq:W-inductive-step-function}
+        e_s\colon\prod_{a\colon A}\;\prod_{f\colon B(a)\to \fun W_AB}
+            \Bigl(\prod_{b\colon B(a)}E(f(b))\Bigr)
+            \to E(\fun{sup}(a,f)).
+    \end{equation}
+    With this data, the induction principle produces a dependent function
+    \begin{equation}\label{eq:W-induction-function}
+        \fun{ind}_{\fun W}(E, e_s)
+            \colon\prod_{w\colon \fun W_AB}E(w).
+    \end{equation}
+    
+    \textsc{Computation:} The constructed function evaluates on the constructor\/ $\fun{sup}$ by applying the step function\/ $e_s$ to the label, the subtree function, and the recursive application of the induction principle to each subtree. This gives the definitional equality:
+    \begin{equation}\label{eq:W-computation-rule}
+        \fun{ind}_{\fun W}(E, e_s, \fun{sup}(a,f))
+            \equiv e_s(a, f, \lambda b.\,\fun{ind}_{\fun W}(E, e_s, f(b))).
+    \end{equation}
+\end{defn}
+
+\begin{xmpl}\label{xmpl:List(X)-induction-from-W-induction}
+    To see how this general framework operates in a concrete inductive type, let us continue with Example~\ref{xmpl:W-tree-for-List(X)}. The goal is to derive the induction principle for $\fun{List}(X)$ from the induction principle for $\fun W$-types.
+
+    We must construct the data required by $\fun W$-induction to yield standard list induction. This involves case analysis over the label $a\colon\fun1+X$.
+
+    Suppose $a\equiv\fun{inl}(\ast)$. In this case, we have $B(a)\equiv\fun0$. Consequently, the associated subtree function is the unique definitional equality $f\equiv\fun{rec}_{\fun0}(\fun W_AB)$. Moreover, $\fun{sup}(a,f)$ is definitionally equal to $\fun{nil}$.
+
+    The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun0}E(f(b))$. Because the product runs over the empty type, this type is equivalent to $\fun1$ and contains a unique, trivial inhabitant.
+
+    For this case, the inductive step function of $\fun{ind}_{\fun W}$ needs to map this trivial inhabitant to a term in $E(\fun{sup}(a,f))\equiv E(\fun{nil})$. This is precisely the data required by \hyperref[itm:list-induction]{standard list induction}: a term $e_{\fun{nil}}\colon E(\fun{nil})$.
+
+    In the case where $a\equiv\fun{inr}(x)$, we have $B(a)\equiv\fun1$. Thus, the subtree-assigning function has the signature $f\colon\fun1\to\fun W_{x\colon A}B(x)$. \hyperref[itm:list-from-W]{As established before}, the constructor application $\fun{sup}(a,f)$ is definitionally equal to $\fun{cons}(x,f(\ast))$.
+
+    The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun1}E(f(b))$, which provides a single meaningful term: $g(\ast)\colon E(f(\ast))$.
+
+    To complete the definition of $e_s$, we must construct a term in $E(\fun{sup}(a,f))$, which evaluates to $E(\fun{cons}(x,f(\ast)))$. But this is exactly the data provided by the \hyperref[itm:list-induction]{standard list induction principle}: a dependent function $e_{\fun{cons}}$ that takes the head $x$, the tail $f(\ast)$, and the inductive hypothesis $g(\ast)$, and returns a term in $E(\fun{cons}(x,f(\ast)))$.
+
+    Consequently, we can fully define the inductive step function $e_s$ by pattern matching on the label $a\colon\fun1+X$:
+    \begin{align*}
+        e_s(\fun{inl}(\ast), f, g) &\defeq e_{\fun{nil}}, \\
+        e_s(\fun{inr}(x), f, g) &\defeq e_{\fun{cons}}(x, f(\ast), g(\ast)).
+    \end{align*}
+    It follows that the induction principle for lists is simply a specific instance of the induction principle for $\fun W$-types:
+    \[
+        \fun{ind}_{\fun{List}}(E, e_{\fun{nil}}, e_{\fun{cons}})
+            \defeq \fun{ind}_{\fun W}(E, e_s).
+    \]
+\end{xmpl}
