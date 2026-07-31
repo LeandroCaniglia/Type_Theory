@@ -594,7 +594,7 @@
 
 \begin{proof}${}$
     \begin{enumerate}[a), font=\upshape]
-        \item We have the terms $\fun{inr}(\id_{\fun0})\colon\fun0+\neg\fun0$ and $\fun{inl}(\ast)\colon\fun1+\neg\fun1$.
+        \item We have the terms $\fun{inr}(\id_{\fun0})\colon\fun0+\neg\fun0$ and $\fun{inl}(\fstar)\colon\fun1+\neg\fun1$.
         
         \item The diagram below captures the cases needed to define a map
         \[
@@ -649,10 +649,10 @@
                 g_0(\dep{f_0,(\eta_0,\vartheta_0)})
                     \defeq\fun{inr}(f_0).
             \]
-            \item For the right case, given an equivalence $\dep{f_1,(\eta_1,\vartheta_1)}\colon\fun{Code}(n,m)\simeq\fun1$, we specify
+            \item For the right case, given $\dep{f_1,(\eta_1,\vartheta_1)}\colon\fun{Code}(n,m)\simeq\fun1$, we specify
             \[
                 g_1(\dep{f_1,(\eta_1,\vartheta_1)})
-                    \defeq\fun{inl}(f_1^{-1}(\ast)).
+                    \defeq\fun{inl}(f_1^{-1}(\fstar)).
             \]
         \end{enumerate}
         As a result, we obtain
@@ -2666,14 +2666,14 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     Since $\fun{Fin}(\fun{succ}(n))\equiv\fun{Fin}(n)+\fun1$, we can apply the universal property of dependent functions over coproducts, Theorem~\ref{thm:universal-property-of-product-over-coproduct}, to obtain the equivalences
     \[
-        A_{\fun{succ}(n)}\simeq A'_n\times\lVert C(\fun{inr}(\ast))\rVert,
+        A_{\fun{succ}(n)}\simeq A'_n\times\lVert C(\fun{inr}(\fstar))\rVert,
         \quad
-        B_{\fun{succ}(n)}\simeq B'_n\times C(\fun{inr}(\ast)).
+        B_{\fun{succ}(n)}\simeq B'_n\times C(\fun{inr}(\fstar)).
     \]
     Thus, to complete the induction we have to define a map
     \[
-        A'_n\times\lVert C(\fun{inr}(\ast))\rVert\to
-        \lVert B'_n\times C(\fun{inr}(\ast))\rVert.
+        A'_n\times\lVert C(\fun{inr}(\fstar))\rVert\to
+        \lVert B'_n\times C(\fun{inr}(\fstar))\rVert.
     \]
     Since the inductive hypothesis gives us a map $A'_n\to\lVert B'_n\rVert$, the conclusion is a direct consequence of the following
 

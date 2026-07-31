@@ -203,22 +203,22 @@
     The following example illustrates the reason behind this rule.
     
     \begin{xmpl}
-        Consider a type constructor $\fun{List}$ that forms the type of lists containing elements of a specific type. If we want to create a list of types, we must determine the universe in which this list lives.
+        Consider a type constructor $\fun L$ that forms the type of lists containing elements of a specific type. If we want to create a list of types, we must determine the universe in which this list lives.
         
         \begin{enumerate}[-]
             \item Let $\N\colon\univ_0$ and $\fun{Bool}\colon\univ_0$.
             
-            \item We can form the list $[\N, \fun{Bool}]$. The type of this list is $\fun{List}(\univ_0)$.
+            \item We can form the list $[\N, \fun{Bool}]$. The type of this list is $\fun L_{\univ_0}$.
             
-            \item However, since $\univ_0\colon\univ_1$, the type $\fun{List}(\univ_0)$ itself resides in $\univ_1$.
+            \item However, since $\univ_0\colon\univ_1$, the type $\fun L_{\univ_0}$ itself resides in $\univ_1$.
         \end{enumerate}
-        Now, suppose we have a more complex type $B$ such that $B\colon\univ_1$. If we wish to construct a list containing both $\N$ and $B$, we face a potential universe mismatch. To include $\N$ in a list of type $\fun{List}(\univ_1)$, we must view $\N$ as an element of $\univ_1$.
+        Now, suppose we have a more complex type $B$ such that $B\colon\univ_1$. If we wish to construct a list containing both $\N$ and $B$, we face a potential universe mismatch. To include $\N$ in a list of type $\fun L_{\univ_1}$, we must view $\N$ as an element of $\univ_1$.
         
         Therefore, the construction of the list $[\N,B]$ relies on the cumulative property:
         \[
             \N\colon\univ_0 \implies \N\colon\univ_1.
         \]
-        This ensures that both $\N$ and $B$ are valid terms of type $\univ_1$, making the expression $[\N,B]$ well-typed as a term of $\fun{List}(\univ_1)$. \qed
+        This ensures that both $\N$ and $B$ are valid terms of type $\univ_1$, making the expression $[\N,B]$ well-typed as a term of $\fun L_{\univ_1}$. \qed
     \end{xmpl}
 
     \textbf{Note.} To simplify the notation, the subindex $i$ is usually omitted and $\univ$ is used instead of $\univ_i$. When some universe $\univ$ is assumed, its types are also called \textsl{small}.
@@ -543,7 +543,7 @@
     \[
         \fun{uniq}_{\fun1}(\fstar)\defeq\fun{refl}_\fstar,
     \]
-    which shows that $\fun\ast$ is the unique element of $\fun1$.
+    which shows that $\fun\fstar$ is the unique element of $\fun1$.
 \end{lpar}
 
 \begin{lpar}{Induction.}\label{lpar:induction}
@@ -1379,7 +1379,7 @@
     \]
     Let us review them one by one, assuming that types $A$ and $B$ represent propositions and their elements represent proofs.
     \begin{enumerate}[$1.$]
-        \item Since $\fun\ast\colon\fun1$, we see that $\fun1$ has a proof (it is always inhabited).
+        \item Since $\fun\fstar\colon\fun1$, we see that $\fun1$ has a proof (it is always inhabited).
 
         \item Since $\fun0$ has no elements, there is no proof for $\fun0$ (it is false).
 

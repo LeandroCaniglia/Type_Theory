@@ -1195,7 +1195,7 @@ Recall from Definition~\ref{defn:fiber-over-y} that a map is contractible when i
             & \fun1
         \end{tikzcd}
     \]
-    where $\vartheta$ and $\varepsilon$ are the constant homotopies defined by $b\mapsto\fun{refl}_\ast$ and $a\mapsto\fun{refl}_\ast$, respectively.
+    where $\vartheta$ and $\varepsilon$ are the constant homotopies defined by $b\mapsto\fun{refl}_\fstar$ and $a\mapsto\fun{refl}_\fstar$, respectively.
 
     The coherence condition \eqref{tik:retraction-2} is satisfied automatically since all paths in $\fun1$ are trivially equal by contractibility. Thus, by Definition~\ref{defn:function-retract}, the map $B\to\fun1$ is a retract of $A\to\fun1$.
 
@@ -2293,25 +2293,16 @@ As we can see, the dependency on $\WE$ happens in Theorem~\ref{thm:isContr-ishae
                             \sum_{a\colon A}f(a)\eq Bb
                         \Bigr).
     \]
-    By Lemma~\ref{lem:Sigma-identity-is-contractible}, the first part of this Cartesian product is inhabited. Thus, by Corollary~\ref{cor:A-contractible-implies-isContr(A)-contractible} and part a) of Theorem~\ref{thm:contractible-types}, it is contractible. The second part of the Cartesian product is definitionally equal to\/ $\fun{isContrMap}(f)$. Therefore, we obtain an equivalence
-    \[
-        \fun{E}(f)\simeq\fun{isContrMap}(f),
-    \]
+    By Lemma~\ref{lem:Sigma-identity-is-contractible}, the first part of this cartesian product is inhabited. Thus, by Corollary~\ref{cor:A-contractible-implies-isContr(A)-contractible} and part a) of Theorem~\ref{thm:contractible-types}, it is contractible. The second part of the product is definitionally equal to\/ $\fun{isContrMap}(f)$.     Therefore, we obtain an equivalence $\fun{E}(f)\simeq\fun{isContrMap}(f)$,    
     which is equivalent to\/ $\fun{ishae}(f)$ by Theorem~\ref{thm:isContr->ishae} and its preceding comment.
-    %
-    
 \end{solution}
 
 \begin{exr}
-    Reformulate the proof of\/ {\upshape Proposition~\ref{prop:qinv-id-homotopy-equivalence}} without using univalence.
+    Proof\/ {\upshape Proposition~\ref{prop:qinv-id-homotopy-equivalence}} without using univalence.\footnote{Our proof doesn't use the univalence axiom.}
 \end{exr}
 
-\begin{solution}
-    Our proof doesn't use the univalence axiom.
-\end{solution}
-
-\begin{exr}{\upshape[The unstable octahedral axiom]}
-    Let\/ $f\colon A\to B$ and\/ $g\colon B\to C$ be functions, and fix an element\/ $b\colon B$.
+\begin{exr}%{\upshape[The unstable octahedral axiom]}
+    Let\/ $f\colon A\to B$ and\/ $g\colon B\to C$ be functions, and fix\/ $b\colon B$.
     \begin{enumerate}[a),font=\upshape]
         \item Construct a natural map\/ $\fun{fib}_{g\circ f}(g(b))\to\fun{fib}_g(g(b))$ and prove that its fiber over the point\/ $\dep{b,\fun{refl}_{g(b)}}$ is equivalent to\/ $\fun{fib}_f(b)$.
         \item Show that for any\/ $c\colon C$, there is an equivalence

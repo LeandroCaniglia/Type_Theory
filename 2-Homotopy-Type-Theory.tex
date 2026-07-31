@@ -2549,7 +2549,7 @@ To characterize the identity type of the booleans, we instantiate the \nameref{o
 \textsc{Base code:}
     The base code $c_x\colon\fun{Code}(x,x)$ is defined by induction on $x\colon\fun2$ as\footnote{Since $\fun{Code}(x,x)$ is not definitionally equal to $\fun1$, and $c_x$ must be of type $\fun{Code}(x,x)$, we cannot define it as the constant map $\lambda x.\,\fun\star$.}
     \[
-        c_{0_{\fun2}} \defeq \fun\star \quad\text{and}\quad c_{1_{\fun2}} \defeq \fun\star.
+        c_{0_{\fun2}} \defeq \fun\star\quad\text{and}\quad c_{1_{\fun2}} \defeq \fun\star.
     \]
 
 \textsc{Encode function:}
@@ -4365,23 +4365,32 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
     \end{description}
 \end{proof}
 
-\begin{prop}\label{prop:transport-function-codomain}
-    Let\/ $A$ be a type, $P\colon X\to\univ$ a type family. Given $x,y\colon A$ and\/ $p\colon x\eq Xy$, for any function\/ $f\colon A\to P(x)$, we have
+\begin{prop}\label{prop:transport-pointwise-evaluation}
+    Let\/ $X$ and\/ $A$ be types, and\/ $P\colon X\to A\to\univ$ a type family. Then, given\/ $x,y\colon X$ and\/ $p\colon x\eq{X}y$, for any dependent function
     \[
-        \fun{transport}^{\lambda z.\,(A\to P(z))}(p,f)
-            \eq{A\to P(y)}\lambda a.\,\fun{transport}^P(p,f(a)).
+        f\colon \prod_{a\colon A}P(x,a),
+    \]
+    we have
+    \[
+        \fun{transport}^{
+            \lambda z.\,\prod_{a\colon A}P(z,a)
+            }(p,f)
+        \eq{\prod_{a\colon A}P(y,a)}
+        \lambda a.\,\fun{transport}^{\lambda z.\,P(z,a)}
+            (p,f(a)).
     \]
 \end{prop}
 
 \begin{proof}
-    The \lhs $\fun{transport}$ maps $p$ to a function $(A\to P(x))\to(A\to P(y))$. Therefore, the \lhs at $p$ maps $f\colon A\to P(x)$ to a function $A\to P(y)$.
+    Consider the type families $E\colon X\to\univ$ and, for each $a\colon A$, $P_a\colon X\to\univ$ defined by
+    \[
+        E(z) \defeq \prod_{a\colon A}P(z,a), \quad P_a(z) \defeq P(z,a).
+    \]
+    The \lhs $\fun{transport}$ at $p$ is a function from $E(x)$ to $E(y)$, mapping $f$ to a dependent function in $E(y)$.
 
-    The \rhs $\fun{transport}$ at $p$ is a map from $P(x)$ to $P(y)$. Thus, given $a\colon A$, its value at $f(a)\colon P(x)$ is an element of $P(y)$. In sum the \rhs is also a map from $A$ to $P(y)$.
+    The \rhs is also a dependent function in $E(y)$ because, for every $a\colon A$, the transport $\fun{transport}^{P_a}(p)$ is a map from $P(x,a)$ to $P(y,a)$. 
 
-    To verify the propositional equality, by based path induction on $p$, it suffices to consider the case $y\equiv x$ and $p\equiv\fun{refl}_x$. In that case the \lhs reduces to $f$ and the \rhs to $\lambda a.\,f(a)$, which is definitionally equal to $f$.
-
-    %
-    
+    To verify the propositional equality, by based path induction on $p$, it suffices to consider the case $y\equiv x$ and $p\equiv\fun{refl}_x$. In that case, the \lhs reduces to $f$ and the \rhs to $\lambda a.\,f(a)$, which is definitionally equal to $f$.
 \end{proof}
 
 \begin{rem}
