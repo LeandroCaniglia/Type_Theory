@@ -124,7 +124,7 @@
                 &\eq{(x_1\eq{A}y_1)\times(x_2\eq{B}y_2)}
                     (q_1,q_2).
         \end{align*}
-        Thus, $\fun{pair}^\times(p)\eq{(x_1\eq{A}y_1)\times(x_2\eq{B}y_2)}\fun{pair}^\times(q)$, and the result follows by decoding with $\fun{pair}^=$.
+        Thus, $\fun{pair}^\times(p)\eq{(x_1\eq{A}y_1)\times(x_2\eq{B}y_2)}\fun{pair}^\times(q)$, and the result follows by decoding with $\fun{pair}^{\eq{}}$.
         
         \item Let $\omega,\omega'\colon\Sigma_AP$. The codification of a path $p\colon\omega\eq{\Sigma_AP}\omega'$ is defined as
         \[
@@ -730,18 +730,18 @@
     \]
     inhabits $q_*(\pi_2(u))\eq{P(\pi_1(v))}\pi_2(v)$. Therefore, we can define the backward map as
     \[
-        g(q)\defeq\fun{pair}^=(q,\gamma).
+        g(q)\defeq\fun{pair}^{\eq{}}(q,\gamma).
     \]
     To conclude that $f$ and $g$ are quasi-inverses, we must verify that their compositions are homotopic to the respective identity maps:
     \begin{enumerate}[-]
         \item For any $q\colon\pi_1(u)\eq A\pi_1(v)$, it is clear that $f(g(q))\eq{}q$.
         
-        \item For any $p\colon u\eq{\Sigma_AP}v$, we can write $p\eq{} \fun{pair}^=(p_1,p_2)$ for some transport path $p_2\colon(p_1)_*(\pi_2(u)) \eq{P(\pi_1(v))} \pi_2(v)$, where $p_1\defeq\fun{ap}_{\pi_1}(p)$.
+        \item For any $p\colon u\eq{\Sigma_AP}v$, we can write $p\eq{} \fun{pair}^{\eq{}}(p_1,p_2)$ for some transport path $p_2\colon(p_1)_*(\pi_2(u)) \eq{P(\pi_1(v))} \pi_2(v)$, where $p_1\defeq\fun{ap}_{\pi_1}(p)$.
         
-        Evaluating $g(f(p))$ yields $\fun{pair}^=(p_1,\gamma')$, where 
+        Evaluating $g(f(p))$ yields $\fun{pair}^{\eq{}}(p_1,\gamma')$, where 
         $\gamma'\defeq\epsilon((p_1)_*(\pi_2(u)),\pi_2(v))$. Because $P(\pi_1(v))$ is a mere proposition, it is also a set, meaning any two parallel paths within it are propositionally equal. In particular, $\gamma'\eq{}p_2$. Applying the function $\fun{ap}$ to this equality yields 
         \[
-            \fun{pair}^=(p_1,\gamma')\eq{}\fun{pair}^=(p_1,p_2),
+            \fun{pair}^{\eq{}}(p_1,\gamma')\eq{}\fun{pair}^{\eq{}}(p_1,p_2),
         \]
         which implies $g(f(p))\eq{}p$.
     \end{enumerate}
@@ -1275,9 +1275,9 @@ In the case of non-dependent mere proposition families, we have the recursion pr
         
         \item This is a direct consequence of part a), applied to the constant type family $P(x)\defeq Q$ for all $x\colon A$.
         
-        \item Let $c$ and $d$ be the centers of contraction for $P$ and $Q$, respectively. Given $(p,q)\colon P\times Q$, we have paths $\alpha\colon c\eq{P}p$ and $\beta\colon d\eq{Q}q$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path $(c,d)\eq{P\times Q}(p,q)$.
+        \item Let $c$ and $d$ be the centers of contraction for $P$ and $Q$, respectively. Given $(p,q)\colon P\times Q$, we have paths $\alpha\colon c\eq{P}p$ and $\beta\colon d\eq{Q}q$. Therefore, $\fun{pair}^{\eq{}}(\alpha,\beta)$ is a path $(c,d)\eq{P\times Q}(p,q)$.
         
-        \item Let $c$ be the center of $A$, and let $d$ be the center of $P(c)$. Given $\dep{x,u}\colon\Sigma_AP$, the contractibility of $A$ yields a path $\alpha\colon c\eq Ax$. Since the fiber $P(x)$ is contractible, there is a path $\beta\colon\fun{transport}^P(\alpha,d)\eq{P(x)}u$. Therefore, $\fun{pair}^=(\alpha,\beta)$ is a path $\dep{c,d}\eq{\Sigma_AP}\dep{x,u}$.
+        \item Let $c$ be the center of $A$, and let $d$ be the center of $P(c)$. Given $\dep{x,u}\colon\Sigma_AP$, the contractibility of $A$ yields a path $\alpha\colon c\eq Ax$. Since the fiber $P(x)$ is contractible, there is a path $\beta\colon\fun{transport}^P(\alpha,d)\eq{P(x)}u$. Therefore, $\fun{pair}^{\eq{}}(\alpha,\beta)$ is a path $\dep{c,d}\eq{\Sigma_AP}\dep{x,u}$.
         
         \item Let $c$ be the center of $A$. For any $x,y\colon A$, there exist paths $p\colon c\eq Ax$ and $q\colon c\eq Ay$. Then $p^{-1}\ct q\colon x\eq Ay$, meaning the identity type is inhabited. Since $A$ is a mere proposition, the identity type $x\eq Ay$ is also a mere proposition by Remark~\ref{rem:ids-in-mere-propositions-are-singletons}. Because it is an inhabited mere proposition, it is contractible by Lemma~\ref{lem:contractible-equivalences}.
         
@@ -1330,7 +1330,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 
 \begin{thm}\fe\label{thm:contractible-data-ignored}
     The principle that contractible data can be freely ignored up to equivalence manifests in the following equivalences. Let\/ $A$ and\/ $B$ be types, and let\/ $P\colon A\to\univ$ be a type family.\footnote{Function extensionality is needed in parts c), d), f), and g).}
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item \textsc{\upshape Dependent Pairs (Right):} If for every\/ $x\colon A$, the type\/ $P(x)$ is contractible, then\/ $\sum_{x\colon A}P(x)\simeq A$.
         
         \item \textsc{\upshape Dependent Pairs (Left):} If\/ $A$ is contractible with center\/ $c\colon A$, then\/ $\sum_{x\colon A}P(x)\simeq P(c)$.

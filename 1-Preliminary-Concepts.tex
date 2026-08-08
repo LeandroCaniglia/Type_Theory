@@ -77,7 +77,7 @@
 \end{lpar}
 
 \begin{lpar}{Precedence.}
-    Syntactically, the precedence of `$:$' and `$\equiv$' is the lowest in an expression. The reason is that both symbols are used for judgments, which cannot be put together into more complicated statements. Thus, $A\equiv x=y$ means $A\equiv(x=y)$ since $x=y$ is a type and a judgment (like $A\equiv x$) cannot be equal to anything.\footnote{In fact, judgments cannot be terms in any propositional equality.}
+    Syntactically, the precedence of `$:$' and `$\equiv$' is the lowest in an expression. The reason is that both symbols are used for judgments, which cannot be put together into more complicated statements. Thus, $A\equiv x\eq{}y$ means $A\equiv(x\eq{}y)$ since $x\eq{}y$ is a type and a judgment (like $A\equiv x$) cannot be equal to anything.\footnote{In fact, judgments cannot be terms in any propositional equality.}
 \end{lpar}
 
 \begin{lpar}{Assumptions.}\label{lpar:assumptions}
@@ -169,7 +169,7 @@
 \end{lpar}
 
 \begin{lpar}{Curried form.}\label{lpar:currying}
-    If $f\colon A\times B\to C$ is a function, its \textsl{Curried form} is the function $g\colon A\to(B\to C$) defined as $g(a)(b)=f(a,b)$. The equivalence between a function and its Curried form is extended inductively to the case where the domain is $A_1\times\cdots\times A_n$.
+    If $f\colon A\times B\to C$ is a function, its \textsl{Curried form} is the function $g\colon A\to(B\to C$) defined as $g(a)(b)\equiv f(a,b)$. The equivalence between a function and its Curried form is extended inductively to the case where the domain is $A_1\times\cdots\times A_n$.
 
     In combination with $\lambda$-abstractions, for $f\colon A\to B\to C$ given by
     \[
@@ -302,7 +302,7 @@
     \]
     that swaps the order of the arguments and may also be denoted by 
     \[
-        \fun{swap}_{A,B,C}(f)(b,a)=f(a,b).
+        \fun{swap}_{A,B,C}(f)(b,a)\equiv f(a,b).
     \]
     Note that given $f\colon\prod_{x\colon A}\prod_{y\colon B(x)}C(x,y)$, we have $f(a,b)\colon C(a,b)$.
 \end{lpar}
@@ -588,7 +588,7 @@
         
     \needspace{2\baselineskip}
     In summary, we have:
-    \begin{enumerate}[label=\roman*), font=\scshape]
+    \begin{enumerate}[label=\roman*),font=\scshape]
         \item \textit{Type:} There is a type called $\fun1$.
         \item \textit{Constructor:} There is a term $\fstar\colon\fun1$.
         \item \textit{Eliminator:} There is a function $\fun{ind}_{\fun1}$ with type signature \eqref{eq:ind1}.
@@ -1301,7 +1301,7 @@
         where the usual `$\cdot$' symbol denotes multiplication.
         
         Here, our components correspond to the general schema as follows:
-        \begin{enumerate}[a), font=\upshape]
+        \begin{enumerate}[a),font=\upshape]
             \item The target type is $C \equiv\N$.
             \item The base case is $\Phi_0 \equiv 1$.
             \item The successor expression is $\Phi_s \equiv \fun{succ}(n) \cdot \fun{fact}(n)$. Note that this involves both the variable $n$ and the recursive call $\fun{fact}(n)$.
@@ -1702,7 +1702,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{lem}\label{lem:concat}
     Let\/ $A\colon\univ$,\/ $x,y,z, w\colon A$ and\/ $p\colon x\eq Ay$. Then, the following types are inhabited:
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item $p^{-1}\ct p\eq{y\eq Ay}\fun{refl}_y$ and\/ $p\ct p^{-1}\eq{x\eq Ax}\fun{refl}_x$.
         \item $(p^{-1})^{-1}\eq{x\eq Ay}p$.
         \item $p\ct(q\ct r)\eq{x\eq Aw}(p\ct q)\ct r$, for\/ $q\colon y\eq Az$ and\/ $r\colon z\eq Aw$.
@@ -1710,7 +1710,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{lem}
 
 \begin{proof}${}$
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item Consider the motive
         \[
             C\defeq\prod_{x,y\colon A}\;\prod_{p\colon x\eq Ay}
@@ -1998,7 +1998,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \item $0\le n$
             \item $n\le\fun{succ}(n)$
             \item $n\le n$
-            \item $n\le m$ and\/ $m\le n$ imply\/ $n=m$
+            \item $n\le m$ and\/ $m\le n$ imply\/ $n\eq\N m$
             \item $n\le m$ and\/ $m\le r$ imply\/ $n\le r$
             \item $n\le m$ or\/ $m\le n$
             \item $n<0$ does not hold
@@ -2374,7 +2374,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{align*}
     Thus, the question of proving that $\fun{rec}$ is propositionally equal to the recursion principle $\fun{rec}_\N$ for $\N$, would follow from the fact that a function $f\colon\N\to\N$ that satisfies $f(0)\equiv0$ and $f(\fun{succ}(n))\equiv\fun{succ}(n)$ is propositionally equal to the identity, i.e., $f\eq{\N\to\N}\id_\N$.
 
-    However, strictly speaking, that would be too much for our needs, since the equality $q_1(n)=n$ for $n\colon\N$ would imply by congruence\footnote{See Exercise~\ref{exr:ap-application}.} that $\fun{rec}$ satisfies the recursion principle equations propositionally, which is what we want.
+    However, strictly speaking, that would be too much for our needs, since the equality $q_1(n)\eq\N n$ for $n\colon\N$ would imply by congruence\footnote{See Exercise~\ref{exr:ap-application}.} that $\fun{rec}$ satisfies the recursion principle equations propositionally, which is what we want.
 
     In other words, we need a witness of
     \[
@@ -2794,7 +2794,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{exr}
     Using the propositions as types interpretation, derive the following tautologies.
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item If\/ $A$, then (if\/ $B$ then\/ $A$).
         \item If\/ $A$, then not (not\/ $A$).
         \item If (not\/ $A$ or not\/ $B$), then not ($A$ and\/ $B$).
@@ -2857,7 +2857,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{exr}
     Explain why the induction principles for identity types do not allow us to construct a function
     \[
-        f\colon\prod_{x\colon A}\;\prod_{p\colon x=x} (p=\fun{refl}_x)
+        f\colon\prod_{x\colon A}\;\prod_{p\colon x\eq Ax} (p\eq{x\eq Ax}\fun{refl}_x)
     \]
     with the defining equation
     \[
@@ -2868,7 +2868,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \begin{solution}
     The construction is invalid because the expression does not fit the type signature required by the induction principle for identity types in either formulation \eqref{eq:ind=A} or \eqref{eq:ind'=A}.
 
-    The given expression only considers paths of the form $p\colon x=x$, between $x$ and itself, while the induction principle requires paths between two variables.
+    The given expression only considers paths of the form $p\colon x\eq Ax$, between $x$ and itself, while the induction principle requires paths between two variables.
 \end{solution}
 
 \begin{exr}\label{exr:+comm}
@@ -2910,7 +2910,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{exr}\label{exr:ap-application}
     In {\upshape\nref{lpar:associativity-of-addition}}, we relied on the \textsl{principle of congruence} (applying a function to both sides of an equality).
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item Define the \textsl{application}\footnote{ A.k.a.~\textsl{action on paths}.} function\/ $\fun{ap}_f$, which takes a function\/ $f\colon A\to B$ and a path\/ $p\colon x\eq Ay$ and produces a path\/ $f(x)\eq Bf(y)$.
         
         \item Show that\/ $\fun{ap}_f$ distributes over path concatenation, i.e.,
@@ -2986,7 +2986,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 
 \begin{exr}\label{exr:not}
     Consider the boolean type\/ $\fun{2}$.
-    \begin{enumerate}[a), font=\upshape]
+    \begin{enumerate}[a),font=\upshape]
         \item Define the negation function\/ $\fun{not}\colon\fun2\to\fun2$.
         \item Prove that negation is an involution, i.e., construct a witness for
         \[
