@@ -173,7 +173,7 @@
 \end{defn}
 
 \begin{lem}\label{lem:transport-Q}
-    Let\/ $B\colon\univ$ be a type and\/ $P\colon B\to\univ$ a type family. Consider two functions\/ $f,g\colon B\to\Sigma_BP$, a path\/ $p\colon f=g$, and the type family
+    Let\/ $B\colon\univ$ be a type and\/ $P\colon B\to\univ$ a type family. Consider two functions\/ $f,g\colon B\to\Sigma_BP$, a path\/ $p\colon f\eq{}g$, and the type family
     \begin{align*}
         Q\colon(B\to\Sigma_BP)&\to\univ\\
         h&\mapsto\pi_1\circ h\sim\id_B.
@@ -548,7 +548,7 @@
     
     On the other hand, by definition, we have $\fun{idtoeqv}(\fun{refl}_{\fun2})\equiv e_{\id}$. Because $\fun{ua}$ and $\fun{idtoeqv}$ are quasi-inverses, this yields the propositional equality
     \[
-        \fun{refl}_{\fun2}=\fun{ua}(\fun{idtoeqv}(\fun{refl}_{\fun2}))\equiv\fun{ua}(e_{\id}).
+        \fun{refl}_{\fun2}\eq{}\fun{ua}(\fun{idtoeqv}(\fun{refl}_{\fun2}))\equiv\fun{ua}(e_{\id}).
     \]
     Thus, defining $q\defeq\fun{ua}(e)$, we obtain $q\ne\fun{refl}_{\fun2}$.
 
@@ -632,7 +632,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
             \dep{x,p}\eq{\fun{fib}_f(y)}\dep{x',p'}
         \bigr)
         \simeq
-        \sum_{q\colon x=x'}
+        \sum_{q\colon x\eq{}x'}
             \fun{ap}_f(q)\ct p'\eq{f(x)\eq By}p.
     \]
 \end{lem}
@@ -642,7 +642,7 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     \[
         \bigl(\dep{x,p}\eq{\fun{fib}_f(y)}\dep{x',p'}\bigr)
         \simeq
-        \sum_{q\colon x=x'} \fun{transport}^P(q,p)\eq{f(x')\eq By}p',
+        \sum_{q\colon x\eq{}x'} \fun{transport}^P(q,p)\eq{f(x')\eq By}p',
     \]
     where $P(x)\defeq f(x)\eq By$.
 
@@ -1735,7 +1735,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     is contractible with center\/ $c\defeq\dep{\fun{fib}_f(b),\fun{refl}_{\fun{fib}_f(b)}}$. By associativity of\/ $\Sigma$-types, we have
     \[
         \sum_{X\colon\univ}\;
-        \sum_{p\colon\fun{fib}_f(b)=X}X
+        \sum_{p\colon\fun{fib}_f(b)\eq{}X}X
         \simeq\sum_{\omega\colon C_b}\pi_1(\omega).
     \]
     Therefore, by part b) of Theorem~\ref{thm:contractible-types}, evaluating the family\/ $\pi_1$ at the center of contraction yields the equivalence
@@ -1747,7 +1747,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     \[\tag{$*$}
         \fun{fib}_f(b)\simeq
             \sum_{X\colon\univ}\;
-            \sum_{p\colon\fun{fib}_f(b)=X}X.
+            \sum_{p\colon\fun{fib}_f(b)\eq{}X}X.
     \]
     On the other hand, since the type family
     \begin{align*}
@@ -1756,7 +1756,7 @@ Here, the universe $\univ$ generalizes $\set{0,1}$, becoming the \textsl{object 
     \end{align*}
     is constant, we can swap its components and obtain the equivalence
     \begin{align*}\tag{$**$}
-        \Bigl(\sum_{p\colon\fun{fib}_f(b)=X}X\Bigr)
+        \Bigl(\sum_{p\colon\fun{fib}_f(b)\eq{}X}X\Bigr)
         &\xto{\simeq}\sum_{x\colon X}\fun{fib}_f(b)\eq{\univ}X\\
         \dep{p,x}&\mapsto\dep{x,p}.
     \end{align*}
@@ -2589,7 +2589,7 @@ As we can see, the dependency on $\WE$ happens in Theorem~\ref{thm:isContr-ishae
 
         Condition~b) does not depend on univalence.
 
-        Condition~c) can be proved as in the theorem because, in our case, the definitional equality $\fun{idtoqinv}_{\fun2,\fun2}(\fun{refl}_{\fun2})\equiv e_\id$ implies the propositional equality $\fun{ua'}(e_\id)=\fun{refl}_{\fun2}$.
+        Condition~c) can be proved as in the theorem because, in our case, the definitional equality $\fun{idtoqinv}_{\fun2,\fun2}(\fun{refl}_{\fun2})\equiv e_\id$ implies the propositional equality $\fun{ua'}(e_\id)\eq{}\fun{refl}_{\fun2}$.
             
         \item Fix $A\colon\univ$ and let $B$ run over $\univ$.
         
