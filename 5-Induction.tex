@@ -57,7 +57,7 @@ This principle also specifies that the constructed function $f$ computes as expe
 \end{xmpl}
 
 \begin{thm}\label{thm:N-induction-uniqueness}
-    Let\/ $f,g\colon\prod_{x\colon\N}E(x)$ be functions satisfying the recurrences
+    Let $f,g\colon\prod_{x\colon\N}E(x)$ be functions satisfying the recurrences
     \[
         e_z\colon E(0)
         \quad\text{and}\quad
@@ -81,7 +81,7 @@ This principle also specifies that the constructed function $f$ computes as expe
             &\eq{E(\fun{succ}(n))}
             e_s(n,g(n)).
     \end{align*}
-    Then\/ $f\sim g$.
+    Then $f\sim g$.
 \end{thm}
 
 \begin{proof}
@@ -131,7 +131,7 @@ This principle also specifies that the constructed function $f$ computes as expe
 \end{proof}
 
 \begin{rem}\label{rem:List-induction-uniqueness}
-    A similar theorem holds for lists: \textit{If\/ $f,g\colon\prod_{x\colon\fun L_A}E(x)$ propositionally satisfy the recurrences \eqref{eq:list-recurrences}, then\/ $f\sim g$}.
+    A similar theorem holds for lists: \textit{If $f,g\colon\prod_{x\colon\fun L_A}E(x)$ propositionally satisfy the recurrences \eqref{eq:list-recurrences}, then $f\sim g$}.
 
     The proof proceeds exactly as in the theorem, introducing
     \[
@@ -165,18 +165,18 @@ This principle also specifies that the constructed function $f$ computes as expe
 Suppose we have a different construction of the natural numbers:
 \begin{itemize}
     \item $0'\colon\N'$
-    \item $\fun{succ'}\colon\N'\to\N'$,
+    \item $\fun{succ}'\colon\N'\to\N'$,
 \end{itemize}
 along with an induction principle
 \[
     \fun{ind}_{\N'}\colon\prod_{E\colon\N'\to\univ}
-        E(0')\to\Bigl(\prod_{n'\colon\N'}E(n') \to E(\fun{succ'}(n'))\Bigr)
+        E(0')\to\Bigl(\prod_{n'\colon\N'}E(n') \to E(\fun{succ}'(n'))\Bigr)
         \to \prod_{n'\colon\N'}E(n')
 \]
 and the definitional equalities
 \begin{align*}
     \fun{ind}_{\N'}(E, e_0, e_s, 0') &\defeq e_0,\\
-    \fun{ind}_{\N'}(E, e_0, e_s, \fun{succ'}(n')) &\defeq e_s(n', \fun{ind}_{\N'}(E, e_0, e_s, n')).
+    \fun{ind}_{\N'}(E, e_0, e_s, \fun{succ}'(n')) &\defeq e_s(n', \fun{ind}_{\N'}(E, e_0, e_s, n')).
 \end{align*}
 We can use the constant families $E(n)\defeq\N'$ and $E'(n')\defeq\N$ to define
 \begin{align*}
@@ -184,7 +184,7 @@ We can use the constant families $E(n)\defeq\N'$ and $E'(n')\defeq\N$ to define
         (
             E,
             0',
-            \lambda n.\,\fun{succ'}
+            \lambda n.\,\fun{succ}'
         )
 \intertext{and}
     g\colon\N'\to\N&\defeq\fun{ind}_{\N'}
@@ -201,7 +201,7 @@ First, observe that
 and also
 \[
     g\circ f(\fun{succ}(n))
-        \equiv g(\fun{succ'}(f(n)))
+        \equiv g(\fun{succ}'(f(n)))
         \equiv \fun{succ}(g(f(n)))
         \equiv \fun{succ}(g\circ f(n)).
 \]
@@ -220,14 +220,14 @@ A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Conse
     \begin{itemize}
         \item $\N'\defeq\fun{List}(\fun1)$,
         \item $0'\defeq\fun{nil}$, and
-        \item $\fun{succ'}(\ell)\defeq\fun{cons}(\fstar,\ell)$,
+        \item $\fun{succ}'(\ell)\defeq\fun{cons}(\fstar,\ell)$,
     \end{itemize}
     with the induction principle
     \begin{align*}
         \fun{ind}_{\N'}&\colon\prod_{E\colon\N'\to\univ}
             E(\fun{nil})
             \to\Bigl(\prod_{\ell\colon\N'}E(\ell)
-                \to E(\fun{succ'}(\ell))\Bigr)
+                \to E(\fun{succ}'(\ell))\Bigr)
             \to \prod_{y\colon\N'}E(y)\\
         \fun{ind}_{\N'}
             (
@@ -306,7 +306,7 @@ The term-construction process has two steps. First, we choose a label $a\colon A
 
 Second, the type family $B(a)$ dictates the branches hanging from that node. If $B(a)$ is the empty type, the node is a leaf: it has zero branches. If $B(a)$ is the boolean type, the node has two branches, and so forth. 
 
-If the node has branches, a fully formed subtree hangs from each of them. As illustrated below, the branches are indexed by the elements $b_1,b_2,\dots,b$ of $B(a)$. The function $f\colon B(a)\to\fun W_{x\colon A}B(x)$ attaches a subtree $f(b)$ to each branch, represented by the dotted triangles.
+If the node has branches, a fully formed subtree hangs from each of them. As illustrated below, the branches are indexed by the elements $b_1,b_2,\dots,b$ of $B(a)$. The function $\phi\colon B(a)\to\fun W_{x\colon A}B(x)$ attaches a subtree $\phi(b)$ to each branch, represented by the dotted triangles.
 \[
     \begin{tikzpicture}[>=stealth, thick]
         % Root node labeled by a in A
@@ -325,15 +325,15 @@ If the node has branches, a fully formed subtree hangs from each of them. As ill
         % Ellipsis indicating B(a)-many arguments
         \node at (1, -2) {$\cdots$};
     
-        % Dotted triangles representing the well-founded subtrees f(b_i)
+        % Dotted triangles representing the well-founded subtrees \phi(b_i)
         \draw[dotted, thick] (t1) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
-        \node at (-2.5, -2.9) {$\scriptstyle f(b_1)$};
+        \node at (-2.5, -2.9) {$\scriptstyle\phi(b_1)$};
     
         \draw[dotted, thick] (t2) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
-        \node at (-0.7, -2.9) {$\scriptstyle f(b_2)$};
+        \node at (-0.7, -2.9) {$\scriptstyle\phi(b_2)$};
     
         \draw[dotted, thick] (tb) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
-        \node at (2.5, -2.9) {$\scriptstyle f(b)$};
+        \node at (2.5, -2.9) {$\scriptstyle\phi(b)$};
     \end{tikzpicture}
 \]
 The induction principle of the $\fun W$-type ensures that each of these triangles is itself a well-founded tree. Thus, the branching process repeats inside each triangle and terminates at leaves after a finite number of steps.
@@ -347,12 +347,12 @@ Because $\fun W$-types serve as a universal generalization of inductive types, a
         \bigr)
             \to\fun W_AB.
 \end{equation}
-When a term is built using $\fun{sup}(a,f)$, the label $a\colon A$ acts as the indicator for which constructor is being applied, while the function $f\colon B(a)\to\fun W_AB$ supplies the subtrees required by that specific constructor.
+When a term is built using $\fun{sup}(a,\phi)$, the label $a\colon A$ acts as the indicator for which constructor is being applied, while the function $\phi\colon B(a)\to\fun W_AB$ supplies the subtrees required by that specific constructor.
 
 In this way, the single constructor $\fun{sup}$ expresses the behavior of any number of individual constructors by delegating the choice of the operation to the label type~$A$.
 
 \begin{rem}\label{rem:rec(sup)-is-P(W)->W}
-    According to \nref{lpar:Sigma-type-rec-and-ind}, the constructor\/ $\fun{sup}$ given by \eqref{eq:sup-constructor} determines a function
+    According to \nref{lpar:Sigma-type-rec-and-ind}, the constructor $\fun{sup}$ given by \eqref{eq:sup-constructor} determines a function
     \begin{equation}\label{eq:P(W)->W}
         \fun{rec}_{\sum_{a\colon A}B(a)\to\fun W_AB}
             (
@@ -418,7 +418,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \draw[->] (x3) -- node[right] {$\fstar$} (nil);
         \end{tikzpicture}
     \]
-    The first graph depicts the recursive step for the constructor\/ $\fun{cons}(x,\ell)$. The root is labeled by\/ $x$, representing\/ $\fun{inr}(x)\colon A$. Since the arity of this label is\/ $B(\fun{inr}(x))\defeq\fun1$, there is exactly one downward edge emerging from the node. This edge is indexed by\/ $\fstar$, and the subtree-assigning function\/ $f\colon\fun1\to\fun W_AB$ attaches the recursive argument by defining\/ $f(\fstar)\defeq\ell$.
+    The first graph depicts the recursive step for the constructor $\fun{cons}(x,\ell)$. The root is labeled by $x$, representing $\fun{inr}(x)\colon A$. Since the arity of this label is $B(\fun{inr}(x))\defeq\fun1$, there is exactly one downward edge emerging from the node. This edge is indexed by $\fstar$, and the subtree-assigning function $\phi\colon\fun1\to\fun W_AB$ attaches the recursive argument by defining $\phi(\fstar)\defeq\ell$.
 
     \needspace{2\baselineskip}
     With this, we can formally redefine:
@@ -446,15 +446,15 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \[
         B\defeq\fun{rec}_{\fun2}(\univ,\fun0,\fun1).
     \]
-    The subtree-assigning function $f\colon B(a)\to\fun W_{\fun2}B$ depends on the constructor being encoded.
+    The subtree-assigning function $\phi\colon B(a)\to\fun W_{\fun2}B$ depends on the constructor being encoded.
     
-    For the base case $0$, we have $f_0\defeq\fun{rec}_{\fun0}(\fun W_{\fun2}B)$.
+    For the base case $0$, we have $\phi_0\defeq\fun{rec}_{\fun0}(\fun W_{\fun2}B)$.
     
-    For the inductive step $\fun{succ}(n)$, we have $f_{\fun{succ}}\defeq\lambda{\fstar}.\,n$.
+    For the inductive step $\fun{succ}(n)$, we have $\phi_{\fun{succ}}\defeq\lambda{\fstar}.\,n$.
 
     In summary:
     \begin{itemize}
-        \item $\N'\defeq\fun W_{\fun2}B$,
+        \item $\N'\defeq\fun W_{\fun2}\fun{rec}_{\fun2}(\univ,\fun0,\fun1)$,
         \item $0'\defeq\fun{sup}(0_{\fun2},\fun{rec}_{\fun0}(\N'))$, and
         \item $\fun{succ}'(n)\defeq\fun{sup}(1_{\fun2},\lambda{\fstar}.\,n)$.
     \end{itemize}
@@ -522,18 +522,20 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                 \to\fun W_AB.
     \end{equation}
     
-    \textsc{Elimination:} To construct a dependent function over the\/ $\fun W$-type, we use its induction principle. Given a motive\/ $E\colon\fun W_AB\to\univ$, we must provide an inductive step function\/ $e_s$ that constructs a term in\/ $E(\fun{sup}(a,\phi))$ assuming we already have terms in\/ $E(\phi(b))$ for all\/ $b\colon B(a)$. The required signature for\/ $e_s$ is
+    \textsc{Elimination:} To construct a dependent function over the $\fun W$-type, we use its induction principle. Given a motive $E\colon\fun W_AB\to\univ$, we must provide an inductive step function $e_s$ that constructs a term in $E(\fun{sup}(a,\phi))$ assuming we already have terms in $E(\phi(b))$ for all $b\colon B(a)$. The required signature for $e_s$ is
     \begin{equation}\label{eq:ind_W-step-function}
-        e_s\colon\prod_{a\colon A}\;\prod_{\phi\colon B(a)\to \fun W_AB}
-            \Bigl(\prod_{b\colon B(a)}E(\phi(b))\Bigr)
-            \to E(\fun{sup}(a,\phi)).
+        e_s\colon
+            \prod_{a\colon A}\;
+            \prod_{\phi\colon B(a)\to \fun W_AB}
+                \Bigl(\prod_{b\colon B(a)}E(\phi(b))\Bigr)
+                \to E(\fun{sup}(a,\phi)).
     \end{equation}
     With this data, the induction principle produces a dependent function
     \begin{equation}\label{eq:W-induction-function}
         \fun{ind}_{\fun W}(E, e_s)
             \colon\prod_{w\colon \fun W_AB}E(w).
     \end{equation}
-    As a special case, when the motive is a constant type family\/ $E(w)\defeq C$ for some carrier type\/ $C\colon\univ$, the inductive step function simplifies to a curried structure map\/ $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$. The induction principle then reduces to the non-dependent \textsl{recursor}
+    As a special case, when the motive is a constant type family $E(w)\defeq C$ for some carrier type $C\colon\univ$, the inductive step function simplifies to a curried structure map $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$. The induction principle then reduces to the non-dependent \textsl{recursor}
     \begin{equation}\label{eq:rec_W}
         \fun{rec}_{\fun W}(C, s_C)
             \colon \fun W_AB\to C.
@@ -556,7 +558,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         s_C\colon\prod_{a\colon A}(B(a)\to C)\to C.
     \]
 
-    \textsc{Computation:} The eliminators compute by evaluating the step function on the components of the\/ $\fun{sup}$ constructor. For the induction principle, the computation rule is the definitional equality
+    \textsc{Computation:} The eliminators compute by evaluating the step function on the components of the $\fun{sup}$ constructor. For the induction principle, the computation rule is the definitional equality
     \begin{equation}\label{eq:ind_W-computation-rule}
         \fun{ind}_{\fun W}(E,e_s)(\fun{sup}(a,\phi)) 
             \equiv
@@ -602,7 +604,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{xmpl}
 
 \begin{thm}\label{thm:W-type-induction-uniqueness}
-    Let\/ $g,h\colon\prod_{w\colon\fun W_AB}E(w)$ be two functions which satisfy the recurrence
+    Let $g,h\colon\prod_{w\colon\fun W_AB}E(w)$ be two functions which satisfy the recurrence
     \[
         e\colon\prod_{a,f}\;
         \Bigl(
@@ -619,7 +621,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             &\eq{E(\fun{sup}(a,f))}
                 e(a,f,\lambda b.\,h(f(b))).
     \end{align*}
-    Then\/ $g\sim h$.
+    Then $g\sim h$.
 \end{thm}
 
 \begin{proof}
@@ -718,11 +720,11 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{defns}
 
 \begin{lem}\label{lem:L_X-morphisms-are-morphisms}
-    Given\/ $\fun L_X$-algebras $\mathcal{A}\defeq\dep{A,(a_{\fun{nil}}, a_{\fun{cons}})}$, $\mathcal{B}\defeq\dep{B,(b_{\fun{nil}},b_{\fun{cons}})}$, and\/ $\mathcal{C}\defeq\dep{C,(c_{\fun{nil}}, c_{\fun{cons}})}$, the following hold:
+    Given $\fun L_X$-algebras $\mathcal{A}\defeq\dep{A,(a_{\fun{nil}}, a_{\fun{cons}})}$, $\mathcal{B}\defeq\dep{B,(b_{\fun{nil}},b_{\fun{cons}})}$, and $\mathcal{C}\defeq\dep{C,(c_{\fun{nil}}, c_{\fun{cons}})}$, the following hold:
     \begin{enumerate}[a),font=\upshape]
-        \item The identity function\/ $\id_A\colon A\to A$ is an\/ $\fun L_X$-morphism from\/ $\mathcal{A}$ to\/ $\mathcal{A}$.
-        \item If\/ $f\colon A\to B$ and\/ $g\colon B\to C$ are\/ $\fun L_X$-morphisms, then the composition\/ $g\circ f\colon A\to C$ is an\/ $\fun L_X$-morphism from\/ $\mathcal{A}$ to\/ $\mathcal{C}$.
-        \item If\/ $f\colon A\to B$ is an\/ $\fun L_X$-morphism and\/ $g\colon B\to A$ is a quasi-inverse of\/ $f$, then the quasi-inverse\/ $g$ is an\/ $\fun L_X$-morphism from\/ $\mathcal{B}$ to\/ $\mathcal{A}$.
+        \item The identity function $\id_A\colon A\to A$ is an $\fun L_X$-morphism from $\mathcal{A}$ to $\mathcal{A}$.
+        \item If $f\colon A\to B$ and $g\colon B\to C$ are $\fun L_X$-morphisms, then the composition $g\circ f\colon A\to C$ is an $\fun L_X$-morphism from $\mathcal{A}$ to $\mathcal{C}$.
+        \item If $f\colon A\to B$ is an $\fun L_X$-morphism and $g\colon B\to A$ is a quasi-inverse of $f$, then the quasi-inverse $g$ is an $\fun L_X$-morphism from $\mathcal{B}$ to $\mathcal{A}$.
     \end{enumerate}
 \end{lem}
 
@@ -768,7 +770,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{thm}
-    The type of\/ $h$-initial\/ $\fun L_X$-algebras is a mere proposition.
+    The type of $h$-initial $\fun L_X$-algebras is a mere proposition.
 \end{thm}
 
 \begin{proof}
@@ -778,7 +780,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{thm}
-    The\/ $\fun L_X$-algebra\/ $\dep{\fun L_X,(\fun{nil},\fun{cons})}$ is homotopy initial.
+    The $\fun L_X$-algebra $\dep{\fun L_X,(\fun{nil},\fun{cons})}$ is homotopy initial.
 \end{thm}
 
 \begin{proof}
@@ -802,7 +804,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{cor}
-    The\/ $\fun L_{\fun1}$-algebra\/ $\dep{\N, (0, \fun{succ})}$ is homotopy initial.
+    The $\fun L_{\fun1}$-algebra $\dep{\N, (0, \fun{succ})}$ is homotopy initial.
 \end{cor}
 
 \begin{proof}
@@ -826,7 +828,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \begin{defn}
     Let $A\colon\univ$ be a type of labels and $B\colon A\to\univ$ an arity family. A \textsl{polynomial functor} (in normal form) is the type family
     \[
-        P(X)\defeq\sum_{a\colon A}(B(a)\to X)
+        P(X)\defeq\sum_{a\colon A}B(a)\to X
     \]
     for any $X\colon\univ$.
 \end{defn}
@@ -927,7 +929,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{defn}
 
 \begin{ntn}\label{ntn:recursor-commutativity}
-    For\/ $\fun W\defeq\fun W_AB$, a carrier type\/ $C\colon\univ$, and a curried structure map\/ $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$, the term
+    For $\fun W\defeq\fun W_AB$, a carrier type $C\colon\univ$, and a curried structure map $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$, the term
     \[
         \fun{comp}_{\fun W}(C,s_C,a,\phi)
         \defeq\fun{refl}_{f(\fun{sup}(a,\phi))}
@@ -941,7 +943,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{ntn}
 
 \begin{lem}\label{lem:transport-identity-family}
-    Let\/ $H, C\colon\univ$ be types and\/ $L, R\colon H \to C$ functions. Given a path\/ $p\colon h_1\eq{H} h_2$ and a path\/ $q\colon L(h_1)\eq CR(h_1)$, we have
+    Let $H, C\colon\univ$ be types and $L, R\colon H \to C$ functions. Given a path $p\colon h_1\eq{H} h_2$ and a path $q\colon L(h_1)\eq CR(h_1)$, we have
     \[
         \fun{transport}^{h\mapsto L(h)\eq CR(h)}(p,q) 
         \eq{L(h_2)\eq CR(h_2)}
@@ -966,11 +968,11 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{lem}\label{lem:WHom-equality}
-    Let\/ $\dep{D,s_D}$ and\/ $\dep{C,s_C}$ be two\/ $\fun W$-algebras. Let\/ $\dep{f,\eta_f}$ and\/ $\dep{g,\eta_g}$ be two\/ $\fun W$-morphisms from\/ $\dep{D,s_D}$ to\/ $\dep{C,s_C}$. The identity type
+    Let $\dep{D,s_D}$ and $\dep{C,s_C}$ be two $\fun W$-algebras. Let $\dep{f,\eta_f}$ and $\dep{g,\eta_g}$ be two $\fun W$-morphisms from $\dep{D,s_D}$ to $\dep{C,s_C}$. The identity type
     \[
         \dep{f,\eta_f}\eq{\fun W\Hom(D,C)}\dep{g,\eta_g}
     \]
-    is equivalent to the type of dependent pairs\/ $\dep{e,s_e}$, where\/ $e\colon f\sim g$ is a homotopy and\/ $s_e$ is a family of paths assigning to each\/ $a\colon A$ and\/ $\phi\colon B(a)\to D$ a path
+    is equivalent to the type of dependent pairs $\dep{e,s_e}$, where $e\colon f\sim g$ is a homotopy and $s_e$ is a family of paths assigning to each $a\colon A$ and $\phi\colon B(a)\to D$ a path
     \[
         s_e(a,\phi)\colon
             e(s_D(a,\phi))
@@ -980,7 +982,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                 \fun{funext}(e\rwct\phi))
             \ct\eta_g(a,\phi)^{-1}
     \]
-    in\/ $f(s_D(a,\phi)) \eq{C} g(s_D(a,\phi))$. In other words, the path diagram
+    in $f(s_D(a,\phi)) \eq{C} g(s_D(a,\phi))$. In other words, the path diagram
     \[
         \begin{tikzcd}[row sep=large, column sep=3.2cm]
             f(s_D(a,\phi))
@@ -1003,7 +1005,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                         "{\eta_g(a,\phi)^{-1}}"]
         \end{tikzcd}
     \]
-    commutes propositionally if, and only if,\/ $\dep{f,\eta_f}\eq{\fun W\Hom(D,C)}\dep{g,\eta_g}$.
+    commutes propositionally if, and only if, $\dep{f,\eta_f}\eq{\fun W\Hom(D,C)}\dep{g,\eta_g}$.
 \end{lem}
 
 \begin{proof}
@@ -1083,9 +1085,9 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                 )
             \ct\eta_g(a,\phi)^{-1}.
     \]
-    This completes the proof of the \textit{if\/} part.
+    This completes the proof of the \textit{if} part.
     
-    For the \textit{only if\/} part, note that the equality $\dep{f,\eta_f}\eq{}\dep{g,\eta_g}$ means the existence of paths
+    For the \textit{only if} part, note that the equality $\dep{f,\eta_f}\eq{}\dep{g,\eta_g}$ means the existence of paths
     \begin{align*}
         p&\colon f\eq{D\to C}g,\\
         q&\colon
@@ -1120,7 +1122,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{thm}
-    For any type\/ $A\colon\univ$ and type family\/ $B\colon A\to\univ$, the\/ $\fun W$-algebra\/ $\dep{\fun W_AB,\fun{sup}}$ is\/ $h$-initial.
+    For any type $A\colon\univ$ and type family $B\colon A\to\univ$, the $\fun W$-algebra $\dep{\fun W_AB,\fun{sup}}$ is $h$-initial.
 \end{thm}
 
 \begin{proof}
@@ -1173,3 +1175,1042 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     %
     
 \end{proof}
+
+
+\section{Homotopy-Inductive Types}
+
+Let us get back to the alternative definition $\N'$ of the natural numbers given in Example~\ref{xmpl:W-tree-for-N}, namely
+\begin{itemize}
+    \item $\N'\defeq\fun W_{\fun2}\fun{rec}_{\fun2}(\univ,\fun0,\fun1)$,
+    \item $0'\defeq\fun{sup}(0_{\fun2},\fun{rec}_{\fun0}(\N'))$, and
+    \item $\fun{succ}'(n)\defeq\fun{sup}(1_{\fun2},\lambda{\fstar}.\,n)$.
+\end{itemize}
+To see if the standard computation rules for natural numbers can be derived from the rules for $\fun W$-types, we must define the step function $e_s$ as specified in \eqref{eq:ind_W-step-function}, i.e.,
+\[
+    e_s\colon
+    \prod_{a\colon\fun2}\;
+    \prod_{\phi\colon B(a)\to\N'}
+    \Bigl(\prod_{b\colon B(a)}E(\phi(b))\Bigr)
+    \to E(\fun{sup}(a,\phi)).
+\]
+Consequently, we assume we are given the standard inductive data for the natural numbers: a motive $E$, a base case $e_{0'}\colon E(0')$, and a successor step function
+\[
+    e_{\fun{succ}'}\colon\prod_{n\colon\N'}E(n)
+    \to E(\fun{sup}(1_{\fun2},\lambda{\fstar}.\,n)).
+\]
+To derive the standard induction principle for $\N'$ from the $\fun W$-induction, we must define $\fun{ind}_{\N'}$ in terms of $\fun{ind}_{\fun W}$:
+\[
+    \fun{ind}_{\N'}(E,e_{0'},e_{\fun{succ}'})
+        \defeq\fun{ind}_{\fun W}(E,e_s).
+\]
+Moreover, this definition must satisfy:
+\[
+    \fun{ind}_{\N'}(E,e_{0'},e_{\fun{succ}'})(\fun{succ}'(n))
+    \equiv
+        e_{\fun{succ}'}\bigl(
+                n,
+                \fun{ind}_{\N'}(
+                    E,e_{0'},
+                    e_{\fun{succ}'}
+                    )(n)
+            \bigr).
+\]
+If we substitute our definition of $\fun{ind}_{\N'}$ into this expected identity, we obtain:
+\begin{equation}\label{eq:ind_W-requirement}
+    \fun{ind}_{\fun W}(E,e_s)(\fun{succ}'(n))
+    \equiv
+        e_{\fun{succ}'}\bigl(
+                n,
+                \fun{ind}_{\fun W}(E,e_s)(n)
+            \bigr).
+\end{equation}
+Given $\phi\colon\fun1\to\N'$ and $h\colon\prod_{b\colon\fun1}E(\phi(b))$, to define $e_s(1_{\fun2},\phi,h)$, we must construct a term of type $E(\fun{sup}(1_{\fun2},\phi))$.
+
+Since the domain of both $\phi$ and $h$ is $\fun1$, we can apply them to $\fstar\colon\fun1$ obtaining
+\begin{align*}
+    \phi(\fstar)&\colon\N',\\
+    h(\fstar)&\colon E(\phi(\fstar)).
+\end{align*}
+We can now pass these terms to $e_{\fun{succ}'}$, which yields
+\[
+    e_{\fun{succ}'}(\phi(\fstar),h(\fstar))
+    \colon E(\fun{sup}(1_{\fun2},\lambda{\fstar}.\,\phi(\fstar))).
+\]
+This codomain is definitionally equal to $E(\fun{sup}(1_{\fun2},\phi))$. Since this matches the required type, we can define the step function as
+\begin{equation}\label{eq:e_s-definition}
+    e_s(1_{\fun2},\phi,h)\defeq e_{\fun{succ}'}
+        (\phi(\fstar),h(\fstar)).
+\end{equation}
+Substituting this definition into the $\fun W$-type computation rule for $\fun{succ}'(n)$[cite: 1], we obtain
+\begin{align*}
+    \fun{ind}_{\fun W}(E,e_s)(\fun{succ}'(n))
+        &\equiv
+            e_s\bigl(
+                    1_{\fun2},
+                    \lambda{\fstar}.\,n,
+                    \fun{ind}_{\fun W}(E,e_s)
+                        \circ(\lambda{\fstar}.\,n)
+                \bigr)\nonumber\\
+        &\equiv
+            e_{\fun{succ}'}\bigl(
+                    (\lambda{\fstar}.\,n)(\fstar),
+                        (
+                            \fun{ind}_{\fun W}(E,e_s)
+                            \circ
+                            (\lambda{\fstar}.\,n)
+                        )(\fstar)
+                \bigr)\nonumber\\
+        &\equiv
+            e_{\fun{succ}'}\bigl(
+                    n,
+                    \fun{ind}_{\fun W}(E,e_s)(n)
+                \bigr),
+\end{align*}
+which reconstructs the expected recurrence \eqref{eq:ind_W-requirement}.
+
+However, the problem arises because the base case fails. This requirement translates into the definitional equality
+\[
+    \fun{ind}_{\N'}(E,e_{0'},e_{\fun{succ}'})(0')
+        \equiv e_{0'}.
+\]
+In our setup, substituting the definition of $\fun{ind}_{\N'}$ translates this requirement into
+\[
+    \fun{ind}_{\fun W}(E,e_s)(0')
+        \equiv e_{0'}.
+\]
+To see why this fails, let us evaluate the left-hand side. We have
+\begin{align*}
+    \fun{ind}_{\fun W}(E,e_s)(0')
+        &\equiv \fun{ind}_{\fun W}(E,e_s)
+            (\fun{sup}(0_{\fun2},\fun{rec}_{\fun0}(\N')))\\
+        &\equiv e_s\bigl(
+                0_{\fun2},
+                \fun{rec}_{\fun0}(\N'),
+                \fun{ind}_{\fun W}(E,e_s)
+                    \circ\fun{rec}_{\fun0}(\N')
+            \bigr)
+            &&\text{; \eqref{eq:ind_W-computation-rule}}.
+\end{align*}
+The required signature for the base case is
+\[
+    e_s(0_{\fun2},\dummy,\dummy)\colon
+    \prod_{\phi\colon\fun0\to\N'}
+    \Bigl(\prod_{b\colon\fun0}E(\phi(b))\Bigr)
+    \to E(\fun{sup}(0_{\fun2},\phi)).
+\]
+We are given the standard base case data
+\[
+    e_{0'}\colon E(0')
+        \equiv E(\fun{sup}(0_{\fun2},\fun{rec}_{\fun0}(\N'))).
+\]
+To define $e_s(0_{\fun2},\phi,h)\defeq e_{0'}$, we would need the strict syntactic match between codomains:
+\[
+    E(\fun{sup}(0_{\fun2},\phi))
+    \equiv
+    E(\fun{sup}(0_{\fun2},\fun{rec}_{\fun0}(\N'))).
+\]
+But this would require
+\[
+    \phi\equiv\fun{rec}_{\fun0}(\N'),
+\]
+which does not hold because not all functions out of $\fun0$ are judgmentally equal.
+
+As a result, the direct assignment fails to typecheck natively.
+
+\subsection{Bridging the Gap}
+
+Of course, given $\phi\colon\fun0\to\N'$ there is trivial homotopy $\phi\sim\fun{rec}_{\fun0}(\N')$. By function extensionality, this gives a path $p_\phi\colon\phi\eq{\fun0\to\N'}\fun{rec}_{\fun0}(\N')$.
+
+Thus, to bridge the gap described above, we must transport the given term $e_{0'}$ along this path:
+\[
+    e_s(0_{\fun2},\phi,h)
+        \defeq\fun{transport}^{E(\fun{sup}(0_{\fun2},\dummy))}
+            (p_\phi^{-1},e_{0'}).
+\]
+When we compute the $\fun W$-type induction for $0'$, we obtain
+\[
+    \fun{ind}_{\fun W}(E,e_s)(0')
+        \equiv\fun{transport}^{E(\fun{sup}(0_{\fun2},\dummy))}(p_\phi^{-1},e_{0'}).
+\]
+Because $p_\phi$ is constructed using the function extensionality axiom, which is not a constructor that can be evaluated, the transport cannot reduce any further. Therefore, the judgmental equality $\fun{ind}_{\fun W}(E,e_s)(0')\equiv e_{0'}$ fails, holding only propositionally.
+
+\medskip
+
+\textbf{Note.} Although relaxing these computation rules to hold only propositionally might seem like a viable workaround, the resulting loss of judgmental equality is precisely why modern proof assistants abandon the\/ $\fun{W}$-type encoding altogether. By elevating \textit{all} inductive types to primitive status, these systems ensure that base constructors like\/ $\fun{nil}$ and\/ $\fun{zero}$ remain judgmentally unique and perfectly behaved.
+
+As Chapter~6 demonstrates, this foundational shift is also a structural necessity for accommodating higher-dimensional path constructors.
+
+Nevertheless, it is important to emphasize that while the\/ $\fun{W}$-type encoding is a pragmatic dead-end for language designers, it provides a crucial foundational framework for homotopy type theorists.
+
+\section{Strict Positivity}
+
+The aim of this section is to establish the requirements that constructors of inductive types must comply with in order to ensure valid definitions of new types.
+
+The main idea is that a proper constructor may admit arguments that are functions, but the type being defined cannot be the domain of those functional arguments.
+
+A good way to illustrate the necessity of this restriction is by showing how its inobservance leads to the Russell paradox.
+
+Suppose we define an inductive type $X$ by means of a single constructor that violates our restriction:
+\[
+    \fun c\colon(X\to\fun2)\to X.
+\]
+Because $X$ is an inductive type, we should be able to define, for any $C\colon\univ$, a function $u\colon X\to C$ by specifying how $u$ operates on points of $X$ constructed from functions $f\colon X\to\fun2$ via~$\fun c$.
+
+For example, in the case $C\defeq X\to\fun2$, we could define
+\[
+    u\colon X\to(X\to\fun2)
+\]
+by establishing
+\[\tag{$1$}
+    u(\fun c(f))\defeq f.
+\]
+
+Following Russell's paradox, this would allow us to build a diagonal function $d\colon X\to\fun 2$ as
+\[\tag{$2$}
+    d(x)\defeq\fun{not}(u(x)(x)).
+\]
+In consequence, we could define
+\[\tag{$3$}
+    x_0\defeq\fun c(d).
+\]
+The contradiction explodes when we try to evaluate the function $d$ on the element $x_0$. Indeed,
+\[
+    d(x_0)
+        \stackrel{(3)}\equiv d(\fun c(d))
+        \stackrel{(2)}\equiv\fun{not}(u(\fun c(d))(x_0))
+        \stackrel{(1)}\equiv\fun{not}(d(x_0)),
+\]
+which is impossible in the type $\fun2$ [cf.~Exercise~\ref{exr:2-simeq-2-simeq-2}].
+
+\subsection{Free Variables}
+
+\begin{defn}
+    Let $\Phi$ be a type expression, and let $\mathcal F(\Phi)$ denote the set of \textsl{free variables} in $\Phi$, defined recursively on the syntactic structure of the expression as follows:
+    \begin{itemize}
+        \item $\mathcal F(V)\defeq\set V$ for any variable $V$.
+
+        \item $\mathcal F(C)\defeq\emptyset$ for any constant type $C$.
+        
+        \item $\mathcal F(A+B)\defeq\mathcal F(A)\cup\mathcal F(B)$.
+
+        \item $\mathcal F\big(\prod_{y\colon A}B(y)\big)\defeq\mathcal F(A)\cup(\mathcal F(B(y))\setminus\set y)$.
+        
+        \item $\mathcal F\bigl(\sum_{y\colon A}B(y)\bigr)\defeq\mathcal F(A)\cup(\mathcal F(B(y))\setminus\set y)$.
+    \end{itemize}
+\end{defn}
+
+\begin{rems}\ 
+    \begin{enumerate}[-]
+        \item The variable $y$ in the last two parts of the definition is excluded from the set of free variables because it is free in $B(y)$ but gets \textsl{bound} in the entire expression.
+
+        \item The last two parts of the definition imply that $\mathcal F(A\to B)$ and $\mathcal F(A\times B)$ equal $\mathcal F(A)\cup\mathcal F(B)$.
+    
+        \item Using this precise syntactic extraction, the informal statement ``$X$ does not occur in $\Phi$'' translates directly to the set-theoretic condition:
+        \[
+            X\notin\mathcal F(\Phi).
+        \]
+        Conversely, ``$X$ occurs in $\Phi$'' simply means $X\in\mathcal F(\Phi)$.
+    \end{enumerate}
+    
+\end{rems}
+
+\begin{defn}
+    Let $X$ be a type variable and $\Phi$ a type expression. The predicate $\fun{Pos}_X(\Phi)$, denoting that $X$ occurs \textsl{strictly positively} in $\Phi$, holds when one of the following conditions is met:
+    \begin{enumerate}[a),font=\upshape]
+        \item $X\notin\mathcal F(\Phi)$,
+        
+        \item $\Phi\equiv X$,
+        
+        \item $\Phi\equiv \prod_{y\colon A}B(y)$, $X\notin\mathcal F(A)$, and $\fun{Pos}_X(B(y))$ holds for all $y\colon A$,
+        
+        \item $\Phi\equiv \sum_{y\colon A}B(y)$, $X \notin\mathcal F(A)$, and $\fun{Pos}_X(B(y))$ holds for all $y\colon A$,
+        
+        \item $\Phi\equiv A+B$, and $\fun{Pos}_X(A)$ and $\fun{Pos}_X(B)$ both hold.
+    \end{enumerate}
+\end{defn}
+
+\begin{rem}
+    Clauses c) and d) require $X\notin\mathcal F(A)$ to prevent~$X$ from appearing anywhere inside the domain $A$, while recursively checking $\fun{Pos}_X(B(y))$ to allow $X$ to occur strictly positively in the codomain.
+\end{rem}
+
+Yes, this is a fundamental result in type theory. We state it by showing that any strictly positive type expression canonically induces a mapping operation on functions, which acts as the morphism part of a functor.
+
+\begin{thm}
+    Let $X$ be a type variable and let $\Phi(X)$ be a type expression such that $\fun{Pos}_X(\Phi(X))$ holds. Given any two types $U$ and $V$, and a function $f\colon U\to V$, there exists a canonically defined function
+    \[
+        \fun{map}_\Phi(f)\colon \Phi(U)\to \Phi(V).
+    \]
+    Furthermore, this mapping preserves identities and composition, making $\Phi$ a covariant functor.
+\end{thm}
+
+\begin{proof}
+    We construct the function $\fun{map}_\Phi(f)$ by structural induction on the derivation of $\fun{Pos}_X(\Phi(X))$.
+
+    \begin{enumerate}[a),font=\upshape]
+        \item \textsc{Non-occurrence:} If $X \notin \mathcal F(\Phi)$, then $\Phi(U) \equiv \Phi(V) \equiv \Phi$. We define $\fun{map}_\Phi(f) \defeq \fun{id}_\Phi$, the identity function on $\Phi$.
+        
+        \item \textsc{Base variable:} If $\Phi(X) \equiv X$, then $\Phi(U) \equiv U$ and $\Phi(V) \equiv V$. We define $\fun{map}_\Phi(f) \defeq f$.
+
+        \item \textsc{Coproduct:} Suppose $\Phi(X) \equiv A(X) + B(X)$, where both $\fun{Pos}_X(A(X))$ and $\fun{Pos}_X(B(X))$ hold. By the inductive hypothesis, we have 
+        \[
+            \fun{map}_A(f)\colon A(U)\to A(V)
+            \quad\text{and}\quad
+            \fun{map}_B(f)\colon B(U)\to B(V).
+        \]
+        We define $\fun{map}_\Phi(f)$ by pattern matching on the coproduct:
+        \begin{align*}
+            \fun{map}_\Phi(f)(\fun{inl}(a)) &\defeq \fun{inl}(\fun{map}_A(f)(a)),\\
+            \fun{map}_\Phi(f)(\fun{inr}(b)) &\defeq \fun{inr}(\fun{map}_B(f)(b)).
+        \end{align*}
+        
+        \item \textsc{Dependent product:} Suppose $\Phi(X) \equiv \prod_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds for all $y\colon A$. By the inductive hypothesis, for any $y\colon A$, we have a function $\fun{map}_{B(y)}(f)\colon B(U,y)\to B(V,y)$. Given a dependent function $g\colon \prod_{y\colon A} B(U,y)$, we define
+        \[
+            \fun{map}_\Phi(f)(g) \defeq \lambda y.\,\fun{map}_{B(y)}(f)(g(y)).
+        \]
+        
+        \item \textsc{Dependent sum:} Suppose $\Phi(X) \equiv \sum_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds for all $y\colon A$. By the inductive hypothesis, we again have $\fun{map}_{B(y)}(f)$ for any $y\colon A$. Given a pair $p\colon \sum_{y\colon A} B(U,y)$, we define
+        \[
+            \fun{map}_\Phi(f)(p) \defeq \bigl(\pi_1(p), \fun{map}_{B(\pi_1(p))}(f)(\pi_2(p))\bigr).
+        \]
+    \end{enumerate}
+    This completes the construction. To complete the proof of functoriality, it remains to show that $\fun{map}_\Phi(\fun{id}_U)$ is propositionally equal to $\fun{id}_{\Phi(U)}$ and $\fun{map}_\Phi(g \circ f)$ is propositionally equal to $\fun{map}_\Phi(g) \circ \fun{map}_\Phi(f)$. We omit the details because these properties follow by structural induction under the same case analysis as above.
+\end{proof}
+
+\begin{xmpl}
+    The converse statement ---that functoriality implies strict positivity--- is false. Consider the double continuation type former, using the boolean type~$\fun2$:
+    \[
+        \Phi(X)\defeq(X\to\fun2)\to\fun2.
+    \]
+    This type expression is \textit{not} strictly positive. According to our definition, for $\fun{Pos}_X((X \to \fun2) \to \fun2)$ to hold, we would need $X$ not to occur in the domain $X \to \fun2$. Because $X \in \mathcal F(X \to \fun2)$, the strict positivity check fails. In this expression, $X$ is nested inside two negative positions (left sides of arrows), which makes it an ``ordinarily positive'' position, but not a strictly positive one.
+
+    However, $\Phi$ natively defines a covariant functor. Given any function $f\colon U \to V$, we can define the mapping $\fun{map}_\Phi(f)\colon \Phi(U) \to \Phi(V)$ as follows:
+    \[
+        \fun{map}_\Phi(f)(g) \defeq \lambda h.\,g(h \circ f),
+    \]
+    where $g\colon (U \to \fun2) \to \fun2$ and $h\colon V \to \fun2$. This mapping also preserves identities and compositions.
+\end{xmpl}
+
+\begin{rem}
+    The example highlights why type theory specifically demands \textit{strict} positivity rather than just ordinary positivity. If we have $\Phi(X)\defeq X\to A$, which is contravariant in the sense that maps $f\colon U\to V$ to $f^*\colon\Phi(V)\to\Phi(U)$, then composing it with a second contravariant expression $\Phi'(X)\defeq X\to A'$, results by double inversion of the arrows in the covariant behavior $f\mapsto f^{**}$.
+\end{rem}
+
+\section{Inductive Type Families}
+
+In this section we will see how a collection of types indexed by some other type, can be simultaneously defined by induction. Instead of defining a single type $X$, we define a family of types $X\colon I\to\univ$, where $I$ is the index type.
+
+For a standard inductive type $X$, every constructor must output a value of type~$X$. For an inductive type family $X\colon I\to\univ$, the constructors can target a specific index $i\colon I$ to produce a value in~$X(i)$.
+
+\begin{xmpl}\label{xmpl:Vec_A}
+    Let $A$ be a type. The inductive type family of \textsl{vectors over~$A$}, denoted $\fun{Vec}_A \colon \N \to \univ$, is generated by the following two constructors:
+    \begin{itemize}
+        \item $\fun{nil} \colon \fun{Vec}_A(0)$
+        \item $\fun{cons} \colon \prod_{n\colon\N} A \to \fun{Vec}_A(n) \to \fun{Vec}_A(\fun{succ}(n))$
+    \end{itemize}
+\end{xmpl}
+
+For a standard type $X$, the motive is a family of types $P\colon X\to\univ$. For a type family $X\colon I\to\univ$, the elements are distributed across different indices. Therefore, our motive must depend on both the index and the element. It becomes $P\colon\prod_{i\colon I}X(i)\to\univ$.
+
+\begin{xmpl}\label{xmpl:Vec_A-ind}
+    Following with Example~\ref{xmpl:Vec_A}, let $P \colon \prod_{n\colon\N}\fun{Vec}_A(n)\to\univ$ be a family of types.
+    
+    The eliminator for the vector family $\fun{ind}_{\fun{Vec}_A}$ takes two arguments corresponding to the constructors:
+    \begin{itemize}
+        \item a base case: $p_{\fun{nil}}\colon P(0,\fun{nil})$,
+
+        \item an inductive step:
+        \[
+            p_{\fun{cons}}\colon
+                \prod_{n\colon\N}\;
+                \prod_{a\colon A}
+                \prod_{v\colon\fun{Vec}_A(n)}
+                    P(n,v)
+                    \to
+                    P(\fun{succ}(n),\fun{cons}(n,a,v)).
+        \]
+    \end{itemize}
+    Given these, the eliminator produces a dependent function for all vectors at all indices:
+    \[
+        \fun{ind}_{\fun{Vec}_A}(
+                P,
+                p_{\fun{nil}},
+                p_{\fun{cons}}
+            )
+            \colon
+                \prod_{n\colon\N}\;
+                \prod_{v\colon\fun{Vec}_A(n)}
+                    P(n,v),
+    \]
+    with computation rules:{\small
+    \begin{align*}
+        \fun{ind}_{\fun{Vec}_A}(
+                P,
+                p_{\fun{nil}},
+                p_{\fun{cons}},
+                0,
+                \fun{nil}
+            )
+            &\equiv p_{\fun{nil}}\\
+        \fun{ind}_{\fun{Vec}_A}\bigl(
+                P,
+                p_{\fun{nil}},
+                p_{\fun{cons}},
+                \fun{succ}(n),
+                \fun{cons}(n,a,v)
+            \bigr)
+            &\equiv p_{\fun{cons}}
+                \bigl(
+                    n,
+                    a,
+                    v,
+                    \fun{ind}_{\fun{Vec}_A}(
+                            P,
+                            p_{\fun{nil}},
+                            p_{\fun{cons}},
+                            n,
+                            v
+                        )
+                \bigr).
+    \end{align*}}
+\end{xmpl}
+
+\paragraph{Eliminator Methods.}
+The eliminator $\fun{ind}_X$ is a machine that builds proofs by induction. To operate this machine, we have to supply it with the \textsl{eliminator methods}.
+
+Consider the natural numbers $\N$ with constructors $\fun{zero}\colon\N$ and $\fun{succ}\colon\N\to\N$. Let our motive be a property $P\colon\N\to\univ$ that we want to prove for all natural numbers.
+
+The eliminator $\fun{ind}_{\N}$ requires two methods, one for each constructor:
+\begin{itemize}
+    \item \textit{The method for $\fun{zero}$:} 
+    Since the $\fun{zero}$ constructor takes no arguments, this method reduces to proving the base case:
+    \[
+        p_{\fun{zero}}\colon P(0).
+    \]
+    
+    \item \textit{The method for $\fun{succ}$:} 
+    The constructor $\fun{succ}$ takes a number $n$ and produces $n+1$. The method must show that \textsl{if} the property holds for $n$, it holds for $n+1$. This is the inductive step:
+    \[
+        p_{\fun{succ}}\colon\prod_{n\colon\N}
+            P(n)\to P(\fun{succ}(n)).
+    \]
+\end{itemize}
+The eliminator consumes these two methods and outputs the global proof for all natural numbers:
+\[
+    \fun{ind}_{\N}(P,p_{\fun{zero}},p_{\fun{succ}})
+        \colon\prod_{n\colon\N}P(n).
+\]
+
+\begin{rem}
+    From a programming perspective, the eliminator is a switch statement that branches based on how the data was constructed. The eliminator method is simply the block of code of one particular branch. If the branch involves recursion, the method receives as an argument the result of the recursive call.
+\end{rem}
+
+\begin{defn}\label{defn:no-recursive-args}
+    Let $I$ be an index type and $X\colon I\to\univ$ an inductive type family. A constructor $\fun c$ with no recursive arguments (a \textsl{base constructor}) is specified by two components:
+    \begin{itemize}
+        \item \textsc{Context:} A type $C$ for all non-recursive arguments.
+        
+        \item \textsc{Target Index:} A function $g\colon C\to I$ that determines the index of the constructed element.
+    \end{itemize}
+    The signature of the constructor is:
+    \begin{equation}\label{eq:no-recursive-args}
+        \fun c\colon\prod_{z\colon C}X(g(z)).
+    \end{equation}
+    Given a motive $P\colon\prod_{i\colon I}X(i)\to\univ$, the eliminator method $p_{\fun c}$ corresponding to this base constructor must satisfy:
+    \[
+        p_{\fun c}\colon\prod_{z\colon C}
+            P(g(z),\fun c(z)).
+    \]
+\end{defn}
+
+
+\begin{xmpl}
+    For the $\fun{nil}$ constructor of the vector family $\fun{Vec}_A\colon\N\to\univ$, there are no non-recursive arguments either. Therefore, 
+    \begin{itemize}
+        \item \textsc{Context:} The context type is the unit type $\fun1$.
+        
+        \item \textsc{Target Index:} The empty vector has length $0$, so $g(\star)\defeq0$.
+    \end{itemize}
+    This gives the signature $\fun c\colon\prod_{z\colon\fun1}\fun{Vec}_A(0)$, which is equivalent to giving the constant element:
+    \[
+        \fun{nil}\colon\fun{Vec}_A(0).
+    \]
+\end{xmpl}
+
+\begin{defn}\label{defn:one-recursive-arg}
+    Let $I$ be an index type and $X\colon I\to\univ$ be an inductive type family. A \textsl{constructor} $\fun c$ with exactly one recursive argument is specified by three components:
+    \begin{itemize}
+        \item \textsc{Context:} A type $C$ for all non-recursive arguments.
+        
+        \item \textsc{Source Index:} A function $h\colon C\to I$ that determines the index required for the recursive premise.
+        
+        \item \textsc{Target Index:} A function $g\colon C\to I$ that determines the index of the constructed element.
+    \end{itemize}
+    The signature of the constructor is:
+    \begin{equation}\label{eq:one-recursive-arg}
+        \fun c\colon\prod_{z\colon C}X(h(z))\to X(g(z)).
+    \end{equation}
+    Given a motive $P\colon\prod_{i\colon I}X(i)\to\univ$, the \textsl{eliminator method} $p_{\fun c}$ corresponding to this constructor must provide a proof for the new element:
+    \[
+        p_{\fun c}\colon
+            \prod_{z\colon C\mathstrut}\;
+            \prod_{x\colon X(h(z))\mathstrut}
+                P(h(z),x)\to P(g(z),\fun c(z,x))
+    \]
+\end{defn}
+
+\begin{xmpl}
+    Applying this to the $\fun{cons}$ constructor of the vector family $\fun{Vec}_A\colon\N\to\univ$, we have:
+    \begin{itemize}
+        \item \textsc{Context:} The non-recursive data is a length $n\colon\N$ and a coordinate $a\colon A$. Hence, we define $C\defeq\N\times A$.
+        
+        \item \textsc{Source Index:} Since the recursive vector must have length $n$, we have $h(n,a)\defeq n$.
+        
+        \item \textsc{Target Index:} The resulting vector has length $n+1$. Thus, the target index function is $g(n,a)\defeq\fun{succ}(n)$.
+    \end{itemize}
+    Plugging these into the signature of the generic constructor yields:
+    \[
+        \fun c\colon\prod_{(n,a)\colon\N\times A}
+            \fun{Vec}_A(n)\to\fun{Vec}_A(\fun{succ}(n))
+    \]
+    By currying the dependent pair into separate arguments, we recover the standard signature:
+    \[
+        \fun{cons}\colon
+            \prod_{n\colon\N}\;
+            \prod_{a\colon A}
+                \fun{Vec}_A(n)
+                \to
+                \fun{Vec}_A(\fun{succ}(n)).
+    \]
+\end{xmpl}
+
+\begin{xmpl}
+    Consider the inductive predicate defining even numbers, represented as a family $\fun{IsEven}\colon\N\to\univ$. It has a step constructor that says ``if $n$ is even, then $n+2$ is even''.
+    \begin{itemize}
+        \item \textsc{Context:} We only need the number $n$, so $C\defeq\N$.
+        
+        \item \textsc{Source Index:} The premise is about $n$, so $h(n)\defeq n$.
+        
+        \item \textsc{Target Index:} The conclusion is about $n+2$, so $g(n)\defeq\fun{succ}(\fun{succ}(n))$.
+    \end{itemize}
+    This directly produces the signature:
+    \[
+        \fun{stepEven}\colon\prod_{n\colon\N}
+            \fun{IsEven}(n)
+            \to
+            \fun{IsEven}(\fun{succ}(\fun{succ}(n))).
+    \]
+\end{xmpl}
+
+
+\begin{defn}
+    Let $I$ be an index type and $X\colon I\to\univ$ an inductive type family. A general constructor $\fun c$ is specified by four components:
+    \begin{itemize}
+        \item \textsc{Context:} The type $C$ of all non-recursive arguments.
+        \item \textsc{Branching Type:} A family of types $W\colon C\to\univ$ where, for any context element $z\colon C$, the type $W(z)$ indexes the recursive arguments.
+        
+        \item \textsc{Source Index:} A function $h\colon\prod_{z\colon C}W(z)\to I$ that determines the index required for the recursive premise at branch $w$.
+        
+        \item \textsc{Target Index:} A function $g \colon C \to I$ that determines the index of the final constructed element.
+    \end{itemize}
+    The signature of the general constructor is:
+    \begin{equation}\label{eq:general-inductive-family-constructor}
+        \fun c\colon
+            \prod_{z\colon C}
+            \Bigl(
+                \prod_{w\colon W(z)}X(h(z,w))
+            \Bigr)
+            \to X(g(z)).
+    \end{equation}
+    Let $P\colon\prod_{i\colon I}X(i)\to\univ$ be a motive. The eliminator method $p_{\fun c}$ corresponding to this general constructor must provide a proof for the newly constructed element $\fun c(u,x)$. 
+    
+    To do this, the method receives three pieces of data:
+    \begin{itemize}
+        \item The non-recursive context data $z\colon C$.
+
+        \item The bundle of recursive elements $x\colon\prod_{w\colon W(z)} X(h(z,w))$.
+        
+        \item The bundle of inductive hypotheses, which proves the property $P$ for every recursive element across all branches. This is a function that, for any branch $w\colon W(z)$, returns a proof of $P(h(z,w),x(w))$.
+    \end{itemize}
+    The signature of the general eliminator method is therefore:
+    \[
+        p_{\fun c}\colon
+            \prod_{z\colon C}\;
+            \prod_{x\colon\prod_{w\colon W(z)}X(h(z,w))}
+                \Bigl(
+                    \prod_{w\colon W(z)}P(h(z,w),x(w))
+                \Bigr)
+                \to P(g(z),\fun c(z,x)).
+    \]
+\end{defn}
+
+\begin{rem}
+    When we evaluate the global eliminator $\fun{ind}_X$ on the constructed term $\fun c(z,x)$, the computation rule establishes that
+    \[
+        \fun{ind}_X(P,\dots,\fun c(z,x))
+            \equiv p_c
+                \bigl(
+                    z,
+                    x,
+                    \lambda w.\,\fun{ind}_X
+                        \bigl(
+                            P,
+                            \dots,
+                            x(w)
+                        \bigr)
+                \bigr).
+    \]
+\end{rem}
+
+\subsection*{The Accessibility Predicate (Well-Foundedness)}
+
+In classical mathematics, a relation $R$ on a set $A$ is \textsl{well-founded} if every non-empty subset has an $R$-minimal element, or equivalently, if there are no infinite descending chains:
+\[
+    x_0\leftarrow x_1\leftarrow x_2\leftarrow\cdots,
+\]
+where $x\leftarrow y$ stands for $R(x,y)$.
+
+Constructive type theory defines well-foundedness differently, using an inductive approach. An element is \textsl{accessible} if it is built up solely from other accessible elements.
+
+\begin{defn}
+    Given a type $A$ and a relation $R\colon A\times A\to\univ$, the \textsl{accessibility predicate} is an inductive type family $\fun{Acc}\colon A\to\univ$ generated by a single constructor:
+    \[
+       \fun{accIntro}\colon\prod_{x\colon A}
+        \Bigl(
+            \prod_{y\colon A}R(y,x)\to\fun{Acc}(y)
+        \Bigr)
+        \to\fun{Acc}(x)
+    \]
+\end{defn}
+
+This constructor embodies a single rule: an element $x$ is \textsl{accessible} if every strict predecessor of $x$ is already accessible.
+
+\begin{rem}
+    The base cases are naturally captured by \textsl{minimal} elements.
+    
+    We say that an element $x_0$ is \textsl{minimal} if, for every $y\colon A$, there is a witness $e_y\colon R(y,x_0)\to\fun0$. Consequently, the composition $\fun{rec}_{\fun0}(\fun{Acc}(y))\circ e_y$ is a function of type $R(y,x_0)\to\fun{Acc}(y)$. Applying $\fun{accIntro}(x_0)$ to this family of functions yields a proof of $\fun{Acc}(x_0)$ without requiring any actual predecessors.
+\end{rem}
+
+
+\subsection*{Well-Founded Recursion}
+
+The idea behind the accessibility predicate is to provide a structural foundation for well-founded recursion. A termination checker usually perform \textsl{structural} recursion: it calls a function on a syntactically smaller piece of an inductive datatype.
+
+To write a recursive function where the argument decreases according to some arbitrary relation $R$, it suffices to prove that the relation is well-founded by showing that every element in $A$ is accessible:
+\[
+   \fun{isWellFounded}\colon\prod_{x\colon A}\fun{Acc}(x)
+\]
+Constructing the function $\fun{isWellFounded}$ proves that recursive functions that decrease according to $R$ will always hit a base case and terminate.
+
+\bigskip
+
+This is perhaps the most important example of an indexed family requiring the full schema. To prove that a relation $R \colon A \times A \to \univ$ is well-founded (allowing us to write terminating recursive functions over it), we define the inductive family $\fun{Acc} \colon A \to \univ$.
+
+The constructor says: an element $x$ is ``accessible'' if every $y$ strictly smaller than $x$ is accessible.
+\begin{itemize}
+    \item \textsc{Context:} We define $C \defeq A$ and let $z\equiv x$, the element we want to prove accessible.
+    
+    \item \textsc{Branching Type:} We need one recursive premise for every $y$ that is smaller than $x$. The ``shape'' of the recursion depends entirely on the context $x$. We define the branching type as the type of all elements related to $x$:
+    \[
+        W(x) \defeq \sum_{y\colon A} R(y, x)
+    \]
+    
+    \item \textsc{Source Index:} For a given branch $w \equiv (y, r) \colon W(x)$, the recursive premise must be about $y$. So,  $h(x, (y, r)) \defeq y$.
+    
+    \item \textsc{Target Index:} Since the constructor proves that $x$ is accessible, we define $g(x)\defeq x$.
+\end{itemize}
+Plugging these into the general schema:
+\[
+    \fun{accIntro}\colon
+        \prod_{x\colon A}
+            \Bigl(
+                \prod_{
+                    \dep{y,r}\colon
+                        \sum_{y\colon A} R(y,x)
+                }
+                \fun{Acc}(y)
+            \Bigr)
+            \to\fun{Acc}(x)
+\]
+Currying the inner product gives the standard signature:
+\[
+    \fun{accIntro}\colon\prod_{x\colon A}
+        \Bigl(
+            \prod_{y\colon A}R(y,x)\to\fun{Acc}(y) 
+        \Bigr)
+        \to\fun{Acc}(x)
+\]
+Here, the number of recursive arguments dynamically changes based on how many elements relate to the specific $x$ we provide.
+
+\textbf{Note.} Suppose we have an algorithm that calculates integer division, producing a remainder $y$ from a number $x$. The compiler knows nothing about integer arithmetic, so to prove termination we cannot rely on the mathematical fact that $y$ is smaller than $x$. Instead, the strategy is to structurally traverse a proof tree $a$ of $\fun{Acc}(x)$.
+
+When the algorithm computes $y$, it simultaneously computes a witness $r$ of $R(y,x)$. Since the proof $a$ is constructed via $\fun{accIntro}$, its argument is a function of type $\prod_{y\colon A} R(y,x) \to \fun{Acc}(y)$. By applying this function to $y$ and $r$, we extract a proof $a_y$ of $\fun{Acc}(y)$. Since $a_y$ was extracted directly from the structure of $a$, the compiler recognizes it as syntactically smaller, ensuring that successive recursive calls will terminate.
+
+\begin{rem}
+    To derive the definition of a base constructor from the general constructor schema, we formalize the absence of recursive arguments by setting the branching type to the empty type.
+
+    \textsc{Step 1.}
+    For a constructor with no recursive arguments, there are no recursive premises to evaluate for any context $z\colon C$. Therefore, we define the branching type as the empty type:
+    \[
+        W(z)\defeq\fun0.
+    \]
+    Consequently, the source index function $h\colon\prod_{z\colon C}\fun0\to I$ is vacuously defined by the induction principle of the empty type.
+    
+    \textsc{Step 2.}
+    We substitute $W(z)\defeq\fun0$ into the general signature given in Equation~\eqref{eq:general-inductive-family-constructor}:
+    \[
+        \fun c\colon\prod_{z\colon C}
+            \Bigl(
+                \prod_{w\colon\fun0}X(h(z,w))
+            \Bigr)
+            \to X(g(z)).
+    \]
+    The dependent product over the empty type is inhabited by the induction function $\fun{ind}_{\fun0}$, making any $\Pi$-type over $\fun0$ equivalent to $\fun1$. Thus, the signature simplifies to:
+    \[
+        \fun c\colon\prod_{z\colon C}\fun1\to X(g(z)).
+    \]
+    Since $(\fun1\to A)\simeq A$, we arrive at the exact signature for a base constructor:
+    \[
+        \fun c\colon\prod_{z\colon C} X(g(z)).
+    \]
+    
+    \textsc{Step 3.}
+    Invoking the same reasons as above, the general eliminator method $p_{\fun c}$ reduces to:
+    \[
+        p_{\fun c}\colon\prod_{z\colon C}
+            P(g(z),\fun c(z)).
+    \]
+\end{rem}
+
+\begin{xmpl}\label{xmpl:Fin}
+    The type $\fun{Fin}(n)$ represents the canonical type with~$n$ elements.\footnote{See also Exercise~\ref{exr:Fin}.} Rather than being a primitive notion, it is formally defined as an indexed inductive type family over the natural numbers, $\fun{Fin}\colon\N\to\univ$, generated by two constructors:
+    \begin{itemize}
+    \item \textsl{Finite zero:} $\fun{fz}\colon\prod_{k\colon\N}\fun{Fin}(\fun{succ}(k))$
+    
+    \item \textsl{Finite successor:} $\fun{fs}\colon\prod_{k\colon\N}\fun{Fin}(k)\to\fun{Fin}(\fun{succ}(k))$
+    \end{itemize}
+    The constructor $\fun{fz}$ (finite zero) provides the ``first'' element of any non-empty finite type, and $\fun{fs}$ (finite successor) injects the $k$ elements of $\fun{Fin}(k)$ into the ``next'' $k$ slots of $\fun{Fin}(\fun{succ}(k))$.
+
+    \begin{enumerate}
+        \item \textit{The Base Constructor.} The constructor $\fun{fz}$ takes a natural number as a parameter, and has no recursive premises. Therefore, we can apply Definition~\ref{defn:no-recursive-args} directly:
+        \begin{itemize}
+        \item \textsc{Context:} The non-recursive argument is a natural number $k$. Thus, $C\defeq\N$.
+        
+        \item \textsc{Target Index:} The constructed element has type $\fun{Fin}(\fun{succ}(k))$, so $g(k)\defeq\fun{succ}(k)$.
+        \end{itemize}
+        Applying the base constructor signature from Equation~\eqref{eq:no-recursive-args} yields:
+        \[
+            \fun{fz}\colon\prod_{k\colon\N}\fun{Fin}(g(k)),
+        \]
+        which evaluates to:
+        \[
+            \fun{fz}\colon\prod_{k\colon\N}
+                \fun{Fin}(\fun{succ}(k)).
+        \]
+    
+        \item \textit{The Recursive Constructor.} The constructor $\fun{fs}$ takes a natural number parameter, followed by one recursive argument from the $\fun{Fin}$ family.
+        \begin{itemize}
+            \item \textsc{Context:} The non-recursive argument is a natural number $k$. Thus, $C\defeq\N$.
+            
+            \item \textsc{Branching Type:} There is one recursive argument, so $W(k)\defeq\fun1$.
+            
+            \item \textsc{Source Index:} The single recursive premise must belong to $\fun{Fin}(k)$. Thus, evaluated at the single branch $\fstar$, we have $h(k,\fstar)\defeq k$.
+            
+            \item \textsc{Target Index:} The constructed element belongs to $\fun{Fin}(\fun{succ}(k))$, so $g(k) \defeq \fun{succ}(k)$.
+        \end{itemize}
+        Applying the general schema yields:
+        \[
+            \fun{fs}\colon \prod_{k\colon\N} \Bigl( \prod_{w\colon\fun1} \fun{Fin}(k) \Bigr) \to \fun{Fin}(\fun{succ}(k)),
+        \]
+        which reduces to:
+        \[
+            \fun{fs}\colon \prod_{k\colon\N} \fun{Fin}(k) \to \fun{Fin}(\fun{succ}(k)).
+        \]
+    \end{enumerate}
+\end{xmpl}
+
+
+\section{Mutual Inductive Types}
+
+Suppose we want to define two types, $\fun{Even}$ and $\fun{Odd}$, representing the even and odd natural numbers. We would like to think of them as simultaneously defined by three constructors:
+\begin{itemize}
+    \item $\fun{zeroEven}\colon\fun{Even}$
+    \item $\fun{succEven}\colon\fun{Odd}\to\fun{Even}$
+    \item $\fun{succOdd}\colon\fun{Even}\to\fun{Odd}$
+\end{itemize}
+However, that would require introducing a new primitive notion of mutual induction. A simpler way to achieve the same result is to define an index type~$I$ with two tags and use it to obtain an inductive type family.
+
+The index type $I$ can be introduced as the inductive type generated by:
+\begin{itemize}
+    \item $I\defeq\fun2$,
+    \item $\fun{even}\defeq 0_{\fun2}$,
+    \item $\fun{odd}\defeq 1_{\fun2}$.
+\end{itemize}
+We then define a single inductive type family $X\colon I\to\univ$, where $X(\fun{even})$ represents $\fun{Even}$, and $X(\fun{odd})$ represents $\fun{Odd}$.
+\begin{enumerate}
+    \item \textit{The Base Constructor.} This constructor defines the base case for even numbers. It has no recursive arguments, so we apply Definition~\ref{defn:no-recursive-args}:
+    \begin{itemize}
+        \item \textsc{Context:} $C\defeq\fun1$.
+        
+        \item \textsc{Target Index:} The function $g\colon\fun1\to I$ is given by $g(\fstar)\defeq\fun{even}$.
+    \end{itemize}
+    Applying the base constructor signature, we obtain:
+    \[
+        \fun{c_1}\colon\prod_{z\colon\fun1}X(\fun{even}),
+    \]
+    which is equivalent to $X(\fun{even})$.
+
+    \item \textit{The Recursive Constructor for Even.}
+    This constructor builds an even number from a predecessor, which must be odd. We apply the general constructor schema:
+    \begin{itemize}
+        \item \textsc{Context:} $C\defeq\fun1$.
+        
+        \item \textsc{Branching Type:} There is one recursive argument, so $W(\fstar)\defeq \fun1$.
+        
+        \item \textsc{Source Index:} The single recursive premise comes from the odd index. Thus, $h(\fstar,\fstar)\defeq\fun{odd}$.
+        
+        \item \textsc{Target Index:} The resulting element is even, so $g(\fstar)\defeq\fun{even}$.
+    \end{itemize}
+    Plugging these into the general schema yields:
+    \[
+        \fun{c_2}\colon\prod_{z\colon\fun1}
+            \Bigl(
+                \prod_{w\colon\fun1}X(\fun{odd})
+            \Bigr)
+            \to X(\fun{even}),
+    \]
+    which reduces to:
+    \[
+        \fun c_2\colon X(\fun{odd})\to X(\fun{even}).
+    \]
+
+    \item \textit{The Recursive Constructor for Odd.} Analogously, this constructor is derived as:
+    \[
+        \fun{c_3}\colon X(\fun{even})\to X(\fun{odd}).
+    \]
+\end{enumerate}
+
+\subsection*{The General Approach}
+Encoding mutual induction is fully captured by the general definition of an inductive type family.
+
+To define a collection of mutually inductive types we  generalize the Even/Odd approach in the following way:
+
+\begin{enumerate}
+    \item \textit{The Index Type:} Instead of a two-element type, we define an index type~$I$ that contains a unique tag for every type we wish to define in our mutual block. For instance, if we are defining $n$ mutual types, we define an index type with $n$ base constructors, which we can label $I\defeq\fun{Fin}(n)$. 
+    
+    \item \textit{The Unified Family:} We define a single inductive type family $X\colon I\to\univ$. For each $i\colon I$, the application $X(i)$ represents the $i$th type in our mutual collection.
+    
+    \item \textit{The Constructors:} In the formal family $X$, a constructor targeting the $i$th type is simply a constructor whose target index function is the constant function $g(z)\defeq i$. 
+    
+    \item \textit{The Cross-References:} The mutual dependencies are entirely handled by the source index function $h\colon\prod_{z\colon C}W(z)\to I$. Whenever a constructor requires a recursive premise from the $j$th type in the collection, we simply set $h(z,w)\defeq j$ for that specific branch $w$.
+\end{enumerate}
+
+Because the general constructor schema
+\[
+    \fun c\colon\prod_{z\colon C}
+        \Bigl(
+            \prod_{w\colon W(z)}X(h(z,w))
+        \Bigr)
+        \to X(g(z))
+\]
+allows the source index $h$ to output any element of $I$ independently for each branch $w$, a single constructor can require premises from arbitrarily many different types in the mutual collection. Thus, mutual inductive types are a direct consequence of indexed inductive families.
+
+\section{Inductive Type Families \&~{\normalfont\textsf W}-Types}
+
+Inductive Type Families generalize $\fun W$-types in a way that these come to represent their unindexed variant.
+
+To show that a $\fun W$-type $\fun{W}_AB$ is exactly an inductive type family indexed by the unit type, we set $I\defeq\fun1$ and define our family $X\colon\fun1\to\univ$ that consists of a single type $X(\fstar)$.
+
+\begin{enumerate}[a)]
+    \item \textit{Components.} A $\fun W$-type is specified by a type of shapes $A \colon \univ$ and a type family of $B\colon A\to\univ$, known as the arity type. We map these directly to the four components of a general constructor:
+    \begin{itemize}
+        \item \textsc{Context:} The non-recursive arguments determine the ``shape'' of the node. Thus, $C\defeq A$. Let $x\colon A$.
+    
+        \item \textsc{Branching Type:} The recursive premises for $x$ correspond to the ``positions'' where subtrees can be attached. Thus, $W(x)\defeq B(x)$.
+    
+        \item \textsc{Source Index:} Since there is only the $\fstar$ index, $h(x,w)\defeq\fstar$.
+    
+        \item \textsc{Target Index:} $g(x)\defeq\fstar$.
+    \end{itemize}
+
+    \item \textit{Constructor.} The signature of the general inductive family constructor is:
+    \[
+        \fun c\colon\prod_{z\colon C}
+            \Bigl(
+                \prod_{w\colon W(z)}X(h(z,w))
+            \Bigr)
+            \to X(g(z)),
+    \]
+    which becomes
+    \begin{align*}
+        \fun c&\colon\prod_{x\colon A}
+            \Bigl(
+                \prod_{w\colon B(x)}X(\fstar)
+            \Bigr)
+            \to X(\fstar)\\
+            &\equiv\prod_{x\colon A}(B(x)\to X(\fstar))
+            \to X(\fstar),
+    \end{align*}
+    where $W\defeq X(\fstar)$. If we set $\fun W\defeq X(\fstar)$, the constructor signature becomes:
+    \[
+        \prod_{x\colon A}(B(x)\to\fun W)\to\fun W,
+    \]
+    which reproduces the canonical introduction rule \eqref{eq:sup-constructor} for $\fun W_AB$.
+\end{enumerate}
+
+\section{Inductive-Inductive Definitions}
+
+In standard mutual induction, we define two (or more) types simultaneously. However, while their constructors depend on one another, their existence does not, and so their formation rules are independent.
+
+In an \textsl{inductive-inductive} definition, we define a type $A$, and a type family $B$ that depends on $A$. The formation rules of these entities look like this:
+\begin{align*}
+    A&\colon\univ\\
+    B&\colon A\to\univ
+\end{align*}
+The issue is that we cannot even write down the type signature for $B$ without having defined $A$ first as a well-formed type. In addition, because they are defined together, the constructors that build elements of $A$ might need to use elements of $B$.
+
+\begin{xmpl} {\upshape[Contexts \& Types]}
+    As we saw in \nref{lpar:assumptions}, whenever we write a mathematical statement, we are always working under some set of assumptions or available variables.
+    
+    The inductive-inductive definition of $\fun{Con}$ and $\fun{Ty}$ is a way to formalize this process inside type theory itself.
+    
+    A \textsl{context}, modeled by the type $\fun{Con}$, represents the space of assumptions. It can be regarded as a list of variable declarations. An example would be:
+    \[
+        \Gamma\defeq
+            [
+                x\colon\fun{Nat},\;
+                y\colon \fun{Vector}(x)
+            ]
+    \]
+    We build contexts one step at a time. We start with the empty context, represented by the $\fun{nil}$ constructor, which has no variables. Then, we extend it by adding one variable at a time, represented by the $\fun{ext}$ constructor.
+
+    \needspace{3\baselineskip}
+    The family $\fun{Ty}(\Gamma)$ models all the valid type expressions that make sense under the specific assumptions of the context $\Gamma$. The double dependency arises because:
+    \begin{itemize}
+        \item To add a new variable to a context, we must specify its type, which must already be known to be valid in the current context. Thus, building an element of $\fun{Con}$ requires an element of $\fun{Ty}(\Gamma)$.
+            
+        \item To know if a dependent type is valid, we need to check those variables against our current environment. Thus, building an element of $\fun{Ty}(\Gamma)$ requires a context $\Gamma\colon\fun{Con}$.
+    \end{itemize}
+    
+    To model this, we need an inductive-inductive definition. The idea works as follows:
+    \begin{enumerate}[a),font=\upshape]
+        \item First, we define the base case for contexts. The empty context requires no prerequisites and does not depend on any types:
+        \[
+            \fun{nil}\colon\fun{Con}.
+        \]
+        
+        \item Now, the intertwining begins. To extend a context with a new variable, we need a valid type to assign to that variable. However, because of the formation rules, a type is only valid with respect to an existing context. So, the context-extension constructor requires both a prior context $\Gamma$ and a type valid in $\Gamma$:
+        \[
+            \fun{ext} \colon \prod_{\Gamma \colon \fun{Con}} \fun{Ty}(\Gamma) \to \fun{Con}
+        \]
+        Notice how a constructor for the base type $\fun{Con}$ consumes an element of the dependent family $\fun{Ty}$.
+    \end{enumerate}
+    
+    Conversely, the constructors for $\fun{Ty}$ must take elements of $\fun{Con}$ as arguments, because every element of $\fun{Ty}$ must be indexed by a context. 
+
+    The circularity is saved by the existence of the \textsl{primitive types}. These are precisely those types that form the base cases of the recursive structure. They require only a context and no prior types or variables to be well-formed.
+    
+    Primitive types are usually restricted to $\fun0$, $\fun1$, $\fun2$, $\N$, and the universe $\univ$. More precisely, we have
+    \[
+        \fun{empty}, \fun{unit}, \fun{bool}, \fun{nat}, \fun{univ}
+            \colon\prod_{\Gamma\colon\fun{Con}}
+                \fun{Ty}(\Gamma),
+    \]
+    which establishes that these types are valid in any context.
+
+    In standard type theory, this is often written as an inference rule stating that if $\Gamma$ is a valid context, then $\N$ is a valid type under $\Gamma$:
+    \[
+        \frac{\vdash\Gamma\text{ ctx}}
+            {\Gamma\vdash\N\text{ type}}
+    \]
+\end{xmpl}
+
+\subsection*{The General Schema}
+
+In general, an inductive-inductive definition consists of the simultaneous specification of a type $A$ and a type family $B$ indexed by $A$:
+\begin{align*}
+    A &\colon \univ \\
+    B &\colon A \to \univ
+\end{align*}
+along with a set of constructors for $A$ and a set of constructors for $B$. 
+
+The constructors for $A$ specify how to build elements of $A$, and they may take arguments of type $A$ as well as arguments of type $B(a)$ for previously constructed elements $a \colon A$.
+
+The constructors for $B$ specify how to build elements of $B(a)$ for a given $a \colon A$. These constructors may depend on elements of $A$ and elements of $B(a')$ for previously constructed elements $a' \colon A$.
+
+The elimination principle for such a definition must be mutually defined: we simultaneously specify a motive for $A$ and a motive for $B$, and provide methods for all constructors of both $A$ and $B$.
+
+To understand the formal structure, let us look at the four standard components of this definition:
+
+\textbf{Formation Rules:}
+\[
+    A\colon\univ
+    \quad\text{and}\quad
+    B\colon A\to\univ.
+\]
+
+\textbf{Constructors:}
+\begin{align*}
+    \fun c_A
+        &\colon\prod_{x\colon A}B(x)\to A,\\
+    \fun c_B
+        &\colon
+            \prod_{x\colon A}\;
+            \prod_{y\colon B(x)}
+                B(c_A(x, y)).
+\end{align*}
+
+\textbf{Induction Principle:} We must specify two motives
+
+The motive for $A$ is standard:
+\begin{align*}
+    P_A
+        &\colon A\to\univ.
+\intertext{However, the motive for $B$ is specialized:}
+    P_B
+        &\colon
+            \prod_{a\colon A}\;
+            \prod_{b\colon B(a)}
+                P_A(a)\to\univ.
+\end{align*}
+Given these motives, the elimination principle states that if we provide a method for every constructor of $A$ and every constructor of $B$, we obtain a mutually defined pair of functions:
+\begin{align*}
+    f_A &\colon\prod_{a\colon A}P_A(a)\\
+    f_B &\colon
+        \prod_{a\colon A}\;
+        \prod_{b\colon B(a)}
+            P_B(a,b,f_A(a))
+\end{align*}
+To write the computation rules explicitly, we need to define two additional eliminator methods:
+\[
+    m_A\colon
+        \prod_{x\colon A}\;
+        \prod_{y\colon B(x)}\;
+        \prod_{p_x\colon P_A(x)}\;
+        \prod_{p_y\colon P_B(x,y,p_x)}
+            P_A(\fun c_A(x,y))
+\]
+and
+\[
+    m_B\colon
+        \prod_{x\colon A}\;
+        \prod_{y\colon B(x)}\;
+        \prod_{p_x\colon P_A(x)}\;
+        \prod_{p_y\colon P_B(x,y,p_x)} 
+            P_B\bigl(
+                \fun c_A(x,y),
+                \fun c_B(x,y),
+                m_A(x,y,p_x,p_y)
+            \bigr)
+\]
+
+\textbf{Computation Rules:}
+\begin{align*}
+    f_A(\fun c_A(x,y)) 
+        &\equiv m_A\bigl(
+            x,y,f_A(x),f_B(x,y)
+        \bigr)\\
+    f_B(\fun c_A(x,y),\fun c_B(x, y)) 
+        &\equiv m_B\bigl(
+            x,y,f_A(x),f_B(x,y)
+        \bigr).
+\end{align*}
+Notice how the computation of $f_B$ on the constructor $\fun c_B$ is synchronized with the computation of $f_A$ on the constructor~$\fun c_A$.
