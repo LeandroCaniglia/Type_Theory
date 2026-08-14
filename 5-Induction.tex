@@ -2215,3 +2215,707 @@ and
         \bigr).
 \end{align*}
 Notice how the computation of $f_B$ on the constructor $\fun c_B$ is synchronized with the computation of $f_A$ on the constructor~$\fun c_A$.
+
+\section{Identity Types and Identity Systems}
+
+\paragraph{Path Induction}\ 
+
+Let $A$ be a type. The identity type family
+\[
+    \dummy\eq A\dummy\colon A\to A\to\univ 
+\]
+can be seen as an inductive family with two indices. Following Definition~\ref{defn:no-recursive-args} for a constructor with no recursive arguments, we map the components as follows:
+
+\begin{itemize}
+    \item \textsc{Index Type:} Uncurrying gives $I\defeq A\times A$.
+    
+    \item \textsc{Family:} The type family $X\colon A\times A\to\univ$ is defined by $X(a,b)\defeq a\eq Ab$.
+    
+    \item \textsc{Context:} The constructor $\fun{refl}$ requires one non-recursive argument in $A$. Thus, $C\defeq A$.
+    
+    \item \textsc{Target Index:} The constructor $\fun{refl}$ yields an element of $a\eq A a$; hence, the function $g\colon C\to I$ is given by $g(a)\defeq(a,a)$.
+\end{itemize}
+
+By the general signature \eqref{eq:no-recursive-args}, the constructor is:
+\[
+    \fun{refl}\colon\prod_{z\colon C}X(g(z))
+        \equiv\prod_{a\colon A}a\eq Aa.
+\]
+
+To derive the induction principle, consider a motive of type:
+\[
+    \prod_{(a,b)\colon A\times A}X(a,b)\to\univ.
+\]
+By currying, this is equivalent to
+\[
+    P\colon\prod_{a,b\colon A}(a\eq Ab)\to\univ.
+\]
+According to Definition~\ref{defn:no-recursive-args}, the eliminator method for our constructor has the signature
+\[
+    p_{\fun{refl}}\colon\prod_{a\colon A}P(a,a,\fun{refl}_a).
+\]
+The general eliminator $\fun{ind}_X$ produces the dependent function:
+\[
+    f\colon
+        \prod_{a,b\colon A}\;
+        \prod_{p\colon a\eq Ab}
+        P(a,b,p),
+\]
+which satisfies the computation rule
+\[
+    f(a,a,\fun{refl}_a)\equiv p_{\fun{refl}}(a).
+\]
+
+\paragraph{Based Path Induction}\ 
+
+Let us now fix a parameter $a_0\colon A$. We can define the based identity type family
+\[
+    a_0\eq A\dummy\colon A\to\univ
+\]
+as an inductive family with one index. Following Definition~\ref{defn:no-recursive-args} again we have:
+\begin{itemize}
+    \item \textsc{Index Type:} $I\defeq A$.
+    
+    \item \textsc{Family:} The type family $X\colon A\to\univ$ is defined by $X(b)\defeq a_0\eq Ab$.
+    
+    \item \textsc{Context:} Since the constructor has no arguments, the context is $\fun1$.
+    
+    \item \textsc{Target Index:} The constructor yields an element of $a_0\eq Aa_0$, so the target index function $g\colon\fun1\to I$ is given by $g(\fstar)\defeq a_0$.
+\end{itemize}
+
+By the general signature \eqref{eq:no-recursive-args}, the constructor is:
+\[
+    \fun{refl}_{a_0}\colon\prod_{z\colon\fun1}X(g(z))
+        \equiv a_0\eq A a_0.
+\]
+
+To derive the based path induction principle, consider a motive of type:
+\[
+    P\colon\prod_{b\colon A}(a_0\eq Ab)\to\univ.
+\]
+According to Definition~\ref{defn:no-recursive-args}, the eliminator method for our constructor has the signature
+\[
+    p_{\fun{refl}}\colon\prod_{z\colon\fun1}
+        P(g(z),\fun{refl}(a_0))
+        \equiv P(a_0,\fun{refl}_{a_0}).
+\]
+Thus, the method reduces to providing an element $d\colon P(a_0,\fun{refl}_{a_0})$.
+
+The general eliminator $\fun{ind}_X$ produces the dependent function:
+\[
+    f\colon
+        \prod_{b\colon A}\;
+        \prod_{p\colon a_0\eq Ab}
+        P(b,p),
+\]
+which satisfies the computation rule
+\[
+    f(a_0,\fun{refl}_{a_0})\equiv d.
+\]
+
+{\small
+\textbf{Note.} For decades, long before the introduction of HoTT, type theorists believed that $\fun{refl}$ could only construct trivial path. This intuition originated in the behavior of standard inductive types, where, for instance, every natural number is zero or a successor,  every boolean term is $0_{\fun2}$ or $1_{\fun2}$, etc. However, in 1993, Martin Hofmann and Thomas Streicher constructed a mathematical model in which types are interpreted as groupoids and identity types as the spaces of morphisms between objects. In their model, non-trivial automorphisms existed within the strict syntactic rules of Martin-Löf Type Theory. This showed that the type theory was already describing homotopy spaces.
+
+The example given in Exercise~\ref{exr:not}, which shows that $\fun{not}\colon\fun2\to\fun2$ is an involution, allows us to conclude via the univalence axiom that the identity type $\fun2\eq\univ\fun2$ is not trivial. Specifically, it contains at least two distinct paths: the constant path $\fun{refl}_{\fun2}$ and the path $\fun{ua}(\fun{not})$ induced by negation.
+
+More generally, while the inductive definition of the identity family provides the architectural scaffolding, the structural richness of identity paths is inextricably tied to univalence. Without this axiom, the identity type acts merely as a formal equality symbol; with it, the type acquires the full expressiveness of symmetries and transformations.
+}
+
+\begin{rem}\label{rem:yoneda-path-induction-correspondence}
+    The based path induction principle is the type-theoretic incarnation of the Yoneda lemma~\ref{thm:yoneda-general} from category theory. 
+    
+    As described in \S\,\ref{types-as-categories}, types can be viewed as categories and identity paths as morphisms between them. Under this analogy, a type family $C\colon A\to\univ$ acts as a functor from this category to the universe of spaces. For this correspondence to hold precisely, it is crucial to let $\univ$ represent the category whose objects are types (as usual) and whose morphisms are non-dependent functions (rather than identity paths).
+    
+    Under this interpretation, every type family $P\colon A\to\univ$ is a functor. Specifically, for every $x,y\colon A$ and $p\colon x\eq Ay$, its action on morphisms is given by
+    \[
+        P(p)\defeq
+            \fun{transport}^P(p,\dummy)
+            \colon P(x)\to P(y).
+    \]
+    The functoriality of $P$ follows from Theorem~\ref{thm:transportP} and Lemma~\ref{lem:transport-composition}. Although path concatenation is written left-to-right, $P$ is covariant. 
+    
+    Consider two type families $R,S\colon A\to\univ$. Given a dependent function
+    \[
+        g\colon\prod_{b\colon A}R(b)\to S(b),
+    \]
+    for any path $p\colon x\eq{A}y$, we obtain two maps of type $R(x)\to S(y)$:
+    \[
+        g(y,\fun{transport}^R(p,\dummy))
+        \quad\text{and}\quad
+        \fun{transport}^S(p,g(x,\dummy)).
+    \]
+    By Lemma~\ref{lem:dependent-post-composition-transport}, for $r\colon R(x)$, these maps satisfy the propositional equality
+    \[
+        g(y,\fun{transport}^R(p,r))
+        \eq{S(y)}
+        \fun{transport}^S(p,g(x,r)).
+    \]
+    This yields the following propositionally commutative diagram:
+    \[
+        \begin{tikzcd}[row sep=large,column sep=2cm]
+            R(x)
+                \arrow[r,
+                    "{\fun{transport}^R(p,\dummy)}"
+                    ]
+                \arrow[d,"g(x)"']
+            &R(y)
+                \arrow[d,"g(y)"]\\
+            S(x)
+                \arrow[r,
+                    "{\fun{transport}^S(p,\dummy)}"'
+                ]
+            &S(y)
+        \end{tikzcd}
+    \]
+    Thus, every dependent function $g\colon\prod_{b\colon A}R(b)\to S(b)$ can be seen as a natural transformation from $R$ to $S$. 
+    
+    In particular, a natural transformation from the representable functor $a_0\eq A\dummy$ to a type family $C$ corresponds to a homotopy $\eta\colon(a_0\eq A\dummy)\sim C$, which is judgmentally equal to a dependent function
+    \[
+        \eta\colon\prod_{b\colon A}(a_0\eq Ab)\to C(b).
+    \]
+    The following table summarizes the analogy:
+    {\small
+    \[
+        \begin{tabular}{ll}
+            \textbf{Category Theory}
+            &\textbf{Type Theory}\\
+            \hline
+            \rule{0mm}{3mm}%
+            Categories $\cat A$, $\cat{Set}$
+            &Types $A$, $\univ$\\
+            Objects $a,b$
+            &Points $a,b\colon A$\\
+            Morphisms $f\colon a\to b$
+            &Paths $p\colon a\eq Ab$, or\\
+            &maps $g\colon A\to B$ in $\univ$\\
+            Functor $C\colon\cat A\to\cat{Set}$
+            &Type family $C\colon A\to\univ$\\
+            Representable functor $\Hom(a_0,\dummy)$
+            &Type family $a_0\eq A\dummy$\\
+            Natural transformation $\eta\colon\Hom(a_0,\dummy)\to C$
+            &Homotopy $\eta\colon(a_0\eq A\dummy)\sim C$\\
+            $\id_{a_0}\in\Hom(a_0,a_0)$
+            &$\fun{refl}_{a_0}\colon a_0\eq Aa_0$\\
+            $\eta_{a_0}(\id_{a_0})\in C(a_0)$
+            &$\eta(a_0,\fun{refl}_{a_0})\colon C(a_0)$\\
+            Yoneda bijection
+            &Based path induction\\
+            %\hline
+        \end{tabular}
+    \]
+    }
+\end{rem}
+
+\begin{defns}
+    Let $A$ be a type and $a_0 \colon A$ an element.
+    \begin{enumerate}[-]
+        \item A \textsl{pointed predicate} over $\dep{A,a_0}\colon\puniv$ is a family $R\colon A\to\univ$ equipped with a \textsl{basepoint} $r_0\colon R(a_0)$.
+        
+        \item Given pointed predicates $\dep{R,r_0}$ and $\dep{S,s_0}$, a family of maps
+        \[
+            g\colon\prod_{b\colon A}R(b)\to S(b)
+        \]
+        is said to be \textsl{pointed} if $g(a_0,r_0)\eq{S(a_0)}s_0$. The type of such pointed maps is defined as
+        \[
+            \fun{ppmap}(R,S)\defeq
+                \sum_{
+                    g\colon\prod_{b\colon A}R(b)\to S(b)
+                }
+                g(a_0,r_0)\eq{S(a_0)}s_0.
+        \]
+        
+        \item An \textsl{identity system at $a_0$} is a pointed predicate $\dep{R,r_0}$ such that for any type family
+        \[
+            D\colon\prod_{b\colon A}R(b)\to\univ
+        \]
+        and any element $d\colon D(a_0,r_0)$, there exists a dependent function
+        \[
+            f\colon
+                \prod_{b\colon A}\;
+                \prod_{r\colon R(b)}
+                    D(b,r)
+        \]
+        satisfying $f(a_0,r_0)\eq{D(a_0,r_0)}d$.
+    \end{enumerate}
+\end{defns}
+
+\begin{rems}\label{rem:ppmap-and-fibers}\ 
+    \begin{enumerate}[-]
+        \item The canonical example of a pointed predicate over $\dep{A,a_0}$ is the identity family $(a_0\eq A\dummy)$ equipped with the basepoint $\fun{refl}_{a_0}$.
+
+        An arbitrary pointed predicate $\dep{R,r_0}$ is an identity system if it satisfies the exact same elimination principle (based path induction) as the identity type.
+
+        \item An alternative way to interpret the type $\fun{ppmap}(R,S)$ is by recognizing it as the fiber of the evaluation map at $s_0$, i.e.,
+        \begin{equation}\label{eq:ppmap-and-fibers}
+            \fun{ppmap}(R,S)\equiv
+                \fun{fib}_{\ev{(a_0,r_0)}}(s_0).
+        \end{equation}
+    \end{enumerate}
+\end{rems}
+
+\begin{thm}\label{thm:identity-systems-are-representable}
+    Let\/ $A$ be a type and\/ $a_0\colon A$. If\/ $\dep{R,r_0}$ is an identity system at\/ $a_0$, then for all\/ $b\colon A$, there is an equivalence\/ $R(b)\simeq(a_0\eq Ab)$.
+\end{thm}
+
+\begin{proof}
+    Because $\dep{a_0\eq A\dummy,\fun{refl}_{a_0}}$ is an identity system, we can define a dependent function
+    \[
+        f\colon\prod_{b\colon A}(a_0\eq Ab)\to R(b)
+    \]
+    by taking $R$ as our motive and $r_0\colon R(a_0)$ as the base case. The computation rule for based path induction yields the definitional equality $f(a_0,\fun{refl}_{a_0})\equiv r_0$.
+    
+    Conversely, because $\dep{R,r_0}$ is an identity system, we can define a dependent function 
+    \[
+        g\colon\prod_{b\colon A}R(b)\to (a_0\eq Ab)
+    \]
+    by taking $a_0\eq A\dummy$ as our motive and $\fun{refl}_{a_0}\colon a_0\eq Aa_0$ as the base case. By the definition of an identity system, we obtain a propositional equality
+    \[
+        p\colon g(a_0,r_0)
+        \eq{a_0\eq Aa_0}
+        \fun{refl}_{a_0}.
+    \]
+    
+    To show that $f$ and $g$ are quasi-inverses, we must construct the homotopies
+    \[
+        g(b,f(b,\dummy))\sim\id_{a_0\eq Ab}
+    \quad\text{and}\quad
+        f(b,g(b,\dummy))\sim\id_{R(b)}.
+    \]    
+    
+    For the first homotopy, we proceed by based path induction on $q\colon a_0\eq Ab$. It suffices to consider the case $b\equiv a_0$ and $q\equiv\fun{refl}_{a_0}$. This requires a path
+    \[
+        g(a_0,f(a_0,\fun{refl}_{a_0}))
+        \eq{a_0\eq Aa_0}
+        \fun{refl}_{a_0}.
+    \]
+    Since $f(a_0,\fun{refl}_{a_0})\equiv r_0$, the goal reduces to $g(a_0,r_0)\eq{a_0\eq Aa_0}\fun{refl}_{a_0}$, which is exactly the path $p$.
+    
+    For the second homotopy, we proceed by the induction principle of the identity system $R$ on $r\colon R(b)$. It suffices to consider the case $b\equiv a_0$ and $r\equiv r_0$. This requires a path 
+    \[
+        f(a_0,g(a_0,r_0))\eq{R(a_0)}r_0.
+    \]
+    Applying the action on paths of $f(a_0,\dummy)$ to $p$, we obtain a path 
+    \[
+        f(a_0,g(a_0,r_0))
+        \eq{R(a_0)}
+        f(a_0,\fun{refl}_{a_0}).
+    \]
+    Since $f(a_0,\fun{refl}_{a_0})\equiv r_0$, the required path is reached.
+    
+    Therefore, $f$ and $g$ are quasi-inverses, completing the proof.
+    %
+    
+\end{proof}
+
+\begin{rems}\label{rem:f-is-transport}\ 
+    \begin{enumerate}[-]
+        \item The forward map $f\colon\prod_{b\colon A}(a_0\eq Ab)\to R(b)$ constructed via based path induction in the theorem is definitionally equal to the transport operation applied to the base point $r_0$. In other words
+        \[
+            f(b,p)\equiv\fun{transport}^R(p,r_0).
+        \]
+        In this sense, an identity system $\dep{R,r_0}$ can be viewed as a space where transporting the root $r_0$ along paths completely and uniquely traces out the entirety of the family $R$. To geometrically visualize this, imagine $R$ as a fibration over $A$, with a point $r_0$ in the fiber over $a_0$. As $r_0$ is dragged along all possible paths in~$A$ with origin at $a_0$, the point $r_0$ transports onto a subspace of $R$. The theorem establishes that this transporting action reaches the entirety of $R$, without ever overlapping itself.
+
+        \item The Yoneda lemma establishes a bijection between natural transformations $\eta\colon\Hom(a_0,\dummy)\to F$ and elements of $F(a_0)$, given by evaluating the component $\eta_{a_0}$ at the identity morphism $\id_{a_0}$. In the proof above, $r_0\colon R(a_0)$ is precisely the selection for this image of the identity morphism. Just as in the Yoneda lemma, this choice of $r_0$ uniquely determines the forward transformation, which is exactly how we defined the dependent function $f$ via based path induction.
+    \end{enumerate}
+\end{rems}
+
+\begin{thm}\label{thm:ppmap-contractibility}
+    A pointed predicate\/ $\dep{R,r_0}$ over\/ $\dep{A,a_0}$ is an identity system if, and only if, for any pointed predicate\/ $\dep{S,s_0}$, the type\/ $\fun{ppmap}(R,S)$ is contractible.
+\end{thm}
+
+\begin{proof}
+    Suppose that $\dep{R,r_0}$ is an identity system. The induction principle of $\dep{R,r_0}$ applied to the motive $D(b,r)\defeq S(b)$ and the base element $s_0\colon D(a_0,r_0)$ yields a function
+    \[
+        f\colon\prod_{b\colon A}\;
+            \prod_{r\colon R(b)}S(b)
+    \]
+    and a path $p\colon f(a_0,r_0)\eq{S(a_0)}s_0$. Thus, the dependent pair $\dep{f,p}$ is an element of $\fun{ppmap}(R,S)$. We claim that this pair is a center of contraction.
+    
+    Given $\dep{g,q}\colon\fun{ppmap}(R,S)$, we must construct a path
+    \[
+        \dep{f,p}\eq{\fun{ppmap}(R,S)}\dep{g,q}
+    \]
+    consisting of two parts: a path $\epsilon\colon f\eq{}g$, and a path $\zeta\colon\fun{transport}^E(\epsilon,p)\eq{}q$, where $E(h)\defeq h(a_0,r_0)\eq{S(a_0)}s_0$.
+
+    To construct $\epsilon$, it suffices to provide a homotopy
+    \[
+        \eta\colon
+            \prod_{b\colon A}\;
+            \prod_{r\colon R(b)}
+                f(b,r)\eq{S(b)}g(b,r)
+    \]
+    and define $\epsilon\defeq\fun{funext}(\eta)$.
+
+    To construct $\eta$, we again use the induction principle of $\dep{R,r_0}$. We define the motive as $M(b,r)\defeq f(b,r)\eq{S(b)}g(b,r)$ and use the path $p\ct q^{-1}\colon M(a_0,r_0)$ for the base case.
+
+    By the computation rule, $\eta$ yields a path
+    \[
+        \beta\colon\eta(a_0,r_0)\eq{}p\ct q^{-1}.
+    \]
+    To construct $\zeta$, observing that $E\equiv(\lambda u.\,u\eq{}s_0)\circ\ev{(a_0,r_0)}$, we obtain
+    \begin{align*}
+        \fun{transport}^E(\epsilon,p)
+            &\eq{}\fun{transport}^{u\mapsto u\eq{}s_0}(
+                \fun{ap}_{\ev{(a_0,r_0)}}(\epsilon),p
+                )
+                &&\text{; Lem.~\ref{lem:post-composition-transport}}\\
+            &\eq{}\fun{ap}_{\ev{(a_0,r_0)}}(\epsilon)^{-1}\ct p
+                &&\text{; Prop.~\ref{prop:transport-decomposition-for-paths}}\\
+            &\eq{}\fun{happly}(\epsilon,(a_0,r_0))^{-1}\ct p
+                &&\text{; Eq.~\ref{eq:happly-is-ap-ev}}\\
+            &\equiv\fun{happly}(\fun{funext}(\eta),(a_0,r_0))^{-1}\ct p\\
+            &\eq{}\eta(a_0,r_0)^{-1}\ct p\\
+            &\eq{}(p\ct q^{-1})^{-1}\ct p
+                &&\text{; }\beta\\
+            &\eq{}q.
+    \end{align*}
+    This completes the construction of $\zeta\colon\fun{transport}^E(\epsilon,p)\eq{}q$.
+
+    Conversely, suppose that $\fun{ppmap}(R,S)$ is contractible for any pointed predicate $\dep{S,s_0}$. We must show that $\dep{R,r_0}$ is an identity system. Let $D$ be an arbitrary type family over $R$, and let $d_0\colon D(a_0,r_0)$ be a base point. The pointed predicate $\dep{D,d_0}$ fulfills our hypothesis; thus, according to equation~\eqref{eq:ppmap-and-fibers}, the type
+    \[
+        \fun{ppmap}(R,D)\equiv\fun{fib}_{\ev{(a_0,r_0)}}(d_0)
+    \]
+    is contractible. Since this holds for all base points $d_0$, Remark~\ref{rem:equivalence-fib-is-contractible} ensures that the evaluation map $\ev{(a_0,r_0)}$ is an equivalence. Therefore, $\dep{R,r_0}$ is an identity system.
+    %
+    
+\end{proof}
+
+
+\begin{thm}\label{thm:local=identity-system-equivalences}
+    Let\/ $\dep{R,r_0}$ be a pointed predicate over\/ $\dep{A,a_0}$. Then, the following conditions are logically equivalent:
+    \begin{enumerate}[a),font=\upshape]
+        \item The pointed predicate\/ $\dep{R,r_0}$ is an identity system at\/ $a_0$.
+        
+        \item For any\/ $b\colon A$, the function\/ $\fun{transport}^R(\dummy,r_0)\colon(a_0\eq{A}b)\to R(b)$ is an equivalence.
+        
+        \item The type\/ $\Sigma_AR$ is contractible.
+
+        \item For any pointed predicate\/ $\dep{S,s_0}$, the type\/ $\fun{ppmap}(R,S)$ is contractible.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}\ 
+    \begin{enumerate}[a),font=\upshape]
+        \item $\Rightarrow$~b) This is a direct consequence of Theorem~\ref{thm:identity-systems-are-representable} and Remark~\ref{rem:f-is-transport}.
+
+        \item $\Rightarrow$~c) The equivalence $(a_0\eq{A}b)\simeq R(b)$ induces an equivalence
+        \[
+            \Bigl(\sum_{b\colon A}a_0\eq{A}b\Bigr)
+            \simeq
+            \Bigl(\sum_{b\colon A}R(b)\Bigr).
+        \]
+        Hence, the conclusion follows from Lemma~\ref{lem:Sigma-identity-is-contractible}.
+
+        \item $\Rightarrow$~a) Consider the dependent pair $\dep{a_0,r_0}$ in the total space $\Sigma_AR$. Given a type family
+        \[
+            D\colon\prod_{b\colon A}R(b)\to\univ
+        \]
+        and a term $d\colon D(a_0,r_0)$, we must construct a function
+        \[
+            f\colon\prod_{b\colon A}\;
+                \prod_{r\colon R(b)}D(b,r)
+        \]
+        satisfying $f(a_0,r_0)\eq{D(a_0,r_0)}d$.
+        
+        First, observe that uncurrying produces the family $\bar{D}\colon\Sigma_AR\to\univ$, defined by $\bar{D}(\dep{b,r})\defeq D(b,r)$. 
+        
+        Given $b\colon A$ and $r\colon R(b)$, we obtain the dependent pair $\dep{b,r}\colon\Sigma_AR$. By contractibility, there is a path $\omega\colon\dep{a_0,r_0}\eq{\Sigma_AR}\dep{b,r}$. Thus, we can define
+        \[
+            f(b,r)\defeq
+                \fun{transport}^{\bar{D}}(\omega,d)
+                \colon D(b,r).
+        \]
+        This map satisfies the computation rule because $\omega$ reduces definitionally to $\fun{refl}_{\dep{a_0,r_0}}$, making the transport definitionally equal to the identity function.
+
+        \item[a) $\Leftrightarrow$~d)] This equivalence is established in Theorem~\ref{thm:ppmap-contractibility}.
+    \end{enumerate}
+\end{proof}
+
+\begin{defn}
+    An \textsl{identity system over a type $A$} is a family
+    \[
+        R\colon A\to A\to\univ
+    \]
+    equipped with a function
+    \[
+        r_0\colon\prod_{a\colon A}R(a,a)
+    \]
+    such that for any type family 
+    \[
+        D\colon\prod_{a,b\colon A}R(a,b)\to\univ
+    \]
+    and any
+    \[
+        d\colon\prod_{a\colon A}D(a,a,r_0(a)),
+    \]
+    there exists a function
+    \[
+        f\colon
+            \prod_{a,b\colon A}\;
+            \prod_{r\colon R(a,b)}
+                D(a,b,r)
+    \]
+    such that $f(a,a,r_0(a))=d(a)$ for all $a\colon A$.
+\end{defn}
+
+\begin{rem}
+    This definition generalizes the concept of based path induction to a global relation over the entire type $A$. Instead of considering the paths departing from a specific base point, the binary family $R\colon A\to A\to\univ$ characterizes paths between any two arbitrary points.
+    
+    As the following theorem shows, this definition axiomatizes equality geometrically. If a binary relation $R$ and a reflexivity term $r_0$ satisfy this induction principle, then the space $R(a,b)$ is equivalent to the built-in identity type $(a\eq{A}b)$. 
+    
+    To formally establish that ``isomorphic structures are equal,'' instead of constructing (potentially complex) paths in the universe, it suffices to define $R(a,b)$ to mean that $a$ and $b$ are isomorphic, and then prove that $\dep{R,r_0}$ forms a global identity system. The induction principle then promotes those isomorphisms to propositional equalities.
+\end{rem}
+
+\begin{thm}\label{thm:global-identity-system-equivalences}
+    Let\/ $R\colon A\to A\to\univ$ be a type family and\/ $r_0\colon\prod_{a\colon A}R(a,a)$. Then, the following conditions are logically equivalent:
+    \begin{enumerate}[a),font=\upshape]
+        \item The pair\/ $\dep{R,r_0}$ is an identity system over\/ $A$.
+        
+        \item For all\/ $a\colon A$, the pointed predicate\/ $\dep{R(a),r_0(a)}$ is an identity system at\/~$a$.
+        
+        \item For any\/ $a\colon A$, the type\/ $\sum_{b\colon A}R(a,b)$ is contractible.
+        
+        \item For any\/ $a,b\colon A$, the map\/ $\fun{transport}^{R(a)}(\dummy,r_0(a))\colon(a\eq{A}b)\to R(a,b)$ is an equivalence.
+        
+        \item For any\/ $S\colon A\to A\to\univ$ and\/ $s_0\colon\prod_{a\colon A}S(a,a)$, the type
+        \[
+            \sum_{g\colon\prod_{a,b\colon A}R(a,b)\to S(a,b)}
+                \prod_{a\colon A}g(a,a,r_0(a))\eq{S(a,a)}s_0(a)
+        \]
+        is contractible.
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}\ 
+    \begin{enumerate}[a),font=\upshape]
+        \item $\Rightarrow$~b) Fix $a\colon A$. Given a local motive $C\colon\prod_{y\colon A}R(a,y)\to\univ$ and a base case $c_0\colon C(a,r_0(a))$, we must construct a dependent function of type
+        \[
+            \prod_{y\colon A}\;
+            \prod_{r\colon R(a,y)}
+                C(y,r).
+        \]
+        To apply the global induction principle, we define a motive
+        \begin{align*}
+            D&\colon\prod_{x,y\colon A}R(x,y)\to\univ\\
+            D(x,y,r)&\defeq
+                \prod_{p\colon a\eq{A}x}
+                    C\bigl(
+                        y,
+                        \fun{transport}^{R(\dummy,y)}
+                            (p^{-1},r)
+                    \bigr),
+        \end{align*}
+        which type-checks because $\fun{transport}^{R(\dummy,y)}(p^{-1})
+                \colon R(x,y)\to R(a,y)$.
+        
+        To provide a global base case $d\colon\prod_{x\colon A}D(x,x,r_0(x))$, we construct $d(x)$ for a given $x\colon A$. By path induction on $p\colon a\eq{A}x$, it suffices to consider the case where $x\equiv a$ and $p\equiv\fun{refl}_{a}$. In this case, the required type reduces to $C(a,r_0(a))$, so we may define
+        \begin{equation}\label{eq:global-base-case}
+            d(a,\fun{refl}_{a})\defeq c_0.
+        \end{equation}
+        By the global induction principle of $\dep{R,r_0}$, there exists a function
+        \[
+            f\colon\prod_{x,y\colon A}\;
+                \prod_{r\colon R(x,y)}D(x,y,r)
+        \]
+        such that $f(x,x,r_0(x))\eq{}d(x)$ for all $x\colon A$.
+        
+        Thus, for the required local section we have
+        \begin{align}\label{eq:g(y,r)-defn}
+            g&\colon
+                \prod_{y\colon A}\;
+                \prod_{r\colon R(a,y)}C(y,r)
+                    \nonumber\\
+            g(y,r)&\defeq f(a,y,r,\fun{refl}_{a}).
+        \end{align}
+        This is well-defined because the type of the application is
+        \[
+            f(a,y,r,\fun{refl}_{a})\colon 
+                C\bigl(y,\fun{transport}^{R(\dummy,y)}
+                    (\fun{refl}_{a}^{-1},r)\bigr),
+        \]
+        which reduces definitionally to $C(y,r)$ since $\fun{transport}^{R(\dummy,y)}(\fun{refl}_{a}^{-1},r)\equiv r$.
+        
+        For the computation rule of $g$, we have
+        \begin{align*}
+            g(a,r_0(a))
+                &\equiv
+                    f(a,a,r_0(a),\fun{refl}_{a})
+                &&\text{; \eqref{eq:g(y,r)-defn}}\\
+                &\eq{}d(a,\fun{refl}_{a})
+                &&\text{; comp.~rule for $f$}\\
+                &\equiv c_0
+                &&\text{; \eqref{eq:global-base-case}.}
+        \end{align*}
+        Thus, $\dep{R(a),r_0(a)}$ is an identity system at $a$.
+
+        \item $\Leftrightarrow$~c) This is a direct consequence of the logical equivalence a)~$\Leftrightarrow$~c) of Theorem~\ref{thm:local=identity-system-equivalences}.
+
+        \item $\Leftrightarrow$~d) This is a direct consequence of the logical equivalence c)~$\Leftrightarrow$~b) of Theorem~\ref{thm:local=identity-system-equivalences}.
+
+        \item $\Rightarrow$~e) Since d)~$\Leftrightarrow$~c)~$\Leftrightarrow$~b), we can assume that for all $a\colon A$, the pointed predicate $\dep{R(a),r_0(a)}$ is an identity system at $a$.
+    
+        Now, consider the type from condition e):
+        \begin{align*}
+            T&\defeq
+                \sum_{g\colon\prod_{a,b\colon A}
+                    R(a,b)\to S(a,b)}\;
+                    \prod_{a\colon A}
+                        g(a,a,r_0(a))
+                        \eq{S(a,a)}
+                        s_0(a)
+        \end{align*}
+        By currying the domain of $g$ and applying \nref{lpar:axiom-of-choice}, $T$ is equivalent to the type
+        \begin{align*}
+            T'&\defeq
+                \prod_{a\colon A}\;
+                \sum_{
+                    h\colon\prod_{b\colon A}
+                        R(a,b)\to S(a,b)
+                    }h(a,r_0(a))\eq{S(a,a)}s_0(a)\\
+                &\equiv\prod_{a\colon A}\fun{ppmap}
+                    (R(a),S(a))   
+        \end{align*}
+        According to part~d) of Theorem~\ref{thm:local=identity-system-equivalences}, $\fun{ppmap}(R(a),S(a))$ is contractible. By Theorem~\ref{thm:contractible-types}, it follows that $T'$, and hence $T$, is contractible.
+
+        \item $\Rightarrow$~a) We will show that condition a) holds by establishing the chain of implications
+        \[
+        \text{e)}
+            \Rightarrow\text{ c)}
+            \stackrel{\mathstrut\checkmark}\Leftrightarrow\text{ b) }
+            \Rightarrow\text{ a)}.
+        \]
+        To prove c), we apply condition e) to the type family
+        \[
+            S(a,b)\defeq\Sigma_AR(a,\dummy)
+        \]
+        and the base points $s_0(a)\defeq\dep{a,r_0(a)}$. By part~e), the type
+        \[
+            T\defeq\sum_{
+                g\colon\prod_{a,b\colon A}
+                    R(a,b)\to\Sigma_AR(a,\dummy)
+                }\;
+                \prod_{a\colon A}
+                    g(a,a,r_0(a))
+                    \eq{S(a,a)}
+                    \dep{a,r_0(a)}
+        \]
+        is contractible.
+        
+        Consider the elements
+        $\dep{g_1,p_1}, \dep{g_2,p_2}\colon T$, defined by
+        \begin{align*}
+            g_1(a,b,r)&\defeq\dep{b,r}
+            &\text{and}&&
+            p_1(a)&\defeq\fun{refl}_{\dep{a,r_0(a)}},\\
+            g_2(a,b,r)&\defeq\dep{a,r_0(a)}
+            &\text{and}&&
+            p_2(a)&\defeq\fun{refl}_{\dep{a,r_0(a)}}.
+        \end{align*}
+        These elements are well-defined because
+        \[
+            g_1(a,a,r_0(a)),\;g_2(a,a,r_0(a))
+                \equiv\dep{a,r_0(a)}.
+        \]
+        Since $T$ is contractible, both pairs are equal, which implies $g_1\eq{}g_2$. Hence, for any $a,b\colon A$ and $r\colon R(a,b)$, we have $\dep{b,r}\eq{}\dep{a,r_0(a)}$. 
+        
+        This means that for any $a\colon A$, every element in the total space $\Sigma_AR(a,\dummy)$ is equal to the center $\dep{a,r_0(a)}$. Thus, $\Sigma_AR(a,\dummy)$ is contractible, establishing condition~c).
+    
+        Having established condition b), we can now derive condition a).
+        
+        Let
+        \[
+            D\colon\prod_{x,y\colon A}R(x,y)\to\univ
+        \]
+        be a global motive with base case
+        \[
+            d_0\colon\prod_{x\colon A}D(x,x,r_0(x)).
+        \]
+        For any fixed $a\colon A$, condition b) provides the local induction principle for $R(a)$. We define the local motive $C_a(y,r)\defeq D(a,y,r)$ and the local base case $c_a\defeq d_0(a)\colon C_a(a,r_0(a))$. The local eliminator yields a dependent function
+        \[
+            f_a\colon\prod_{y\colon A}\;\prod_{r\colon R(a,y)}D(a,y,r)
+        \]
+        such that $f_a(a,r_0(a))\eq{}d_0(a)$. Thus, we may define the global section $f(x,y,r)\defeq f_x(y,r)$. The computation rule holds by definition:
+        \[
+            f(x,x,r_0(x))\equiv f_x(x,r_0(x))\eq{}d_0(x)
+        \]
+        for all $x\colon A$. Therefore, $\dep{R,r_0}$ is a global identity system over $A$, which concludes the proof.
+    \end{enumerate}
+    
+\end{proof}
+
+\begin{cor} {\upshape[Equivalence induction]}
+    Given a type family
+    \[
+        D\colon\prod_{A,B\colon\univ}(A\simeq B)\to\univ
+    \]
+    and function
+    \[
+        d\colon\prod_{A\colon\univ}D(A,A,\fun{id}_A),
+    \]
+    there exists
+    \[
+        f\colon
+            \prod_{A,B\colon\univ}\;
+            \prod_{e\colon A\simeq B}D(A,B,e)
+    \]
+    such that\/ $f(A,A,\fun{id}_A)=d(A)$ for all\/ $A\colon\univ$.
+\end{cor}
+
+\begin{proof}
+    Define $R(A,B)\defeq A\simeq B$ and $r_0(A)\defeq\fun{id}_A$. By the univalence axiom, for any types $A,B\colon\univ$, the canonical map
+    \[
+        \fun{idtoeqv}_{A,B}\colon(A\eq{\univ}B)\to(A\simeq B)
+    \]
+    is an equivalence. 
+    
+    We claim that $\fun{idtoeqv}_{A,B}(p)$ coincides with $\fun{transport}^{R(A)}(p,\fun{id}_A)$. By path induction on $p\colon A\eq{\univ}B$, it suffices to consider the case when $B\equiv A$ and $p\equiv\fun{refl}_A$. In that case, $\fun{transport}^{R(A)}(\fun{refl}_A,\id_A)\equiv \id_A$ and $\fun{idtoeqv}(\fun{refl}_A)\equiv\id_A$ as well. Consequently, part~d) of Theorem~\ref{thm:global-identity-system-equivalences} is met.
+    
+    The conclusion is a direct consequence of part~a) of said theorem.
+\end{proof}
+
+\begin{cor}{\upshape[Homotopy induction]}
+    Given 
+    \[
+        D\colon\prod_{f,g\colon\prod_{a\colon A}B(a)}(f\sim g)\to\univ
+    \]
+    and
+    \[
+        d\colon\prod_{f\colon\prod_{a\colon A}B(a)}D(f,f,\lambda x.\,\fun{refl}_{f(x)}),
+    \]
+    there exists
+    \[
+        k\colon
+            \prod_{f,g\colon\prod_{a\colon A}B(a)}\;
+            \prod_{h\colon f\sim g}
+                D(f,g,h)
+    \]
+    such that
+    \[
+        k(f,f,\lambda x.\,\fun{refl}_{f(x)})=d(f)
+    \]
+    for all\/ $f$.
+\end{cor}
+
+\begin{proof}
+    Let $F\defeq\prod_{a\colon A}B(a)$. Define
+    \[
+        R(f,g)\defeq f\sim g
+        \quad\text{and}\quad
+        r_0(f)\defeq\lambda x.\,\fun{refl}_{f(x)}.
+    \]
+    By function extensionality, for any $f,g\colon F$, the canonical map
+    \[
+        \fun{happly}_{f,g}\colon(f\eq{F}g)\to(f\sim g)
+    \]
+    is an equivalence.
+
+    We claim that $\fun{happly}_{f,g}(p)$ coincides with $\fun{transport}^{R(f)}(p,r_0(f))$. To see this, we proceed by path induction on $p\colon f\eq{F}g$, which reduces the goal to the case where $g\equiv f$ and $p\equiv\fun{refl}_f$. In this case, the claim holds trivially because both $\fun{happly}_{f,f}(\fun{refl}_f)$ and $\fun{transport}^{R(f)}(\fun{refl}_f,r_0(f))$ are definitionally equal to $r_0(f)$.
+    
+    Therefore, the function
+    \[
+        \fun{transport}^{R(f)}(\dummy,r_0(f))\colon(f\eq{F}g)\to R(f,g)
+    \]
+    is an equivalence for all $f,g\colon F$.
+
+    This establishes condition d) of Theorem~\ref{thm:global-identity-system-equivalences} for the type $F$. By the logical equivalence of that theorem, condition~a) holds, meaning that $\dep{R,r_0}$ is an identity system over $F$. Expanding this definition yields exactly what the corollary states.
+\end{proof}

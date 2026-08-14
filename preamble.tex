@@ -457,6 +457,29 @@
 %\newcommand{\defeq}{\mathrel{\mathop:}\equiv}
 \newcommand{\defeq}{\mathrel{\vcentcolon}\equiv}
 \newcommand{\eq}[1]{\mathrel{=_{#1}}}
+
+\usetikzlibrary{arrows.meta}
+
+\newsavebox{\eqbox}
+
+% Draw the TikZ picture exactly ONCE in math mode and store it
+\sbox{\eqbox}{%
+  $\vcenter{\hbox{\tikz{
+    \draw[line width=0.4pt] (0,0) circle (0.8ex);
+    \draw[-{Latex[length=0.6ex, width=0.5ex]}, line width=0.4pt] (-0.8ex,0) -- (0.8ex,0);
+  }}}$%
+}
+
+% Reuse the pre-drawn box in \mathchoice
+\newcommand{\oeq}[1]{%
+  \mathrel{\mathchoice
+    {\usebox{\eqbox}}% \displaystyle
+    {\usebox{\eqbox}}% \textstyle
+    {\scalebox{0.7}{\usebox{\eqbox}}}% \scriptstyle
+    {\scalebox{0.5}{\usebox{\eqbox}}}% \scriptscriptstyle
+  }_{#1}%
+}
+
 \newcommand{\modeq}[1]{\quad (\text{in } #1)} % Usage: p=q\modeq{x\eq{A}y}
 \newcommand{\ct}{\mathbin{\boldsymbol{\cdot}}}
 \newcommand{\ect}{\mathbin\ast}
