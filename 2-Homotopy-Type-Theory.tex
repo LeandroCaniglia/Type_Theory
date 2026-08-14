@@ -967,6 +967,23 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     \[
         \fun{transport}^Q(p,f_x(u)) \eq{Q(y)} f_y(\fun{transport}^P(p,u)).
     \]
+    Equivalently, the following diagram is propositionally commutative
+    \[
+        \begin{tikzcd}[row sep=large,column sep=2cm]
+            P(x)
+                    \arrow[r,
+                        "{\fun{transport}^P(p,\dummy)}"
+                        ]
+                    \arrow[d,"f_x"']
+                &P(y)
+                    \arrow[d,"f_y"]\\
+            Q(x)
+                    \arrow[r,
+                        "{\fun{transport}^Q(p,\dummy)}"'
+                    ]
+                &Q(y)
+        \end{tikzcd}
+    \]
 \end{lem}
 
 \begin{proof}
@@ -3167,7 +3184,7 @@ Here is a picture illustrating the construction
         \item For any path\/ $p\colon x\eq Xy$ and any\/ $\dep{u,z}\colon \Sigma_AB(x)$, we have
         \[
             \fun{transport}^{\Sigma_AB}(p,\dep{u,z})
-            \eq{\Sigma_AB(y)}
+            \eq{\Sigma_AB(y)}\!
                 \dep{
                     p_*(u),
                     \fun{transport}^B(\fun{pair}^{\eq{}}
