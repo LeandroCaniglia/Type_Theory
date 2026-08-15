@@ -187,7 +187,7 @@
         \]
         which definitionally means that $\fun{encode}(p)\eq{}\fun{encode}(q)$. Since $\fun{encode}$ is an equivalence, we conclude that $\Sigma_AP$ is a set.
 
-        \item Set $\Gamma\defeq\prod_{x\colon A}B(x)$ and consider two paths $p,q\colon f\eq{\Gamma}g$. Then,
+        \item Set $\Pi_AB\defeq\prod_{x\colon A}B(x)$ and consider two paths $p,q\colon f\eq{\Pi_AB}g$. Then,
         \[
             \fun{happly}(p),\,\fun{happly}(q)
                 \colon\prod_{x\colon A}f(x)\eq{B(x)}g(x).
@@ -209,10 +209,10 @@
         \[
             \fun{ap}_{\fun{funext}}(\fun{funext}(\eta))\colon
                 \fun{funext}(\fun{happly}(p))
-                \eq{f\eq{\Gamma}g}
+                \eq{f\eq{\Pi_AB}g}
                 \fun{funext}(\fun{happly}(q)).
         \]
-        Since $\fun{funext}$ is the quasi-inverse of $\fun{happly}$, this directly decodes to a path $p\eq{f\eq{\Gamma}g}q$, proving that $\Gamma$ is a set.
+        Since $\fun{funext}$ is the quasi-inverse of $\fun{happly}$, this directly decodes to a path $p\eq{f\eq{\Pi_AB}g}q$, proving that $\Pi_AB$ is a set.
     \end{enumerate}
 \end{proof}
 
@@ -1271,7 +1271,7 @@ In the case of non-dependent mere proposition families, we have the recursion pr
 \begin{proof}\ 
 
     \begin{enumerate}[a),font=\upshape]
-        \item Set $\Gamma\defeq\prod_{x\colon A}P(x)$. Given $x\colon A$, let $c_x\colon P(x)$ be the center of contraction, and let $\eta_x\colon c_x\sim\id_{P(x)}$ be the corresponding contraction homotopy. Define $c\defeq\lambda x.\,c_x$. For any function $f\colon\Gamma$, the pointwise equality $\eta_x\rwct f\colon c\sim f$ induces, by function extensionality, a path $c\eq{\Gamma}f$.
+        \item Set $\Pi_AP\defeq\prod_{x\colon A}P(x)$. Given $x\colon A$, let $c_x\colon P(x)$ be the center of contraction, and let $\eta_x\colon c_x\sim\id_{P(x)}$ be the corresponding contraction homotopy. Define $c\defeq\lambda x.\,c_x$. For any function $f\colon\Pi_AP$, the pointwise equality $\eta_x\rwct f\colon c\sim f$ induces, by function extensionality, a path $c\eq{\Pi_AP}f$.
         
         \item This is a direct consequence of part a), applied to the constant type family $P(x)\defeq Q$ for all $x\colon A$.
         

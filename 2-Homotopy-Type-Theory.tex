@@ -1038,7 +1038,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \subsection{The Homotopy Relation}
 
 \begin{ntn}
-    Given a type family $P\colon A\to\univ$, we will sometimes denote the type of sections\footnote{Remark \ref{rem:section-type}.} $\prod_{x\colon A}P(x)$ by $\Gamma(P)$.
+    Given a type family $P\colon A\to\univ$, we will sometimes denote the type of sections\footnote{Remark \ref{rem:section-type}.} $\prod_{x\colon A}P(x)$ by $\Pi_AP$.
 \end{ntn}
 
 \begin{defn}\label{defn:homotopy}
@@ -1070,16 +1070,16 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     % Define a length to store the width of the longest subscript.
     \newlength{\maxsubwidth}
     % Measure the widest subscript (the third one) in scriptstyle (standard for limits).
-    \settowidth{\maxsubwidth}{$\scriptstyle f,g,h\colon\Gamma(P)$}
+    \settowidth{\maxsubwidth}{$\scriptstyle f,g,h\colon\Pi_AP$}
     % Define a helper command to wrap the subscript in a centered box of that fixed width.
     \newcommand{\alignedprod}[1]{\prod_{\makebox[\maxsubwidth][c]{$\scriptstyle #1$}}}
     Homotopy is an equivalence relation on each dependent function type\/ $\prod_{x\colon A}P(x)$. That is, we have elements of the types
     \begin{align*}
-        &\alignedprod{f\colon\Gamma(P)}
+        &\alignedprod{f\colon\Pi_AP}
             f\sim f\\
-        &\alignedprod{f,g\colon\Gamma(P)}
+        &\alignedprod{f,g\colon\Pi_AP}
             (f\sim g)\to(g\sim f)\\
-        &\alignedprod{f,g,h\colon\Gamma(P)}
+        &\alignedprod{f,g,h\colon\Pi_AP}
             (f\sim g)\to(g\sim h)\to(f\sim h).
     \end{align*}
 \end{prop}
@@ -1087,9 +1087,9 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \begin{proof}
     We have the following inhabitants for each of the\/ $\Pi$-types:
     \begin{itemize}
-        \item \textit{Reflexivity:}\/ $\lambda f\colon\Gamma(P).\,\lambda x\colon A.\,\fun{refl}_{f(x)}$.
-        \item \textit{Symmetry:}\/ $\lambda f,g\colon\Gamma(P).\,\lambda \eta\colon f\sim g.\,\lambda x\colon A.\,\eta(x)^{-1}$.
-        \item \textit{Transitivity:}\/ $\lambda f,g,h\colon\Gamma(P).\,\lambda\eta\colon f\sim g.\,\lambda\vartheta\colon g\sim h.\,\lambda x\colon A.\,\eta(x)\ct\vartheta(x)$.
+        \item \textit{Reflexivity:}\/ $\lambda f\colon\Pi_AP.\,\lambda x\colon A.\,\fun{refl}_{f(x)}$.
+        \item \textit{Symmetry:}\/ $\lambda f,g\colon\Pi_AP.\,\lambda \eta\colon f\sim g.\,\lambda x\colon A.\,\eta(x)^{-1}$.
+        \item \textit{Transitivity:}\/ $\lambda f,g,h\colon\Pi_AP.\,\lambda\eta\colon f\sim g.\,\lambda\vartheta\colon g\sim h.\,\lambda x\colon A.\,\eta(x)\ct\vartheta(x)$.
     \end{itemize}
 \end{proof}
 
@@ -3814,13 +3814,13 @@ The unit laws follow directly from the definitions above, namely
 
 In this section we address the question of the identity type for dependent (and non-dependent) functions. To establish the context, let\/ $A\colon\univ$ be a type and\/ $B\colon A\to\univ$ a type family. To analyze the identity in the section space\footnote{Consisting of all dependent functions\/ $s\colon A\to E$, where\/ $E$ is the total space\/ $\sum_{x\colon A}B(x)$, such that\/ $\pi_1(s(x))\eq A x$ for all\/ $x\colon A$.}
 \[
-    \Gamma\defeq\prod_{x\colon A}B(x)
+    \Pi_AB\defeq\prod_{x\colon A}B(x)
 \]
 we apply the framework~\ref{observational-framework}.
 
 \textsc{Code family:}
 \begin{align*}
-    \fun{Code}&\colon\Gamma\to\Gamma\to\univ\\
+    \fun{Code}&\colon\Pi_AB\to\Pi_AB\to\univ\\
     \fun{Code}(f,g)&\defeq f\sim g
 \intertext{i.e.,}
     \fun{Code}(f,g)&\defeq\prod_{x\colon A} f(x)\eq{B(x)}g(x).
@@ -3834,12 +3834,12 @@ we apply the framework~\ref{observational-framework}.
 
 \textsc{Encode function:}
 \begin{align*}
-    \fun{encode}&\colon(f\eq\Gamma g)\to\fun{Code}(f,g)\\
+    \fun{encode}&\colon(f\eq{\Pi_AB}g)\to\fun{Code}(f,g)\\
     \fun{encode}(p)&\defeq\fun{transport}^{C_f}(p,c).
 \end{align*}
 Since\/ $C_f\defeq\fun{Code}(f,\dummy)$, we introduce the local family at a point\/ $x\colon A$
 \[
-    C_{f,x}\defeq\lambda h\colon\Gamma.\, f(x)\eq{B(x)}h(x).
+    C_{f,x}\defeq\lambda h\colon\Pi_AB.\, f(x)\eq{B(x)}h(x).
 \]
 In particular, in the case where\/ $g\equiv f$ and\/ $p\equiv\fun{refl}_f$, we have
 \begin{align*}
@@ -3855,11 +3855,11 @@ Hence, path induction implies
     \fun{encode}(p)(x)\eq{C_{f,x}(g)}
         \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)}),
 \]
-for $p\colon f\eq\Gamma g$ and $x\colon A$.
+for $p\colon f\eq{\Pi_AB} g$ and $x\colon A$.
 We take the \rhs to define the standard name for the encode function \textsl{homotopy application\/}:
 \begin{equation}\label{eq:homotopy-application}
     \begin{aligned}
-        \fun{happly}&\colon(f\eq\Gamma g)\to\fun{Code}(f,g)\\
+        \fun{happly}&\colon(f\eq{\Pi_AB} g)\to\fun{Code}(f,g)\\
         \fun{happly}(p)&\defeq \lambda x\colon A.\,
                 \fun{transport}^{C_{f,x}}(p,\fun{refl}_{f(x)}),
     \end{aligned}
@@ -3867,7 +3867,7 @@ We take the \rhs to define the standard name for the encode function \textsl{hom
 which can be illustrated by
 \[
 \begin{tikzcd}[row sep=0.2cm,column sep=-0.3cm]
-        &\displaystyle\Gamma\equiv\prod_{x\colon A}B(x)
+        &\displaystyle\Pi_AB\equiv\prod_{x\colon A}B(x)
         &&\qquad A
         &&B(x)\\
         &&&&&f(x)
@@ -3894,12 +3894,12 @@ Since the basic rules of type theory do not provide a way to construct a quasi-i
 
 The axiom asserts that\/ $\fun{happly}$ has a quasi-inverse
 \begin{align}\label{axiom:FE}
-    \fun{funext}&\colon\fun{Code}(f,g)\to(f\eq\Gamma g),
+    \fun{funext}&\colon\fun{Code}(f,g)\to(f\eq{\Pi_AB} g),
 \end{align}
-which, by definition, satisfies the following homotopies for any path\/ $p\colon f\eq\Gamma g$ and any pointwise homotopy\/ $\eta\colon\fun{Code}(f,g)$:
+which, by definition, satisfies the following homotopies for any path\/ $p\colon f\eq{\Pi_AB} g$ and any pointwise homotopy\/ $\eta\colon\fun{Code}(f,g)$:
 \begin{align*}
     \fun{funext}(\fun{happly}(p))
-        &\eq{f\eq\Gamma g} p\\
+        &\eq{f\eq{\Pi_AB} g} p\\
     \fun{happly}(\fun{funext}(\eta))
         &\eq{\fun{Code}(f,g)}\eta.
 \end{align*}
@@ -3930,19 +3930,19 @@ The unit laws follow immediately from the definitional properties of path invers
 \end{ntn}
 
 \begin{prop}\label{prop:funext-functoriality}\fe
-    Let\/ $A$,\/ $B$, and\/ $\Gamma$ be as above. If\/ $f, g\colon\Gamma$, then
+    Let\/ $A$,\/ $B$, and\/ $\Pi_AB$ be as above. If\/ $f, g\colon\Pi_AB$, then
     \begin{enumerate}[a),font=\upshape]
-        \item $\fun{funext}(f,f,\lambda x.\,\fun{refl}_{f(x)})\eq{f\eq\Gamma f}\fun{refl}_f$
+        \item $\fun{funext}(f,f,\lambda x.\,\fun{refl}_{f(x)})\eq{f\eq{\Pi_AB} f}\fun{refl}_f$
 
         \item For\/ $\eta\colon f\sim g$, we have
         \[
-            \fun{funext}(g,f,\eta^{-1})\eq{g\eq\Gamma f}
+            \fun{funext}(g,f,\eta^{-1})\eq{g\eq{\Pi_AB} f}
             \fun{funext}(f,g,\eta)^{-1}
         \]
 
-        \item Given\/ $h\colon\Gamma$ and\/ $\vartheta\colon g\sim h$, we have
+        \item Given\/ $h\colon\Pi_AB$ and\/ $\vartheta\colon g\sim h$, we have
         \[
-            \fun{funext}(f,h,\eta\ct\vartheta)\eq{f\eq\Gamma h}\fun{funext}(f,g,\eta)\ct\fun{funext}(g,h,\vartheta)
+            \fun{funext}(f,h,\eta\ct\vartheta)\eq{f\eq{\Pi_AB} h}\fun{funext}(f,g,\eta)\ct\fun{funext}(g,h,\vartheta)
         \]
     \end{enumerate}
 \end{prop}
@@ -4002,7 +4002,7 @@ Recall from Definition~\ref{defn:qinv-composition} that quasi-inverses can be co
 
 \subsection*{Non-dependent Functions}
 
-The special case where\/ $B\colon A\to\univ$ is constant refers to the non-dependent function type: $\Gamma\equiv A\to B$. Here the general case computes as follows. For\/ $f,g\colon A\to B$ and\/ $p\colon f\eq{A\to B}g$, we have
+The special case where\/ $B\colon A\to\univ$ is constant refers to the non-dependent function type: $F\equiv A\to B$. Here the general case computes as follows. For\/ $f,g\colon A\to B$ and\/ $p\colon f\eq{A\to B}g$, we have
 \begin{align*}
     C_{f,x}&\defeq\lambda g.\,f(x)\eq Bg(x)\\
     \fun{happly}(p)&\defeq\lambda x.\,
@@ -5686,7 +5686,7 @@ Before working the details of this observation in concrete cases, we need two re
             \end{tikzpicture}
         \]
             
-        \item \textbf{Function Types:} For a dependent function type\/ $\Gamma\defeq\prod_{x\colon A}B(x)$, consider two paths $p,q\colon f\eq\Gamma g$. By function extensionality, the identity type $f\eq\Gamma g$ is equivalent to the homotopy type $\prod_{x\colon A}f(x)\eq{B(x)}g(x)$ via the function $\fun{happly}$. Therefore, an identity $p\eq{f\eq\Gamma g}q$ is equivalent to a second-order homotopy between their applications:
+        \item \textbf{Function Types:} For a dependent function type\/ $\Pi_AB\defeq\prod_{x\colon A}B(x)$, consider two paths $p,q\colon f\eq{\Pi_AB} g$. By function extensionality, the identity type $f\eq{\Pi_AB} g$ is equivalent to the homotopy type $\prod_{x\colon A}f(x)\eq{B(x)}g(x)$ via the function $\fun{happly}$. Therefore, an identity $p\eq{f\eq{\Pi_AB} g}q$ is equivalent to a second-order homotopy between their applications:
         \[
             \prod_{x\colon A}\fun{happly}(p)(x)\eq{f(x)\eq{B(x)}g(x)}\fun{happly}(q)(x).
         \]
@@ -6690,11 +6690,11 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \end{align*}
     By Corollary~\ref{cor:cartesian-uniqueness}, for each $x\colon X$, the type $(\pi_1(f(x)),\pi_2(f(x)))\eq{A(x)\times B(x)}f(x)$ is inhabited. Thus, function extensionality implies that
     \[
-        \tau(\sigma(f))\eq\Gamma f,
+        \tau(\sigma(f))\eq Tf,
     \]
     where
     \[
-        \Gamma\defeq\prod_{x\colon X}A(x)\times B(x).
+        T\defeq\prod_{x\colon X}A(x)\times B(x).
     \]
 \end{proof}
 

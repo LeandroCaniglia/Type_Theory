@@ -1953,22 +1953,22 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
 \begin{proof}
     Let
     \[
-        \Gamma\defeq\prod_{x\colon A}P(x).
+        \Pi_AP\defeq\prod_{x\colon A}P(x).
     \]
-    Fix $f\colon\Gamma$ and define
+    Fix $f\colon\Pi_AP$ and define
     \begin{align*}
         \gamma\colon\Bigl(
-            \sum_{g\colon\Gamma}f\eq{\Gamma}g
+            \sum_{g\colon\Pi_AP}f\eq{\Pi_AP}g
         \Bigr)
         &\to
-        \sum_{g\colon\Gamma}f\sim g\\
+        \sum_{g\colon\Pi_AP}f\sim g\\
         \dep{g,p}
         &\mapsto\dep{g,\fun{happly}(p)}.
     \end{align*}
     By Lemma~\ref{lem:Sigma-identity-is-contractible}, the domain type of this map is contractible. For the codomain type we can apply \nref{lpar:axiom-of-choice} and obtain an equivalence
     \begin{align*}
-        \sum_{g\colon\Gamma}f\sim g
-            &\equiv\sum_{g\colon\Gamma}\;
+        \sum_{g\colon\Pi_AP}f\sim g
+            &\equiv\sum_{g\colon\Pi_AP}\;
                 \prod_{x\colon A}f(x)\eq{P(x)}g(x)\\
             &\simeq\prod_{x\colon A}\;
                 \sum_{u\colon P(x)}f(x)\eq{P(x)}u.
@@ -1977,7 +1977,7 @@ In this section we prove that $\UA\Rightarrow\WE\Rightarrow\FE$.
 
     Consider the fiberwise transformation
     \[
-        h\colon\prod_{g\colon\Gamma}\bigl((f\eq{\Gamma}g)\to(f\sim g)\bigr)
+        h\colon\prod_{g\colon\Pi_AP}\bigl((f\eq{\Pi_AP}g)\to(f\sim g)\bigr)
     \]
     defined by $h(g)\defeq\fun{happly}(f,g)$. According to Definition~\ref{defn:total-map},
     \[
