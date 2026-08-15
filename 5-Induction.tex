@@ -2100,7 +2100,9 @@ The issue is that we cannot even write down the type signature for $B$ without h
         
         \item Now, the intertwining begins. To extend a context with a new variable, we need a valid type to assign to that variable. However, because of the formation rules, a type is only valid with respect to an existing context. So, the context-extension constructor requires both a prior context $\Gamma$ and a type valid in $\Gamma$:
         \[
-            \fun{ext} \colon \prod_{\Gamma \colon \fun{Con}} \fun{Ty}(\Gamma) \to \fun{Con}
+            \fun{ext}\colon
+                \prod_{\Gamma\colon\fun{Con}}
+                    \fun{Ty}(\Gamma)\to\fun{Con}
         \]
         Notice how a constructor for the base type $\fun{Con}$ consumes an element of the dependent family $\fun{Ty}$.
     \end{enumerate}
@@ -2111,7 +2113,11 @@ The issue is that we cannot even write down the type signature for $B$ without h
     
     Primitive types are usually restricted to $\fun0$, $\fun1$, $\fun2$, $\N$, and the universe $\univ$. More precisely, we have
     \[
-        \fun{empty}, \fun{unit}, \fun{bool}, \fun{nat}, \fun{univ}
+        \fun{empty},
+        \fun{unit},
+        \fun{bool},
+        \fun{nat},
+        \fun{univ}
             \colon\prod_{\Gamma\colon\fun{Con}}
                 \fun{Ty}(\Gamma),
     \]
@@ -2897,25 +2903,25 @@ More generally, while the inductive definition of the identity family provides t
 \end{cor}
 
 \begin{proof}
-    Let $F\defeq\prod_{a\colon A}B(a)$. Define
+    Let $\Pi_AB\defeq\prod_{a\colon A}B(a)$. Define
     \[
         R(f,g)\defeq f\sim g
         \quad\text{and}\quad
         r_0(f)\defeq\lambda x.\,\fun{refl}_{f(x)}.
     \]
-    By function extensionality, for any $f,g\colon F$, the canonical map
+    By function extensionality, for any $f,g\colon \Pi_AB$, the canonical map
     \[
-        \fun{happly}_{f,g}\colon(f\eq{F}g)\to(f\sim g)
+        \fun{happly}_{f,g}\colon(f\eq{\Pi_AB}g)\to(f\sim g)
     \]
     is an equivalence.
 
-    We claim that $\fun{happly}_{f,g}(p)$ coincides with $\fun{transport}^{R(f)}(p,r_0(f))$. To see this, we proceed by path induction on $p\colon f\eq{F}g$, which reduces the goal to the case where $g\equiv f$ and $p\equiv\fun{refl}_f$. In this case, the claim holds trivially because both $\fun{happly}_{f,f}(\fun{refl}_f)$ and $\fun{transport}^{R(f)}(\fun{refl}_f,r_0(f))$ are definitionally equal to $r_0(f)$.
+    We claim that $\fun{happly}_{f,g}(p)$ coincides with $\fun{transport}^{R(f)}(p,r_0(f))$. To see this, we proceed by path induction on $p\colon f\eq{\Pi_AB}g$, which reduces the goal to the case where $g\equiv f$ and $p\equiv\fun{refl}_f$. In this case, the claim holds trivially because both $\fun{happly}_{f,f}(\fun{refl}_f)$ and $\fun{transport}^{R(f)}(\fun{refl}_f,r_0(f))$ are definitionally equal to $r_0(f)$.
     
     Therefore, the function
     \[
-        \fun{transport}^{R(f)}(\dummy,r_0(f))\colon(f\eq{F}g)\to R(f,g)
+        \fun{transport}^{R(f)}(\dummy,r_0(f))\colon(f\eq{\Pi_AB}g)\to R(f,g)
     \]
-    is an equivalence for all $f,g\colon F$.
+    is an equivalence for all $f,g\colon \Pi_AB$.
 
-    This establishes condition d) of Theorem~\ref{thm:global-identity-system-equivalences} for the type $F$. By the logical equivalence of that theorem, condition~a) holds, meaning that $\dep{R,r_0}$ is an identity system over $F$. Expanding this definition yields exactly what the corollary states.
+    This establishes condition d) of Theorem~\ref{thm:global-identity-system-equivalences} for the type $\Pi_AB$. By the logical equivalence of that theorem, condition~a) holds, meaning that $\dep{R,r_0}$ is an identity system over $\Pi_AB$. Expanding this definition yields exactly what the corollary states.
 \end{proof}
