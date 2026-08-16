@@ -9,7 +9,7 @@ Recall that the type $\N$ of natural numbers has two constructors
     \item $0\colon\N$
     \item $\fun{succ}\colon\N\to\N$.
 \end{itemize}
-A similar example is the type $\fun L_A$ of finite lists of elements of some type $A$, which has constructors
+A similar example is the type $\fun L_A$ (a.k.a.~$\fun{List}(A)$) of finite lists of elements of some type $A$, which has constructors
 \begin{itemize}
     \item $\fun{nil}\colon\fun L_A$
     \item $\fun{cons}\colon A\to\fun L_A\to\fun L_A$,
@@ -218,7 +218,7 @@ A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Conse
 \begin{xmpl}\label{xmpl:N-from-List(1)}
     A concrete example of an alternative construction of $\N$ is the following:
     \begin{itemize}
-        \item $\N'\defeq\fun{List}(\fun1)$,
+        \item $\N'\defeq\fun L_{\fun1}$,
         \item $0'\defeq\fun{nil}$, and
         \item $\fun{succ}'(\ell)\defeq\fun{cons}(\fstar,\ell)$,
     \end{itemize}
@@ -376,7 +376,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 
     The second argument $\ell\colon\fun L_X$ is recursive. Since each constructor $\fun{cons}(x,\dummy)$ expects one recursive argument, it is assigned an arity of the unit type $\fun1$. Similarly, since $\fun{nil}$ expects zero recursive arguments, its arity is the empty type~$\fun0$.
 
-    Summarizing, our proposal is to define $A\defeq\fun1+X$ and specify the arity family $B\colon A\to\univ$ by cases: $B(\fun{inl}(\fstar))\defeq\fun0$ and $B(\fun{inr}(x))\defeq\fun1$. In other words, $B(a)\defeq\fun{rec}_{\fun1+X}(\univ,\lambda{\star}.\,\fun0,\lambda{\star}.\,\fun1,a)$.
+    Summarizing, our proposal is to define $A\defeq\fun1+X$ and specify the arity family $B\colon A\to\univ$ by cases: $B(\fun{inl}(\fstar))\defeq\fun0$ and $B(\fun{inr}(x))\defeq\fun1$. In other words, $B(a)\defeq\fun{rec}_{\fun1+X}(\univ,\lambda{\fstar}.\,\fun0,\lambda{\fstar}.\,\fun1,a)$.
     \[
         % Generic structure of a cons(x, \ell) node
         \begin{tikzpicture}[
@@ -424,7 +424,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     With this, we can formally redefine:
     \begin{itemize}
         \item\phantomsection\label{itm:list-from-W}
-        $\fun\fun L'_X\defeq\fun W_{\fun1+X}\fun{rec}_{\fun1+X}(\univ,\lambda{\star}.\,\fun0,\lambda{\star}.\,\fun1)$,
+        $\fun L'_X\defeq\fun W_{\fun1+X}\fun{rec}_{\fun1+X}(\univ,\lambda{\fstar}.\,\fun0,\lambda{\fstar}.\,\fun1)$,
         \item $\fun{nil'}\defeq\fun{sup}(\fun{inl}(\fstar),\fun{rec}_{\fun0}(\fun\fun L'_X))$, and
         \item $\fun{cons'}(x,\ell')\defeq\fun{sup}(\fun{inr}(x),\lambda{\fstar}.\,\ell')$.
     \end{itemize}
@@ -540,11 +540,11 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         \fun{rec}_{\fun W}(C, s_C)
             \colon \fun W_AB\to C.
     \end{equation}
-    To see how the inductive step function simplifies when the motive is a constant type family $E(w)\defeq C$, we can trace the definitional equalities and equivalences of its signature. Fixing $a\colon A$, we have
+    To see how this simplification occurs, we can trace the definitional equalities. Fixing $a\colon A$, we have
     \begin{align*}
             \prod_{\phi\colon B(a)\to\fun W_AB}\,
             \Bigl(\prod_{b\colon B(a)}E(\phi(b))\Bigr)
-            \to E(\fun{sup}(a,\phi)
+            \to E(\fun{sup}(a,\phi))
         &\equiv
             \prod_{\phi\colon B(a)\to \fun W_AB}\,
             \Bigl(\prod_{b\colon B(a)}C\Bigr)
@@ -599,7 +599,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     It follows that the induction principle for lists is simply a specific instance of the induction principle for $\fun W$-types:
     \[
         \fun{ind}_{\fun{List}}(E, e_{\fun{nil}}, e_{\fun{cons}})
-            \defeq \fun{ind}_{\fun W}(E, e_s).
+           \defeq\fun{ind}_{\fun W}(E, e_s).
     \]
 \end{xmpl}
 
@@ -690,7 +690,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \[
                 \fun L_X\fun{Alg}\defeq\sum_{C\colon\univ}C\times(X\to C\to C).
             \]
-            \item Let $\mathcal C\defeq\dep{C,(c_{\fun{nil}},c_{\fun{cons}})}$ and $\mathcal D\defeq\dep{D, (d_{\fun{nil}}, d_{\fun{cons}})}$ be two $\fun L_X$-algebras. An \textsl{$L_X$-morphism} between them is a map $h\colon C\to D$ such that $h(c_{\fun{nil}})\eq Dd_{\fun{nil}}$ and $h(c_{\fun{cons}}(x,c))\eq Dd_{\fun{cons}}(x,h(c))$ for all $x\colon X$ and $c\colon C$. The type of such morphisms is
+            \item Let $\mathcal C\defeq\dep{C,(c_{\fun{nil}},c_{\fun{cons}})}$ and $\mathcal D\defeq\dep{D,(d_{\fun{nil}}, d_{\fun{cons}})}$ be two $\fun L_X$-algebras. An \textsl{$\fun L_X$-morphism} between them is a map $h\colon C\to D$ such that $h(c_{\fun{nil}})\eq Dd_{\fun{nil}}$ and $h(c_{\fun{cons}}(x,c))\eq Dd_{\fun{cons}}(x,h(c))$ for all $x\colon X$ and $c\colon C$. The type of such morphisms is
         \[
             \fun L_X\Hom(\mathcal C,\mathcal D)\defeq
             \sum_{h}
@@ -706,7 +706,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                     d_{\fun{cons}}(x, h(c)).
         \]
     
-        \item An $\fun L_X$-algebra $\mathcal I$ is \textsl{homotopy-initial} (a.k.a.~\textsl{h-initial}) if for any $\fun L_X$ algebra $\mathcal C$ the type of $\fun L_X$-morphisms from $\mathcal I$ to $\mathcal C$ is contractible, i.e.,
+        \item An $\fun L_X$-algebra $\mathcal I$ is \textsl{homotopy-initial} (a.k.a.~\textsl{h-initial}) if for any $\fun L_X$-algebra $\mathcal C$ the type of $\fun L_X$-morphisms from $\mathcal I$ to $\mathcal C$ is contractible, i.e.,
         \[
             \fun{isHinit}_{\fun L_X}(\mathcal I)
                 \defeq
@@ -751,7 +751,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         
         \item We have homotopies $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$. We must show that $g$ preserves the algebra constructors. For the base case, we apply $\fun{ap}_g$ to the equality $f(a_{\fun{nil}})\eq Bb_{\fun{nil}}$ to obtain $g(f(a_{\fun{nil}}))\eq Ag(b_{\fun{nil}})$. By the homotopy $\vartheta$, we know $g(f(a_{\fun{nil}}))\eq Aa_{\fun{nil}}$. Transitivity of equality thus yields $g(b_{\fun{nil}})\eq Aa_{\fun{nil}}$.
         
-        For the inductive step, let $x\colon X$ and $b\colon B$. Since $f$ is a $\fun L_X$-morphism we have $f(a_{\fun{cons}}(x,g(b)))\eq Bb_{\fun{cons}}(x, f(g(b)))$. The homotopy $\eta$ implies $f(g(b))\eq Bb$. Then substitution gives
+        For the inductive step, let $x\colon X$ and $b\colon B$. Since $f$ is an $\fun L_X$-morphism, we have $f(a_{\fun{cons}}(x,g(b)))\eq Bb_{\fun{cons}}(x, f(g(b)))$. The homotopy $\eta$ implies $f(g(b))\eq Bb$. Then substitution gives
         \[
             f(a_{\fun{cons}}(x,g(b)))
             \eq Bb_{\fun{cons}}(x,b).
@@ -805,11 +805,11 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{cor}
-    The $\fun L_{\fun1}$-algebra $\dep{\N, (0, \fun{succ})}$ is homotopy initial.
+    The $\fun L_{\fun1}$-algebra $\dep{\N,(0, \fun{succ})}$ is homotopy initial.
 \end{cor}
 
 \begin{proof}
-    By the theorem, the $\fun L_{\fun1}$-algebra $\dep{\fun L_{\fun1}, (\fun{nil}, \fun{cons})}$ is $h$-initial. Since we have established in Example~\ref{xmpl:N-from-List(1)} the equality $\N\eq{\univ}\fun L_{\fun1}$, which identifies $0$ with $\fun{nil}$ and $\fun{succ}(n)$ with $\fun{cons}(\fstar,n)$, this yields a path
+    By the theorem, the $\fun L_{\fun1}$-algebra $\dep{\fun L_{\fun1},(\fun{nil}, \fun{cons})}$ is $h$-initial. Since we have established in Example~\ref{xmpl:N-from-List(1)} the equality $\N\eq{\univ}\fun L_{\fun1}$, which identifies $0$ with $\fun{nil}$ and $\fun{succ}(n)$ with $\fun{cons}(\fstar,n)$, this yields a path
     \[
         q\colon
         \dep{\N,(0,\fun{succ})}
@@ -839,7 +839,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{rem}
 
 \begin{defn} 
-    The type of \textsl{ $\fun W$-algebras} is
+    The type of \textsl{$\fun W$-algebras} is
     \[
         \fun W\fun{Alg}(A,B)
             \defeq\sum_{C\colon\univ}\;
@@ -868,7 +868,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         \]
         for $a\colon A$ and $\phi\colon B(a)\to C$.
         
-        \item A \textsl{ $P$-morphism} from a $P$-algebra $\dep{C,\bar{s}_C}$ to another $\dep{D,\bar{s}_D}$ is a dependent pair $\dep{f,\eta_f}$, where $f\colon C\to D$ and $\eta_f\colon f\circ\bar{s}_C\sim\bar{s}_D\circ Pf$. This homotopy can be visualized in the square:
+        \item A \textsl{$P$-morphism} from a $P$-algebra $\dep{C,\bar{s}_C}$ to another $\dep{D,\bar{s}_D}$ is a dependent pair $\dep{f,\eta_f}$, where $f\colon C\to D$ and $\eta_f\colon f\circ\bar{s}_C\sim\bar{s}_D\circ Pf$. This homotopy can be visualized in the square:
         \[
             \begin{tikzcd}[font=\small]
                 P(C)\arrow[r,"Pf"]
@@ -924,7 +924,9 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \]
     For any type $C\colon\univ$ and structure map $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$, the recursion map $\fun{rec}_{\fun W}(C, s_C)\colon\fun W\to C$ is defined inductively on constructors by the rule
     \[
-        \fun{rec}_{\fun W}(C, s_C)(\fun{sup}(a, \phi)) \defeq s_C(a, \fun{rec}_{\fun W}(C, s_C) \circ \phi),
+        \fun{rec}_{\fun W}(C,s_C)(\fun{sup}(a,\phi))
+        \defeq
+        s_C(a,\fun{rec}_{\fun W}(C,s_C)\circ\phi),
     \]
     for any $a\colon A$ and $\phi\colon B(a)\to\fun W$.
 \end{defn}
@@ -1012,7 +1014,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \begin{proof}
     Equating the dependent pairs $\dep{f,\eta_f}$ and $\dep{g,\eta_g}$ in the $\Sigma$-type of $\fun W$-morphisms $\fun W\Hom(D,C)$ is equivalent to providing a path $p\colon f\eq{D\to C}g$ and a path $q$ witnessing the identity between the transport of $\eta_f$ along $p$ and $\eta_g$.
     
-    By function extensionality, the path $p$ is equivalent to a homotopy $e\colon f\sim g$, giving $p \defeq \fun{funext}(e)$.
+    By function extensionality, the path $p$ is equivalent to a homotopy $e\colon f\sim g$, giving $p\defeq\fun{funext}(e)$.
     
     For any $a\colon A$ and $\phi\colon B(a)\to D$, let us define the local terms
     \[
@@ -1251,7 +1253,7 @@ Substituting this definition into the $\fun W$-type computation rule for $\fun{s
                     \lambda{\fstar}.\,n,
                     \fun{ind}_{\fun W}(E,e_s)
                         \circ(\lambda{\fstar}.\,n)
-                \bigr)\nonumber\\
+                \bigr)\\
         &\equiv
             e_{\fun{succ}'}\bigl(
                     (\lambda{\fstar}.\,n)(\fstar),
@@ -1260,7 +1262,7 @@ Substituting this definition into the $\fun W$-type computation rule for $\fun{s
                             \circ
                             (\lambda{\fstar}.\,n)
                         )(\fstar)
-                \bigr)\nonumber\\
+                \bigr)\\
         &\equiv
             e_{\fun{succ}'}\bigl(
                     n,
@@ -1320,7 +1322,7 @@ As a result, the direct assignment fails to typecheck natively.
 
 \subsection{Bridging the Gap}
 
-Of course, given $\phi\colon\fun0\to\N'$ there is trivial homotopy $\phi\sim\fun{rec}_{\fun0}(\N')$. By function extensionality, this gives a path $p_\phi\colon\phi\eq{\fun0\to\N'}\fun{rec}_{\fun0}(\N')$.
+Of course, given $\phi\colon\fun0\to\N'$ there is a trivial homotopy $\phi\sim\fun{rec}_{\fun0}(\N')$. By function extensionality, this gives a path $p_\phi\colon\phi\eq{\fun0\to\N'}\fun{rec}_{\fun0}(\N')$.
 
 Thus, to bridge the gap described above, we must transport the given term $e_{0'}$ along this path:
 \[
@@ -1337,11 +1339,11 @@ Because $p_\phi$ is constructed using the function extensionality axiom, which i
 
 \medskip
 
-\textbf{Note.} Although relaxing these computation rules to hold only propositionally might seem like a viable workaround, the resulting loss of judgmental equality is precisely why modern proof assistants abandon the\/ $\fun{W}$-type encoding altogether. By elevating \textit{all} inductive types to primitive status, these systems ensure that base constructors like\/ $\fun{nil}$ and\/ $\fun{zero}$ remain judgmentally unique and perfectly behaved.
+\textbf{Note.} Although relaxing these computation rules to hold only propositionally might seem like a viable workaround, the resulting loss of judgmental equality is precisely why modern proof assistants abandon the\/ $\fun W$-type encoding altogether. By elevating \textit{all} inductive types to primitive status, these systems ensure that base constructors like\/ $\fun{nil}$ and\/ $\fun{zero}$ remain judgmentally unique and perfectly behaved.
 
 As Chapter~6 demonstrates, this foundational shift is also a structural necessity for accommodating higher-dimensional path constructors.
 
-Nevertheless, it is important to emphasize that while the\/ $\fun{W}$-type encoding is a pragmatic dead-end for language designers, it provides a crucial foundational framework for homotopy type theorists.
+Nevertheless, it is important to emphasize that while the\/ $\fun W$-type encoding is a pragmatic dead-end for language designers, it provides a crucial foundational framework for homotopy type theorists.
 
 \section{Strict Positivity}
 
@@ -1349,7 +1351,7 @@ The aim of this section is to establish the requirements that constructors of in
 
 The main idea is that a proper constructor may admit arguments that are functions, but the type being defined cannot be the domain of those functional arguments.
 
-A good way to illustrate the necessity of this restriction is by showing how its inobservance leads to the Russell paradox.
+A good way to illustrate the necessity of this restriction is by showing how ignoring it leads to the Russell paradox.
 
 Suppose we define an inductive type $X$ by means of a single constructor that violates our restriction:
 \[
@@ -1366,7 +1368,7 @@ by establishing
     u(\fun c(f))\defeq f.
 \]
 
-Following Russell's paradox, this would allow us to build a diagonal function $d\colon X\to\fun 2$ as
+Following Russell's paradox, this would allow us to build a diagonal function $d\colon X\to\fun2$ as
 \[\tag{$2$}
     d(x)\defeq\fun{not}(u(x)(x)).
 \]
@@ -1394,7 +1396,7 @@ which is impossible in the type $\fun2$ [cf.~Exercise~\ref{exr:2-simeq-2-simeq-2
         
         \item $\mathcal F(A+B)\defeq\mathcal F(A)\cup\mathcal F(B)$.
 
-        \item $\mathcal F\big(\prod_{y\colon A}B(y)\big)\defeq\mathcal F(A)\cup(\mathcal F(B(y))\setminus\set y)$.
+        \item $\mathcal F\bigl(\prod_{y\colon A}B(y)\bigr)\defeq\mathcal F(A)\cup(\mathcal F(B(y))\setminus\set y)$.
         
         \item $\mathcal F\bigl(\sum_{y\colon A}B(y)\bigr)\defeq\mathcal F(A)\cup(\mathcal F(B(y))\setminus\set y)$.
     \end{itemize}
@@ -1434,8 +1436,6 @@ which is impossible in the type $\fun2$ [cf.~Exercise~\ref{exr:2-simeq-2-simeq-2
     Clauses c) and d) require $X\notin\mathcal F(A)$ to prevent~$X$ from appearing anywhere inside the domain $A$, while recursively checking $\fun{Pos}_X(B(y))$ to allow $X$ to occur strictly positively in the codomain.
 \end{rem}
 
-Yes, this is a fundamental result in type theory. We state it by showing that any strictly positive type expression canonically induces a mapping operation on functions, which acts as the morphism part of a functor.
-
 \begin{thm}
     Let $X$ be a type variable and let $\Phi(X)$ be a type expression such that $\fun{Pos}_X(\Phi(X))$ holds. Given any two types $U$ and $V$, and a function $f\colon U\to V$, there exists a canonically defined function
     \[
@@ -1448,7 +1448,7 @@ Yes, this is a fundamental result in type theory. We state it by showing that an
     We construct the function $\fun{map}_\Phi(f)$ by structural induction on the derivation of $\fun{Pos}_X(\Phi(X))$.
 
     \begin{enumerate}[a),font=\upshape]
-        \item \textsc{Non-occurrence:} If $X \notin \mathcal F(\Phi)$, then $\Phi(U) \equiv \Phi(V) \equiv \Phi$. We define $\fun{map}_\Phi(f) \defeq \fun{id}_\Phi$, the identity function on $\Phi$.
+        \item \textsc{Non-occurrence:} If $X \notin \mathcal F(\Phi)$, then $\Phi(U) \equiv \Phi(V) \equiv \Phi$. We define $\fun{map}_\Phi(f)\defeq\fun{id}_\Phi$, the identity function on $\Phi$.
         
         \item \textsc{Base variable:} If $\Phi(X) \equiv X$, then $\Phi(U) \equiv U$ and $\Phi(V) \equiv V$. We define $\fun{map}_\Phi(f) \defeq f$.
 
@@ -1466,12 +1466,12 @@ Yes, this is a fundamental result in type theory. We state it by showing that an
         
         \item \textsc{Dependent product:} Suppose $\Phi(X) \equiv \prod_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds for all $y\colon A$. By the inductive hypothesis, for any $y\colon A$, we have a function $\fun{map}_{B(y)}(f)\colon B(U,y)\to B(V,y)$. Given a dependent function $g\colon \prod_{y\colon A} B(U,y)$, we define
         \[
-            \fun{map}_\Phi(f)(g) \defeq \lambda y.\,\fun{map}_{B(y)}(f)(g(y)).
+            \fun{map}_\Phi(f)(g)\defeq\lambda y.\,\fun{map}_{B(y)}(f)(g(y)).
         \]
         
         \item \textsc{Dependent sum:} Suppose $\Phi(X) \equiv \sum_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds for all $y\colon A$. By the inductive hypothesis, we again have $\fun{map}_{B(y)}(f)$ for any $y\colon A$. Given a pair $p\colon \sum_{y\colon A} B(U,y)$, we define
         \[
-            \fun{map}_\Phi(f)(p) \defeq \bigl(\pi_1(p), \fun{map}_{B(\pi_1(p))}(f)(\pi_2(p))\bigr).
+            \fun{map}_\Phi(f)(p)\defeq\bigl(\pi_1(p), \fun{map}_{B(\pi_1(p))}(f)(\pi_2(p))\bigr).
         \]
     \end{enumerate}
     This completes the construction. To complete the proof of functoriality, it remains to show that $\fun{map}_\Phi(\fun{id}_U)$ is propositionally equal to $\fun{id}_{\Phi(U)}$ and $\fun{map}_\Phi(g \circ f)$ is propositionally equal to $\fun{map}_\Phi(g) \circ \fun{map}_\Phi(f)$. We omit the details because these properties follow by structural induction under the same case analysis as above.
@@ -1486,18 +1486,18 @@ Yes, this is a fundamental result in type theory. We state it by showing that an
 
     However, $\Phi$ natively defines a covariant functor. Given any function $f\colon U \to V$, we can define the mapping $\fun{map}_\Phi(f)\colon \Phi(U) \to \Phi(V)$ as follows:
     \[
-        \fun{map}_\Phi(f)(g) \defeq \lambda h.\,g(h \circ f),
+        \fun{map}_\Phi(f)(g)\defeq\lambda h.\,g(h \circ f),
     \]
     where $g\colon (U \to \fun2) \to \fun2$ and $h\colon V \to \fun2$. This mapping also preserves identities and compositions.
 \end{xmpl}
 
 \begin{rem}
-    The example highlights why type theory specifically demands \textit{strict} positivity rather than just ordinary positivity. If we have $\Phi(X)\defeq X\to A$, which is contravariant in the sense that maps $f\colon U\to V$ to $f^*\colon\Phi(V)\to\Phi(U)$, then composing it with a second contravariant expression $\Phi'(X)\defeq X\to A'$, results by double inversion of the arrows in the covariant behavior $f\mapsto f^{**}$.
+    The example highlights why type theory specifically demands \textit{strict} positivity rather than just ordinary positivity. If we have $\Phi(X)\defeq X\to A$, which is contravariant in the sense that it maps $f\colon U\to V$ to $f^*\colon\Phi(V)\to\Phi(U)$, then composing it with a second contravariant expression $\Phi'(X)\defeq X\to A'$, results by double inversion of the arrows in the covariant behavior $f\mapsto f^{**}$.
 \end{rem}
 
 \section{Inductive Type Families}
 
-In this section we will see how a collection of types indexed by some other type, can be simultaneously defined by induction. Instead of defining a single type $X$, we define a family of types $X\colon I\to\univ$, where $I$ is the index type.
+In this section we will see how a collection of types indexed by some other type can be simultaneously defined by induction. Instead of defining a single type $X$, we define a family of types $X\colon I\to\univ$, where $I$ is the index type.
 
 For a standard inductive type $X$, every constructor must output a value of type~$X$. For an inductive type family $X\colon I\to\univ$, the constructors can target a specific index $i\colon I$ to produce a value in~$X(i)$.
 
@@ -1628,7 +1628,7 @@ The eliminator consumes these two methods and outputs the global proof for all n
     \begin{itemize}
         \item \textsc{Context:} The context type is the unit type $\fun1$.
         
-        \item \textsc{Target Index:} The empty vector has length $0$, so $g(\star)\defeq0$.
+        \item \textsc{Target Index:} The empty vector has length $0$, so $g(\fstar)\defeq0$.
     \end{itemize}
     This gives the signature $\fun c\colon\prod_{z\colon\fun1}\fun{Vec}_A(0)$, which is equivalent to giving the constant element:
     \[
@@ -1721,7 +1721,7 @@ The eliminator consumes these two methods and outputs the global proof for all n
             \Bigr)
             \to X(g(z)).
     \end{equation}
-    Let $P\colon\prod_{i\colon I}X(i)\to\univ$ be a motive. The eliminator method $p_{\fun c}$ corresponding to this general constructor must provide a proof for the newly constructed element $\fun c(u,x)$. 
+    Let $P\colon\prod_{i\colon I}X(i)\to\univ$ be a motive. The eliminator method $p_{\fun c}$ corresponding to this general constructor must provide a proof for the newly constructed element $\fun c(u,z)$. 
     
     To do this, the method receives three pieces of data:
     \begin{itemize}
@@ -1793,7 +1793,7 @@ This constructor embodies a single rule: an element $x$ is \textsl{accessible} i
 
 \subsection*{Well-Founded Recursion}
 
-The idea behind the accessibility predicate is to provide a structural foundation for well-founded recursion. A termination checker usually perform \textsl{structural} recursion: it calls a function on a syntactically smaller piece of an inductive datatype.
+The idea behind the accessibility predicate is to provide a structural foundation for well-founded recursion. A termination checker usually performs \textsl{structural} recursion: it calls a function on a syntactically smaller piece of an inductive datatype.
 
 To write a recursive function where the argument decreases according to some arbitrary relation $R$, it suffices to prove that the relation is well-founded by showing that every element in $A$ is accessible:
 \[
@@ -1811,10 +1811,10 @@ The constructor says: an element $x$ is ``accessible'' if every $y$ strictly sma
     
     \item \textsc{Branching Type:} We need one recursive premise for every $y$ that is smaller than $x$. The ``shape'' of the recursion depends entirely on the context $x$. We define the branching type as the type of all elements related to $x$:
     \[
-        W(x) \defeq \sum_{y\colon A} R(y, x)
+        W(x)\defeq\sum_{y\colon A} R(y, x)
     \]
     
-    \item \textsc{Source Index:} For a given branch $w \equiv (y, r) \colon W(x)$, the recursive premise must be about $y$. So,  $h(x, (y, r)) \defeq y$.
+    \item \textsc{Source Index:} For a given branch $w \equiv (y, r) \colon W(x)$, the recursive premise must be about $y$. So,  $h(x,(y,r))\defeq y$.
     
     \item \textsc{Target Index:} Since the constructor proves that $x$ is accessible, we define $g(x)\defeq x$.
 \end{itemize}
@@ -1843,7 +1843,7 @@ Here, the number of recursive arguments dynamically changes based on how many el
 
 \textbf{Note.} Suppose we have an algorithm that calculates integer division, producing a remainder $y$ from a number $x$. The compiler knows nothing about integer arithmetic, so to prove termination we cannot rely on the mathematical fact that $y$ is smaller than $x$. Instead, the strategy is to structurally traverse a proof tree $a$ of $\fun{Acc}(x)$.
 
-When the algorithm computes $y$, it simultaneously computes a witness $r$ of $R(y,x)$. Since the proof $a$ is constructed via $\fun{accIntro}$, its argument is a function of type $\prod_{y\colon A} R(y,x) \to \fun{Acc}(y)$. By applying this function to $y$ and $r$, we extract a proof $a_y$ of $\fun{Acc}(y)$. Since $a_y$ was extracted directly from the structure of $a$, the compiler recognizes it as syntactically smaller, ensuring that successive recursive calls will terminate.
+When the algorithm computes $y$, it simultaneously computes a witness $r$ of $R(y,x)$. Since the proof $a$ is constructed by means of $\fun{accIntro}$, its argument is a function of type $\prod_{z\colon A}R(z,x)\to\fun{Acc}(z)$. By applying this function to $y$ and~$r$, we extract a proof $a_y$ of $\fun{Acc}(y)$. Since $a_y$ was extracted directly from the structure of $a$, the compiler recognizes it as syntactically smaller, ensuring that successive recursive calls will terminate.
 
 \begin{rem}
     To derive the definition of a base constructor from the general constructor schema, we formalize the absence of recursive arguments by setting the branching type to the empty type.
@@ -1915,7 +1915,7 @@ When the algorithm computes $y$, it simultaneously computes a witness $r$ of $R(
             
             \item \textsc{Source Index:} The single recursive premise must belong to $\fun{Fin}(k)$. Thus, evaluated at the single branch $\fstar$, we have $h(k,\fstar)\defeq k$.
             
-            \item \textsc{Target Index:} The constructed element belongs to $\fun{Fin}(\fun{succ}(k))$, so $g(k) \defeq \fun{succ}(k)$.
+            \item \textsc{Target Index:} The constructed element belongs to $\fun{Fin}(\fun{succ}(k))$, so $g(k)\defeq\fun{succ}(k)$.
         \end{itemize}
         Applying the general schema yields:
         \[
@@ -2016,12 +2016,12 @@ allows the source index $h$ to output any element of $I$ independently for each 
 
 \section{Inductive Type Families \&~{\normalfont\textsf W}-Types}
 
-Inductive Type Families generalize $\fun W$-types in a way that these come to represent their unindexed variant.
+Inductive type families generalize $\fun W$-types in such a way that $\fun W$-types can be viewed as their unindexed variants.
 
-To show that a $\fun W$-type $\fun{W}_AB$ is exactly an inductive type family indexed by the unit type, we set $I\defeq\fun1$ and define our family $X\colon\fun1\to\univ$ that consists of a single type $X(\fstar)$.
+To show that a $\fun W$-type $\fun W_AB$ is exactly an inductive type family indexed by the unit type, we set $I\defeq\fun1$ and define our family $X\colon\fun1\to\univ$ that consists of a single type $X(\fstar)$.
 
 \begin{enumerate}[a)]
-    \item \textit{Components.} A $\fun W$-type is specified by a type of shapes $A \colon \univ$ and a type family of $B\colon A\to\univ$, known as the arity type. We map these directly to the four components of a general constructor:
+    \item \textit{Components.} A $\fun W$-type is specified by a type of shapes $A\colon\univ$ and an arity type family $B\colon A\to\univ$. We map these directly to the four components of a general constructor:
     \begin{itemize}
         \item \textsc{Context:} The non-recursive arguments determine the ``shape'' of the node. Thus, $C\defeq A$. Let $x\colon A$.
     
@@ -2061,7 +2061,7 @@ To show that a $\fun W$-type $\fun{W}_AB$ is exactly an inductive type family in
 
 In standard mutual induction, we define two (or more) types simultaneously. However, while their constructors depend on one another, their existence does not, and so their formation rules are independent.
 
-In an \textsl{inductive-inductive} definition, we define a type $A$, and a type family $B$ that depends on $A$. The formation rules of these entities look like this:
+In an \textsl{inductive-inductive} definition, we define a type $A$ and a type family $B$ that depends on $A$. The formation rules of these entities look like this:
 \begin{align*}
     A&\colon\univ\\
     B&\colon A\to\univ
@@ -2165,7 +2165,7 @@ To understand the formal structure, let us look at the four standard components 
                 B(c_A(x, y)).
 \end{align*}
 
-\textbf{Induction Principle:} We must specify two motives
+\textbf{Induction Principle:} We must specify two motives:
 
 The motive for $A$ is standard:
 \begin{align*}
@@ -2320,7 +2320,7 @@ which satisfies the computation rule
 \]
 
 {\small
-\textbf{Note.} For decades, long before the introduction of HoTT, type theorists believed that $\fun{refl}$ could only construct trivial path. This intuition originated in the behavior of standard inductive types, where, for instance, every natural number is zero or a successor,  every boolean term is $0_{\fun2}$ or $1_{\fun2}$, etc. However, in 1993, Martin Hofmann and Thomas Streicher constructed a mathematical model in which types are interpreted as groupoids and identity types as the spaces of morphisms between objects. In their model, non-trivial automorphisms existed within the strict syntactic rules of Martin-Löf Type Theory. This showed that the type theory was already describing homotopy spaces.
+\textbf{Note.} For decades, long before the introduction of HoTT, type theorists believed that $\fun{refl}$ could only construct trivial paths. This intuition originated in the behavior of standard inductive types, where, for instance, every natural number is zero or a successor,  every boolean term is $0_{\fun2}$ or $1_{\fun2}$, etc. However, in 1993, Martin Hofmann and Thomas Streicher constructed a mathematical model in which types are interpreted as groupoids and identity types as the spaces of morphisms between objects. In their model, non-trivial automorphisms existed within the strict syntactic rules of Martin-Löf Type Theory. This showed that the type theory was already describing homotopy spaces.
 
 The example given in Exercise~\ref{exr:not}, which shows that $\fun{not}\colon\fun2\to\fun2$ is an involution, allows us to conclude via the univalence axiom that the identity type $\fun2\eq\univ\fun2$ is not trivial. Specifically, it contains at least two distinct paths: the constant path $\fun{refl}_{\fun2}$ and the path $\fun{ua}(\fun{not})$ induced by negation.
 
@@ -2449,7 +2449,7 @@ More generally, while the inductive definition of the identity family provides t
     \begin{enumerate}[-]
         \item The canonical example of a pointed predicate over $\dep{A,a_0}$ is the identity family $(a_0\eq A\dummy)$ equipped with the basepoint $\fun{refl}_{a_0}$.
 
-        An arbitrary pointed predicate $\dep{R,r_0}$ is an identity system if it satisfies the exact same elimination principle (based path induction) as the identity type.
+        An arbitrary pointed predicate $\dep{R,r_0}$ is an identity system if it satisfies the exact same elimination principle (based path induction) as the identity type. In this sense, identity systems generalize the role representable functors play in the Yoneda lemma.
 
         \item An alternative way to interpret the type $\fun{ppmap}(R,S)$ is by recognizing it as the fiber of the evaluation map at $s_0$, i.e.,
         \begin{equation}\label{eq:ppmap-and-fibers}
@@ -2637,35 +2637,50 @@ More generally, while the inductive definition of the identity family provides t
     \end{enumerate}
 \end{proof}
 
-\begin{defn}
-    An \textsl{identity system over a type $A$} is a family
-    \[
-        R\colon A\to A\to\univ
-    \]
-    equipped with a function
-    \[
-        r_0\colon\prod_{a\colon A}R(a,a)
-    \]
-    such that for any type family 
-    \[
-        D\colon\prod_{a,b\colon A}R(a,b)\to\univ
-    \]
-    and any
-    \[
-        d\colon\prod_{a\colon A}D(a,a,r_0(a)),
-    \]
-    there exists a function
-    \[
-        f\colon
-            \prod_{a,b\colon A}\;
-            \prod_{r\colon R(a,b)}
-                D(a,b,r)
-    \]
-    such that $f(a,a,r_0(a))=d(a)$ for all $a\colon A$.
-\end{defn}
+\begin{defns}
+    Let $A$ be a type.
+    \begin{enumerate}[-]
+        \item A \textsl{reflexive relation} over $A$ is a binary type family $R\colon A\to A\to\univ$ equipped with a \textsl{reflexivity function} $r_0\colon\prod_{a\colon A}R(a,a)$.
+        
+        \item Given two reflexive relations $\dep{R,r_0}$ and $\dep{S,s_0}$ over $A$, a \textsl{morphism of reflexive relations} is a family of maps
+        \[
+            g\colon\prod_{a,b\colon A}R(a,b)\to S(a,b)
+        \]
+        that propositionally preserves the reflexivity elements, meaning there is a family of paths 
+        \[
+            p\colon\prod_{a\colon A}
+                g(a,a,r_0(a))\eq{S(a,a)}s_0(a).
+        \]
+        
+        \item The type of such morphisms is denoted by
+        \[
+            \fun{rrmap}(R,S)\defeq
+            \sum_{g\colon\prod_{a,b\colon A}R(a,b)\to S(a,b)}\;
+                \prod_{a\colon A}g(a,a,r_0(a))\eq{S(a,a)}s_0(a).
+        \]
+        
+        \item An \textsl{identity system over $A$} is a reflexive relation $\dep{R,r_0}$
+        such that for any type family 
+        \[
+            D\colon\prod_{a,b\colon A}R(a,b)\to\univ
+        \]
+        and any
+        \[
+            d\colon\prod_{a\colon A}D(a,a,r_0(a)),
+        \]
+        there exists a function
+        \[
+            f\colon
+                \prod_{a,b\colon A}\;
+                \prod_{r\colon R(a,b)}
+                    D(a,b,r)
+        \]
+        satisfying $f(a,a,r_0(a))\eq{D(a,a,r_0(a))}d(a)$ for all $a\colon A$.
+    \end{enumerate}
+\end{defns}
 
 \begin{rem}
-    This definition generalizes the concept of based path induction to a global relation over the entire type $A$. Instead of considering the paths departing from a specific base point, the binary family $R\colon A\to A\to\univ$ characterizes paths between any two arbitrary points.
+    Identity systems generalize the concept of based path induction to a global relation over the entire type $A$. Instead of considering the paths departing from a specific base point, the binary family $R\colon A\to A\to\univ$ characterizes paths between any two arbitrary points.
     
     As the following theorem shows, this definition axiomatizes equality geometrically. If a binary relation $R$ and a reflexivity term $r_0$ satisfy this induction principle, then the space $R(a,b)$ is equivalent to the built-in identity type $(a\eq{A}b)$. 
     
@@ -2683,12 +2698,7 @@ More generally, while the inductive definition of the identity family provides t
         
         \item For any\/ $a,b\colon A$, the map\/ $\fun{transport}^{R(a)}(\dummy,r_0(a))\colon(a\eq{A}b)\to R(a,b)$ is an equivalence.
         
-        \item For any\/ $S\colon A\to A\to\univ$ and\/ $s_0\colon\prod_{a\colon A}S(a,a)$, the type
-        \[
-            \sum_{g\colon\prod_{a,b\colon A}R(a,b)\to S(a,b)}
-                \prod_{a\colon A}g(a,a,r_0(a))\eq{S(a,a)}s_0(a)
-        \]
-        is contractible.
+        \item For any reflexive relation\/ $\dep{S,s_0}$ over\/ $A$, the type of morphisms of reflexive relations\/ $\fun{rrmap}(R,S)$ is contractible.
     \end{enumerate}
 \end{thm}
 
@@ -2874,19 +2884,20 @@ More generally, while the inductive definition of the identity family provides t
     \]
     is an equivalence. 
     
-    We claim that $\fun{idtoeqv}_{A,B}(p)$ coincides with $\fun{transport}^{R(A)}(p,\fun{id}_A)$. By path induction on $p\colon A\eq{\univ}B$, it suffices to consider the case when $B\equiv A$ and $p\equiv\fun{refl}_A$. In that case, $\fun{transport}^{R(A)}(\fun{refl}_A,\id_A)\equiv \id_A$ and $\fun{idtoeqv}(\fun{refl}_A)\equiv\id_A$ as well. Consequently, part~d) of Theorem~\ref{thm:global-identity-system-equivalences} is met.
+    We claim that $\fun{idtoeqv}_{A,B}(p)$ coincides with $\fun{transport}^{R(A)}(p,\fun{id}_A)$. By path induction on $p\colon A\eq{\univ}B$, it suffices to consider the case when $B\equiv A$ and $p\equiv\fun{refl}_A$. In that case, $\fun{transport}^{R(A)}(\fun{refl}_A,\id_A)\equiv \id_A$ and $\fun{idtoeqv}_{A,A}(\fun{refl}_A)\equiv\id_A$ as well. Consequently, part~d) of Theorem~\ref{thm:global-identity-system-equivalences} is met.
     
     The conclusion is a direct consequence of part~a) of said theorem.
 \end{proof}
 
-\begin{cor}{\upshape[Homotopy induction]}
+\begin{cor} {\upshape[Homotopy induction]}
     Given 
     \[
         D\colon\prod_{f,g\colon\prod_{a\colon A}B(a)}(f\sim g)\to\univ
     \]
     and
     \[
-        d\colon\prod_{f\colon\prod_{a\colon A}B(a)}D(f,f,\lambda x.\,\fun{refl}_{f(x)}),
+        d\colon\prod_{f\colon\prod_{a\colon A}B(a)}
+            D(f,f,\lambda x.\,\fun{refl}_{f(x)}),
     \]
     there exists
     \[
@@ -2925,3 +2936,10 @@ More generally, while the inductive definition of the identity family provides t
 
     This establishes condition d) of Theorem~\ref{thm:global-identity-system-equivalences} for the type $\Pi_AB$. By the logical equivalence of that theorem, condition~a) holds, meaning that $\dep{R,r_0}$ is an identity system over $\Pi_AB$. Expanding this definition yields exactly what the corollary states.
 \end{proof}
+
+
+\section{Exercises}
+
+\begin{exr}
+    Derive the induction principle for the type\/ $\fun{List}(A)$ of lists from its definition as an inductive type in \S 5.1.
+\end{exr}
