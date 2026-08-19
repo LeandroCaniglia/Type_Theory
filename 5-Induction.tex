@@ -30,7 +30,37 @@ This principle also specifies that the constructed function $f$ computes as expe
     f(\fun{nil})\equiv e_{\fun{nil}}
     \quad\text{and}\quad
     f(\fun{cons}(a,\ell))
-        \equiv e_{\fun{cons}}(a,\ell,f(\ell)).
+        \equiv e_{\fun{cons}}(a,\ell,f(\ell)),
+\end{equation}
+which correspond to
+\begin{equation}\label{eq:List-computation-rules}
+    \begin{aligned}
+        \fun{ind}_{\fun L_A}
+            (
+                E,
+                e_{\fun{nil}},
+                e_{\fun{cons}}
+            )(\fun{nil})
+            &\equiv e_{\fun{nil}},\\
+        \fun{ind}_{\fun L_A}
+            (
+                E,
+                e_{\fun{nil}},
+                e_{\fun{cons}}
+            )(\fun{cons}(a,\ell))
+            &\equiv e_{\fun{cons}}
+                \bigl(
+                    a,
+                    \ell,
+                    \fun{ind}_{\fun L_A}
+                        (
+                            E,
+                            e_{\fun{nil}},
+                            e_{\fun{cons}}
+                        )(\ell)
+                \bigr
+            ).
+    \end{aligned}
 \end{equation}
 
 \begin{xmpl}\label{xmpl:list-append}
@@ -211,7 +241,7 @@ Since $\id_\N(\fun{succ}(n))\equiv\fun{succ}(\id_\N(n))$, by setting $e_s(x,y)\d
     \quad\text{and}\quad
     \id_\N(\fun{succ}(n))\equiv e_s(n,\id_\N(n)).
 \]
-Therefore, by Theorem~\ref{thm:N-induction-uniqueness}, we obtain a homotopy $\vartheta\colon g\circ f\sim\id_{\N}$.
+Therefore, by Theorem~\ref{thm:N-induction-uniqueness}, we obtain a homotopy $\vartheta\colon g\circ f\sim\id_\N$.
 
 A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Consequently, $f$ and $g$ are quasi-inverses and so $\N\simeq\N'$. Thus, the univalence axiom constructs a path $\N\eq{\univ}\N'$.
 
@@ -220,47 +250,66 @@ A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Conse
     \begin{itemize}
         \item $\N'\defeq\fun L_{\fun1}$,
         \item $0'\defeq\fun{nil}$, and
-        \item $\fun{succ}'(\ell)\defeq\fun{cons}(\fstar,\ell)$,
+        \item $\fun{succ}'(\ell)\defeq\fun{cons}(\fstar,\ell)$.
     \end{itemize}
-    with the induction principle
-    \begin{align*}
-        \fun{ind}_{\N'}&\colon\prod_{E\colon\N'\to\univ}
+    The target induction principle for $\N'$ has the signature:
+    \[
+        \fun{ind}_{\N'}\colon\prod_{E\colon\N'\to\univ}
             E(\fun{nil})
             \to\Bigl(\prod_{\ell\colon\N'}E(\ell)
                 \to E(\fun{succ}'(\ell))\Bigr)
-            \to \prod_{y\colon\N'}E(y)\\
-        \fun{ind}_{\N'}
-            (
-                E,
-                e_{\fun{nil}},
-                g
-            )
-        &\defeq
-        \fun{ind}_{\fun{List}(\fun1)}
-            (
-                E,
-                e_{\fun{nil}},
-                \lambda z\colon\fun1.\,g_z
-            ),
-    \end{align*}
-    which fulfills the requirements of $\fun{ind}_{\fun{List}(\fun1)}$ because
-    \[
-        (\lambda z\colon\fun1.\,g_z)\colon
-            \prod_{z\colon\fun1}\;\prod_{\ell\colon\fun{List}(\fun1)}E(\ell)\to E(\fun{cons}(z,\ell))
+            \to \prod_{y\colon\N'}E(y).
     \]
-    is defined as follows. For a given path $p_z\colon\fstar\eq{\fun1}z$, the action on paths yields
+    To define this using the list eliminator $\fun{ind}_{\fun L_{\fun1}}$, we must supply a step function
+    \[
+        e_{\fun{cons}}\colon
+            \prod_{z\colon\fun1}\;
+            \prod_{\ell\colon\fun L_{\fun1}}
+                E(\ell)\to E(\fun{cons}(z,\ell)).
+    \]
+    Given our inductive step argument $g\colon\prod_{\ell\colon\N'}E(\ell)\to E(\fun{succ}'(\ell))$, we construct $e_{\fun{cons}}$ as follows. For any $z\colon\fun1$, there is a canonical path $p_z\colon\fstar\eq{\fun1}z$. The action on paths yields
     \[
         \fun{ap}_{\fun{cons}(\dummy,\ell)}(p_z)\colon
         \fun{cons}(\fstar,\ell)\eq{\N'}\fun{cons}(z,\ell).
     \]
-    Since $g(\ell)\colon E(\ell)\to E(\fun{cons}(\fstar,\ell))$, we can define $g_z(\ell)$ by composing $g(\ell)$ with the transport function along this path:
+    Since $\fun{cons}(\fstar,\ell)\equiv\fun{succ}'(\ell)$, we can define $e_{\fun{cons}}(z,\ell)$ by composition:
     \[
-        g_z(\ell)\defeq
-            \fun{transport}^E(\fun{ap}_{\fun{cons}(\dummy,\ell)}(p_z), \dummy)
-                \circ g(\ell).
+        e_{\fun{cons}}(z,\ell)\defeq
+            \fun{transport}^E(\fun{ap}_{\fun{cons}(\dummy,\ell)}(p_z),\dummy)
+                \circ g(\ell)
+    \]
+    as depicted in the diagram
+    \[
+        \begin{tikzcd}[row sep=huge,column sep=3.6cm]
+            {E(\fun{cons}(\fstar,\ell))}
+                    \arrow[r,
+                        "{\fun{transport}^E(
+                            \fun{ap}_{
+                                \fun{cons}
+                                    (
+                                        \dummy,
+                                        \ell
+                                    )
+                                }(p_z),
+                            \dummy)
+                        }"]
+                &{E(\fun{cons}(z,\ell))}
+                        \arrow[d,"\equiv"]\\
+            E(\ell)
+                    \arrow[u,"g(\ell)"]
+                    \arrow[r,
+                        dashed,
+                        "{e_{\fun{cons}}(z,\ell)}"']
+                &E(\fun{succ}'(\ell))
+        \end{tikzcd}
+    \]
+    Finally, we can define:
+    \[
+        \fun{ind}_{\N'}(E,e_{\fun{nil}},g)
+            \defeq\fun{ind}_{\fun L_{\fun1}}
+                (E,e_{\fun{nil}},e_{\fun{cons}}).
     \]
 \end{xmpl}
-
 \begin{rem}
     The same ideas can be applied to other inductive types. For instance, as shown in Exercise~\ref{exr:A+B-from-rec2}, the coproduct $A+B$ can be implemented as
     \[
@@ -298,15 +347,22 @@ A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Conse
 
 \section{Well-Founded Trees}
 
-\textsl{Well-founded trees}, a.k.a.~\textsl{$\fun W$-trees}, generalize inductive data structures such as natural numbers and lists. The term ``well-founded'' means that there are no infinite downward paths in these trees.
+The so called \textsl{well-founded trees}, a.k.a.~\textsl{$\fun W$-trees}, generalize inductive data structures such as natural numbers and lists. The term ``well-founded'' means that there are no infinite downward paths in these trees.
 
-A $\fun W$-tree has two basic ingredients: a \textsl{label} type $A$ and an \textsl{arity} type family $B\colon A\to\univ$. The $\fun W$-type models $\fun W$-trees. It is denoted $\fun W_{x\colon A}B(x)$, or simply $\fun W_AB$.
+A $\fun W$-tree has two basic ingredients:
+\begin{itemize}
+    \item A \textsl{label} type $A$ and
+    \item An \textsl{arity} type family $B\colon A\to\univ$.
+\end{itemize}
+The $\fun W$-type models $\fun W$-trees. It is denoted $\fun W_{x\colon A}B(x)$, or simply $\fun W_AB$.
 
 The term-construction process has two steps. First, we choose a label $a\colon A$ for the root. The type $A$ encodes the possible node constructors.
 
 Second, the type family $B(a)$ dictates the branches hanging from that node. If $B(a)$ is the empty type, the node is a leaf: it has zero branches. If $B(a)$ is the boolean type, the node has two branches, and so forth. 
 
-If the node has branches, a fully formed subtree hangs from each of them. As illustrated below, the branches are indexed by the elements $b_1,b_2,\dots,b$ of $B(a)$. The function $\phi\colon B(a)\to\fun W_{x\colon A}B(x)$ attaches a subtree $\phi(b)$ to each branch, represented by the dotted triangles.
+If the node has branches, a fully formed subtree hangs from each of them. As illustrated below, the branches are indexed by the elements $b_1,b_2,\dots,b$ of $B(a)$.
+
+The function $\phi\colon B(a)\to\fun W_{x\colon A}B(x)$ attaches a subtree $\phi(b)$ to each branch, represented by the dotted triangles.
 \[
     \begin{tikzpicture}[>=stealth, thick]
         % Root node labeled by a in A
@@ -347,7 +403,11 @@ Because $\fun W$-types serve as a universal generalization of inductive types, a
         \bigr)
             \to\fun W_AB.
 \end{equation}
-When a term is built using $\fun{sup}(a,\phi)$, the label $a\colon A$ acts as the indicator for which constructor is being applied, while the function $\phi\colon B(a)\to\fun W_AB$ supplies the subtrees required by that specific constructor.
+When a term is built using $\fun{sup}(a,\phi)$, the label $a\colon A$ acts as the indicator for which constructor is being applied, while the function
+\[
+    \phi\colon B(a)\to\fun W_AB
+\]
+supplies the subtrees required by that specific constructor.
 
 In this way, the single constructor $\fun{sup}$ expresses the behavior of any number of individual constructors by delegating the choice of the operation to the label type~$A$.
 
@@ -437,7 +497,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     
     Since the former has no recursive arguments, we can consider $\fun1$ for labeling it. The latter has a single argument $n$, which is recursive. So, $\fun1$ would also work for labeling the $\fun{succ}$ constructor. Thus, $\fun1+\fun1$ is appropriate for $A$, and this can be abbreviated by setting $A\defeq\fun2$.
     
-    The arity family $B\colon A\to\univ$ needs to represent the recursive arguments of each constructor. Thus, we define it by
+    The arity family $B\colon A\to\univ$ needs to represent the recursive arguments of each constructor. Then,
     \begin{align*}
         B(0_{\fun2})&\defeq\fun0,\\
         B(1_{\fun2})&\defeq\fun1.
@@ -450,7 +510,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     
     For the base case $0$, we have $\phi_0\defeq\fun{rec}_{\fun0}(\fun W_{\fun2}B)$.
     
-    For the inductive step $\fun{succ}(n)$, we have $\phi_{\fun{succ}}\defeq\lambda{\fstar}.\,n$.
+    For the inductive step $\fun{succ}(n)$, we have $\phi_{\fun{succ}(n)}\defeq\lambda{\fstar}.\,n$.
 
     In summary:
     \begin{itemize}
@@ -512,7 +572,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         \fun W_{x\colon A}B(x)\colon\univ.
     \]
     
-    \textsc{Introduction:} The elements of the $\fun W$-type are built using the constructor $\fun{sup}$. Given a label $a\colon A$ and a subtree-assigning function $f\colon B(a)\to \fun W_AB$, we can form a new tree $\fun{sup}(a,f)$, where
+    \textsc{Introduction:} The elements of the $\fun W$-type are built using the constructor $\fun{sup}$. Given a label $a\colon A$ and a subtree-assigning function $\phi\colon B(a)\to \fun W_AB$, we can form a new tree $\fun{sup}(a,\phi)$, where
     \begin{equation}\label{eq:W-constructor}
         \fun{sup}\colon
             \prod_{a\colon A}\;
@@ -532,15 +592,19 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \end{equation}
     With this data, the induction principle produces a dependent function
     \begin{equation}\label{eq:W-induction-function}
-        \fun{ind}_{\fun W}(E, e_s)
-            \colon\prod_{w\colon \fun W_AB}E(w).
+        \fun{ind}_{\fun W}(E,e_s)
+            \colon\prod_{w\colon\fun W_AB}E(w).
     \end{equation}
-    As a special case, when the motive is a constant type family $E(w)\defeq C$ for some carrier type $C\colon\univ$, the inductive step function simplifies to a curried structure map $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$. The induction principle then reduces to the non-dependent \textsl{recursor}
+    As a special case, suppose that the motive is a constant type family $E(w)\defeq C$ and that we are given a map
+    \[
+        s_C\colon\prod_{a\colon A}(B(a)\to C)\to C.
+    \]
+    We claim that, in this case, the induction principle reduces to the non-dependent \textsl{recursor}
     \begin{equation}\label{eq:rec_W}
         \fun{rec}_{\fun W}(C, s_C)
             \colon \fun W_AB\to C.
     \end{equation}
-    To see how this simplification occurs, we can trace the definitional equalities. Fixing $a\colon A$, we have
+    To see this, fix $a\colon A$. We have
     \begin{align*}
             \prod_{\phi\colon B(a)\to\fun W_AB}\,
             \Bigl(\prod_{b\colon B(a)}E(\phi(b))\Bigr)
@@ -553,9 +617,20 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \prod_{\phi\colon B(a)\to\fun W_AB}
             \!\!\!(B(a)\to C)\to C.
     \end{align*}
-    The final expression provides access to both the recursive results $B(a)\to C$ and the original subtrees $\phi\colon B(a)\to\fun W_AB$. However, since $(B(a)\to C)\to C$ does not depend on the original trees in $\fun W_AB$, we can drop the unused parameter $\phi\colon B(a)\to\fun W_AB$ to obtain the curried structure map:
+    To provide an inductive step function
     \[
-        s_C\colon\prod_{a\colon A}(B(a)\to C)\to C.
+        e_s\colon\prod_{a\colon A}\;
+        \prod_{\phi\colon B(a)\to\fun W_AB}
+        (B(a)\to C)\to C,
+    \]
+    we can define
+    \[
+        e_s(a,\phi,h)\defeq s_C(a,h)
+    \]
+    and obtain
+    \[
+        \fun{rec}_{\fun W}(C,s_C)
+            \defeq\fun{ind}_{\fun W}(C,e_s).
     \]
 
     \textsc{Computation:} The eliminators compute by evaluating the step function on the components of the $\fun{sup}$ constructor. For the induction principle, the computation rule is the definitional equality
@@ -1579,7 +1654,7 @@ The eliminator $\fun{ind}_X$ is a machine that builds proofs by induction. To op
 
 Consider the natural numbers $\N$ with constructors $\fun{zero}\colon\N$ and $\fun{succ}\colon\N\to\N$. Let our motive be a property $P\colon\N\to\univ$ that we want to prove for all natural numbers.
 
-The eliminator $\fun{ind}_{\N}$ requires two methods, one for each constructor:
+The eliminator $\fun{ind}_\N$ requires two methods, one for each constructor:
 \begin{itemize}
     \item \textit{The method for $\fun{zero}$:} 
     Since the $\fun{zero}$ constructor takes no arguments, this method reduces to proving the base case:
@@ -1596,7 +1671,7 @@ The eliminator $\fun{ind}_{\N}$ requires two methods, one for each constructor:
 \end{itemize}
 The eliminator consumes these two methods and outputs the global proof for all natural numbers:
 \[
-    \fun{ind}_{\N}(P,p_{\fun{zero}},p_{\fun{succ}})
+    \fun{ind}_\N(P,p_{\fun{zero}},p_{\fun{succ}})
         \colon\prod_{n\colon\N}P(n).
 \]
 
@@ -2941,5 +3016,292 @@ More generally, while the inductive definition of the identity family provides t
 \section{Exercises}
 
 \begin{exr}
-    Derive the induction principle for the type\/ $\fun{List}(A)$ of lists from its definition as an inductive type in \S 5.1.
+    Let $A$ be a type, and consider the inductive type\/ $\fun L_A$ generated by the constructors\/ $\fun{nil}\colon\fun L_A$ and\/ $\fun{cons}\colon A\to\fun L_A\to\fun L_A$. 
+    
+    Formulate the induction principle for\/ $\fun L_A$. Specifically, given a type family\/ $E\colon\fun L_A\to\univ$, state the following:
+    \begin{enumerate}[a),font=\upshape]
+        \item The type of the base case recurrence\/ $e_{\fun{nil}}$.
+        \item The type of the inductive step recurrence\/ $e_{\fun{cons}}$, assuming the statement\/ $E$ holds for a previously constructed list.
+        \item The full signature of the dependent eliminator function\/ $\fun{ind}_{\fun L}$.
+        \item The definitional computation rules for\/ $\fun{ind}_{\fun L}$ when applied to both\/ $\fun{nil}$ and\/ $\fun{cons}(a,\ell)$.
+    \end{enumerate}
 \end{exr}
+
+\begin{solution}\ 
+    \begin{enumerate}[a)]
+        \item $e_{\fun{nil}}\colon E(\fun{nil})$.
+        
+        \item
+            \[
+                e_{\fun{cons}}\colon
+                    \prod_{a\colon A}\;
+                    \prod_{\ell\colon\fun L_A}
+                        E(\ell)\to E(\fun{cons}(a,\ell)).
+            \]
+        
+        \item
+            \[
+                \fun{ind}_{\fun L_A}\colon
+                    \prod_{E\colon\fun L_A\to\univ}\;
+                    E(\fun{nil})
+                    \to
+                    \Bigl(
+                    \prod_{a\colon A}\;
+                    \prod_{\ell\colon\fun L_A}
+                        E(\ell)\to E(\fun{cons}(a,\ell))
+                    \Bigr)
+                    \to
+                    \prod_{\ell\colon\fun L_A}E(\ell).
+            \]
+        
+        \item
+            \begin{align*}
+                \fun{ind}_{\fun L_A}
+                    (
+                        E,
+                        e_{\fun{nil}},
+                        e_{\fun{cons}},
+                        \fun{nil}
+                    )
+                    &\equiv e_{\fun{nil}},\\
+                \fun{ind}_{\fun L_A}
+                    (
+                        E,
+                        e_{\fun{nil}},
+                        e_{\fun{cons}},
+                        \fun{cons}(a,\ell)
+                    )
+                    &\equiv e_{\fun{cons}}
+                        (
+                            a,
+                            \ell,
+                            \fun{ind}_{\fun L_A}
+                                (
+                                    E,
+                                    e_{\fun{nil}},
+                                    e_{\fun{cons}},
+                                    \ell
+                                )
+                        ).
+            \end{align*}
+    \end{enumerate}
+    
+\end{solution}
+
+\begin{exr}
+    Construct two functions on natural numbers which satisfy the same recurrence\/ $(e_z, e_s)$ judgmentally, but are not judgmentally equal.
+\end{exr}
+
+\begin{solution}
+    Define $C\defeq\N$ and
+    \begin{itemize}
+        \item $e_z\defeq0$,
+        \item $e_s(n,k)\defeq\fun{succ}(k)$.
+    \end{itemize}
+    Then the function $f\colon\N\to C$ defined by $f(n)\defeq n+0$ satisfies, according to \nref{lpar:natural-addition},
+    \begin{align*}
+        f(0)&\equiv0+0\equiv0\equiv e_z,\\
+        f(\fun{succ}(n))
+            &\equiv\fun{succ}(n)+0\\
+            &\equiv\fun{succ}(n+0)\\
+            &\equiv e_s(n,f(n)).
+    \intertext{On the other hand, $g(n)\defeq n$ satisfies}
+        g(0)&\equiv0\equiv e_z,\\
+        g(\fun{succ}(n))
+            &\equiv\fun{succ}(n)\\
+            &\equiv e_s(n,g(n)).
+    \end{align*}
+    The functions $f$ and $g$ are not judgmentally equal because our definition of~$\fun{add}$ satisfies $0+n\equiv n$, but not $n+0\equiv n$, as explained in \nref{lpar:blocked-computation}.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Construct two distinct recurrences\/ $(e_z,e_s)$ on the same type\/ $E$ that are judgmentally satisfied by a single function\/ $f\colon\N\to E$.
+\end{exr}
+
+\begin{solution}
+    Since $e_z\equiv f(0)$, the recurrences must differ in $e_s$. Let $e'_s$ denote the second step function. Thus, we must have
+    \[\tag{$\ast$}
+        e'_s(n,f(n))\equiv f(\fun{succ}(n))\equiv e_s(n,f(n)).
+    \]
+    For example, if $E\defeq\N$, $e_z\defeq0$, and $f(n)\defeq0$ for $n\colon\N$, we can have
+    \[
+        e_s(n,m)\defeq m
+        \quad\text{and}\quad
+        e'_s(n,m)\defeq m+0.
+    \]
+    As we saw in the previous exercise, $e_s\not\equiv e'_s$. However, ($\ast$) does hold.
+    %
+    
+\end{solution}
+
+\begin{exr}\label{exr:boolean-ind-decomposition}
+    Show that for any type family\/ $E\colon\fun2\to\univ$, the induction operator
+    \[
+        \fun{ind}_{\fun2}(E)\colon
+            E(0_{\fun2})\times E(1_{\fun2})
+            \to
+            \prod_{b\colon\fun2}E(b)
+    \]
+    is an equivalence.
+\end{exr}
+
+\begin{solution}
+    Let $f\defeq\fun{ind}_{\fun2}(E)$. Define
+    \begin{align*}
+        g\colon
+            \Bigl(\prod_{b\colon\fun2}E(b)\Bigr)
+        &\to E(0_{\fun2})\times E(1_{\fun2})\\
+        \epsilon
+        &\mapsto
+            (\epsilon(0_{\fun2}),\epsilon(1_{\fun2})).
+    \end{align*}
+    We claim that $g$ is a quasi-inverse of $f$. Indeed,
+    \begin{align*}
+        g\circ f(e_0,e_1)
+            &\equiv g(f(e_0,e_1))\\
+            &\equiv
+                \bigl(
+                    f(e_0,e_1)(0_{\fun2}),
+                    f(e_0,e_1)(1_{\fun2})
+                \bigr)\\
+            &\equiv(e_0,e_1)
+    \end{align*}
+    by the computation rule of $f$. Thus, by the induction principle for the cartesian product applied to the type family
+    \begin{align*}
+        C&\colon
+            E(0_{\fun2})\times E(1_{\fun2})\to\univ\\
+        C(x)&\defeq g(f(x))\eq{}x,
+    \end{align*}
+    we obtain a homotopy
+    \[
+        \fun{ind}_\times
+            \bigl(
+                C,
+                \lambda e_0.\,\lambda e_1.\,
+                \fun{refl}_{(e_0,e_1)}
+            \bigr)
+            \colon g\circ f\sim\id.
+    \]
+    The other composition computes to
+    \begin{align*}
+        f\circ g(\epsilon)
+            &\equiv f(
+                \epsilon(0_{\fun2}),
+                \epsilon(1_{\fun2})
+            ). 
+    \intertext{By the computation rules of $f$, it follows that}
+        (f\circ g(\epsilon))(0_{\fun2})
+            &\equiv\epsilon(0_{\fun2}),\\
+        (f\circ g(\epsilon))(1_{\fun2})
+            &\equiv\epsilon(1_{\fun2}).
+    \end{align*}
+    Thus, for a fixed $\epsilon$, applying the induction principle for the boolean type to the motive
+    \begin{align*}
+        P&\colon\fun2\to\univ,\\
+        P(b)&\defeq(f\circ g(\epsilon))(b)
+            \eq{}\epsilon(b)
+    \end{align*}
+    yields the homotopy
+    \[
+        \fun{ind}_{\fun2}(
+            P,
+            \fun{refl}_{\epsilon(0_{\fun2})},
+            \fun{refl}_{\epsilon(1_{\fun2})}
+            )
+                \colon\prod_{b\colon\fun2}
+                    (f\circ g(\epsilon))(b)
+                    \eq{}
+                    \epsilon(b).
+    \]
+    By function extensionality, this implies $f\circ g(\epsilon)\eq{}\epsilon$. Hence, $f\circ g\sim\id$, which completes the proof that $f$ and $g$ are quasi-inverses.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that the analogous statement to\/ {\upshape Exercise~\ref{exr:boolean-ind-decomposition}} for\/~$\N$ fails.
+\end{exr}
+
+\begin{solution}
+    In analogy with the case of the boolean type, we have to show an example where the induction operator
+    \[
+        \fun{ind}_\N(E)\colon
+            E(0)\times
+                \Bigl(
+                    \prod_{n\colon\N}
+                        E(n)\to E(\fun{succ}(n))
+                \Bigr)
+                \to\prod_{n\colon\N}E(n)
+    \]
+    is not an equivalence.
+
+    Let $E\colon\N\to\univ$ be the constant family $E(n)\defeq\N$. For the sake of simplicity, let $\fun{ind}_\N(E)$ be denoted by $f$. Then,
+    \[
+        f\colon\N\times(\N\to\N\to\N)\to(\N\to\N).
+    \]
+
+    Consider the step function
+    \begin{align*}
+        e_s\colon\N&\to\N\to\N\\
+        n&\mapsto(m\mapsto m).
+    \end{align*}
+    By the computation rules of $f$, we have
+    \[\tag{$\ast$}
+        f(0,e_s,\fun{succ}(n))
+            \equiv e_s(n,f(0,e_s,n))
+            \equiv f(0,e_s,n).
+    \]
+    We claim that $f(0,e_s,n)\eq\N0$ for $n\colon\N$. To see this, consider the motive
+    \begin{align*}
+        C&\colon\N\to\univ\\
+        C&\defeq\lambda n.\,f(0,e_s,n)\eq\N0
+    \end{align*}
+    and define
+    \begin{align*}
+        c_s\colon\prod_{n\colon\N}C(n)
+            &\to C(\fun{succ}(n))\\
+        c_s&\defeq\lambda n.\,\lambda p.\,p,
+    \end{align*}
+    which is well-typed by ($\ast$). Thus, by induction, $f(0,e_s,n)\eq\N0$ for all $n\colon\N$.
+
+    On the other hand, the step function
+    \begin{align*}
+        e'_s\colon\N&\to\N\to\N\\
+        n&\mapsto(m\mapsto0)
+    \end{align*}
+    yields the function $f(0,e'_s)$, which can also be inductively shown to satisfy $f(0,e'_s,n)\eq\N0$ for all $n\colon\N$.
+
+    By function extensionality, $f(0,e_s)\eq{\N\to\N}f(0,e'_s)$. However, $e_s$ and $e'_s$ are not propositionally equal because $e_s(0,1)\equiv1$ and $e'_s(0,1)\equiv0$, and $1$ is not propositionally equal to $0$.
+
+    Since $f$ maps two propositionally distinct elements of its domain to the same function, it is not an embedding. The conclusion that $f$ is not an equivalence then follows from Theorem~\ref{thm:equivalence-iff-embedding+surjective}.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Show that if we assume simple instead of dependent elimination for\/ $\fun W$-types, the uniqueness property, analogue of\/ {\upshape Theorem~\ref{thm:W-type-induction-uniqueness}}, fails to hold. That is, exhibit a type satisfying the recursion principle of a\/ $\fun W$-type, but for which functions are not determined uniquely by their recurrence.
+\end{exr}
+
+\begin{solution}
+    We need to define a type $A$, a type family $B\colon A\to\univ$, and a type $W$ equipped with a constructor
+    \[
+        \fun{sup}\colon\prod_{a\colon A}
+            (B(a)\to W)\to W,
+    \]
+    along with a target type $C$ and a step function
+    \[
+        s_C\colon\prod_{a\colon A}(B(a)\to C)\to C,
+    \]
+    such that there are two propositionally distinct maps $\phi,\psi\colon W\to C$ satisfying
+    \begin{align*}
+        \phi(\fun{sup}(a,h))
+            &\equiv s_C(a,\phi\circ h),\\
+        \psi(\fun{sup}(a,h))
+            &\equiv s_C(a,\psi\circ h)
+    \end{align*}
+    for all $a\colon A$ and $h\colon B(a)\to W$.
+    %
+    
+\end{solution}
