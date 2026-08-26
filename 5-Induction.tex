@@ -1,6 +1,6 @@
 \chapter{Induction}
 
-\section{Intuition for Uniqueness}
+\section{Intuition for Uniqueness}\label{intuition-for-uniqueness}
 
 The principles of induction and recursion do more than guarantee the existence of certain functions; they completely characterize them by providing a uniqueness principle. Here we present two examples: natural numbers and lists.
 
@@ -23,7 +23,13 @@ The induction principle for this type states that, given a family $E\colon\fun L
 it is sufficient to provide the following data:
 \begin{itemize}
     \item\phantomsection\label{itm:list-induction} a term $e_{\fun{nil}}\colon E(\fun{nil})$ and
-    \item a dependent function $e_{\fun{cons}}\colon\prod_{a\colon A}\prod_{\ell\colon\fun L_A}E(\ell)\to E(\fun{cons}(a,\ell))$.
+    \item a dependent function
+    \[
+        e_{\fun{cons}}\colon
+            \prod_{a\colon A}\;
+            \prod_{\ell\colon\fun L_A}
+                E(\ell)\to E(\fun{cons}(a,\ell)).
+    \]
 \end{itemize}
 This principle also specifies that the constructed function $f$ computes as expected on the constructors, meaning that we have the definitional equalities
 \begin{equation}\label{eq:list-recurrences}
@@ -643,117 +649,132 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \begin{equation}\label{eq:rec_W-computation-rule}
         \fun{rec}_{\fun W}(C,s_C)(\fun{sup}(a,\phi))
             \equiv s_C(a,\fun{rec}_{\fun W}
-                (
-                    C,s_C
-                )\circ\phi).
+                (C,s_C)\circ\phi).
     \end{equation}
 \end{defn}
 
 \begin{xmpl}\label{xmpl:List(X)-induction-from-W-induction}
-    To see how this general framework operates in a concrete inductive type, let us continue with Example~\ref{xmpl:W-tree-for-List(X)}. The goal is to derive the induction principle for $\fun L_X$ from the induction principle for $\fun W$-types.
+    To see how this general framework operates in a concrete inductive type, let us continue with Example~\ref{xmpl:W-tree-for-List(X)}. The goal is to derive the induction principle for $\fun L_X$ from the induction principle for $\fun W$-types. For simplicity, we omit the primes from $\fun L_X$, $\fun{nil}$, and $\fun{cons}$.
 
     We must construct the data required by $\fun W$-induction to yield standard list induction. This involves case analysis over the label $a\colon\fun1+X$.
 
-    Suppose $a\equiv\fun{inl}(\fstar)$. In this case, we have $B(a)\equiv\fun0$. Consequently, the associated subtree function is the unique definitional equality $f\equiv\fun{rec}_{\fun0}(\fun W_AB)$. Moreover, $\fun{sup}(a,f)$ is definitionally equal to $\fun{nil}$.
+    Suppose $a\equiv\fun{inl}(\fstar)$. In this case, we have $B(a)\equiv\fun0$. Consequently, the associated subtree function is $\phi\equiv\fun{rec}_{\fun0}(\fun L_X)$. In particular, \hyperref[itm:list-from-W]{by definition$\,\scriptstyle[\uparrow]$},
+    \[
+        \fun{sup}(a,\phi)
+            \equiv\fun{sup}(a,\fun{rec}_{\fun0}(\fun L_X)
+            \equiv\fun{nil}.
+    \]
+    The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun0}E(\phi(b))$. Because the product runs over the empty type, this type is equivalent to $\fun1$ and contains a unique, trivial inhabitant.
 
-    The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun0}E(f(b))$. Because the product runs over the empty type, this type is equivalent to $\fun1$ and contains a unique, trivial inhabitant.
+    For this case, the inductive step function of $\fun{ind}_{\fun W}$ needs to map this trivial inhabitant $g$ to a term in $E(\fun{sup}(a,\phi))\equiv E(\fun{nil})$. This is precisely the data required by standard list induction: a term $e_{\fun{nil}}\colon E(\fun{nil})$.
 
-    For this case, the inductive step function of $\fun{ind}_{\fun W}$ needs to map this trivial inhabitant to a term in $E(\fun{sup}(a,f))\equiv E(\fun{nil})$. This is precisely the data required by \hyperref[itm:list-induction]{standard list induction$\,\scriptstyle[\uparrow]$}: a term $e_{\fun{nil}}\colon E(\fun{nil})$.
+    In the case where $a\equiv\fun{inr}(x)$, we have $B(a)\equiv\fun1$. Thus, the subtree-assigning function has the signature $\phi\colon\fun1\to\fun L_X$. \hyperref[itm:list-from-W]{As previously established$\,\scriptstyle[\uparrow]$}, the constructor application $\fun{sup}(a,\phi)$ is definitionally equal to $\fun{cons}(x,\phi(\fstar))$.
 
-    In the case where $a\equiv\fun{inr}(x)$, we have $B(a)\equiv\fun1$. Thus, the subtree-assigning function has the signature $f\colon\fun1\to\fun W_{x\colon A}B(x)$. \hyperref[itm:list-from-W]{As established before$\,\scriptstyle[\uparrow]$}, the constructor application $\fun{sup}(a,f)$ is definitionally equal to $\fun{cons}(x,f(\fstar))$.
+    The inductive hypothesis is a dependent function $h\colon\prod_{b\colon\fun1}E(\phi(b))$, which provides a single term: $h(\fstar)\colon E(\phi(\fstar))$.
 
-    The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun1}E(f(b))$, which provides a single meaningful term: $g(\fstar)\colon E(f(\fstar))$.
-
-    To complete the definition of $e_s$, we must construct a term in $E(\fun{sup}(a,f))$, which evaluates to $E(\fun{cons}(x,f(\fstar)))$. But this is exactly the data provided by the \hyperref[itm:list-induction]{standard list induction$\,\scriptstyle[\uparrow]$}: a dependent function $e_{\fun{cons}}$ that takes the head $x$, the tail $f(\fstar)$, and the inductive hypothesis $g(\fstar)$, and returns a term in $E(\fun{cons}(x,f(\fstar)))$.
+    To complete the definition of $e_s$, we must construct a term in $E(\fun{sup}(a,\phi))$, which evaluates to $E(\fun{cons}(x,\phi(\fstar)))$. But this is exactly the data required by the \hyperref[itm:list-induction]{standard list induction$\scriptstyle[\uparrow]$}: a dependent function $e_{\fun{cons}}$ that produces a term in $E(\fun{cons}(x,\phi(\fstar)))$ from the head $x$, the tail $\phi(\fstar)$, and the inductive hypothesis~$h(\fstar)$.
 
     Consequently, we can fully define the inductive step function $e_s$ by pattern matching on the label $a\colon\fun1+X$:
     \begin{align*}
-        e_s(\fun{inl}(\fstar), f, g) &\defeq e_{\fun{nil}}, \\
-        e_s(\fun{inr}(x), f, g) &\defeq e_{\fun{cons}}(x, f(\fstar), g(\fstar)).
+        e_s(\fun{inl}(\fstar),\phi,g)
+            &\defeq e_{\fun{nil}},\\
+        e_s(\fun{inr}(x),\phi,h)
+            &\defeq e_{\fun{cons}}
+                (x,\phi(\fstar),h(\fstar)).
     \end{align*}
-    It follows that the induction principle for lists is simply a specific instance of the induction principle for $\fun W$-types:
+    It follows that the induction principle for lists is an instance of the induction principle for $\fun W$-types:
     \[
-        \fun{ind}_{\fun{List}}(E, e_{\fun{nil}}, e_{\fun{cons}})
-           \defeq\fun{ind}_{\fun W}(E, e_s).
+        \fun{ind}_{\fun{List}}(
+            E,e_{\fun{nil}},e_{\fun{cons}}
+            )
+           \defeq\fun{ind}_{\fun W}(E,e_s).
     \]
 \end{xmpl}
 
 \begin{thm}\label{thm:W-type-induction-uniqueness}
-    Let $g,h\colon\prod_{w\colon\fun W_AB}E(w)$ be two functions which satisfy the recurrence
+    Let\/ $f,g\colon\prod_{w\colon\fun W_AB}E(w)$ be dependent functions that satisfy the computation rule~\eqref{eq:ind_W-computation-rule} associated with the recurrence~\eqref{eq:ind_W-step-function}
     \[
-        e\colon\prod_{a,f}\;
-        \Bigl(
-            \prod_{b\colon B(a)}E(f(b))
-        \Bigr)
-        \to E(\fun{sup}(a,f))
+        e\colon
+            \prod_{a\colon A}\;
+            \prod_{\phi\colon B(a)\to\fun W_AB}
+            \Bigl(
+                \prod_{b\colon B(a)}E(\phi(b))
+            \Bigr)
+            \to E(\fun{sup}(a,\phi))
     \]
-    propositionally, i.e., such that
+    up to propositional equality; that is, such that
     \begin{align*}
-        \prod_{a,f} g(\fun{sup}(a,f))
-            &\eq{E(\fun{sup}(a,f))}
-                e(a,f,\lambda b.\,g(f(b))),\\
-        \prod_{a,f} h(\fun{sup}(a,f))
-            &\eq{E(\fun{sup}(a,f))}
-                e(a,f,\lambda b.\,h(f(b))).
+        \prod_{a\colon A}\;
+            \prod_{\phi\colon B(a)\to\fun W_AB}
+                f(\fun{sup}(a,\phi))
+            &\eq{E(\fun{sup}(a,\phi))}
+                e(a,\phi,f\circ\phi),\\
+        \prod_{a\colon A}\;
+            \prod_{\phi\colon B(a)\to\fun W_AB}
+                g(\fun{sup}(a,\phi))
+            &\eq{E(\fun{sup}(a,\phi))}
+                e(a,\phi,g\circ\phi).
     \end{align*}
-    Then $g\sim h$.
+    Then\/ $f\sim g$.
 \end{thm}
 
 \begin{proof}
     Let $C\colon\fun W_AB\to\univ$ be the type family defined by
     \[
-        C(w)\defeq g(w)\eq{E(w)}h(w).
+        C(w)\defeq f(w)\eq{E(w)}g(w).
     \]
-    We must construct a witness for $\prod_{w\colon\fun W_AB}C(w)$. By the induction principle of $\fun W$-types, this reduces to defining a step function \eqref{eq:ind_W-step-function}
+    We must construct a witness for $\prod_{w\colon\fun W_AB}C(w)$.
+    
+    By the induction principle of $\fun W$-types, this reduces to defining a step function $c_s(a,\phi)$ as specified in~\eqref{eq:ind_W-step-function}:
     \[
-        c_s(a,f)\colon
-            (g\circ f\sim h\circ f)
+        c_s(a,\phi)\colon
+            (f\circ\phi\sim g\circ\phi)
             \to
                 \bigl(
-                    g(\fun{sup}(a,f))
-                    \eq{E(\fun{sup}(a,f))}
-                    h(\fun{sup}(a,f))
+                    f(\fun{sup}(a,\phi))
+                    \eq{E(\fun{sup}(a,\phi))}
+                    g(\fun{sup}(a,\phi))
                 \bigr)
     \]
-    for $a\colon A$ and $f\colon B(a)\to\fun W_AB$.
+    for $a\colon A$ and $\phi\colon B(a)\to\fun W_AB$.
 
-    Let $\theta\colon g\circ f\sim h\circ f$. Applying the action on paths of the function
+    Let $\eta\colon f\circ\phi\sim g\circ\phi$. Applying the action on paths of the function
     \[
-        e(a,f)\colon
+        e(a,\phi)\colon
             \Bigl(
-                \prod_{b\colon B(a)}E(f(b))
+                \prod_{b\colon B(a)}E(\phi(b))
             \Bigr)
-            \to E(\fun{sup}(a,f))
+            \to E(\fun{sup}(a,\phi))
     \]
     to the path
     \[
-        \fun{funext}(\theta)\colon
-            g\circ f
-            \eq{\prod_{b\colon B(a)}E(f(b))}
-            h\circ f
+        \fun{funext}(\eta)\colon
+            f\circ\phi
+            \eq{\prod_{b\colon B(a)}E(\phi(b))}
+            g\circ\phi
     \]
     yields
     \[
-        \fun{ap}_{e(a,f)}(\fun{funext}(\theta))
-            \colon e(a,f,g\circ f)
-            \eq{E(\fun{sup}(a,f))}
-            e(a,f,h\circ f).
+        \fun{ap}_{e(a,\phi)}(\fun{funext}(\eta))
+            \colon e(a,\phi,f\circ\phi)
+            \eq{E(\fun{sup}(a,\phi))}
+            e(a,\phi,g\circ\phi).
     \]
     By hypothesis, we also have paths
     \begin{align*}
-        u(a,f)&\colon g(\fun{sup}(a,f))
-        \eq{E(\fun{sup}(a,f))}
-        e(a,f,g\circ f)
+        u(a,\phi)&\colon f(\fun{sup}(a,\phi))
+        \eq{E(\fun{sup}(a,\phi))}
+        e(a,\phi,f\circ\phi)
     \intertext{and}
-        v(a,f)&\colon h(\fun{sup}(a,f))
-        \eq{E(\fun{sup}(a,f))}
-        e(a,f,h\circ f).
+        v(a,\phi)&\colon g(\fun{sup}(a,\phi))
+        \eq{E(\fun{sup}(a,\phi))}
+        e(a,\phi,g\circ\phi).
     \end{align*}
     Therefore, we can define the target path by concatenation:
     \[
-        c_s(a,f,\theta)\defeq u(a,f)
-            \ct\fun{ap}_{e(a,f)}(\fun{funext}(\theta))
-            \ct v(a,f)^{-1}.
+        c_s(a,\phi,\eta)\defeq u(a,\phi)
+            \ct\fun{ap}_{e(a,\phi)}(\fun{funext}(\eta))
+            \ct v(a,\phi)^{-1}.
     \]
 \end{proof}
 
@@ -795,10 +816,10 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{defns}
 
 \begin{lem}\label{lem:L_X-morphisms-are-morphisms}
-    Given $\fun L_X$-algebras $\mathcal{A}\defeq\dep{A,(a_{\fun{nil}}, a_{\fun{cons}})}$, $\mathcal{B}\defeq\dep{B,(b_{\fun{nil}},b_{\fun{cons}})}$, and $\mathcal{C}\defeq\dep{C,(c_{\fun{nil}}, c_{\fun{cons}})}$, the following hold:
+    Given $\fun L_X$-algebras $\mathcal{A}\defeq\dep{A,(a_{\fun{nil}}, a_{\fun{cons}})}$, $\mathcal{B}\defeq\dep{B,(b_{\fun{nil}},b_{\fun{cons}})}$, and $\mathcal{C}\defeq\dep{C,(c_{\fun{nil}}, c_{\fun{cons}})}$, the following properties hold:
     \begin{enumerate}[a),font=\upshape]
         \item The identity function $\id_A\colon A\to A$ is an $\fun L_X$-morphism from $\mathcal{A}$ to $\mathcal{A}$.
-        \item If $f\colon A\to B$ and $g\colon B\to C$ are $\fun L_X$-morphisms, then the composition $g\circ f\colon A\to C$ is an $\fun L_X$-morphism from $\mathcal{A}$ to $\mathcal{C}$.
+        \item If $f\colon A\to B$ and $g\colon B\to C$ are $\fun L_X$-morphisms, then $g\circ f\colon A\to C$ is an $\fun L_X$-morphism from $\mathcal{A}$ to $\mathcal{C}$.
         \item If $f\colon A\to B$ is an $\fun L_X$-morphism and $g\colon B\to A$ is a quasi-inverse of $f$, then the quasi-inverse $g$ is an $\fun L_X$-morphism from $\mathcal{B}$ to $\mathcal{A}$.
     \end{enumerate}
 \end{lem}
@@ -824,7 +845,9 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                 &\equiv c_{\fun{cons}}(x,(g\circ f)(a)).
         \end{align*}
         
-        \item We have homotopies $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$. We must show that $g$ preserves the algebra constructors. For the base case, we apply $\fun{ap}_g$ to the equality $f(a_{\fun{nil}})\eq Bb_{\fun{nil}}$ to obtain $g(f(a_{\fun{nil}}))\eq Ag(b_{\fun{nil}})$. By the homotopy $\vartheta$, we know $g(f(a_{\fun{nil}}))\eq Aa_{\fun{nil}}$. Transitivity of equality thus yields $g(b_{\fun{nil}})\eq Aa_{\fun{nil}}$.
+        \item There exist homotopies $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$. We must show that $g$ preserves the algebra constructors.
+        
+        For the base case, we apply $\fun{ap}_g$ to the equality $f(a_{\fun{nil}})\eq Bb_{\fun{nil}}$ to obtain $g(f(a_{\fun{nil}}))\eq Ag(b_{\fun{nil}})$. By the homotopy $\vartheta$, we know $g(f(a_{\fun{nil}}))\eq Aa_{\fun{nil}}$. Transitivity of equality thus yields $g(b_{\fun{nil}})\eq Aa_{\fun{nil}}$.
         
         For the inductive step, let $x\colon X$ and $b\colon B$. Since $f$ is an $\fun L_X$-morphism, we have $f(a_{\fun{cons}}(x,g(b)))\eq Bb_{\fun{cons}}(x, f(g(b)))$. The homotopy $\eta$ implies $f(g(b))\eq Bb$. Then substitution gives
         \[
@@ -912,6 +935,20 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \begin{rem}
     The notion of polynomial functor can be seen as a generalization of \eqref{eq:P(W)->W}. The polynomial aspect of $P(X)$ becomes clear when $B(a)\to X$ is written as $X^{B(a)}$.
 \end{rem}
+
+\begin{xmpl}\label{xmpl:P(L_A)}
+    As shown in Example~\ref{xmpl:List(X)-induction-from-W-induction}, $\fun L_A$ can be seen as $W_{\fun1+A}B$, where $B(\fun{inl}(\fstar))\equiv\fun0$ and $B(\fun{inr}(a))\equiv\fun1$. Thus, the associated polynomial functor is
+    \begin{align*}
+        P(X)&\defeq\sum_{u\colon\fun1+A}B(u)\to X\\
+            &\eq{\univ}(\fun0\to X)+\sum_{a\colon A}(\fun1\to X)\\
+            &\eq{\univ}\fun1+A\times X.
+    \end{align*}
+    In particular, the constructors $c_{\fun{nil}}$ and $c_{\fun{cons}}$ can be encoded in a single constructor
+    \[
+        \fun c\colon P(\fun L_A)\to\fun L_A,
+    \]
+    with $P(\fun L_A)$ replaced by $\fun1+A\times\fun L_A$, $\fun c(\fun{inl}(\fstar))\defeq\fun{nil}$, and $\fun c(\fun{inr}(a,\ell))\defeq\fun{cons}(a,\ell)$.
+\end{xmpl}
 
 \begin{defn} 
     The type of \textsl{$\fun W$-algebras} is
@@ -1070,7 +1107,9 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                         "{\scriptstyle s_e(a,\phi)}",
                         phantom]
                 &g(s_D(a,\phi))
-                    \arrow[d,gray,"{\eta_g(a,\phi)}"]\\
+                    \arrow[d,
+                        bend left=50,
+                        gray,"{\eta_g(a,\phi)}"]\\
             s_C(a,f\circ\phi)
                     \arrow[r,
                         "{\fun{ap}_{s_C(a,\dummy)}
@@ -1079,7 +1118,6 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                         swap]
                 &s_C(a,g\circ\phi)
                     \arrow[u,
-                        bend left=50,
                         "{\eta_g(a,\phi)^{-1}}"]
         \end{tikzcd}
     \]
@@ -1104,7 +1142,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \prod_{\phi\colon B(a)\to D}
                 L_{a,\phi}(h)\eq CR_{a,\phi}(h).
     \]
-    According to \eqref{eq:structure-coherence}, we have $\eta_f\colon E(f)$ and $\eta_g\colon E(g)$, and the transport condition mentioned above translates to
+    According to \eqref{eq:structure-coherence}, we have $\eta_f\colon E(f)$ and $\eta_g\colon E(g)$, and the transport condition mentioned above translates into
     \[
         \fun{transport}^E(p,\eta_f)\eq{}\eta_g.
     \]
@@ -1152,7 +1190,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \[
         e(s_D(a,\phi))^{-1} \ct \eta_f(a,\phi) \ct \fun{ap}_{s_C(a,\dummy)}(\fun{funext}(e\rwct\phi)) \eq{} \eta_g(a,\phi).
     \]
-    Concatenating on the left by $e(s_D(a,\phi))$ and on the right by $\eta_g(a,\phi)^{-1}$ isolates $e(s_D(a,\phi))$, yielding the required coherence condition:
+    Isolating $e(s_D(a,\phi))$ yields the required coherence condition:
     \[
         e(s_D(a,\phi))
         \eq{}
@@ -1254,8 +1292,74 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     
 \end{proof}
 
+\section{General Recursion}
 
-\section{Homotopy-Inductive Types}
+Historically, the recursion principles for inductive types were formulated using syntactic text-replacement schemas. While intuitive for simple types, these schemas proved logically inconsistent when extended to operations with negative occurrences. Modern type theory resolves this by grounding recursion in the categorical semantics of endofunctors. In this section we provide both definitions.
+
+\begin{defn}\label{defn:mixed-variance-domain}
+    Given an arbitrary type-level operation $\Phi\colon\univ\to\univ$, the \textsl{step-function domain} $\Phi'(X,P)$ is defined by structural induction on $\Phi$:
+    \begin{enumerate}[a),font=\upshape]
+        \item Constants and parameter types remain unchanged.
+        \item Negative occurrences of $X$ remain $X$.
+        \item Strictly positive occurrences of $X$ are replaced by $P$.
+    \end{enumerate}
+    When $\Phi$ is strictly positive everywhere, $\Phi'(X,P)\equiv\Phi(P)$.
+\end{defn}
+
+\begin{defn}\label{defn:syntactic-recursion}
+    Let $\Phi\colon\univ\to\univ$ be an arbitrary type-level operation representing the signature of a constructor. The \textsl{syntactic recursion schema} for a type $X$ with constructor $\fun c\colon\Phi(X)\to X$ postulates a recursor
+    \[
+        \fun{rec}^{\text{syn}}_X\colon
+            \prod_{P\colon\univ}
+                \bigl(
+                    \Phi(X)\to\Phi'(X,P)\to P
+                \bigr)
+                \to X\to P,
+    \]
+    with computation rule
+    \begin{equation}\label{eq:syntactic-computation-rule}
+        f(\fun c(x))\equiv s
+            \bigl(
+                x,
+                \fun{map}_\Phi(f)(x)
+            \bigr)
+    \end{equation}
+    for all $x\colon\Phi(X)$.
+\end{defn}
+
+\begin{rem}
+    The syntactic schema operates by blind textual substitution. For strictly positive types with constant parameters, it forces the step function to accept redundant copies of the non-recursive data. More critically, as we will see in the exercises, if $X$ occurs negatively in $\Phi(X)$, the substitution $\Phi'(X,P)$ generates a spurious inductive hypothesis that leads to contradictions.
+\end{rem}
+
+\begin{defn}\label{defn:categorical-recursion}
+    Let $\Phi$ be a strictly positive type-level operation and let $\Phi'(X,P)$ denote its associated step-function domain. The \textsl{categorical recursion principle} for a type $X$ recursively defined by $\fun c\colon\Phi(X)\to X$ postulates a recursor
+    \[
+        \fun{rec}_X\colon
+            \prod_{P\colon\univ}
+                \bigl(
+                    \Phi'(X,X\times P)\to P
+                \bigr)
+                \to X\to P.
+    \]
+    For any target type $P$ and step function $s\colon\Phi'(X,X\times P)\to P$, the function $f\defeq\fun{rec}_X(P,s)$ satisfies the computation rule
+    \begin{equation}\label{eq:categorical-computation-rule}
+        f(\fun c(u))\equiv s
+            \bigl(
+                \fun{map}_\Phi
+                    (\lambda x.\,(x,f(x)))(u)
+            \bigr)
+    \end{equation}
+    for all $u\colon\Phi(X)$, where $\fun{map}_\Phi$ denotes the functorial action of $\Phi$. This computation rule is well-typed because:
+    \begin{enumerate}[1.,font=\small]
+        \item $\fun c\colon\Phi(X)\to X$, which forces $u\colon\Phi(X)$,
+        \item $f\colon X\to P$,
+        \item $g\defeq\lambda x.\,(x,f(x))\colon X\to X\times P$,
+        \item $\fun{map}_\Phi(g)\colon\Phi(X)\to\Phi(X\times P)$,
+        \item the strict positivity of $\Phi$ guarantees that $\Phi'(X,X\times P)\equiv\Phi(X\times P)$.
+    \end{enumerate}
+\end{defn}
+
+\section{Homotopy-Inductive Types}\label{homotopy-inductive-types}
 
 Let us get back to the alternative definition $\N'$ of the natural numbers given in Example~\ref{xmpl:W-tree-for-N}, namely
 \begin{itemize}
@@ -1319,7 +1423,7 @@ This codomain is definitionally equal to $E(\fun{sup}(1_{\fun2},\phi))$. Since t
     e_s(1_{\fun2},\phi,h)\defeq e_{\fun{succ}'}
         (\phi(\fstar),h(\fstar)).
 \end{equation}
-Substituting this definition into the $\fun W$-type computation rule for $\fun{succ}'(n)$[cite: 1], we obtain
+Substituting this definition into the $\fun W$-type computation rule for $\fun{succ}'(n)$, we obtain
 \begin{align*}
     \fun{ind}_{\fun W}(E,e_s)(\fun{succ}'(n))
         &\equiv
@@ -1511,7 +1615,7 @@ which is impossible in the type $\fun2$ [cf.~Exercise~\ref{exr:2-simeq-2-simeq-2
     Clauses c) and d) require $X\notin\mathcal F(A)$ to prevent~$X$ from appearing anywhere inside the domain $A$, while recursively checking $\fun{Pos}_X(B(y))$ to allow $X$ to occur strictly positively in the codomain.
 \end{rem}
 
-\begin{thm}
+\begin{thm}\label{thm:Phi-functoriality}
     Let $X$ be a type variable and let $\Phi(X)$ be a type expression such that $\fun{Pos}_X(\Phi(X))$ holds. Given any two types $U$ and $V$, and a function $f\colon U\to V$, there exists a canonically defined function
     \[
         \fun{map}_\Phi(f)\colon \Phi(U)\to \Phi(V).
@@ -2965,19 +3069,19 @@ More generally, while the inductive definition of the identity family provides t
 \end{proof}
 
 \begin{cor} {\upshape[Homotopy induction]}
-    Given 
+    Let $\Pi_AB\defeq\prod_{a\colon A}B(a)$. Given 
     \[
-        D\colon\prod_{f,g\colon\prod_{a\colon A}B(a)}(f\sim g)\to\univ
+        D\colon\prod_{f,g\colon\Pi_AB}(f\sim g)\to\univ
     \]
     and
     \[
-        d\colon\prod_{f\colon\prod_{a\colon A}B(a)}
+        d\colon\prod_{f\colon\Pi_AB}
             D(f,f,\lambda x.\,\fun{refl}_{f(x)}),
     \]
     there exists
     \[
         k\colon
-            \prod_{f,g\colon\prod_{a\colon A}B(a)}\;
+            \prod_{f,g\colon\Pi_AB}\;
             \prod_{h\colon f\sim g}
                 D(f,g,h)
     \]
@@ -2989,7 +3093,7 @@ More generally, while the inductive definition of the identity family provides t
 \end{cor}
 
 \begin{proof}
-    Let $\Pi_AB\defeq\prod_{a\colon A}B(a)$. Define
+    Define
     \[
         R(f,g)\defeq f\sim g
         \quad\text{and}\quad
@@ -3281,7 +3385,7 @@ More generally, while the inductive definition of the identity family provides t
 \end{solution}
 
 \begin{exr}
-    Show that if we assume simple instead of dependent elimination for\/ $\fun W$-types, the uniqueness property, analogue of\/ {\upshape Theorem~\ref{thm:W-type-induction-uniqueness}}, fails to hold. That is, exhibit a type satisfying the recursion principle of a\/ $\fun W$-type, but for which functions are not determined uniquely by their recurrence.
+    Show that if we assume simple instead of dependent elimination for\/ $\fun W$-types, the uniqueness property (the analogue of {\upshape Theorem~\ref{thm:W-type-induction-uniqueness}}) fails to hold. That is, exhibit a type satisfying the recursion principle of a\/ $\fun W$-type, but for which functions are not determined uniquely by their recurrence.
 \end{exr}
 
 \begin{solution}
@@ -3290,18 +3394,368 @@ More generally, while the inductive definition of the identity family provides t
         \fun{sup}\colon\prod_{a\colon A}
             (B(a)\to W)\to W,
     \]
-    along with a target type $C$ and a step function
+    that satisfies the simple recursion principle. That is, for any target type $C$ and step function
     \[
         s_C\colon\prod_{a\colon A}(B(a)\to C)\to C,
     \]
-    such that there are two propositionally distinct maps $\phi,\psi\colon W\to C$ satisfying
+    there must exist a map $f\colon W\to C$ satisfying the computation rule
+    \[
+        f(\fun{sup}(a,\phi))
+            \equiv s_C(a,f\circ\phi)
+    \]
+    for all $a\colon A$ and $\phi\colon B(a)\to W$.
+
+    To show that the uniqueness property fails, we must exhibit a specific target type $C$ and a specific step function $s_C$ for which there exists a second, propositionally distinct map $g\colon W\to C$ that also satisfies the computation rule
+    \[
+        g(\fun{sup}(a,\phi))
+            \equiv s_C(a,g\circ\phi).
+    \]
+    Suppose that $B(a)\equiv\fun0$ for all $a\colon A$. Then, $\fun{sup}$ reduces to a map $u\colon A\to W$ and, similarly, $s_C$ reduces to a map $s_C\colon A\to C$. Thus, the computation rules become
     \begin{align*}
-        \phi(\fun{sup}(a,h))
-            &\equiv s_C(a,\phi\circ h),\\
-        \psi(\fun{sup}(a,h))
-            &\equiv s_C(a,\psi\circ h)
+        f\circ u&\equiv s_C,\\
+        g\circ u&\equiv s_C.
     \end{align*}
-    for all $a\colon A$ and $h\colon B(a)\to W$.
+    Hence, $f\circ u\equiv g\circ u$. However, this does not suffice to imply in general that $f\eq{W\to C}g$.
+    
+    For instance, consider the case where
+    \[
+        A\equiv\fun1,
+        \quad W\defeq\fun1+\fun1,
+        \quad\text{and}\quad
+        u\defeq\fun{inl}.
+    \]
+    Given any target type $C$ and step function $s_C\colon\fun1\to C$, the constant map $f(w)\defeq s_C(\fstar)$ satisfies the recursion principle. However, if we choose a target type $C$ that contains an element $c\colon C$ propositionally distinct from $s_C(\fstar)$, we can define a second map $g\colon W\to C$ by
+    \[
+        g(\fun{inl}(\fstar))\defeq s_C(\fstar),
+        \quad g(\fun{inr}(\fstar))\defeq c.
+    \]
+    Both $f$ and $g$ satisfy the computation rule, but they are not propositionally equal.
     %
     
 \end{solution}
+
+\begin{exr}
+    Suppose there is a type\/ $C$ ``inductively defined'' by the single constructor
+    \[
+        \fun c\colon(C\to\fun0)\to C.
+    \]
+    By\/ {\upshape Definition~\ref{defn:syntactic-recursion}}, the recursion principle for this type states that for any target type\/ $P$, to define a function\/ $f\colon C\to P$, it suffices to provide a step function
+    \[
+        s\colon(C\to\fun0)\to(P\to\fun0)\to P.
+    \]
+    More precisely, assume we are given the recursor
+    \[
+        \fun{rec}_C\colon
+            \prod_{P\colon\univ}
+                \bigl(
+                    (C\to\fun0)\to(P\to\fun0)\to P
+                \bigr)
+                \to C\to P.
+    \]
+    Show that even without assuming any computation rules\footnote{See equation \eqref{eq:syntactic-computation-rule}.} for\/ $\fun{rec}_C$, the existence of this recursion principle is inconsistent; that is, it implies that\/ $\fun0$ is inhabited.
+\end{exr}
+
+\begin{solution}
+    Take $P\defeq C\to\fun0$. We can define the step function $s$ by
+    \begin{align*}
+        s\colon(C\to\fun0)\to((C\to\fun0)\to\fun0)
+            &\to C\to\fun0\\
+        (h,\phi)&\mapsto(c\mapsto\phi(h)).
+    \end{align*}
+    This is well-typed because, given $h\colon C\to\fun0$ and $\phi\colon(C\to\fun0)\to\fun0$, we obtain $\phi(h)\colon\fun0$.
+
+    Assuming the existence of $\fun{rec}_C$, we obtain the map
+    \[
+        \fun{rec}_C(C\to\fun0,s)
+            \colon C\to(C\to\fun0),
+    \]
+    which, for every $c\colon C$, produces an inhabitant $\fun{rec}_C(C\to\fun0,s)(c)(c)\colon\fun0$.
+    %
+    
+\end{solution}
+
+\begin{exr}
+    Suppose we have a type\/ $D$ that is ``inductively defined'' by a single constructor
+    \[
+        \fun{scott}\colon(D\to D)\to D.
+    \]
+    According to\/ {\upshape Definition~\ref{defn:categorical-recursion}}, this recursor must be described by means of the type operator
+    \[
+        \Phi(X)\defeq D\to X.
+    \]
+    Consequently, to define a function\/ $f\colon D\to P$ by recursion, we must provide a step function\/~$s$ and apply the recursor
+    \[
+        \fun{rec}_D\colon
+            \prod_{P\colon\univ}
+                \bigl(
+                    (D\to D)\to(D\to P)\to P
+                \bigr)
+                \to D\to P,
+    \]
+    subject to the computation rule
+    \[
+        \fun{rec}_D(P,s,\fun{scott}(\alpha))
+            \equiv s(
+                \alpha,
+                \lambda d.\,\fun{rec}_D(P,s,\alpha(d))
+                )
+    \]
+    for any\/ $\alpha\colon D\to D$.
+    
+    Show that this recursion principle is inconsistent; that is, it yields an inhabitant of the empty type\/ $\fun0$.
+\end{exr}
+
+\begin{solution}
+    Set $P\defeq D\to\fun0$. We can define the step function
+    \begin{align*}
+        s\colon(D\to D)\to(D\to D\to\fun0)
+            &\to D\to\fun0\\
+        (\alpha,\phi)
+            &\mapsto\lambda d.\,\phi(d)(\alpha(d))
+    \end{align*}
+    and obtain a recursive function $f\colon D\to D\to\fun0$.
+    
+    In particular, setting $\alpha\defeq\id_D$ and $d_0\defeq\fun{scott}(\id_D)\colon D$, we obtain
+    \[
+        f(d_0)\colon D\to\fun0
+        \quad\text{and}\quad
+        f(d_0)(d_0)\colon\fun0,
+    \]
+    as desired.
+
+    {\small
+    \textbf{Note.} Even though it is not used in the solution above, it is worth instantiating the computation rule \eqref{eq:syntactic-computation-rule} in this case:
+    \begin{align*}
+        \fun{rec}_D(P,s,\fun{scott}(\alpha))
+            &\equiv s
+                \bigl(
+                    \alpha,
+                    \fun{map}_\Phi(\fun{rec}_D(P,s))(\alpha)
+                \bigr)\\
+            &\equiv s
+                \bigl(
+                    \alpha,
+                    \fun{rec}_D(P,s)\circ\alpha
+                \bigr)\\
+            &\equiv s
+                \bigl(
+                    \alpha,
+                    \lambda d.\,
+                        \fun{rec}_D(P,s,\alpha(d))
+                \bigr),
+    \end{align*}
+    because the functorial action is given by post-composition:
+    \[
+        \fun{map}_\Phi(\fun{rec}_D(P,s))(\alpha)
+            \equiv\fun{rec}_D(P,s)\circ\alpha.
+    \]
+    }
+\end{solution}
+
+\begin{exr}\label{exr:lawvere-fixed-point}
+    Let\/ $A$ be an arbitrary type and consider generally an ``inductive definition'' of a type\/ $L_A$ with constructor
+    \[
+        \fun{lawvere}\colon(L_A\to A)\to L_A.
+    \]
+    Following\/ {\upshape Definition~\ref{defn:categorical-recursion}}, to define a function\/ $f\colon L_A\to P$ by recursion, we must provide a step function\/ $s$ and apply the recursor
+    \[
+        \fun{rec}_{L_A}(P)\colon
+            ((L_A\to A)\to P)\to L_A\to P,
+    \]
+    subject to the judgmental computation rule
+    \[
+        \fun{rec}_{L_A}(P,s,\fun{lawvere}(\alpha))
+            \equiv s(\alpha)
+    \]
+    for any\/ $\alpha\colon L_A\to A$.
+
+    Using this, show that\/ $A$ has the fixed-point property, i.e., for every function\/ $f\colon A\to A$ there exists an\/ $a\colon A$ such that\/ $f(a)\eq Aa$. In particular,\/ $L_A$ is inconsistent if\/ $A$ is a type without the fixed-point property, such as\/ $\fun0$, $\fun2$, or\/~$\N$.
+
+    {\upshape Hint: Set $P\defeq A$.}
+\end{exr}
+
+\begin{solution}
+    In this case, the variable $L_A$ does not occur in any strictly positive position within the operator $\Phi(X)\defeq X\to A$. Consequently, the type $\Phi'(L_A,L_A\times P)$ evaluates simply to $L_A\to A$, which is identical to $\Phi(L_A)$. This allows us to shorten the step function signature, as established in the following
+
+    \medskip
+
+    \textbf{Lemma.} {\itshape
+    Let $\Phi\colon\univ\to\univ$ be a type-level operation representing the signature of a constructor $\fun c\colon\Phi(X)\to X$, such that there are no strictly positive occurrences of $X$ in the expression defining $\Phi(X)$. Under the convention of\/ {\upshape Definition~\ref{defn:categorical-recursion}}, the general computation rule for the recursor reduces to
+    \[
+        \fun{rec}_X(P,s,\fun c(x))\equiv s(x,x)
+    \]
+    for all $x\colon\Phi(X)$. Consequently, the step function signature can be shortened to
+    \[
+        s\colon\Phi(X)\to P,
+    \]
+    which transforms the computation rule to
+    \[
+        \fun{rec}_X(P,s,\fun c(u))\equiv s(u).
+    \]
+    }
+
+    \textsc{Proof.}
+    By Definition~\ref{defn:mixed-variance-domain}, all occurrences of $X$ are in negative positions and therefore fixed as parameter types. Hence, $\Phi'(X,X\times P)\equiv\Phi(X)$.
+
+    Consequently, the functorial action $\fun{map}_\Phi(f)\colon\Phi(X)\to\Phi(X\times P)$ acts trivially as the identity function:
+    \[
+        \fun{map}_\Phi(f)
+            \equiv\fun{map}_\Phi(\id_X)
+            \equiv\id_{\Phi(X)}.
+    \]
+    By \eqref{eq:categorical-computation-rule}, the general computation rule for the recursor yields the equation
+    \[
+        f(\fun c(u))
+            \equiv s
+            \bigl(
+                \fun{map}_\Phi
+                    (\lambda x.\,(x,f(x)))(u)
+            \bigr)
+            \equiv s(u).
+    \]
+    \localqed
+
+    \medskip
+
+    The goal of the exercise is to construct an inhabitant of the type
+    \[
+        \prod_{f\colon A\to A}\;
+        \sum_{a\colon A}
+            f(a)\eq Aa.
+    \]
+    Fix $f\colon A\to A$ and set $P\defeq A$. We can define
+    \begin{align*}
+        s_f\colon(L_A\to A)&\to A\\
+        \alpha&\mapsto f\circ\alpha(\fun{lawvere}(\alpha)).
+    \end{align*}
+    By recursion we obtain
+    \[
+        \fun{rec}_{L_A}(P)\colon(L_A\to A)\to A
+            \to L_A\to A,
+    \]
+    satisfying the computation rule
+    \[
+        \fun{rec}_{L_A}(
+                A,
+                s_f,
+                \fun{lawvere}(\alpha)
+            )
+            \equiv f\circ\alpha(\fun{lawvere}(\alpha)).
+    \]
+    Let $u\defeq\fun{lawvere}(\alpha)\colon L_A$. Then,
+    \begin{align*}
+        \fun{rec}_{L_A}(A,s_f,u)
+            &\equiv f(\alpha(u))
+    \end{align*}.
+    In particular, setting $\alpha\defeq\fun{rec}_{L_A}(A,s_f)$, we obtain:
+    \[
+        \alpha(u)\equiv f(\alpha(u)),
+    \]
+    which proves that $a\defeq\alpha(u)$ is a \textit{judgmental} fixed point of $f$.
+
+    {\small
+    \textbf{Note.} Had the computation rule been propositional instead, the fixed point of~$f$ would have been propositional as well. This is key because we cannot define a type $L_A$ whose computation rule is strictly judgmental. To see this, consider the case $L_A\equiv A\defeq\fun1$ with $\fun{lawvere}(\alpha)\defeq\star$, which is studied in the next exercise.}
+
+\end{solution}
+
+\begin{exr}
+    Continuing from\/ {\upshape Exercise~\ref{exr:lawvere-fixed-point}}, consider\/ $L_{\fun1}$, which is not obviously inconsistent since\/ $\fun 1$ does have the fixed-point property. Formulate an induction principle for\/ $L_{\fun1}$ and its computation rule, analogously to its recursor, and using this, prove that it is contractible.
+\end{exr}
+
+\begin{solution}
+    The corresponding induction principle would establish the existence of a map
+    \[
+        \fun{ind}_{L_{\fun1}}\colon
+            \prod_{B\colon L_{\fun1}\to\univ}
+                \Bigl(
+                    \prod_{
+                        \alpha\colon L_{\fun1}\to\fun1
+                        }B(\fun{lawvere}(\alpha))
+                \Bigr)
+                \to\prod_{u\colon L_{\fun1}}B(u)
+    \]
+    along with the computation rule
+    \[
+        \fun{ind}_{L_{\fun1}}(B,s,\fun{lawvere}(\alpha))
+            \equiv s(\alpha),
+    \]
+    for all
+    \[
+        s\colon\prod_{\alpha\colon L_{\fun1}\to\fun1}
+            B(\fun{lawvere}(\alpha)).
+    \]
+    First, let us observe that the constant function $\alpha_\fstar\defeq\lambda u.\,\fstar$ inhabits $L_{\fun1}\to\fun1$. Therefore, $L_{\fun1}$ is inhabited by $u_0\defeq\fun{lawvere}(\alpha_\fstar)$. Thus, the contractibility of $L_{\fun1}$ reduces to showing that, for every $u\colon L_{\fun1}$, we can construct a path $p\colon u_0\eq{L_{\fun1}}u$.
+
+    By defining $B\defeq\lambda u.\,u_0\eq{L_{\fun1}}u$, our goal reduces to specifying an inhabitant of
+    \[
+        \prod_{\alpha\colon
+            L_{\fun1}\to\fun1}u_0
+            \eq{L_{\fun1}}
+            \fun{lawvere}(\alpha).
+    \]
+    By the action on paths $\fun{ap}_\fun{lawvere}$, the goal reduces to
+    \[
+        \prod_{\alpha\colon L_{\fun1}\to\fun1}
+            \alpha_\fstar
+            \eq{L_{\fun1}\to\fun1}
+            \alpha,
+    \]
+    which follows from function extensionality because the codomain $\fun1$ is contractible.
+\end{solution}
+
+\begin{exr}
+    In\/ {\S\,\ref{intuition-for-uniqueness}} we defined the type\/ $\fun{List}(A)$ of finite lists of elements of type\/ $A$. Consider a similar inductive definition of a type\/ $\fun{Lost}(A)$ whose only constructor is
+    \[
+        \fun{cons}\colon A
+            \to\fun{Lost}(A)
+            \to\fun{Lost}(A).
+    \]
+    Show that\/ $\fun{Lost}(A)$ is equivalent to\/ $\fun0$.
+\end{exr}
+
+\begin{solution}
+    To deduce $\Phi$ from the signature of $\fun{cons}$, we need to match it with a map
+    \[
+        \Phi(\fun{Lost}(A))\to\fun{Lost}(A).
+    \]
+    Since $\fun{cons}$ can be uncurried as 
+    \[
+        \fun{cons}\colon
+            A\times\fun{Lost}(A)\to\fun{Lost}(A),
+    \]
+    we deduce that $\Phi(X)\defeq A\times X$.
+    
+    According to Definition~\ref{defn:categorical-recursion}, to recursively define a map $f\colon\fun{Lost}(A)\to P$, it suffices to specify a step function $s\colon\Phi(\fun{Lost}(A)\times P)\to P$. Substituting our functor, this requires
+    \[
+        s\colon A\times(\fun{Lost}(A)\times P)\to P,
+    \]
+    which, by currying, is equivalent to
+    \[
+        s\colon A\to\fun{Lost}(A)\to P\to P.
+    \]
+    In the particular case where $P\defeq\fun0$, we have
+    \begin{align*}
+        s&\colon A\to\fun{Lost}(A)\to\fun0\to\fun0\\
+        s&\defeq
+            \lambda a.\,
+            \lambda\ell.\,
+            \lambda z.\,z.
+    \end{align*}
+    Consequently, we obtain a recursively defined map $f\colon\fun{Lost}(A)\to\fun0$, which proves that $\fun{Lost}(A)$ is equivalent to $\fun0$.
+\end{solution}
+
+\begin{exr}
+    Let\/ $A$ be a mere proposition, and let\/ $B\colon A\to\univ$ be a type family.
+    \begin{enumerate}[a),font=\upshape]
+        \item Show that\/ $\fun W_AB$ is a mere proposition.
+        \item Show that\/ $\fun W_AB$ is equivalent to\/ $\sum_{a\colon A}\neg B(a)$.
+        \item Without using\/ $\fun W_AB$, show that\/ $\sum_{a\colon A}\neg B(a)$ is a homotopy\/ $\fun W$-type\/ $\fun W^h_AB$ in the sense of~{\S\,\ref{homotopy-inductive-types}}.
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}
+    \begin{enumerate}[a)]
+        \item 
+    \end{enumerate}
+\end{solution}
+
