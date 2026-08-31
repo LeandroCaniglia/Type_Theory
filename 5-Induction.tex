@@ -585,7 +585,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \bigl(
                 B(a)\to\fun W_AB
             \bigr)
-                \to\fun W_AB.
+            \to\fun W_AB.
     \end{equation}
     
     \textsc{Elimination:} To construct a dependent function over the $\fun W$-type, we use its induction principle. Given a motive $E\colon\fun W_AB\to\univ$, we must provide an inductive step function $e_s$ that constructs a term in $E(\fun{sup}(a,\phi))$ assuming we already have terms in $E(\phi(b))$ for all $b\colon B(a)$. The required signature for $e_s$ is
@@ -602,9 +602,10 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \colon\prod_{w\colon\fun W_AB}E(w).
     \end{equation}
     As a special case, suppose that the motive is a constant type family $E(w)\defeq C$ and that we are given a map
-    \[
-        s_C\colon\prod_{a\colon A}(B(a)\to C)\to C.
-    \]
+    \begin{equation}\label{eq:W-type-step-function}
+        s_C\colon\prod_{a\colon A}
+            (B(a)\to\fun W_AB)\to(B(a)\to C)\to C.
+    \end{equation}
     We claim that, in this case, the induction principle reduces to the non-dependent \textsl{recursor}
     \begin{equation}\label{eq:rec_W}
         \fun{rec}_{\fun W}(C, s_C)
@@ -614,29 +615,18 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \begin{align*}
             \prod_{\phi\colon B(a)\to\fun W_AB}\,
             \Bigl(\prod_{b\colon B(a)}E(\phi(b))\Bigr)
-            \to E(\fun{sup}(a,\phi))
+            &\to E(\fun{sup}(a,\phi))\\
         &\equiv
             \prod_{\phi\colon B(a)\to \fun W_AB}\,
             \Bigl(\prod_{b\colon B(a)}C\Bigr)
             \to C\\
         &\equiv
-            \prod_{\phi\colon B(a)\to\fun W_AB}
-            \!\!\!(B(a)\to C)\to C.
+            (B(a)\to\fun W_AB)\to(B(a)\to C)\to C.
     \end{align*}
-    To provide an inductive step function
-    \[
-        e_s\colon\prod_{a\colon A}\;
-        \prod_{\phi\colon B(a)\to\fun W_AB}
-        (B(a)\to C)\to C,
-    \]
-    we can define
-    \[
-        e_s(a,\phi,h)\defeq s_C(a,h)
-    \]
-    and obtain
+    Hence,
     \[
         \fun{rec}_{\fun W}(C,s_C)
-            \defeq\fun{ind}_{\fun W}(C,e_s).
+            \defeq\fun{ind}_{\fun W}(C,s_C).
     \]
 
     \textsc{Computation:} The eliminators compute by evaluating the step function on the components of the $\fun{sup}$ constructor. For the induction principle, the computation rule is the definitional equality
@@ -648,7 +638,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     Accordingly, the computation rule for the recursor is
     \begin{equation}\label{eq:rec_W-computation-rule}
         \fun{rec}_{\fun W}(C,s_C)(\fun{sup}(a,\phi))
-            \equiv s_C(a,\fun{rec}_{\fun W}
+            \equiv s_C(a,\phi,\fun{rec}_{\fun W}
                 (C,s_C)\circ\phi).
     \end{equation}
 \end{defn}
@@ -775,6 +765,110 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         c_s(a,\phi,\eta)\defeq u(a,\phi)
             \ct\fun{ap}_{e(a,\phi)}(\fun{funext}(\eta))
             \ct v(a,\phi)^{-1}.
+    \]
+\end{proof}
+
+\begin{thm}\label{thm:W-mere-proposition}
+        Let\/ $A\colon\univ$ be a type and\/ $B\colon A\to\univ$ a type family. If $A$ is a mere proposition then\/ $\fun W_AB$ is a mere proposition as well.
+\end{thm}
+
+\begin{proof}
+    Define $E\colon\fun W\to\univ$ by
+    \[
+        E(w)\defeq\prod_{w'\colon\fun W}
+            w\eq{\fun W}w'.
+    \]
+    By the induction principle, it suffices to specify a map in conformance with \eqref{eq:ind_W-step-function}, namely
+    \[
+        e_s\colon
+            \prod_{a\colon A}\,
+            \prod_{\phi\colon B(a)\to\fun W}
+                \Bigl(
+                    \prod_{b\colon B(a)}
+                        E(\phi(b))
+                \Bigr)
+                \to
+                E(\fun{sup}(a,\phi)),
+    \]
+    where
+    \[
+        \fun{sup}\colon
+            \prod_{a\colon A}\;
+            \bigl(
+                B(a)\to\fun W
+            \bigr)
+            \to\fun W.
+    \]
+    By the definition of $E$, this judgmentally translates into
+    \[
+        e_s\colon
+            \prod_{a\colon A}\,
+            \prod_{\phi\colon B(a)\to\fun W}
+                \Bigl(
+                    \prod_{b\colon B(a)}\,
+                    \prod_{w\colon\fun W}
+                        \phi(b)\eq{\fun W}w
+                \Bigr)
+                \to
+                \prod_{w\colon\fun W}
+                    \fun{sup}(a,\phi)\eq{\fun W}w.
+    \]
+    To define $e_s$, let us fix $a$ and $\phi$. Given an inductive term
+    \[
+        h\colon
+            \prod_{b\colon B(a)}\,
+            \prod_{w\colon\fun W}\phi(b)\eq{\fun W}w,
+    \]
+    we will map it to a dependent function of type
+    \[
+        \prod_{w\colon\fun W}
+            \fun{sup}(a,\phi)\eq{\fun W}w.
+    \]
+    Using the induction principle for the motive $D(w)\defeq\fun{sup}(a,\phi)\eq{\fun W}w$, our goal reduces to defining
+    \[
+        d_s\colon
+            \prod_{x\colon A}\;
+            \prod_{\psi\colon B(x)\to\fun W}
+            \Bigl(
+                \prod_{y\colon B(x)}
+                    \fun{sup}(a,\phi)
+                    \eq{\fun W}
+                    \psi(y)
+            \Bigr)
+            \to
+                \fun{sup}(a,\phi)
+                \eq{\fun W}
+                \fun{sup}(x,\psi).
+    \]
+    Fix $x\colon A$ and $\psi\colon B(x)\to\fun W$. The inner inductive term is now a dependent map
+    \[
+        g\colon\prod_{y\colon B(x)}
+            \fun{sup}(a,\phi)\eq{\fun W}\psi(y).
+    \]
+    By hypothesis, since $A$ is a mere proposition, there exists a path $p\colon a\eq{A}x$. This path induces a backwards transport map
+    \[
+        f\defeq\fun{transport}^B(p^{-1})\colon B(x)\to B(a).
+    \]
+    Combining this map with $h$, we obtain
+    \[
+        h(f(y),\psi(y))\colon
+            \phi(f(y))\eq{\fun W}\psi(y)
+    \]
+    for all $y\colon B(x)$. By Lemma~\ref{lem:transport-is-precomp} $\fun{transport}^{\lambda z,\,B(z)\to\fun W}(p,\phi)\equiv\phi\circ f$. Thus, we obtain a homotopy $\eta\colon\fun{transport}^{\lambda z.\,B(z)\to\fun W}(p,\phi)\sim\psi$. Then, function extensionality yields
+    \[
+        \fun{funext}(\eta)\colon
+            \fun{transport}^{\lambda z.\,B(z)\to\fun W}(p,\phi)\eq{B(x)\to\fun W}\psi.
+    \]
+    By the characterization of equality in dependent pairs, we construct
+    \[
+        \fun{pair}^=(p,\fun{funext}(\eta))\colon
+            \dep{a,\phi}
+            \eq{\sum_{z\colon A}B(z)\to\fun W}
+            \dep{x,\psi}.
+    \]
+    By Remark~\ref{rem:rec(sup)-is-P(W)->W}, the action on paths $\fun{ap}_{\fun{sup}}$ transforms this equality into the desired path
+    \[
+        \fun{sup}(a,\phi)\eq{\fun W}\fun{sup}(x,\psi).
     \]
 \end{proof}
 
@@ -1024,37 +1118,201 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \end{enumerate}
 \end{defns}
 
-\begin{defn}
-    For a $\fun W$-type $\fun W\defeq\fun W_{x\colon A}B(x)$, the \textsl{recursor} is the function
+\begin{lem}\label{lem:long-and-short-recursion}
+    Recursion based on the long step function
     \[
-        \fun{rec}_{\fun W}\colon
-            \prod_{C\colon\univ}\;
-            \Bigl(
-                \prod_{a\colon A}(B(a)\to C)\to C
-            \Bigr)
-            \to\fun W\to C.
+        s_C\colon\prod_{a\colon A}
+            (B(a)\to\fun W)\to(B(a)\to C)\to C
     \]
-    For any type $C\colon\univ$ and structure map $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$, the recursion map $\fun{rec}_{\fun W}(C, s_C)\colon\fun W\to C$ is defined inductively on constructors by the rule
+    of \eqref{eq:W-type-step-function} is equivalent to recursion based on the short step function
     \[
-        \fun{rec}_{\fun W}(C,s_C)(\fun{sup}(a,\phi))
-        \defeq
-        s_C(a,\fun{rec}_{\fun W}(C,s_C)\circ\phi),
+        s'_C\colon\prod_{a\colon A}(B(a)\to C)\to C.
     \]
-    for any $a\colon A$ and $\phi\colon B(a)\to\fun W$.
-\end{defn}
+    That is, defining functions out of the\/ $\fun W$-type\/ $\fun W_AB$ using either method yields the same recursive function.
+\end{lem}
 
-\begin{ntn}\label{ntn:recursor-commutativity}
-    For $\fun W\defeq\fun W_AB$, a carrier type $C\colon\univ$, and a curried structure map $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$, the term
+\begin{proof}
+    Let $\fun{rec}_{\fun W}$ denote the recursion based on $s_C$ and $\fun{rec}'_{\fun W}$ the recursion based on $s'_C$.
+    
+    We can obtain $\fun{rec}'_{\fun W}$ from $\fun{rec}_{\fun W}$ as
     \[
-        \fun{comp}_{\fun W}(C,s_C,a,\phi)
-        \defeq\fun{refl}_{f(\fun{sup}(a,\phi))}
+        \fun{rec}'_{\fun W}(C,s'_C)
+            \defeq\fun{rec}_{\fun W}(C,s_C),
     \]
-    denotes the witness for the computation rule \eqref{eq:rec_W-computation-rule}. Specifically, it is an inhabitant of the identity type
-    \begin{equation}\label{eq:recursor-commutativity}
+    by setting
+    \[
+        s_C(a,\phi,h)\defeq s'_C(a,h).
+    \]
+    Since the computation rule \eqref{eq:rec_W-computation-rule} for $\fun{rec}_{\fun W}$ establishes
+    \[
         \fun{rec}_{\fun W}(C,s_C)(\fun{sup}(a,\phi))
-        \eq C
-        s_C(a,\fun{rec}_{\fun W}(C,s_C)\circ\phi).
+            \equiv s_C(a,\phi,\fun{rec}_{\fun W}
+                (C,s_C)\circ\phi),
+    \]
+    we deduce the computation rule for the short recursor $\fun{rec}'_{\fun W}$:
+    \begin{equation}\label{eq:W-short-computation-rule}
+        \fun{rec}'_{\fun W}(C,s'_C)(\fun{sup}(a,\phi))
+            \equiv s'_C
+                (
+                    a,
+                    \fun{rec}'_{\fun W}(C,s'_C)\circ\phi
+                ).
     \end{equation}
+    
+    Conversely, suppose we are equipped with the short recursor, and we are given a step function $s_C$.
+
+    To construct $\fun{rec}_{\fun W}(C,s_C)\colon\fun W\to C$, we will use $\fun{rec}'_{\fun W}$ to define a map $\fun W\to C'$, where $C'\defeq\fun W\times C$. We must provide a short step function $s'_{C'}$:
+    \[
+        s'_{C'}\colon\prod_{a\colon A}
+            (B(a)\to\fun W\times C)\to\fun W\times C.
+    \]
+    Fix $a\colon A$ and let $\psi\colon B(a)\to\fun W\times C$. By composing with the standard projections, we obtain $\psi_1\defeq\pi_1\circ\psi\colon B(a)\to\fun W$ and $\psi_2\defeq\pi_2\circ\psi\colon B(a)\to C$. Then, we can specify
+    \[\tag{$\ast$}
+        s'_{C'}(a,\psi)\defeq
+            \bigl(
+                \fun{sup}(a,\psi_1),s_C(a,\psi_1,\psi_2)
+            \bigr).
+    \]
+    Applying the short recursor to this structure yields the map
+    \[
+        \fun{rec}'_{\fun W}(C',s'_{C'})\colon
+            \fun W\to\fun W\times C,
+    \]
+    which produces the long recursor:
+    \[
+        \fun{rec}_{\fun W}(C,s_C)
+            \defeq\pi_2\circ\fun{rec}'_{\fun W}(C',s'_{C'}).
+    \]
+    From the computation rule \eqref{eq:W-short-computation-rule} for the short recursor, we deduce
+    \begin{align*}
+        \fun{rec}_{\fun W}(C,s_C)(\fun{sup}(a,\phi))
+            &\equiv\pi_2
+                \bigl(
+                    \fun{rec}'_{\fun W}(C',s'_{C'})
+                        (\fun{sup}(a,\phi))
+                \bigr)\\
+            &\equiv\pi_2
+                \bigl(
+                    s'_{C'}(
+                        a,
+                        \fun{rec}'_{\fun W}(C',s'_{C'})
+                            \circ\phi
+                )\bigr)\\
+            &\equiv s_C
+                \bigl(
+                    a,
+                    \pi_1\circ\fun{rec}'_{\fun W}
+                        (C',s'_{C'})\circ\phi,
+                     \pi_2\circ\fun{rec}'_{\fun W}
+                        (C',s'_{C'})\circ\phi
+                \bigr)\\
+            &\equiv s_C
+                \bigl(
+                    a,
+                    \pi_1\circ\fun{rec}'_{\fun W}(C',s'_{C'})
+                        \circ\phi,
+                    \fun{rec}_{\fun W}(C,s_C)\circ\phi
+                \bigr).
+    \end{align*}
+    We claim that $\pi_1\circ\fun{rec}'_{\fun W}(C',s'_{C'})$ is propositionally equal to $\id_{\fun W}$.
+    
+    To see this, let $\rho\defeq\pi_1\circ\fun{rec}'_{\fun W}(C',s'_{C'})$. By function extensionality, it suffices to construct a homotopy of type $\rho\sim\id_{\fun W}$.
+    Define the motive $E(w)\defeq\rho(w)\eq{\fun W}w$. To provide the inductive step function, let us fix $a\colon A$ and $\phi\colon B(a)\to\fun W$. We assume the inductive hypothesis
+    \[
+        h\colon\prod_{b\colon B(a)}
+            \rho(\phi(b))\eq{\fun W}\phi(b).
+    \]
+    This hypothesis is a homotopy of type $\rho\circ\phi\sim\phi$. By function extensionality, we obtain a path
+    \[
+        \fun{funext}(h)\colon
+            \rho\circ\phi\eq{B(a)\to\fun W}\phi.
+    \]
+    Now, we evaluate $\rho(\fun{sup}(a,\phi))$ using the computation rule \eqref{eq:W-short-computation-rule} for $\fun{rec}'_{\fun W}$ and the definitional equality ($\ast$):
+    \begin{align*}
+        \rho(\fun{sup}(a,\phi))
+            &\equiv\pi_1
+                \bigl(
+                    \fun{rec}'_{\fun W}(C',s'_{C'})
+                        (\fun{sup}(a,\phi))
+                \bigr)\\
+            &\equiv\pi_1
+                \bigl(
+                    s'_{C'}
+                        (
+                            a,
+                            \fun{rec}'_{\fun W}
+                                (C',s'_{C'})\circ\phi
+                        )
+                \bigr)\\
+            &\equiv\fun{sup}
+                (
+                    a,
+                    \pi_1\circ\fun{rec}'_{\fun W}
+                        (C',s'_{C'})\circ\phi
+                )
+                &&\text{; ($\ast$)}\\
+            &\equiv\fun{sup}(a,\rho\circ\phi).
+    \end{align*}
+    Applying the action on paths of the constructor $\fun{sup}(a,\dummy)$ to the equality $\fun{funext}(h)$, we obtain
+    \[
+        \fun{ap}_{\fun{sup}(a,\dummy)}(\fun{funext}(h))\colon
+            \fun{sup}
+                (
+                    a,
+                    \rho\circ\phi
+                )\eq{\fun W}\fun{sup}(a,\phi).
+    \]
+    Since $\rho(\fun{sup}(a,\phi))\equiv\fun{sup}(a,\rho\circ\phi)$, this path establishes $E(\fun{sup}(a,\phi))$, completing the induction.
+        
+    Consequently,
+    \[
+        \fun{rec}_{\fun W}(C,s_C)(\fun{sup}(a,\phi))
+            \eq{C}
+                s_C
+                    (
+                        a,
+                        \phi,\fun{rec}_{\fun W}(C,s_C)\circ\phi
+                    ),
+    \]
+    i.e., the constructed map satisfies the computation rule of the long recursor up to propositional equality.
+\end{proof}
+
+\begin{ntn}\label{ntn:hom-alpha-comp} Let $\fun W$ denote the $\fun W$-type $\fun W_AB$. 
+    \begin{enumerate}[-]
+        \item The short recursor $\fun{rec}'_{\fun W}$ of\/ {\upshape Lemma~\ref{lem:long-and-short-recursion}} will be denoted by $\fun{hom}_{\fun W}$, i.e.,
+        \[
+            \fun{hom}_{\fun W}\colon
+                \prod_{C\colon\univ}\;
+                \Bigl(
+                    \prod_{a\colon A}(B(a)\to C)\to C
+                \Bigr)
+                \to\fun W\to C.
+        \]
+        
+        \item For any type $C\colon\univ$ the short structure map $s'_C$ of said lemma will be denoted by $\alpha_C$, i.e.,
+        \[
+            \alpha_C\colon\prod_{a\colon A}(B(a)\to C)\to C.
+        \]
+        Thus, the recursion map $\fun{hom}_{\fun W}(C,\alpha_C)\colon\fun W\to C$ is defined inductively on constructors by the rule
+        \[
+            \fun{hom}_{\fun W}(C,\alpha_C)(\fun{sup}(a,\phi))
+            \defeq
+            \alpha_C(a,\fun{hom}_{\fun W}(C,\alpha_C)\circ\phi),
+        \]
+        for any $a\colon A$ and $\phi\colon B(a)\to\fun W$.
+
+        \item The term
+            \[
+                \fun{comp}_{\fun W}(C,\alpha_C,a,\phi)
+                \defeq\fun{refl}_{\fun{refl}_{\fun W}(C,\alpha_C)(\fun{sup}(a,\phi))}
+            \]
+            will denote the witness for the computation rule \eqref{eq:rec_W-computation-rule}. Specifically, it is the trivial inhabitant of the identity type
+            \begin{equation}\label{eq:recursor-commutativity}
+                \fun{hom}_{\fun W}(C,\alpha_C)(\fun{sup}(a,\phi))
+                \eq C
+                \alpha_C(a,\fun{hom}_{\fun W}(C,\alpha_C)\circ\phi).
+        \end{equation}
+    \end{enumerate}
 \end{ntn}
 
 \begin{lem}\label{lem:transport-identity-family}
@@ -1083,40 +1341,40 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{lem}\label{lem:WHom-equality}
-    Let $\dep{D,s_D}$ and $\dep{C,s_C}$ be two $\fun W$-algebras. Let $\dep{f,\eta_f}$ and $\dep{g,\eta_g}$ be two $\fun W$-morphisms from $\dep{D,s_D}$ to $\dep{C,s_C}$. The identity type
+    Let $\dep{D,\alpha_D}$ and $\dep{C,\alpha_C}$ be two $\fun W$-algebras. Let $\dep{f,\eta_f}$ and $\dep{g,\eta_g}$ be two $\fun W$-morphisms from $\dep{D,\alpha_D}$ to $\dep{C,\alpha_C}$. The identity type
     \[
         \dep{f,\eta_f}\eq{\fun W\Hom(D,C)}\dep{g,\eta_g}
     \]
-    is equivalent to the type of dependent pairs $\dep{e,s_e}$, where $e\colon f\sim g$ is a homotopy and $s_e$ is a family of paths assigning to each $a\colon A$ and $\phi\colon B(a)\to D$ a path
+    is equivalent to the type of dependent pairs $\dep{e,\sigma_e}$, where $e\colon f\sim g$ is a homotopy and $\sigma_e$ is a family of paths assigning to each $a\colon A$ and $\phi\colon B(a)\to D$ a path
     \[
-        s_e(a,\phi)\colon
-            e(s_D(a,\phi))
+        \sigma_e(a,\phi)\colon
+            e(\alpha_D(a,\phi))
             \eq{}
             \eta_f(a,\phi)
-            \ct\fun{ap}_{s_C(a,\dummy)}(
+            \ct\fun{ap}_{\alpha_C(a,\dummy)}(
                 \fun{funext}(e\rwct\phi))
             \ct\eta_g(a,\phi)^{-1}
     \]
-    in $f(s_D(a,\phi)) \eq{C} g(s_D(a,\phi))$. In other words, the path diagram
+    in $f(\alpha_D(a,\phi))\eq{C} g(\alpha_D(a,\phi))$. In other words, the path diagram
     \[
         \begin{tikzcd}[row sep=large, column sep=3.2cm]
-            f(s_D(a,\phi))
-                    \arrow[r,"{e(s_D(a,\phi))}"]
+            f(\alpha_D(a,\phi))
+                    \arrow[r,"{e(\alpha_D(a,\phi))}"]
                     \arrow[d,"{\eta_f(a,\phi)}"']
                     \arrow[rd,
-                        "{\scriptstyle s_e(a,\phi)}",
+                        "{\scriptstyle \sigma_e(a,\phi)}",
                         phantom]
-                &g(s_D(a,\phi))
+                &g(\alpha_D(a,\phi))
                     \arrow[d,
                         bend left=50,
                         gray,"{\eta_g(a,\phi)}"]\\
-            s_C(a,f\circ\phi)
+            \alpha_C(a,f\circ\phi)
                     \arrow[r,
-                        "{\fun{ap}_{s_C(a,\dummy)}
+                        "{\fun{ap}_{\alpha_C(a,\dummy)}
                             (\fun{funext}(e\rwct\phi))
                         }",
                         swap]
-                &s_C(a,g\circ\phi)
+                &\alpha_C(a,g\circ\phi)
                     \arrow[u,
                         "{\eta_g(a,\phi)^{-1}}"]
         \end{tikzcd}
@@ -1131,9 +1389,9 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     
     For any $a\colon A$ and $\phi\colon B(a)\to D$, let us define the local terms
     \[
-        L_{a,\phi}(h)\defeq h(s_D(a,\phi))
+        L_{a,\phi}(h)\defeq h(\alpha_D(a,\phi))
             \quad\text{and}\quad
-        R_{a,\phi}(h)\defeq s_C(a,h\circ\phi).
+        R_{a,\phi}(h)\defeq\alpha_C(a,h\circ\phi).
     \]
     This allows us to define the dependent type family $E$ as
     \[
@@ -1174,28 +1432,28 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \needspace{2\baselineskip}
     Computing the action of $\fun{ap}_{L_{a,\phi}}$ and $\fun{ap}_{R_{a,\phi}}$ for $p\defeq\fun{funext}(e)$ gives:
     \begin{enumerate}[a),font=\upshape]
-        \item $\fun{ap}_{L_{a,\phi}}(\fun{funext}(e))\eq{} e(s_D(a,\phi))$.
-        \item $\fun{ap}_{R_{a,\phi}}(\fun{funext}(e))\eq{} \fun{ap}_{s_C(a,\dummy)}(\fun{funext}(e\rwct\phi))$.
+        \item $\fun{ap}_{L_{a,\phi}}(\fun{funext}(e))\eq{} e(\alpha_D(a,\phi))$.
+        \item $\fun{ap}_{R_{a,\phi}}(\fun{funext}(e))\eq{} \fun{ap}_{\alpha_C(a,\dummy)}(\fun{funext}(e\rwct\phi))$.
     \end{enumerate}
     Substituting these into the transport equation ($\ast$) yields
     \[
-        e(s_D(a,\phi))^{-1}
+        e(\alpha_D(a,\phi))^{-1}
         \ct\eta_f(a,\phi)
-        \ct\fun{ap}_{s_C(a,\dummy)}
+        \ct\fun{ap}_{\alpha_C(a,\dummy)}
             (
                 \fun{funext}(e\rwct\phi)
             ).
     \]
     The coherence condition requires this transported path to equal $\eta_g(a,\phi)$:
     \[
-        e(s_D(a,\phi))^{-1} \ct \eta_f(a,\phi) \ct \fun{ap}_{s_C(a,\dummy)}(\fun{funext}(e\rwct\phi)) \eq{} \eta_g(a,\phi).
+        e(\alpha_D(a,\phi))^{-1} \ct \eta_f(a,\phi) \ct \fun{ap}_{\alpha_C(a,\dummy)}(\fun{funext}(e\rwct\phi)) \eq{} \eta_g(a,\phi).
     \]
-    Isolating $e(s_D(a,\phi))$ yields the required coherence condition:
+    Isolating $e(\alpha_D(a,\phi))$ yields the required coherence condition:
     \[
-        e(s_D(a,\phi))
+        e(\alpha_D(a,\phi))
         \eq{}
         \eta_f(a,\phi)
-            \ct\fun{ap}_{s_C(a,\dummy)}
+            \ct\fun{ap}_{\alpha_C(a,\dummy)}
                 (
                     \fun{funext}(e\rwct\phi)
                 )
@@ -1227,14 +1485,14 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \]
     According to Proposition~\ref{prop:transport-pointwise-evaluation} and Lemma~\ref{lem:transport-identity-family}, the left-hand side reduces point-wise. Thus, this double application of $\fun{happly}$ yields the local path 
     \[
-        e(s_D(a,\phi))^{-1}
+        e(\alpha_D(a,\phi))^{-1}
         \ct\eta_f(a,\phi)
-        \ct\fun{ap}_{s_C(a,\dummy)}
+        \ct\fun{ap}_{\alpha_C(a,\dummy)}
             (
                 \fun{funext}(e\rwct\phi)
             )\eq{}\eta_g(a,\phi),
     \]
-    which we can use to derive $s_e(a,\phi)$.
+    which we can use to derive $\sigma_e(a,\phi)$.
 \end{proof}
 
 \begin{thm}
@@ -1242,25 +1500,25 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{thm}
 
 \begin{proof}
-    Let $\fun W\defeq\fun W_AB$. We must show that for any $\fun W$-algebra $\dep{C,s_C}$, the type $\fun W\Hom(\fun W,C)$ is contractible. 
+    Let $\fun W\defeq\fun W_AB$. We must show that for any $\fun W$-algebra $\dep{C,\alpha_C}$, the type $\fun W\Hom(\fun W,C)$ is contractible. 
     
     For the center of contraction $\dep{f,\eta_f}$, let $f\colon\fun W\to C$ be defined by \eqref{eq:rec_W}, i.e.,
     \[
-        f\defeq\fun{rec}_{\fun W}(C,s_C).
+        f\defeq\fun{hom}_{\fun W}(C,\alpha_C).
     \]
     The homotopy condition \eqref{eq:structure-coherence} for $\eta_f$ requires that, for $a\colon A$ and $\phi\colon B(a)\to\fun W$, we have
     \[
-        f(\fun{sup}(a,\phi))\eq Cs_C(a,f\circ\phi).
+        f(\fun{sup}(a,\phi))\eq C\alpha_C(a,f\circ\phi).
     \]
-    This equality is exactly the computation rule \eqref{eq:recursor-commutativity} for the $\fun W$-recursor. Thus, using Notation~\ref{ntn:recursor-commutativity}, we define $\eta_f(a,\phi)\defeq\fun{comp}_{\fun W}(C,s_C,a,\phi)$.
+    This equality is exactly the computation rule \eqref{eq:recursor-commutativity} for the $\fun W$-recursor. Thus, using Notation~\ref{ntn:hom-alpha-comp}, we define $\eta_f(a,\phi)\defeq\fun{comp}_{\fun W}(C,\alpha_C,a,\phi)$.
 
     To prove contractibility, it remains to show that for any other $\fun W$-morphism $\dep{g,\eta_g}$, there is an identity $\dep{f,\eta_f}\eq{\fun W\Hom(\fun W,C)}\dep{g,\eta_g}$. 
     
-    By Lemma~\ref{lem:WHom-equality}, providing such an identity is equivalent to providing a dependent pair $\dep{e,s_e}$, where $e\colon f\sim g$ and $s_e(a,\phi)$ witnesses the equality
+    By Lemma~\ref{lem:WHom-equality}, providing such an identity is equivalent to providing a dependent pair $\dep{e,\sigma_e}$, where $e\colon f\sim g$ and $\sigma_e(a,\phi)$ witnesses the equality
     \[
         e(\fun{sup}(a,\phi))\eq{}
         \eta_f(a,\phi)
-        \ct\fun{ap}_{s_C(a,\dummy)}
+        \ct\fun{ap}_{\alpha_C(a,\dummy)}
             (\fun{funext}(e\rwct\phi))
         \ct \eta_g(a,\phi)^{-1}.
     \]
@@ -1277,7 +1535,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \[
         e_s(a,\phi,\epsilon)\defeq
             \eta_f(a,\phi)
-            \ct\fun{ap}_{s_C(a,\dummy)}
+            \ct\fun{ap}_{\alpha_C(a,\dummy)}
                 (\fun{funext}(\epsilon))
             \ct\eta_g(a,\phi)^{-1}.
     \]
@@ -1287,7 +1545,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     \]
     since $e\rwct\phi\equiv e\circ\phi$.
     
-    Thus, the required coherence condition $s_e$ of Lemma~\ref{lem:WHom-equality} is satisfied, yielding the required identity $\dep{f,\eta_f}\eq{\fun W\Hom(\fun W,C)}\dep{g,\eta_g}$.
+    Thus, the required coherence condition $\sigma_e$ of Lemma~\ref{lem:WHom-equality} is satisfied, yielding the required identity $\dep{f,\eta_f}\eq{\fun W\Hom(\fun W,C)}\dep{g,\eta_g}$.
     %
     
 \end{proof}
@@ -1358,6 +1616,47 @@ Historically, the recursion principles for inductive types were formulated using
         \item the strict positivity of $\Phi$ guarantees that $\Phi'(X,X\times P)\equiv\Phi(X\times P)$.
     \end{enumerate}
 \end{defn}
+
+\begin{xmpl}
+    The constructor of $\fun W\defeq\fun W_AB$
+    \[
+        \fun{sup}\colon\prod_{a\colon A}
+            (B(a)\to\fun W)\to\fun W
+    \]
+    can be rewritten as
+    \[
+        \Bigl(
+            \sum_{a\colon A}B(a)\to\fun W
+        \Bigr)
+        \to\fun W.
+    \]
+    Thus,
+    \[
+        \Phi(X)\equiv\sum_{a\colon A}B(a)\to X,
+    \]
+    and
+    \[
+        \Phi(\fun W\times C)
+            \equiv\sum_{a\colon A}
+                B(a)\to\fun W\times C.
+    \]
+    Therefore, the step function becomes
+    \[
+        s\colon\Bigl(\sum_{a\colon A}
+            B(a)\to\fun W\times C\Bigr)\to C,
+    \]
+    which can be rewritten as
+    \[
+        s\colon\prod_{a\colon A}
+            (B(a)\to\fun W\times C)\to C.
+    \]
+    Since $B(A)\to\fun W\times C$ equals $(B(a)\to\fun W)\times(B(a)\to C)$, by currying we recover the specification given in \eqref{eq:W-type-step-function}.
+
+    Finally, Definition~\ref{defn:categorical-recursion} yields
+    \[
+        \fun{rec}_{\fun W}(C,s)\colon\fun W\to C.
+    \]
+\end{xmpl}
 
 \section{Homotopy-Inductive Types}\label{homotopy-inductive-types}
 
@@ -3745,7 +4044,7 @@ More generally, while the inductive definition of the identity family provides t
 \end{solution}
 
 \begin{exr}
-    Let\/ $A$ be a mere proposition, and let\/ $B\colon A\to\univ$ be a type family.
+    Let\/ $A$ be a mere proposition and\/ $B\colon A\to\univ$ a type family.
     \begin{enumerate}[a),font=\upshape]
         \item Show that\/ $\fun W_AB$ is a mere proposition.
         \item Show that\/ $\fun W_AB$ is equivalent to\/ $\sum_{a\colon A}\neg B(a)$.
@@ -3753,9 +4052,19 @@ More generally, while the inductive definition of the identity family provides t
     \end{enumerate}
 \end{exr}
 
-\begin{solution}
+\begin{solution}\ 
     \begin{enumerate}[a)]
-        \item 
+        \item This is Theorem~\ref{thm:W-mere-proposition}.
+
+        \item Let $\fun W\defeq\fun W_AB$. To define a forward map $f\colon\fun W\to\Sigma_A\neg B$, it suffices to define a step function \eqref{eq:W-type-step-function}
+        \[
+            s\colon\prod_{a\colon A}
+            (B(a)\to\fun W)\to(B(a)
+                \to\Sigma_A\neg B)\to\Sigma_A\neg B.
+        \]
+        Fix $a\colon A$. Given $x\colon A$, consider $\phi\colon B(x)\to\fun W$, and $\psi\colon B(x)\to\Sigma_A\neg B$. By hypothesis there exists $p\colon a\eq Ax$.
+        
     \end{enumerate}
 \end{solution}
 
+    
