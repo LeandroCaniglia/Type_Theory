@@ -858,8 +858,9 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
 \begin{lem}\label{lem:post-composition-transport}
     For a function\/ $f \colon A \to B$, a type family\/ $P \colon B \to \univ$, and any\/ $p \colon x \eq A y$ and\/ $u \colon P(f(x))$, we have
     \[
-        \fun{transport}^{P\circ f}(p,u) \eq{P(f(y))}
-            \fun{transport}^P(\fun{ap}_f(p),u).
+        \fun{transport}^{P\circ f}(p,u)
+        \eq{P(f(y))}
+        \fun{transport}^P(\fun{ap}_f(p),u).
     \]
 \end{lem}
 
@@ -4442,11 +4443,11 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 \end{rem}
 
 \begin{lem}\label{lem:transport^A->B}
-    Let\/ $A, B\colon X\to\univ$ be type families, and consider the family of function types\/ $A\to B\colon X\to\univ$ defined by\/ $(A\to B)(x)\defeq A(x)\to B(x)$. For any path\/ $p\colon x\eq Xy$, function\/ $f\colon A(x)\to B(x)$, and element\/ $v\colon A(y)$, the transport of\/ $f$ along\/ $p$ evaluates as
+    Let\/ $A, B\colon X\to\univ$ be type families, and consider the family of function types\/ $A\to B\colon X\to\univ$ defined by\/ $(A\to B)(x)\defeq A(x)\to B(x)$. For any path\/ $p\colon x\eq{X}y$, function\/ $f\colon A(x)\to B(x)$, and element\/ $v\colon A(y)$, the transport of\/ $f$ along\/ $p$ evaluates as
     \[
         \fun{transport}^{A\to B}(p,f)(v) \eq{B(y)} p_*\bigl(f((p^{-1})_*(v))\bigr),
     \]
-    where $p_*\equiv\fun{transport}^B(p,\dummy)$ and $(p^{-1})_*\equiv\fun{transport}^A(p,\dummy)$.
+    where\/ $p_*\equiv\fun{transport}^B(p,\dummy)$ and\/ $(p^{-1})_*\equiv\fun{transport}^A(p^{-1},\dummy)$.
 \end{lem}
 
 \begin{proof}
@@ -5260,6 +5261,18 @@ The first unit laws holds definitionally
         &\eq{A\simeq B}d.
 \end{align*}
 
+\begin{lem}\label{lem:transport-is-precomp}
+    Let\/ $X$ and\/ $C$ be types, and\/ $P\colon X\to\univ$ a type family. For any path\/ $p\colon x\eq{X}y$ and map\/ $g\colon P(x)\to C$, we have a homotopy
+    \[
+        \fun{transport}^{\lambda z.\,(P(z)\to C)}(p,g)
+            \sim g\circ\fun{transport}^P(p^{-1}).
+    \]
+\end{lem}
+
+\begin{proof}
+    The conclusion is a direct consequence of Lemma~\ref{lem:transport^A->B} applied to~$P$ and the constant family $C$, and Exercise~\ref{exr:constant-fibration}.
+\end{proof}
+
 \begin{prop}\ua\label{prop:transport-ua-precomp}
     Let\/ $E,A,B\colon\univ$ be types. Then, given an equivalence $e \colon E\simeq A$ and a function\/ $g\colon E\to B$, we have
     \[
@@ -5267,6 +5280,22 @@ The first unit laws holds definitionally
             \sim g \circ e^{-1}.
     \]
 \end{prop}
+
+\begin{proof}
+    Let $p\defeq\fun{ua}(e)$, so that $p\colon E\eq\univ A$ and $p^{-1}\eq{A\eq\univ E}\fun{ua}(e^{-1})$. By Lemma~\ref{lem:transport-is-precomp} applied to the identity type family $\id_\univ$, for any $a\colon A$ we have
+    \begin{align*}
+        \fun{transport}^{\lambda X.\,(X\to B)}
+            (p,g)(a)
+            &\eq{B}g
+                (
+                    \fun{transport}^{\id_\univ}(p^{-1},a)
+                )\\
+            &\eq{B}g(\fun{idtoeqv}(p^{-1})(a))\\
+            &\eq{B}g(\fun{idtoeqv}(\fun{ua}(e^{-1}))(a))\\
+            &\equiv g(e^{-1}(a)).
+    \end{align*}
+    The second equality follows from Theorem~\ref{thm:idtoeqv-def}.
+\end{proof}
 
 \begin{proof}
     Let $p\defeq\fun{ua}(e)$. Then $p\colon E\eq\univ A$ and $p^{-1}\eq{A\eq\univ E}\fun{ua}(e^{-1})$. By Lemma~\ref{lem:transport^A->B} applied to the identity type family $\id_\univ$ and the constant $\lambda X.\,B$, given $a\colon A$, we have
