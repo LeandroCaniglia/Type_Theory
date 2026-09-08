@@ -308,3 +308,11 @@ Even if one can take some\/ $f\colon 1\to X$ and obtain the commutative diagram:
     \end{tikzcd}
 \]
 there still may be other nonidentical arrows\/ $1\to X$, which provide nonequivalent `globalisations' of the local element\/ $y\in Y^X$. Hence,\/ $X$ can have non-global elements which are seen only from some stages of definition (`contexts of observation'). So, while the global elements of an object correspond to the set-theoretic idea of points, there can also be elements of an object that are not points. The importance of this idea cannot be overestimated. It provides a fresh view on many structures.
+
+\section{Zorn's Lemma}
+
+\begin{defn}
+  Let $P$ be a partially ordered set. An element $c \in P$ is called \textbf{compact} (or \textbf{finite}) if, for every directed subset $D \subseteq P$ that has a supremum $\sup D$ in $P$, the following condition holds:
+  
+  If $c \leq \sup D$, then there exists some $d \in D$ such that $c \leq d$.
+\end{defn}
