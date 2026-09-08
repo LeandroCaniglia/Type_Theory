@@ -369,7 +369,7 @@ Second, the type family $B(a)$ dictates the branches hanging from that node. If 
 If the node has branches, a fully formed subtree hangs from each of them. As illustrated below, the branches are indexed by the elements $b_1,b_2,\dots,b$ of $B(a)$.
 
 The function $\phi\colon B(a)\to\fun W_{x\colon A}B(x)$ attaches a subtree $\phi(b)$ to each branch, represented by the dotted triangles.
-\[
+\begin{equation}\label{tik:W-tree}
     \begin{tikzpicture}[>=stealth, thick]
         % Root node labeled by a in A
         \node[circle, draw, minimum size=8mm] (a) at (0,0) {$a$};
@@ -396,8 +396,9 @@ The function $\phi\colon B(a)\to\fun W_{x\colon A}B(x)$ attaches a subtree $\phi
     
         \draw[dotted, thick] (tb) -- ++(-0.8, -1.5) -- ++(1.6, 0) -- cycle;
         \node at (2.5, -2.9) {$\scriptstyle\phi(b)$};
-    \end{tikzpicture}
-\]
+    \end{tikzpicture}    
+\end{equation}
+
 The induction principle of the $\fun W$-type ensures that each of these triangles is itself a well-founded tree. Thus, the branching process repeats inside each triangle and terminates at leaves after a finite number of steps.
 
 Because $\fun W$-types serve as a universal generalization of inductive types, all the distinct constructors of a given type are unified into a single constructor, namely the function:
@@ -416,6 +417,10 @@ When a term is built using $\fun{sup}(a,\phi)$, the label $a\colon A$ acts as th
 supplies the subtrees required by that specific constructor.
 
 In this way, the single constructor $\fun{sup}$ expresses the behavior of any number of individual constructors by delegating the choice of the operation to the label type~$A$.
+
+\begin{rem}
+    The constructor $\fun{sup}$ operates as follows: Given a label $a$ and a function $\phi\colon B(a)\to\fun W_AB$ representing an indexed family of sub-trees \eqref{tik:W-tree}, the constructor gathers this entire family and joins them under a single new node. In the hierarchy of the tree, this node sits above all of its children. Therefore, the operation of creating this new node is conceptually identical to taking the supremum of all the sub-trees in the family.
+\end{rem}
 
 \begin{rem}\label{rem:rec(sup)-is-P(W)->W}
     According to \nref{lpar:Sigma-type-rec-and-ind}, the constructor $\fun{sup}$ given by \eqref{eq:sup-constructor} determines a function
@@ -1051,39 +1056,39 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \defeq\sum_{C\colon\univ}\;
                 \prod_{a\colon A}(B(a)\to C)\to C.
     \]
-    Its terms are dependent pairs $\dep{C,s_C}$, where $s_C\colon\prod_{a\colon A}(B(a)\to C)\to C$ is the \textsl{structure map} of the $\fun W$-algebra.
+    Its terms are dependent pairs $\dep{C,\alpha_C}$, where $\alpha_C\colon\prod_{a\colon A}(B(a)\to C)\to C$ is the \textsl{structure map} of the $\fun W$-algebra.
 \end{defn}
 
 \begin{rem}
-    A $\fun W$-algebra $\dep{C,s_C}$ admits an \textsl{uncurried variant} $\dep{C,\bar{s}_C}$, where
+    A $\fun W$-algebra $\dep{C,\alpha_C}$ admits an \textsl{uncurried variant} $\dep{C,\bar s_C}$, where
     \[
-        \bar{s}_C\defeq\fun{rec}_{P(C)}(C,s_C)
+        \bar s_C\defeq\fun{rec}_{P(C)}(C,\alpha_C)
             \colon P(C)\to C.
     \]
     We will refer to this form as a \textsl{$P$-algebra}.
     
-    These two views are interchangeable since $s_C$ can be recovered from $\bar{s}_C$ by the computation rule of the $\Sigma$-type.
+    These two views are interchangeable since $\alpha_C$ can be recovered from $\bar s_C$ by the computation rule of the $\Sigma$-type.
 \end{rem}
 
 \needspace{2\baselineskip}
 \begin{defns}\ 
     \begin{enumerate}[-]
-        \item Given $P$-algebras $\dep{C,\bar{s}_C}$ and $\dep{D,\bar{s}_D}$, any map $f\colon C\to D$ induces a function $Pf\colon P(C)\to P(D)$ defined by
+        \item Given $P$-algebras $\dep{C,\bar s_C}$ and $\dep{D,\bar\alpha_D}$, any map $f\colon C\to D$ induces a function $Pf\colon P(C)\to P(D)$ defined by
         \[
             Pf(\dep{a,\phi})\defeq\dep{a,f\circ\phi},
         \]
         for $a\colon A$ and $\phi\colon B(a)\to C$.
         
-        \item A \textsl{$P$-morphism} from a $P$-algebra $\dep{C,\bar{s}_C}$ to another $\dep{D,\bar{s}_D}$ is a dependent pair $\dep{f,\eta_f}$, where $f\colon C\to D$ and $\eta_f\colon f\circ\bar{s}_C\sim\bar{s}_D\circ Pf$. This homotopy can be visualized in the square:
+        \item A \textsl{$P$-morphism} from a $P$-algebra $\dep{C,\bar\alpha_C}$ to another $\dep{D,\bar\alpha_D}$ is a dependent pair $\dep{f,\eta_f}$, where $f\colon C\to D$ and $\eta_f\colon f\circ\bar\alpha_C\sim\bar\alpha_D\circ Pf$. This homotopy can be visualized in the square:
         \[
             \begin{tikzcd}[font=\small]
                 P(C)\arrow[r,"Pf"]
-                        \arrow[d,"\bar{s}_C"']
+                        \arrow[d,"\bar\alpha_C"']
                         \arrow[dr,
                             phantom,
                             "\scriptstyle\eta_f"]
                     &P(D)
-                        \arrow[d,"\bar{s}_D"]\\
+                        \arrow[d,"\bar\alpha_D"]\\
                 C
                         \arrow[r,"f"']
                     &D
@@ -1091,24 +1096,24 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         \]
         Thus, the type of $P$-morphisms is
         \[
-            \fun P\Hom(\dep{C,\bar{s}_C},\dep{D,\bar{s}_D})
+            \fun P\Hom(\dep{C,\bar\alpha_C},\dep{D,\bar\alpha_D})
                 \defeq\sum_{f\colon C\to D}
-                    f\circ\bar{s}_C\sim\bar{s}_D\circ Pf.
+                    f\circ\bar\alpha_C\sim\bar\alpha_D\circ Pf.
         \]
-        Equivalently, using the curried variants $s_C$ and $s_D$, the homotopy condition is given by a family of identities, making the type of morphisms definitionally equivalent to
+        Equivalently, using the curried variants $\alpha_C$ and $\alpha_D$, the homotopy condition is given by a family of identities, making the type of morphisms definitionally equivalent to
         \begin{equation}\label{eq:structure-coherence}
             \sum_{f\colon C\to D}\;
                 \prod_{a\colon A}\;
                 \prod_{\phi\colon B(a)\to C}
-                    f(s_C(a,\phi))\eq Ds_D(a,f\circ\phi).
+                    f(\alpha_C(a,\phi))\eq D\alpha_D(a,f\circ\phi).
         \end{equation}
-        We will denote the type of $\fun W$-morphisms by $\fun W\Hom(\dep{C,s_C},\dep{D,s_D})$, or $\fun W\Hom(C,D)$ for short, if the context permits.
+        We will denote the type of $\fun W$-morphisms by $\fun W\Hom(\dep{C,\alpha_C},\dep{D,\alpha_D})$, or $\fun W\Hom(C,D)$ for short, if the context permits.
 
-        \item A $\fun W$-algebra $\dep{I,s_I}$ is \textsl{$h$-initial} if the type
+        \item A $\fun W$-algebra $\dep{I,\alpha_I}$ is \textsl{$h$-initial} if the type
         \[
-            \fun{isHinit}_{\fun W}(A,B,\dep{I,s_I})
+            \fun{isHinit}_{\fun W}(A,B,\dep{I,\alpha_I})
             \defeq
-            \prod_{\dep{C,s_C}\colon\fun W\fun{Alg}(A,B)}
+            \prod_{\dep{C,\alpha_C}\colon\fun W\fun{Alg}(A,B)}
             \!\!\!\fun{isContr}
             \bigl(
                 \fun W\Hom(I,C)
@@ -1253,7 +1258,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                 &&\text{; ($\ast$)}\\
             &\equiv\fun{sup}(a,\rho\circ\phi).
     \end{align*}
-    Applying the action on paths of the constructor $\fun{sup}(a,\dummy)$ to the equality $\fun{funext}(h)$, we obtain
+    Applying the action on paths of $\fun{sup}(a,\dummy)$, we obtain
     \[
         \fun{ap}_{\fun{sup}(a,\dummy)}(\fun{funext}(h))\colon
             \fun{sup}
@@ -1304,7 +1309,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         \item The term
             \[
                 \fun{comp}_{\fun W}(C,\alpha_C,a,\phi)
-                \defeq\fun{refl}_{\fun{refl}_{\fun W}(C,\alpha_C)(\fun{sup}(a,\phi))}
+                \defeq\fun{refl}_{\fun{hom}_{\fun W}(C,\alpha_C)(\fun{sup}(a,\phi))}
             \]
             will denote the witness for the computation rule \eqref{eq:rec_W-computation-rule}. Specifically, it is the trivial inhabitant of the identity type
             \begin{equation}\label{eq:recursor-commutativity}
@@ -4048,7 +4053,9 @@ More generally, while the inductive definition of the identity family provides t
     \begin{enumerate}[a),font=\upshape]
         \item Show that\/ $\fun W_AB$ is a mere proposition.
         \item Show that\/ $\fun W_AB$ is equivalent to\/ $\sum_{a\colon A}\neg B(a)$.
-        \item Without using\/ $\fun W_AB$, show that\/ $\sum_{a\colon A}\neg B(a)$ is a homotopy\/ $\fun W$-type\/ $\fun W^h_AB$ in the sense of~{\S\,\ref{homotopy-inductive-types}}.
+        \item Without using\/ $\fun W_AB$, show that\/ $\sum_{a\colon A}\neg B(a)$ is a homotopy\/ $\fun W$-type\/ $\fun W^h_AB$ in the sense of~{\upshape\S\,\ref{homotopy-inductive-types}}.
+        
+        {\upshape Hint: The function type $X\to Y$ is contractible, whenever there is a map $X\to\fun0$.}
     \end{enumerate}
 \end{exr}
 
@@ -4056,15 +4063,252 @@ More generally, while the inductive definition of the identity family provides t
     \begin{enumerate}[a)]
         \item This is Theorem~\ref{thm:W-mere-proposition}.
 
-        \item Let $\fun W\defeq\fun W_AB$. To define a forward map $f\colon\fun W\to\Sigma_A\neg B$, it suffices to define a step function \eqref{eq:W-type-step-function}
+        \item Let $\fun W\defeq\fun W_AB$. 
+
+        To define a forward map $\fun W\to\Sigma_A\neg B$, it suffices to specify a short step function
         \[
-            s\colon\prod_{a\colon A}
-            (B(a)\to\fun W)\to(B(a)
-                \to\Sigma_A\neg B)\to\Sigma_A\neg B.
+            \alpha\colon\prod_{a\colon A}
+                (B(a)\to\Sigma_A\neg B)\to\Sigma_A\neg B.
         \]
-        Fix $a\colon A$. Given $x\colon A$, consider $\phi\colon B(x)\to\fun W$, and $\psi\colon B(x)\to\Sigma_A\neg B$. By hypothesis there exists $p\colon a\eq Ax$.
+        Fix $a\colon A$ and $h_a\colon B(a)\to\Sigma_A\neg B$. For every $b\colon B(a)$, the components of $h_a(b)$ define the terms
+        \[
+            x_b\defeq\pi_1(h_a(b))\colon A
+            \quad\text{and}\quad
+            \zeta_b\defeq\pi_2(h_a(b))\colon B(x_b)\to\fun0.
+        \]
+        Since $A$ is a mere proposition, we have the path $p_b\colon a\eq{A}x_b$ given by $\fun{isProp}(A)(a,x_b)$. Thus, we obtain
+        \[
+            \fun{transport}^B(p_b,b)\colon B(x_b),
+        \]
+        which constructs
+        \begin{align*}
+            \epsilon_a\colon B(a)&\to\fun0\\
+            b&\mapsto\zeta_b(\fun{transport}^B(p_b,b)).
+        \end{align*}
+        Hence, the desired step function is given by
+        \[
+            \alpha(a,h_a)\defeq\dep{a,\epsilon_a}.
+        \]
+        
+        For the backward map, we have
+        \begin{align*}
+            \Bigl(
+                \sum_{a\colon A}\neg B(a)
+            \Bigr)
+                &\to\fun W\\
+            \dep{a,\zeta}
+                &\mapsto
+                    \fun{sup}
+                        (
+                            a,
+                            \fun{rec}_{\fun0}(\fun W)\circ\zeta
+                        ).
+        \end{align*}
+        Since $\neg B(a)$ and $\Sigma_A\neg B$ are mere propositions by Theorem~\ref{thm:mere-propositions}, the conclusion follows from part~a) and Lemma~\ref{lem:mere-proposition-equivalence}.
+
+        \item Let $\sigma$ denote the short step function
+        \[
+            \sigma\colon
+                \prod_{a\colon A}(B(a)\to\Sigma_A\neg B)
+                \to\Sigma_A\neg B
+        \]
+        designated as $\alpha$ in part b). The idea is to show that $\sigma$ plays the role of constructor for $\Sigma_A\neg B$ that $\fun{sup}$ plays for $\fun W$.
+        
+        Suppose we are given a map
+        \[
+            \alpha_C\colon\prod_{a\colon A}(B(a)\to C)\to C.
+        \]
+        We must construct a map $\Sigma_A\neg B\to C$ from $\alpha_C$. Therefore, we define
+        \begin{align*}
+            \rho_C(\alpha_C)\colon
+                \Sigma_A\neg B&\to C\\
+            \dep{x,\zeta}&\mapsto\alpha_C
+                (x,\fun{rec}_\fun0(C)\circ\zeta).
+        \end{align*}
+        For the computation rule, we have
+        \begin{align*}
+            \rho_C(\alpha_C)(\sigma(a,h_a))
+                &\equiv\rho_C(\alpha_C)(\dep{a,\epsilon_a})\\
+                &\equiv\alpha_C
+                    (
+                        a,
+                        \fun{rec}_{\fun0}(C)\circ\epsilon_a
+                    ).
+        \end{align*}
+        On the other hand, according to Notation~\ref{ntn:hom-alpha-comp}, we have to show that the above is equal to
+        \[
+            \alpha_C(a,\rho_C(\alpha_C)\circ h_a).
+        \]
+        By the action on paths of $\alpha_C(a,\dummy)$, our goal reduces to showing that
+        \[
+            \fun{rec}_{\fun0}(C)\circ\epsilon_a
+            \eq{B(a)\to C}
+            \rho_C(\alpha_C)\circ h_a,
+        \]
+        which is equivalent to the propositional commutativity of
+        \[
+            \begin{tikzcd}
+                B(a)
+                        \arrow[r,"h_a"]
+                        \arrow[d,"\epsilon_a"']
+                    &\Sigma_A\neg B
+                        \arrow[d,"\rho_C(\alpha_C)"]\\
+                \fun0
+                        \arrow[r,"\fun{rec}_{\fun0}(C)"']
+                    &C
+            \end{tikzcd}
+        \]
+        But this is direct consequence of the following
+
+        \medskip
+
+        \textbf{Lemma.} {\itshape
+            Let\/ $X$ and\/ $Y$ be types, and suppose there is a map\/ $\epsilon\colon X\to\fun0$. Then, the type\/ $X\to Y$ is contractible with center\/ $\fun{rec}_{\fun0}(Y)\circ\epsilon$. In other words, for any function\/ $f\colon X\to Y$, the diagram
+            \[
+                \begin{tikzcd}[row sep=large,column sep=large]
+                    X
+                            \arrow[d,"\epsilon"']
+                            \arrow[dr,"f"]\\
+                    \fun0
+                            \arrow[r,"\fun{rec}_{\fun0}(Y)"']
+                        &Y
+                \end{tikzcd}
+            \]
+            commutes propositionally.}
+        
+        \textsc{Proof:}
+            Let $f_0\defeq\fun{rec}_{\fun0}(Y)\circ\epsilon$. Given $x\colon X$, we define the motive $E\colon\fun0\to\univ$ by
+            \[
+                E(z)\defeq f_0(x)\eq Y f(x).
+            \]
+            Since $\epsilon(x)\colon\fun0$, the induction principle of the empty type produces
+            \[
+                \fun{ind}_{\fun0}(E)(\epsilon(x))
+                    \colon f_0(x)\eq Y f(x).
+            \]
+            This constructs a homotopy $f_0\sim f$. The conclusion follows by function extensionality.\localqed
+
+        \bigskip
+
+        Since we have provided both the recursion map $\rho_C$ and the computation rule for any structure map $\alpha_C$, we conclude that $\Sigma_A\neg B$ is a homotopy $\fun W$-type.
+    \end{enumerate}
+\end{solution}
+
+\begin{exr}\label{exr:Sigma-to-W-and-W-to-Pi}
+    Let\/ $A\colon\univ$ and\/ $B\colon A\to\univ$.
+    \begin{enumerate}[a),font=\upshape]
+        \item Show that\/ $\Sigma_A\neg B\to\fun W_AB$.
+        \item Show that\/ $\fun W_AB\to\neg\Pi_AB$.
+    \end{enumerate}
+\end{exr}
+
+\begin{solution}Let $\fun W\defeq\fun W_AB$.
+    \begin{enumerate}[a)]
+        \item We already defined this map in part~b) of the previous exercise:
+        \begin{align*}
+            \Bigl(
+                \sum_{a\colon A}\neg B(a)
+            \Bigr)
+                &\to\fun W\\
+            \dep{a,\zeta}
+                &\mapsto
+                    \fun{sup}
+                        (
+                            a,
+                            \fun{rec}_{\fun0}(\fun W)\circ\zeta
+                        ).
+        \end{align*}
+
+        \item To define the map recursively, it suffices to define a short step function
+        \[
+            \alpha\colon\prod_{a\colon A}
+                (B(a)\to\neg\Pi_AB)
+                \to\neg\Pi_AB.
+        \]
+        Fix $a\colon A$. Then, we define
+        \begin{align*}
+            \alpha(a)\colon(B(a)\to\neg\Pi_AB)&\to\neg\Pi_AB\\
+            \phi&\mapsto\lambda f.\,\phi(f(a))(f).
+        \end{align*}
         
     \end{enumerate}
 \end{solution}
 
-    
+\begin{exr}\label{exr:W-to-Sigma-decidable-arity}
+    Let\/ $A\colon\univ$ be a type and suppose that\/ $B\colon A\to\univ$ is decidable\footnote{See Definition~\ref{defn:lem}.}. Show that\/ $\fun W_AB\to\Sigma_A\neg B$.
+\end{exr}
+
+\begin{solution}
+    To construct the desired map, it suffices to specify a short step function
+    \[
+        \alpha\colon\prod_{a\colon A}
+            (B(a)\to\Sigma_A\neg B)\to\Sigma_A\neg B.
+    \]
+    Fix $a\colon A$. In case we have a term $b\colon B(a)$, we can define
+    \[
+        \alpha(a)\defeq\lambda\phi.\,\phi(b),
+    \]
+    the evaluation at $b$. If we have a term $\zeta\colon\neg B(a)$, we can set
+    \[
+        \alpha(a)\defeq\lambda\phi.\,\dep{a,\zeta}.
+    \]
+    These settings define a map
+    \[
+        s_a\colon(B(a)+\neg B(a))\to(B(a)\to\Sigma_A\neg B)
+            \to\Sigma_A\neg B.
+    \]
+    Thus, we obtain
+    \[
+        \alpha\defeq\lambda a.\,s_a\circ\partial,
+    \]
+    where
+    \[
+        \partial\colon\prod_{a\colon A}B(a)+\neg B(a)
+    \]
+    is the decidability function provided by the hypothesis.
+\end{solution}
+
+\begin{exr}
+    Show that the following are logically equivalent.
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun W_AB\to\Sigma_A\neg B$ for any\/ $A\colon\fun{Set}$ and\/ $B\colon A\to\fun{Prop}$.
+        \item $\neg\Pi_AB\to\fun W_AB$ for any\/ $A\colon\fun{Set}$ and\/ $B\colon A\to\fun{Prop}$.
+        \item The law of excluded middle.\footnote{See Definition~\ref{defn:lem}.}
+    \end{enumerate}
+    Similarly, using\/ {\upshape Corollary~\ref{cor:A+negA-not-always-true}}, show that it is inconsistent to assume that either implication in\/ {\upshape a)} or\/ {\upshape b)} holds for all\/ $A\colon\univ$ and\/ $B\colon A\to\univ$.
+\end{exr}
+
+\begin{solution}In what follows $\fun W$ will denote $\fun W_AB$.
+    \begin{enumerate}[a)]
+        \item $\Rightarrow$~c) The hypothesis means that, for any $A$ and $B$ in the stated conditions, we have a diagram
+        \[
+            \begin{tikzcd}
+                    &\Sigma_A(B\to\fun W)
+                        \arrow[d,green!50!black]\\
+                \neg\Pi_AB
+                        \arrow[ru,dotted]
+                        \arrow[r,dashed]
+                    &\fun W
+                        \arrow[d,"\text{(a)}"]\\
+                \fun W
+                        \arrow[u,green!50!black]
+                    &\Sigma_A\neg B
+                        \arrow[l,green!50!black]
+            \end{tikzcd}
+        \]
+        Given $P\colon\fun{Prop}$, let $A\defeq \neg P+\neg\neg P$ and let $B$ be the constant type family
+        \begin{align*}
+            B\colon P&\to\fun{Prop}\\
+            x&\mapsto P.
+        \end{align*}
+        We have $\Sigma_A\neg B\eq\univ(\neg P+\neg\neg P)\times\neg P$. Therefore, if $\phi\colon\fun1\to\fun W$, the evaluation $\ev\fstar\colon\phi\mapsto\phi(\fstar)$ produces a term $w\colon\fun W$. The map (a) of the hypothesis then constructs from $w$ an inhabitant $y\colon P+\neg P$.
+
+            
+
+        
+        \item $\Rightarrow$~c)
+
+        \item $\Rightarrow$~a) This is a direct consequence of Exercise~\ref{exr:W-to-Sigma-decidable-arity}.
+    \end{enumerate}
+\end{solution}
+

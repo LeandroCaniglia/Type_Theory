@@ -554,7 +554,11 @@
     \[
         f(x,y,p,q),\,g(x,y,p,q)\colon p\eq{x\eq{A}y}q.
     \]
-    The existence of $f$ implies that $A$ is a set. So, by Lemma~\ref{lem:set-implies-id-types-are-sets}, $x\eq{A}y$ is a set. Thus, $p\eq{x\eq{A}y}q$ is a mere proposition. Therefore, $f(x,y,p,q)\eq{p\eq{x\eq{A}y}q}g(x,y,p,q)$. The proof concludes by function extensionality.
+    The existence of $f$ implies that $A$ is a set. So, by Lemma~\ref{lem:set-implies-id-types-are-sets}, $x\eq{A}y$ is a set. Thus, $p\eq{x\eq{A}y}q$ is a mere proposition. Therefore,
+    \[
+        f(x,y,p,q)\eq{p\eq{x\eq{A}y}q}g(x,y,p,q).
+    \]
+    The proof concludes by function extensionality.
 \end{proof}
 
 %\section{Law of Excluded Middle}
@@ -2008,9 +2012,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             &\equiv
                 \tau_i(f_{i+1}(\iota_i(\dep{A,\epsilon})))\\
             &\eq{}\tau_i(f_{i+1}(\dep{A,\epsilon}))\\
-            &\equiv\tau_i(c_A(\lambda(A)(\epsilon))),
+            &\equiv\tau_i(c_A(\ell(A)(\epsilon))),
     \end{align*}
-    where $\lambda$ is the witness of $\fun{Lem}\colon\univ_{i+1}$ given by hypothesis, and $c_A\colon(A+\neg A)\to\fun2$ is the map of the previous exercise.
+    where $\ell$ is the witness of $\fun{Lem}\colon\univ_{i+1}$ given by hypothesis, and $c_A\colon(A+\neg A)\to\fun2$ is the map of the previous exercise.
 
     We claim that $\tau_i(c_A(z))\eq{}\dep{A,\epsilon}$ for all $A\colon\univ_i$ and $z\colon A+\neg A$. But this was proved in the previous exercise by induction on $z$, using the fact that $\fun{isProp}(A)$ is a mere proposition (and not that $\fun{Lem}\colon\univ_i$ was inhabited).
 
@@ -2096,11 +2100,11 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
     By hypothesis, we have a witness of $\fun{Lem}$, say
     \[
-        \lambda\colon\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
+        \ell\colon\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
     \]
     Fix $A\colon\univ$. We have
     \[
-        \lambda(\lVert A\rVert)(\fun{squash})
+        \ell(\lVert A\rVert)(\fun{squash})
             \colon\lVert A\rVert+\neg\lVert A\rVert.
     \]
     To define a map from $\lVert A\rVert+\neg\lVert A\rVert$ to $\lVert P(A)\rVert$, we have to specify two maps: $\alpha\colon\lVert A\rVert\to\lVert P(A)\rVert$ and $\beta\colon\neg\lVert A\rVert\to\lVert P(A)\rVert$.
@@ -2125,7 +2129,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     To conclude, we define
     \[
-        \epsilon(A)\defeq\gamma(A)(\lambda(\lVert A\rVert)(\fun{squash})).
+        \epsilon(A)\defeq\gamma(A)(\ell(\lVert A\rVert)(\fun{squash})).
     \]
     \textbf{Note.} Saying that $\lVert P(A)\rVert$ is inhabited means that there is some witness of $P(A)$, i.e., some way to choose an element of $A$, provided that $A$ is inhabited. Since HoTT requires that every element be constructed, this claim is not generally true.
     %
