@@ -1,4 +1,4 @@
-![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)
+![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)
 # Homotopy Type Theory
 ### A Detailed Exposition of the HoTT Book
 
