@@ -1,4 +1,4 @@
-![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC_BY--SA_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
 # Homotopy Type Theory
 ### A Detailed Exposition of the HoTT Book
@@ -28,6 +28,8 @@ This text takes a hands-on approach:
 This work is based on and expands upon *Homotopy Type Theory: Univalent Foundations of Mathematics* (2013) by **The Univalent Foundations Program**, which is licensed under [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/).
 
 These notes are released under the **Creative Commons Attribution-ShareAlike 4.0 International License ([CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/))**.
+
+[![CC BY-SA 4.0](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
 ---
 *This repository represents an active, ongoing effort to map the beautiful landscape where topology, category theory, and computer science meet.*
