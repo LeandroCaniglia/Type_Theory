@@ -18,8 +18,8 @@ This exposition prioritizes **reconstructing intermediate mathematical steps** a
 ## Philosophy of the Exposition
 
 This text takes a hands-on approach:
-1. **No Hand-Waving:** Informal pattern-matching is systematically translated into explicit constructions using primitive eliminators.
-2. **Self-Contained Exercises:** Key exercises from the HoTT literature are rewritten to be completely self-contained, specifying precise type signatures and eliminating ambiguous structural assumptions.
+- **No Hand-Waving:** Informal pattern-matching is systematically translated into explicit constructions using primitive eliminators.
+- **Self-Contained Exercises:** Key exercises from the HoTT literature are rewritten to be completely self-contained, specifying precise type signatures and eliminating ambiguous structural assumptions.
 
 ---
 
