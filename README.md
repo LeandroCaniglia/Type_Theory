@@ -3,7 +3,7 @@
 # Homotopy Type Theory
 ### A Detailed Exposition of the HoTT Book
 
-[�� Read the compiled PDF](https://github.com/LeandroCaniglia/Type_Theory/blob/main/Type_Theory.pdf) | [�� Reflections on a Journey Through HoTT](https://leandrocaniglia.github.io/hott-notes)
+[Read the compiled PDF](https://github.com/LeandroCaniglia/Type_Theory/blob/main/Type_Theory.pdf) | [Reflections on a Journey Through HoTT](https://leandrocaniglia.github.io/hott-notes)
 
 ---
 
@@ -11,7 +11,7 @@ Welcome to this repository containing a detailed, mathematically rigorous set of
 
 This project bridges the gap between the intuitive, high-level prose of the standard *HoTT Book* and the explicit, foundational rules of dependent type theory.
 
-## �� About the Project
+## About the Project
 
 These notes serve as a structured companion for anyone exploring univalent foundations. Instead of taking proofs "as given" or relying heavily on informal pattern-matching syntax, this exposition prioritizes **reconstructing intermediate mathematical steps** and **formalizing proofs using primitive eliminators**.
 
@@ -21,7 +21,7 @@ These notes serve as a structured companion for anyone exploring univalent found
 * **Generalizations of Induction:** Tracing the boundaries of inductive definitions from foundational $W$-types up to advanced concepts like mutual inductive types and inductive-inductive definitions.
 * **A Categorical Lens on Equality:** Studying both local and global *Identity Systems* and understanding path induction as a type-theoretic manifestation of the **Yoneda Lemma**.
 
-## �� Philosophy of the Exposition
+## Philosophy of the Exposition
 
 Unlike traditional textbooks that gloss over definitional reductions, this text takes a hands-on approach:
 1. **No Hand-Waving:** Informal pattern-matching is systematically translated into explicit constructions using primitive eliminators (such as $\text{ind}_W$ and $\text{ind}_{\mathbf{1}+A}$).
@@ -30,7 +30,7 @@ Unlike traditional textbooks that gloss over definitional reductions, this text 
 
 ---
 
-## �� License & Attribution
+## License & Attribution
 
 This work is based on and expands upon *Homotopy Type Theory: Univalent Foundations of Mathematics* (2013) by **The Univalent Foundations Program**, which is licensed under [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/).
 
