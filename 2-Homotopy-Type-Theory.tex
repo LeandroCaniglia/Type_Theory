@@ -7083,6 +7083,31 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     and the result follows by function extensionality.
 \end{proof}
 
+\begin{cor}\label{cor:Sigma-rec(C)-is-equivalence}
+    Let\/ $A\colon\univ$ be a type and\/ $B\colon A\to\univ$ a type family. For any type\/ $C\colon\univ$, the map
+    \begin{align*}
+        \fun{rec}_{\Sigma_AB}(C)\colon
+            \biggl(
+                \prod_{x\colon A}B(x)\to C
+            \biggr)
+            &\to
+            (\Sigma_AB\to C)
+    \end{align*}
+    is an equivalence.
+\end{cor}
+
+\begin{proof}
+    Instantiating the dependent type family in the preceding theorem as the constant family $C(\omega)\defeq C$ for all $\omega\colon\Sigma_AB$, we obtain that the map
+    \begin{align*}
+        \fun{curry}\colon
+            (\Sigma_AB\to C)
+            &\to
+            \prod_{x\colon A}B(x)\to C\\
+        f&\mapsto\lambda x.\,\lambda y.\,f((x,y))
+    \end{align*}
+    is an equivalence. By the definition of the recursion principle for $\Sigma$-types, the map $\fun{rec}_{\Sigma_AB}(C)$ is the quasi-inverse of $\fun{curry}$, as it takes a curried function and evaluates it on a pair by uncurrying it. Since the quasi-inverse of an equivalence is an equivalence, it follows that $\fun{rec}_{\Sigma_AB}(C)$ is an equivalence.
+\end{proof}
+
 \section{Exercises}
 
 \begin{exr}

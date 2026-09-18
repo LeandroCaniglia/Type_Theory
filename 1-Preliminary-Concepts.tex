@@ -953,6 +953,33 @@
     This function asserts that if we assume an element of the empty type, we can derive any conclusion $C(s)$ (the principle of \textsl{ex falso quodlibet}).\footnote{In classical logic, intuitionistic logic, and similar logical systems, the \textsl{principle of explosion} is the law according to which any statement can be proven from a contradiction. That is, from a contradiction, any proposition (including its negation) can be inferred; this is known as deductive \textsl{explosion}. Note however the existence of the field of Inconsistent Mathematics, a theory that explains and studies paradoxes and paraconsistency.}
 \end{lpar}
 
+\begin{lpar}{Case Analysis on Coproducts.}
+    When reasoning informally on a property $P(s)$ for an arbitrary element $s\colon A+B$ it is usual to apply \textit{case analysis\/}: one considers the scenario where $s$ is of the form $\fun{inl}(a)$ for some $a\colon A$, and separately the scenario where $s$ is of the form $\fun{inr}(b)$ for some $b\colon B$.
+    
+    This intuitive procedure is formally justified by the induction principle of the coproduct. Specifically, to construct a global witness:
+    \[
+        f\colon\prod_{s\colon A+B}P(s),
+    \]
+    \needspace{2\baselineskip}
+    it suffices to provide two independent case branches:
+    \begin{enumerate}[-]
+        \item a proof for left injections: $g_0\colon\prod_{a\colon A}P(\fun{inl}(a))$, and
+
+        \item a proof for right injections: $g_1\colon\prod_{b\colon B}P(\fun{inr}(b))$.
+    \end{enumerate}
+    The witness $f$ is then formally defined as
+    \[
+        f\defeq\lambda s.\,\fun{ind}_{A+B}(P,g_0,g_1,s).
+    \]
+    The computation rules:
+    \begin{align*}
+        f(\fun{inl}(a))&\equiv g_0(a)\\
+        f(\fun{inr}(b))&\equiv g_1(b)
+    \end{align*}
+    guarantee that evaluating $f$ on any canonical element reduces to the proof provided for that specific case. Thus, what manifests informally as \textit{pattern matching on constructors\/} is the production of a dependent function via induction.
+\end{lpar}
+
+
 \section{Boolean Type}
 
 \begin{lpar}{The type of booleans.}\label{lpar:boolean-type}
@@ -1869,6 +1896,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     as desired.
 \end{lpar}
 
+
 \section{Arithmetic of Natural Numbers}
 
 \begin{lpar}{Additive identity.}\label{lpar:additive-identity}
@@ -2265,8 +2293,8 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     For $\Sigma$-types, we define
     \[
         \fun{rec}_{\sum_{x\colon A} B(x)}\colon
-            \prod_{C\colon\univ}\Bigl(\prod_{x\colon A}\bigl(B(x)
-                \to C\bigr)\Bigr)
+            \prod_{C\colon\univ}\Bigl(\prod_{x\colon A}B(x)
+                \to C\Bigr)
                 \to \Bigl(\sum_{x\colon A}B(x)\Bigr)
                 \to C
     \]
@@ -2278,7 +2306,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \]
     To see that this is well defined, let us first observe that $g$ can be applied to $\pi_1(p)$. We have
     \[
-        g\colon\prod_{x\colon A}\bigl(B(x)\to C\bigr).
+        g\colon\prod_{x\colon A}B(x)\to C.
     \]
     The signature of $\pi_1$ implies that $\pi_1(p)\colon A$. Hence, $g(\pi_1(p))\colon B(\pi_1(p))\to C$.
 
@@ -2790,6 +2818,12 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             (z,a)&\mapsto z(\ev{\ev a}).
     \end{align*}
     To conclude the proof, take $Z\defeq\fun0$.
+
+    \bigskip
+
+    {\small
+    \textit{Second solution:} Consider the evaluation $\ev{}\colon A\to\neg\neg A$ defined by $a\mapsto\lambda\zeta\colon\neg A.\,\zeta(a)$. Now observe the functoriality of $\neg$, i.e., every map $X\to Y$ produces by composition another map $\neg Y\to\neg X$.
+    }
 \end{solution}
 
 \begin{exr}
@@ -2984,6 +3018,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     \end{enumerate}
 \end{solution}
 
+\needspace{2\baselineskip}
 \begin{exr}\label{exr:not}
     Consider the boolean type\/ $\fun{2}$.
     \begin{enumerate}[a),font=\upshape]

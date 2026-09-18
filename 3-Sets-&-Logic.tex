@@ -1,4 +1,4 @@
-\chapter{Sets \texorpdfstring{\&}{and} Logic}
+\chapter{Sets \texorpdfstring{\&}{and} Mere Propositions}
 
 \section{Sets}
 
@@ -571,7 +571,7 @@
         
         \item The \textsl{law of excluded middle} is the type
         \[
-            \fun{Lem}\defeq\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
+            \Lem\defeq\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
         \]
         In other words, the law of excluded middle states that all mere propositions are decidable.
     \end{enumerate}
@@ -1868,7 +1868,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}\ua\ \fe\label{exr:Lem-implies-2-props}
-    Show that if\/ $\fun{Lem}$ {\upshape[Definition~\ref{defn:lem}]} holds, then
+    Show that if\/ \Lem {\upshape[Definition~\ref{defn:lem}]} holds, then
     \[
         \Bigl(\sum_{A\colon\univ}\fun{isProp}(A)\Bigr)\simeq\fun2.
     \]
@@ -1877,7 +1877,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \begin{solution}
     \textsc{Idea:} The $\Sigma$-type classifies mere propositions into two groups: the empty ones and the contractible ones.
     
-    Fix $A\colon\univ$. By hypothesis, there exists a function $\lambda\colon\fun{Lem}$ satisfying
+    Fix $A\colon\univ$. By hypothesis, there exists a function $\lambda\colon\Lem$ satisfying
     \[
         \lambda(A)\colon\fun{isProp}(A)\to(A+\neg A).
     \]
@@ -1966,7 +1966,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}\ua\ \fe\label{exr:propositional-resizing}
-    Show that if\/ $\univ_{i+1}$ satisfies\/ $\fun{Lem}$, then the canonical inclusion\/ $\fun{Prop}_{\univ_i}\to\fun{Prop}_{\univ_{i+1}}$ is an equivalence.
+    Show that if\/ $\univ_{i+1}$ satisfies\/ \Lem, then the canonical inclusion\/ $\fun{Prop}_{\univ_i}\to\fun{Prop}_{\univ_{i+1}}$ is an equivalence.
 \end{exr}
 
 \begin{solution}
@@ -2014,9 +2014,9 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             &\eq{}\tau_i(f_{i+1}(\dep{A,\epsilon}))\\
             &\equiv\tau_i(c_A(\ell(A)(\epsilon))),
     \end{align*}
-    where $\ell$ is the witness of $\fun{Lem}\colon\univ_{i+1}$ given by hypothesis, and $c_A\colon(A+\neg A)\to\fun2$ is the map of the previous exercise.
+    where $\ell$ is the witness of $\Lem\colon\univ_{i+1}$ given by hypothesis, and $c_A\colon(A+\neg A)\to\fun2$ is the map of the previous exercise.
 
-    We claim that $\tau_i(c_A(z))\eq{}\dep{A,\epsilon}$ for all $A\colon\univ_i$ and $z\colon A+\neg A$. But this was proved in the previous exercise by induction on $z$, using the fact that $\fun{isProp}(A)$ is a mere proposition (and not that $\fun{Lem}\colon\univ_i$ was inhabited).
+    We claim that $\tau_i(c_A(z))\eq{}\dep{A,\epsilon}$ for all $A\colon\univ_i$ and $z\colon A+\neg A$. But this was proved in the previous exercise by induction on $z$, using the fact that $\fun{isProp}(A)$ is a mere proposition (and not that $\Lem\colon\univ_i$ was inhabited).
 
     Therefore, $\tau_i$ and $\phi$ are quasi-inverses, which implies that $\iota_i$ induces an equivalence.
     %
@@ -2084,7 +2084,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}
-    Show that if\/ $\fun{Lem}$ holds, then for all\/ $A\colon\univ$ we have
+    Show that if\/ \Lem holds, then for all\/ $A\colon\univ$ we have
     \[
         \bigl\lVert\lVert A\rVert\to A\bigr\rVert.
     \]
@@ -2098,7 +2098,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     where $P(A)\defeq\lVert A\rVert\to A$.
     
-    By hypothesis, we have a witness of $\fun{Lem}$, say
+    By hypothesis, we have a witness of \Lem, say
     \[
         \ell\colon\prod_{A\colon\univ}\fun{isProp}(A)\to(A+\neg A).
     \]
@@ -2137,7 +2137,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}\fe
-    {\upshape Corollary~\ref{cor:A+negA-not-always-true}} shows that the following naive form of\/ $\fun{Lem}$ is inconsistent with univalence:
+    {\upshape Corollary~\ref{cor:A+negA-not-always-true}} shows that the following naive form of\/ \Lem is inconsistent with univalence:
     \[
         \prod_{A\colon\univ}A+\neg A.
     \]
@@ -2181,7 +2181,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{solution}
 
 \begin{exr}\label{exr:lem-implies-neg-neg-equals-truncation}
-    Show that assuming\/ $\fun{Lem}$, the double negation\/ $\neg\neg A$ has the same recursion principle as the propositional truncation\/ $\lVert A\rVert$ but with a propositional computation rule rather than a judgmental one. In other words, prove that assuming\/ $\fun{Lem}$, if\/ $B$ is a mere proposition and we have\/ $f\colon A\to B$, then there is an induced\/ $g\colon\neg\neg A\to B$ such that\/ $g(\lambda u.\,u(a))\eq Bf(a)$ for all\/ $a\colon A$. Deduce that (assuming\/ $\fun{Lem}$) we have\/ $\neg\neg A\simeq\lVert A\rVert$. Thus, under\/ $\fun{Lem}$, the propositional truncation can be defined rather than taken as a separate type former.
+    Show that assuming\/ \Lem, the double negation\/ $\neg\neg A$ has the same recursion principle as the propositional truncation\/ $\lVert A\rVert$ but with a propositional computation rule rather than a judgmental one. In other words, prove that assuming\/ \Lem, if\/ $B$ is a mere proposition and we have\/ $f\colon A\to B$, then there is an induced\/ $g\colon\neg\neg A\to B$ such that\/ $g(\lambda u.\,u(a))\eq Bf(a)$ for all\/ $a\colon A$. Deduce that (assuming\/ \Lem we have\/ $\neg\neg A\simeq\lVert A\rVert$. Thus, under\/ \Lem, the propositional truncation can be defined rather than taken as a separate type former.
 \end{exr}
 
 \begin{solution}
@@ -2231,7 +2231,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \[
         \varphi\colon(B+\neg B)\to(\neg\neg B\to B).
     \]
-    Therefore, given witnesses $\ell\colon\fun{Lem}$ and $\pi\colon\fun{isProp}(B)$, we obtain a witness
+    Therefore, given witnesses $\ell\colon\Lem$ and $\pi\colon\fun{isProp}(B)$, we obtain a witness
     \[
         \ell(\pi)\colon B+\neg B.
     \]
@@ -2358,7 +2358,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 
 
 \begin{exr}\fe
-    Assuming $\fun{Lem}$, show that double negation commutes with universal quantification of mere propositions over sets. That is, show that if $X$ is a set and each $C(x)$ is a mere proposition, then $\fun{Lem}$ implies
+    Assuming \Lem, show that double negation commutes with universal quantification of mere propositions over sets. That is, show that if $X$ is a set and each $C(x)$ is a mere proposition, then \Lem implies
     \[
         \Bigl(
             \prod_{x\colon X}\neg\neg C(x)
@@ -2370,7 +2370,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{exr}
 
 \begin{proof}
-    Let $\ell\colon\fun{Lem}$ be a witness of the least excluded middle type. By definition, given a type $A\colon\univ$, we have
+    Let $\ell\colon\Lem$ be a witness of the least excluded middle type. By definition, given a type $A\colon\univ$, we have
     \[
         \ell(A)\colon\fun{isProp}(A)\to(A+\neg A).
     \]
@@ -2420,7 +2420,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     Given that both sides of $(\dag)$ are mere propositions, their equivalence follows from Lemma~\ref{lem:mere-proposition-equivalence}.
 
-    As proved in Exercise~\ref{exr:lem-implies-neg-neg-equals-truncation}, double negation and truncation are equivalent in $\fun{Lem}$ is assumed. Therefore, $(\dag)$ is equivalent to
+    As proved in Exercise~\ref{exr:lem-implies-neg-neg-equals-truncation}, double negation and truncation are equivalent in \Lem is assumed. Therefore, $(\dag)$ is equivalent to
     \[
         \Bigl(
             \prod_{x\colon X}\lVert C(x)\rVert
@@ -2472,23 +2472,23 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     
 \end{solution}
 
-\begin{exr}\fe
+\begin{exr}\fe\label{exr:LEM-DNE-equivalence}
     Show that the law of excluded middle\/ {\upshape[cf.~Definition~\ref{defn:lem}]} and the law of double negation, which states that
     \begin{equation}\label{eq:double-negation}
         \prod_{A\colon\univ}\fun{isProp}(A)\to(\neg\neg A\to A),
     \end{equation}
     are logically equivalent.
 
-    {\upshape Hint: To derive $\fun{Lem}$ use the hypothesis on $A+\neg A$.}
+    {\upshape Hint: To derive \Lem use the hypothesis on $A+\neg A$.}
     
 \end{exr}
 
 \begin{solution}
-    If $\ell\colon\fun{Lem}$, given $A\colon\univ$, we have
+    If $\ell\colon\Lem$, given $A\colon\univ$, we have
     \[
         \ell(A)\colon\fun{isProp}(A)\to(A+\neg A).
     \]
-    Following this with the map $(A+\neg A)\to(\neg\neg A\to A)$ of Lemma~\ref{lem:A+negA-to-negnegA-to-A} yields a map from $\fun{Lem}$ to the type of \eqref{eq:double-negation}.
+    Following this with the map $(A+\neg A)\to(\neg\neg A\to A)$ of Lemma~\ref{lem:A+negA-to-negnegA-to-A} yields a map from \Lem to the type of \eqref{eq:double-negation}.
 
     Conversely, given an inhabitant $d$ of \eqref{eq:double-negation}, we must use the function
     \[

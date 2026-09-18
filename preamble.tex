@@ -74,7 +74,7 @@
 
 
 %NEW COMMANDS
-\newcommand{\T}[1]{#1^{\rm T}}
+\newcommand{\T}[1]{#1^{\op T}}
 \newcommand{\col}[1]{\mathbf{#1}}
 \newcommand{\row}[1]{\T{\col#1}}
 \newcommand{\dotp}[2]{\row{#1}\col{#2}}
@@ -108,16 +108,16 @@
 \newcommand{\noend}{\ifmmode\to\leftarrow\else$\to\leftarrow$\fi}
 \DeclareMathOperator{\tr}{tr}
 \newcommand{\rank}[1]{\op{rank}#1}
-\newcommand{\ev}[1]{{\rm ev}_{#1}}
+\newcommand{\ev}[1]{{\op ev}_{#1}}
 \newcommand{\im}[1]{\op{im}#1}
 \newcommand{\fun}[1]{\mathsf{#1}}
 \newcommand{\id}{\fun{id}}
 \newcommand{\nset}[2][1]{\llbracket#1,#2\rrbracket}
 \newcommand{\dom}{\mathrm{dom}}
-\newcommand{\epi}{{\rm\bf epi}}
+\newcommand{\epi}{{\mbf{\op{epi}}}}
 \newcommand{\cl}{\mathrm{cl}}
-\newcommand{\hypo}{{\rm\bf hypo}}
-\newcommand{\prob}{{\rm prob}}
+\newcommand{\hypo}{{\mbf{\op{hypo}}}}
+\newcommand{\prob}{{\op prob}}
 \newcommand{\diag}{{\op{diag}}}
 \newcommand{\sg}{\op{sg}}
 \DeclareMathOperator{\supp}{supp}
@@ -290,17 +290,17 @@
 %groups
 \newcommand{\grp}[1]{\langle#1\rangle}
 \DeclareMathOperator{\ord}{ord}
-\newcommand{\Sym}[1]{{\rm Sym}#1}
-\newcommand{\Alt}[1]{{\rm Alt}#1}
-%\newcommand{\Aut}[1]{{\rm GL}#1}
+\newcommand{\Sym}[1]{{\op Sym}#1}
+\newcommand{\Alt}[1]{{\op Alt}#1}
+%\newcommand{\Aut}[1]{{\op GL}#1}
 \DeclareMathOperator{\Aut}{Aut}
 \newcommand{\Elt}{\mathrm{Elt}}
-\newcommand{\Hom}{{\rm Hom}}
+\newcommand{\Hom}{{\op Hom}}
 \newcommand{\End}[1]{{\op{End}}#1}
-\newcommand{\Inn}[1]{{\rm Inn}#1}
-\newcommand{\Syl}[1]{{\rm Syl}#1}
-\newcommand{\Hall}[1]{{\rm Hall}#1}
-\newcommand{\Core}{{\rm Core}}
+\newcommand{\Inn}[1]{{\op Inn}#1}
+\newcommand{\Syl}[1]{{\op Syl}#1}
+\newcommand{\Hall}[1]{{\op Hall}#1}
+\newcommand{\Core}{{\op Core}}
 \newcommand{\normal}{\lhd}
 \newcommand{\snormal}{\mathrel{\triangleleft\triangleleft}}
 \newcommand{\comm}{\mathrel\leftrightarrow}
@@ -312,8 +312,8 @@
 \newcommand{\subgroup}{\leqslant}
 \DeclareMathOperator{\CD}{{\cal CD}}
 \DeclareMathOperator{\Nm}{{\cal N}_m}
-\newcommand{\Soc}[1]{{\rm Soc}#1}
-\newcommand{\sd}{{\rm sd}}
+\newcommand{\Soc}[1]{{\op Soc}#1}
+\newcommand{\sd}{{\op sd}}
 \newcommand{\ch}{\mathrel{\textcolor{black!65}\blacktriangleleft}}
 \newcommand{\Fpn}[1][n]{\mathbb{F}_{p^{#1}}}
 \newcommand{\Fq}[1][q]{\mathbb{F}_{#1}}
@@ -583,3 +583,5 @@
   \label{#1}%
 }
 \makeatother
+
+\newcommand{\Lem}{\text{\upshape\textsc{lem}}}
