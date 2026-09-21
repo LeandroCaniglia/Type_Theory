@@ -4053,8 +4053,8 @@ More generally, while the inductive definition of the identity family provides t
     which follows from function extensionality because the codomain $\fun1$ is contractible.
 \end{solution}
 
-\begin{exr}
-    In\/ {\S\,\ref{intuition-for-uniqueness}} we defined the type\/ $\fun{List}(A)$ of finite lists of elements of type\/ $A$. Consider a similar inductive definition of a type\/ $\fun{Lost}(A)$ whose only constructor is
+\begin{exr}\label{exr:Lost}
+    In\/ {\upshape\S\,\ref{intuition-for-uniqueness}} we defined the type\/ $\fun{List}(A)$ of finite lists of elements of type\/ $A$. Consider a similar inductive definition of a type\/ $\fun{Lost}(A)$ whose only constructor is
     \[
         \fun{cons}\colon A
             \to\fun{Lost}(A)
@@ -4431,6 +4431,8 @@ More generally, while the inductive definition of the identity family provides t
         \item Without using\/ $\fun W_AB$, show that\/ $\fun W'_{A,B}$ satisfies the same recursion principle as\/ $\fun W_AB$ for defining functions into types in the universe\/ $\univ$ (to which it itself does not belong).
         
         \item Using \Lem, give an example of an\/ $A\colon\univ$ and a\/ $B\colon A\to\univ$ such that\/ $\fun W'_{A,B}$ is not equivalent to\/ $\fun W_AB$.
+        
+        {\upshape Hint: Consider $A=\fun2$, $B=\fun0$. Then use truncation to apply \Lem.}
     \end{enumerate}
 \end{exr}
 
@@ -4558,7 +4560,152 @@ More generally, while the inductive definition of the identity family provides t
             which is exactly the definitional identity we wanted to prove.
         \end{description}
 
-        \item 
+        \item As proposed in the hint, let us compare $\fun W\defeq\fun W_{\fun2,\fun0}$ and $\fun W'\defeq\fun W'_{\fun2,\fun0}$.
+
+        By Exercise~\ref{exr:W-to-Sigma-decidable-arity}, 
+        \begin{align*}
+            \fun W&\to\Sigma_{\fun2}\neg\fun0\\
+                &\simeq\Sigma_{\fun2}\fun1\\
+                &\simeq\fun2\times\fun1\\
+                &\simeq\fun2.
+        \intertext{Combining this with Exercise~\ref{exr:Sigma-to-W-and-W-to-Pi}, we deduce that $\fun W$ is logically equivalent to $\fun2$. On the other hand,}
+            \fun W'&\equiv\prod_{C\colon\univ}\;
+                \Bigl(
+                    \prod_{z\colon\fun2}(\fun0\to C)\to C
+                \Bigr)
+                \to C\\
+                &\simeq\prod_{C\colon\univ}\;
+                    \Bigl(
+                        \prod_{z\colon\fun2}\fun1\to C
+                    \Bigr)\to C\\
+                &\simeq\prod_{C\colon\univ}
+                    (\fun2\to C)\to C\\
+                &\simeq\prod_{C\colon\univ}(C\times C)\to C.
+        \end{align*}
+        Let $\ell\colon\Lem$ be a witness of the law of excluded middle. Given $C\colon\univ$, the type $\lVert C\eq\univ\fun2\rVert$ is a mere proposition. Thus, we obtain
+        \[
+            \ell(C)\colon
+                \lVert C\eq\univ\fun2\rVert+\neg\lVert C
+                \eq\univ
+                \fun2\rVert.
+        \]
+        Define
+        \begin{align*}
+            \epsilon_C\colon
+                \lVert C\eq\univ\fun2\rVert
+                +
+                \neg\lVert C\eq\univ\fun2\rVert
+                    &\to(C\times C\to C)\\
+                \fun{inl}(t)&\mapsto\pi_2\\
+                \fun{inr}(\zeta)&\mapsto\pi_1.
+        \end{align*}
+        Consider the function $f\defeq\lambda C.\,\epsilon_C(\ell(C))$.
+        \begin{itemize}
+            \item For $C\defeq\fun2$, we have $f(\fun2)=\pi_2$.
+            
+            \item For $C\defeq\fun2\times\fun2$, its truncation $\lVert\fun2\times\fun2\eq\univ\fun2\rVert$ is empty because the type $(\fun2\times\fun2\eq\univ\fun2)\to\fun0$ is inhabited and $\fun0$ is a mere proposition. Therefore, $f(\fun2\times\fun2)=\pi_1$.
+        \end{itemize}
+        It follows that $f\neq\lambda C.\,\pi_1$ and $f\neq\lambda C.\,\pi_2$. Since $\pi_1,\pi_2\colon\fun2\times\fun2\to\fun2$ are not equal either, the functions $f$, $\lambda C.\,\pi_1$, and $\lambda C.\,\pi_2$ yield three distinct elements in~$\fun W'$.
         
     \end{enumerate}
+\end{solution}
+
+\begin{exr}
+    Show that for any $A\colon\univ$ and $B\colon A\to\univ$, we have
+    \[
+        \neg\fun W_AB\simeq\neg\Sigma_A\neg B.
+    \]
+    In other words, $\fun W_AB$ is inhabited if, and only if, at least one constructor has an empty arity.\footnote{Compare to Exercise~\ref{exr:Lost}.}
+\end{exr}
+
+\begin{solution}
+    Let $\fun W$ denote the $\fun W$-type $\fun W_AB$. By Exercise~\ref{exr:Sigma-to-W-and-W-to-Pi}, there is a map $\Sigma_A\neg B\to\fun W$. Applying the contravariant functoriality of $\neg$, we obtain a map $\neg\fun W\to\neg\Sigma_A\neg B$. More precisely, this function is defined by
+    \begin{align*}
+        f\colon\neg\fun W&\to\neg\Sigma_A\neg B\\
+        \epsilon&\mapsto
+            \lambda\dep{a,\zeta}.\,
+                \epsilon
+                    \bigl(
+                        \fun{sup}
+                            (
+                                a,
+                                \fun{rec}_{\fun0}(\fun W)\circ\zeta
+                            )
+                    \bigr).
+    \end{align*}
+    For the backward function, we need to fix $\theta\colon\Sigma_A\neg B\to\fun0$ and produce a map $\fun W\to\fun0$. As established in Notation~\ref{ntn:hom-alpha-comp}, it suffices to construct a map
+    \[
+        \alpha_{\fun0}\colon\prod_{a\colon A}\neg B(a)\to\fun0,
+    \]
+    obtaining $\fun{hom}_{\fun W}(\fun0,\alpha_{\fun0})$. To fulfill this requirement, we specify
+    \[
+        \alpha_{\fun0}\defeq
+            \lambda a.\,\lambda\zeta.\,\theta(\dep{a,\zeta}).
+    \]
+    More precisely, we define
+    \begin{align*}
+        g\colon\neg\Sigma_A\neg B&\to\neg\fun W\\
+        \theta&\mapsto\fun{hom}_{\fun W}(\fun0,\alpha_{\fun0}).
+    \end{align*}
+    To complete the proof, we have to verify that $f$ and $g$ are quasi-inverses:
+    \begin{align*}
+        f\circ g(\theta)
+            &\equiv f\bigl(
+                \explain[\epsilon]
+                {\fun{hom}_{\fun W}(\fun0,\alpha_{\fun0})}
+                \bigr)\\
+            &\equiv\lambda\dep{a,\zeta}.\,
+                \explain[\epsilon]{
+                    \fun{hom}_{\fun W}(\fun0,\alpha_{\fun0})}
+                    \bigl(
+                        \fun{sup}(
+                            a,
+                            {\fun{rec}_{\fun0}(\fun W)}\circ\zeta
+                        )
+                    \bigr)\\
+            &\equiv\lambda\dep{a,\zeta}.\,
+                \alpha_{\fun0}
+                    \bigl(
+                        a,
+                        \fun{hom}_{\fun W}(\fun0,\alpha_{\fun0})
+                        \circ{\fun{rec}_{\fun0}(\fun W)}
+                        \circ\zeta
+                    \bigr)\\
+            &\equiv\lambda\dep{a,\zeta}.\,
+                \theta
+                    \bigl(
+                        a,
+                        \explain[\fun0\to\fun0]
+                        {\fun{hom}_{\fun W}(\fun0,\alpha_{\fun0})
+                        \circ{\fun{rec}_{\fun0}(\fun W)}}
+                        \circ\zeta
+                    \bigr)\\
+            &\eq{\neg\Sigma_A\neg B}
+                \lambda\dep{a,\zeta}.\,\theta(a,\zeta)\\
+            &\equiv\theta.\\[2mm]
+        g\circ f(\epsilon)
+            &\equiv g
+                    \Bigl(
+                        \explain[\theta]
+                        {
+                            \lambda\dep{a,\zeta}.\,
+                                \epsilon
+                                \bigl(
+                                    \fun{sup}(a,\fun{rec}_{\fun0}(\fun W)\circ\zeta)
+                                \bigr)
+                        }
+                    \Bigr)\\
+                &\equiv
+                    \fun{hom}_{\fun W}
+                    \bigl(
+                        \fun0,
+                        \lambda a.\,\lambda\zeta.\,
+                            \epsilon
+                            \bigl(
+                                \fun{sup}(a,\fun{rec}_{\fun0}(\fun W)\circ\zeta)
+                            \bigr)
+                    \bigr)\\
+                &\eq{\neg\fun W}\epsilon,
+    \end{align*}
+    where the final propositional equality holds trivially because the codomain of both functions is $\fun0$.
 \end{solution}
