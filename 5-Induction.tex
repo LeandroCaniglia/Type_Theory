@@ -158,12 +158,12 @@ which correspond to
     \]
     Concatenating these paths yields
     \[
-        p_n\ct\fun{ap}_{e_s(n,\dummy)}(h)\ct q_n^{-1}\colon
-            f(\fun{succ}(n))
-            \eq{E(\fun{succ}(n))}
-            g(\fun{succ}(n)),
+      p_n\ct\fun{ap}_{e_s(n,\dummy)}(h)\ct q_n^{-1}\colon
+      f(\fun{succ}(n))
+      \eq{E(\fun{succ}(n))}
+      g(\fun{succ}(n)),
     \]
-    which is definitionally equal to $C(\fun{succ}(n))$. To complete the proof, we set $c_s(n,h)$ to be this concatenation.
+    which yields a term of type $C(\fun{succ}(n))$. To complete the proof, we set $c_s(n,h)$ to be this concatenation.
 \end{proof}
 
 \begin{rem}\label{rem:List-induction-uniqueness}
@@ -179,22 +179,22 @@ which correspond to
         \quad\text{and}\quad
         g(\fun{nil})\eq{E(\fun{nil})}e_{\fun{nil}}.
     \]
-    The definition of $c_{\fun{cons}}(a,\ell,\eta)$ comes from
+    The definition of $c_{\fun{cons}}(a,\ell,\eta)$ is obtained by concatenating the path
     \[
-        \fun{ap}_{e_{\fun{cons}}(a,\ell,\dummy)}(\eta)
-            \colon e_{\fun{cons}}(a,\ell,f(\ell))
-                \eq{E(\fun{cons}(a,\ell))}
-                e_{\fun{cons}}(a,\ell,g(\ell))
+      \fun{ap}_{e_{\fun{cons}}(a,\ell,\dummy)}(\eta)
+      \colon e_{\fun{cons}}(a,\ell,f(\ell))
+      \eq{E(\fun{cons}(a,\ell))}
+      e_{\fun{cons}}(a,\ell,g(\ell))
     \]
-    and the equalities
+    with the paths provided by the equalities
     \[
-        f(\fun{cons}(a,\ell))\eq{E(\fun{cons}(a,\ell))}
-        e_{\fun{cons}}(a,\ell,f(\ell))
+      f(\fun{cons}(a,\ell))\eq{E(\fun{cons}(a,\ell))}
+      e_{\fun{cons}}(a,\ell,f(\ell))
     \]
     and
     \[
-        g(\fun{cons}(a,\ell))\eq{E(\fun{cons}(a,\ell))}
-        e_{\fun{cons}}(a,\ell,g(\ell)).
+      g(\fun{cons}(a,\ell))\eq{E(\fun{cons}(a,\ell))}
+      e_{\fun{cons}}(a,\ell,g(\ell)).
     \]
 \end{rem}
 
@@ -216,19 +216,19 @@ and the definitional equalities
 \end{align*}
 We can use the constant families $E(n)\defeq\N'$ and $E'(n')\defeq\N$ to define
 \begin{align*}
-    f\colon\N\to\N'&\defeq\fun{ind}_\N
-        (
-            E,
-            0',
-            \lambda n.\,\fun{succ}'
-        )
+  f\colon\N\to\N'&\defeq\fun{ind}_\N
+  (
+    E,
+    0',
+    \lambda n.\,\lambda r.\,\fun{succ}'(r)
+  )
 \intertext{and}
-    g\colon\N'\to\N&\defeq\fun{ind}_{\N'}
-        (
-            E',
-            0,
-            \lambda n'.\,\fun{succ}
-        ).
+  g\colon\N'\to\N&\defeq\fun{ind}_{\N'}
+  (
+    E',
+    0,
+    \lambda n'.\,\lambda r.\,\fun{succ}(r)
+  ).
 \end{align*}
 First, observe that
 \[
@@ -353,7 +353,7 @@ A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Conse
 
 \section{Well-Founded Trees}
 
-The so called \textsl{well-founded trees}, a.k.a.~\textsl{$\fun W$-trees}, generalize inductive data structures such as natural numbers and lists. The term ``well-founded'' means that there are no infinite downward paths in these trees.
+The so-called \textsl{well-founded trees}, a.k.a.~\textsl{$\fun W$-trees}, generalize inductive data structures such as natural numbers and lists. The term ``well-founded'' means that there are no infinite downward paths in these trees.
 
 A $\fun W$-tree has two basic ingredients:
 \begin{itemize}
@@ -447,7 +447,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 
     The second argument $\ell\colon\fun L_X$ is recursive. Since each constructor $\fun{cons}(x,\dummy)$ expects one recursive argument, it is assigned an arity of the unit type $\fun1$. Similarly, since $\fun{nil}$ expects zero recursive arguments, its arity is the empty type~$\fun0$.
 
-    Summarizing, our proposal is to define $A\defeq\fun1+X$ and specify the arity family $B\colon A\to\univ$ by cases: $B(\fun{inl}(\fstar))\defeq\fun0$ and $B(\fun{inr}(x))\defeq\fun1$. In other words, $B(a)\defeq\fun{rec}_{\fun1+X}(\univ,\lambda{\fstar}.\,\fun0,\lambda{\fstar}.\,\fun1,a)$.
+    Summarizing, our proposal is to define $A\defeq\fun1+X$ and specify the arity family $B\colon A\to\univ$ by cases: $B(\fun{inl}(\fstar))\defeq\fun0$ and $B(\fun{inr}(x))\defeq\fun1$. In other words, $B(a)\defeq\fun{rec}_{\fun1+X}(\univ,\lambda{\fstar}.\,\fun0,\lambda x.\,\fun1,a)$.
     \[
         % Generic structure of a cons(x, \ell) node
         \begin{tikzpicture}[
@@ -495,8 +495,10 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     With this, we can formally redefine:
     \begin{itemize}
         \item\phantomsection\label{itm:list-from-W}
-        $\fun L'_X\defeq\fun W_{\fun1+X}\fun{rec}_{\fun1+X}(\univ,\lambda{\fstar}.\,\fun0,\lambda{\fstar}.\,\fun1)$,
-        \item $\fun{nil'}\defeq\fun{sup}(\fun{inl}(\fstar),\fun{rec}_{\fun0}(\fun\fun L'_X))$, and
+        $\fun L'_X\defeq\fun W_{\fun1+X}\fun{rec}_{\fun1+X}(\univ,\lambda{\fstar}.\,\fun0,\lambda x.\,\fun1)$,
+     
+        \item $\fun{nil'}\defeq\fun{sup}(\fun{inl}(\fstar),\fun{rec}_{\fun0}(\fun L'_X))$, and
+     
         \item $\fun{cons'}(x,\ell')\defeq\fun{sup}(\fun{inr}(x),\lambda{\fstar}.\,\ell')$.
     \end{itemize}
 
@@ -654,11 +656,11 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
     We must construct the data required by $\fun W$-induction to yield standard list induction. This involves case analysis over the label $a\colon\fun1+X$.
 
     Suppose $a\equiv\fun{inl}(\fstar)$. In this case, we have $B(a)\equiv\fun0$. Consequently, the associated subtree function is $\phi\equiv\fun{rec}_{\fun0}(\fun L_X)$. In particular, \hyperref[itm:list-from-W]{by definition$\,\scriptstyle[\uparrow]$},
-    \[
-        \fun{sup}(a,\phi)
-            \equiv\fun{sup}(a,\fun{rec}_{\fun0}(\fun L_X)
-            \equiv\fun{nil}.
-    \]
+     \[
+     \fun{sup}(a,\phi)
+     \equiv\fun{sup}(a,\fun{rec}_{\fun0}(\fun L_X))
+     \equiv\fun{nil}.
+     \]
     The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun0}E(\phi(b))$. Because the product runs over the empty type, this type is equivalent to $\fun1$ and contains a unique, trivial inhabitant.
 
     For this case, the inductive step function of $\fun{ind}_{\fun W}$ needs to map this trivial inhabitant $g$ to a term in $E(\fun{sup}(a,\phi))\equiv E(\fun{nil})$. This is precisely the data required by standard list induction: a term $e_{\fun{nil}}\colon E(\fun{nil})$.
@@ -904,7 +906,15 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
         h(f(y),\psi(y))\colon
             \phi(f(y))\eq{\fun W}\psi(y)
     \]
-    for all $y\colon B(x)$. By Lemma~\ref{lem:transport-is-precomp} $\fun{transport}^{\lambda z,\,B(z)\to\fun W}(p,\phi)\equiv\phi\circ f$. Thus, we obtain a homotopy $\eta\colon\fun{transport}^{\lambda z.\,B(z)\to\fun W}(p,\phi)\sim\psi$. Then, function extensionality yields
+    for all $y\colon B(x)$. By Lemma~\ref{lem:transport-is-precomp}, there is a path
+    \[
+        q\colon
+            \fun{transport}^{\lambda z.\,B(z)\to\fun W}
+                (p,\phi)
+            \eq{B(x)\to\fun W}
+            \phi\circ f.
+    \]
+    Applying $\fun{happly}$ to $q$ and concatenating the result with the point-wise equality provided by $h$, we obtain a homotopy $\eta\colon\fun{transport}^{\lambda z.\,B(z)\to\fun W}(p,\phi)\sim\psi$. Then, function extensionality yields
     \[
         \fun{funext}(\eta)\colon
             \fun{transport}^{\lambda z.\,B(z)\to\fun W}(p,\phi)\eq{B(x)\to\fun W}\psi.
@@ -1070,11 +1080,17 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{proof}
 
 \begin{defn}
-    Let $A\colon\univ$ be a type of labels and $B\colon A\to\univ$ an arity family. A \textsl{polynomial functor} (in normal form) is the type family
-    \[
-        P(X)\defeq\sum_{a\colon A}B(a)\to X
-    \]
-    for any $X\colon\univ$.
+    Let $A\colon\univ$ be a type of labels and $B\colon A\to\univ$ an arity family. For any type $X\colon\univ$, the \textsl{polynomial functor} (in normal form) is the type family defined by:
+    \begin{align*}
+         P(X)&\defeq\sum_{u\colon\fun1+A}B(u)\to X\\
+         &\eq{\univ}
+            \Bigl(
+                \sum_{u\colon\fun1}
+                    \fun0\to X
+            \Bigr)
+            +\sum_{a\colon A}\fun1\to X\\
+         &\eq{\univ}\fun1+A\times X.
+     \end{align*}
 \end{defn}
 
 \begin{rem}
@@ -1106,20 +1122,20 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{defn}
 
 \begin{rem}
-    A $\fun W$-algebra $\dep{C,\alpha_C}$ admits an \textsl{uncurried variant} $\dep{C,\bar s_C}$, where
+    A $\fun W$-algebra $\dep{C,\alpha_C}$ admits an \textsl{uncurried variant} $\dep{C,\bar\alpha_C}$, where
     \[
-        \bar s_C\defeq\fun{rec}_{P(C)}(C,\alpha_C)
+        \bar\alpha_C\defeq\fun{rec}_{P(C)}(C,\alpha_C)
             \colon P(C)\to C.
     \]
     We will refer to this form as a \textsl{$P$-algebra}.
     
-    These two views are interchangeable since $\alpha_C$ can be recovered from $\bar s_C$ by the computation rule of the $\Sigma$-type.
+    These two views are interchangeable since $\alpha_C$ can be recovered from $\bar\alpha_C$ by the computation rule of the $\Sigma$-type.
 \end{rem}
 
 \needspace{2\baselineskip}
 \begin{defns}\ 
     \begin{enumerate}[-]
-        \item Given $P$-algebras $\dep{C,\bar s_C}$ and $\dep{D,\bar\alpha_D}$, any map $f\colon C\to D$ induces a function $Pf\colon P(C)\to P(D)$ defined by
+        \item Given $P$-algebras $\dep{C,\bar\alpha_C}$ and $\dep{D,\bar\alpha_D}$, any map $f\colon C\to D$ induces a function $Pf\colon P(C)\to P(D)$ defined by
         \[
             Pf(\dep{a,\phi})\defeq\dep{a,f\circ\phi},
         \]
@@ -1701,7 +1717,7 @@ Historically, the recursion principles for inductive types were formulated using
         s\colon\prod_{a\colon A}
             (B(a)\to\fun W\times C)\to C.
     \]
-    Since $B(A)\to\fun W\times C$ equals $(B(a)\to\fun W)\times(B(a)\to C)$, by currying we recover the specification given in \eqref{eq:W-type-step-function}.
+    Since $B(a)\to\fun W\times C$ equals $(B(a)\to\fun W)\times(B(a)\to C)$, by currying we recover the specification given in \eqref{eq:W-type-step-function}.
 
     Finally, Definition~\ref{defn:categorical-recursion} yields
     \[
@@ -1758,7 +1774,7 @@ If we substitute our definition of $\fun{ind}_{\N'}$ into this expected identity
 \end{equation}
 Given $\phi\colon\fun1\to\N'$ and $h\colon\prod_{b\colon\fun1}E(\phi(b))$, to define $e_s(1_{\fun2},\phi,h)$, we must construct a term of type $E(\fun{sup}(1_{\fun2},\phi))$.
 
-Since the domain of both $\phi$ and $h$ is $\fun1$, we can apply them to $\fstar\colon\fun1$ obtaining
+Since the domain of both $\phi$ and $h$ is $\fun1$, we can apply them to $\fstar\colon\fun1$, obtaining
 \begin{align*}
     \phi(\fstar)&\colon\N',\\
     h(\fstar)&\colon E(\phi(\fstar)).
@@ -1953,9 +1969,9 @@ which is impossible in the type $\fun2$ [cf.~Exercise~\ref{exr:2-simeq-2-simeq-2
         
         \item $\Phi\equiv X$,
         
-        \item $\Phi\equiv \prod_{y\colon A}B(y)$, $X\notin\mathcal F(A)$, and $\fun{Pos}_X(B(y))$ holds for all $y\colon A$,
+        \item $\Phi\equiv\prod_{y\colon A}B(y)$, $X\notin\mathcal F(A)$, and $\fun{Pos}_X(B(y))$ holds,
         
-        \item $\Phi\equiv \sum_{y\colon A}B(y)$, $X \notin\mathcal F(A)$, and $\fun{Pos}_X(B(y))$ holds for all $y\colon A$,
+        \item $\Phi\equiv\sum_{y\colon A}B(y)$, $X \notin\mathcal F(A)$, and $\fun{Pos}_X(B(y))$ holds,
         
         \item $\Phi\equiv A+B$, and $\fun{Pos}_X(A)$ and $\fun{Pos}_X(B)$ both hold.
     \end{enumerate}
@@ -1993,14 +2009,19 @@ which is impossible in the type $\fun2$ [cf.~Exercise~\ref{exr:2-simeq-2-simeq-2
             \fun{map}_\Phi(f)(\fun{inr}(b)) &\defeq \fun{inr}(\fun{map}_B(f)(b)).
         \end{align*}
         
-        \item \textsc{Dependent product:} Suppose $\Phi(X) \equiv \prod_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds for all $y\colon A$. By the inductive hypothesis, for any $y\colon A$, we have a function $\fun{map}_{B(y)}(f)\colon B(U,y)\to B(V,y)$. Given a dependent function $g\colon \prod_{y\colon A} B(U,y)$, we define
+        \item \textsc{Dependent product:} Suppose $\Phi(X) \equiv \prod_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds. By the inductive hypothesis, for any $y\colon A$, we have a function $\fun{map}_{B(y)}(f)\colon B(U,y)\to B(V,y)$. Given a dependent function $g\colon \prod_{y\colon A} B(U,y)$, we define
         \[
-            \fun{map}_\Phi(f)(g)\defeq\lambda y.\,\fun{map}_{B(y)}(f)(g(y)).
+            \fun{map}_\Phi(f)(g)\defeq
+                \lambda y.\,\fun{map}_{B(y)}(f)(g(y)).
         \]
         
-        \item \textsc{Dependent sum:} Suppose $\Phi(X) \equiv \sum_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds for all $y\colon A$. By the inductive hypothesis, we again have $\fun{map}_{B(y)}(f)$ for any $y\colon A$. Given a pair $p\colon \sum_{y\colon A} B(U,y)$, we define
+        \item \textsc{Dependent sum:} Suppose $\Phi(X) \equiv \sum_{y\colon A} B(X,y)$, where $X \notin \mathcal F(A)$ and $\fun{Pos}_X(B(X,y))$ holds. By the inductive hypothesis, we again have $\fun{map}_{B(y)}(f)$ for any $y\colon A$. Given a pair $p\colon \sum_{y\colon A} B(U,y)$, we define
         \[
-            \fun{map}_\Phi(f)(p)\defeq\bigl(\pi_1(p), \fun{map}_{B(\pi_1(p))}(f)(\pi_2(p))\bigr).
+            \fun{map}_\Phi(f)(p)\defeq
+                \bigl(
+                    \pi_1(p),
+                    \fun{map}_{B(\pi_1(p))}(f)(\pi_2(p))
+                \bigr).
         \]
     \end{enumerate}
     This completes the construction. To complete the proof of functoriality, it remains to show that $\fun{map}_\Phi(\fun{id}_U)$ is propositionally equal to $\fun{id}_{\Phi(U)}$ and $\fun{map}_\Phi(g \circ f)$ is propositionally equal to $\fun{map}_\Phi(g) \circ \fun{map}_\Phi(f)$. We omit the details because these properties follow by structural induction under the same case analysis as above.
@@ -2275,8 +2296,8 @@ The eliminator consumes these two methods and outputs the global proof for all n
 \begin{rem}
     When we evaluate the global eliminator $\fun{ind}_X$ on the constructed term $\fun c(z,x)$, the computation rule establishes that
     \[
-        \fun{ind}_X(P,\dots,\fun c(z,x))
-            \equiv p_c
+        \fun{ind}_X(P,\dots,g(z),\fun c(z,x))
+            \equiv p_{\fun c}
                 \bigl(
                     z,
                     x,
@@ -2284,10 +2305,11 @@ The eliminator consumes these two methods and outputs the global proof for all n
                         \bigl(
                             P,
                             \dots,
+                            h(z,w),
                             x(w)
                         \bigr)
                 \bigr).
-    \]
+     \]
 \end{rem}
 
 \subsection*{The Accessibility Predicate (Well-Foundedness)}
@@ -2577,9 +2599,9 @@ To show that a $\fun W$-type $\fun W_AB$ is exactly an inductive type family ind
             \Bigr)
             \to X(\fstar)\\
             &\equiv\prod_{x\colon A}(B(x)\to X(\fstar))
-            \to X(\fstar),
-    \end{align*}
-    where $W\defeq X(\fstar)$. If we set $\fun W\defeq X(\fstar)$, the constructor signature becomes:
+                \to X(\fstar).
+        \end{align*}
+        If we set $\fun W\defeq X(\fstar)$, the constructor signature becomes:
     \[
         \prod_{x\colon A}(B(x)\to\fun W)\to\fun W,
     \]
@@ -2674,7 +2696,7 @@ The constructors for $B$ specify how to build elements of $B(a)$ for a given $a 
 
 The elimination principle for such a definition must be mutually defined: we simultaneously specify a motive for $A$ and a motive for $B$, and provide methods for all constructors of both $A$ and $B$.
 
-To understand the formal structure, let us look at the four standard components of this definition:
+To understand the formal structure, let us look at a canonical simplified schema consisting of one prototypical constructor for $A$ and one for $B$:
 
 \textbf{Formation Rules:}
 \[
@@ -2807,7 +2829,7 @@ Let us now fix a parameter $a_0\colon A$. We can define the based identity type 
 \[
     a_0\eq A\dummy\colon A\to\univ
 \]
-as an inductive family with one index. Following Definition~\ref{defn:no-recursive-args} again we have:
+as an inductive family with one index. Following Definition~\ref{defn:no-recursive-args} again, we have:
 \begin{itemize}
     \item \textsc{Index Type:} $I\defeq A$.
     
@@ -2831,7 +2853,7 @@ To derive the based path induction principle, consider a motive of type:
 According to Definition~\ref{defn:no-recursive-args}, the eliminator method for our constructor has the signature
 \[
     p_{\fun{refl}}\colon\prod_{z\colon\fun1}
-        P(g(z),\fun{refl}(a_0))
+        P(g(z),\fun{refl}_{a_0})
         \equiv P(a_0,\fun{refl}_{a_0}).
 \]
 Thus, the method reduces to providing an element $d\colon P(a_0,\fun{refl}_{a_0})$.
@@ -3403,7 +3425,7 @@ More generally, while the inductive definition of the identity family provides t
             \prod_{A,B\colon\univ}\;
             \prod_{e\colon A\simeq B}D(A,B,e)
     \]
-    such that\/ $f(A,A,\fun{id}_A)=d(A)$ for all\/ $A\colon\univ$.
+    such that\/ $f(A,A,\fun{id}_A)\eq{}d(A)$ for all\/ $A\colon\univ$.
 \end{cor}
 
 \begin{proof}
@@ -3437,7 +3459,7 @@ More generally, while the inductive definition of the identity family provides t
     \]
     such that
     \[
-        k(f,f,\lambda x.\,\fun{refl}_{f(x)})=d(f)
+        k(f,f,\lambda x.\,\fun{refl}_{f(x)})\eq{}d(f)
     \]
     for all\/ $f$.
 \end{cor}
@@ -3816,10 +3838,12 @@ More generally, while the inductive definition of the identity family provides t
 
     Assuming the existence of $\fun{rec}_C$, we obtain the map
     \[
-        \fun{rec}_C(C\to\fun0,s)
-            \colon C\to(C\to\fun0),
+     f\defeq\fun{rec}_C(C\to\fun0,s)
+     \colon C\to(C\to\fun0).
     \]
-    which, for every $c\colon C$, produces an inhabitant $\fun{rec}_C(C\to\fun0,s)(c)(c)\colon\fun0$.
+    We can now define the diagonal function $d\colon C\to\fun0$ by $d(x)\defeq f(x)(x)$. Thus, the constructor yields an element $c_0\defeq\fun c(d)\colon C$. 
+    
+    Finally, evaluating the diagonal function on this element produces $d(c_0)\colon\fun0$, successfully inhabiting the empty type.
     %
     
 \end{solution}
@@ -3980,8 +4004,8 @@ More generally, while the inductive definition of the identity family provides t
     \end{align*}
     By recursion we obtain
     \[
-        \fun{rec}_{L_A}(P)\colon(L_A\to A)\to A
-            \to L_A\to A,
+        \fun{rec}_{L_A}(A)\colon((L_A\to A)\to A)
+        \to L_A\to A,
     \]
     satisfying the computation rule
     \[
@@ -4122,7 +4146,7 @@ More generally, while the inductive definition of the identity family provides t
             \quad\text{and}\quad
             \zeta_b\defeq\pi_2(h_a(b))\colon B(x_b)\to\fun0.
         \]
-        Since $A$ is a mere proposition, we have the path $p_b\colon a\eq{A}x_b$ given by $\fun{isProp}(A)(a,x_b)$. Thus, we obtain
+        Since $A$ is a mere proposition, there is a witness $\pi\colon\fun{isProp}(A)$, which yields the path $p_b\defeq\pi(a,x_b)\colon a\eq{A}x_b$. Thus, we obtain
         \[
             \fun{transport}^B(p_b,b)\colon B(x_b),
         \]
@@ -4307,7 +4331,7 @@ More generally, while the inductive definition of the identity family provides t
     \]
     Thus, we obtain
     \[
-        \alpha\defeq\lambda a.\,s_a\circ\partial,
+        \alpha\defeq\lambda a.\,s_a(\partial(a)),
     \]
     where
     \[
@@ -4332,7 +4356,7 @@ More generally, while the inductive definition of the identity family provides t
         \item $\neg\Pi_AB\to\lVert\fun W_AB\rVert$ for any\/ $A\colon\fun{Set}$ and\/ $B\colon A\to\fun{Prop}$.
     \end{enumerate}
     
-    Similarly, using\/ {\upshape Corollary~\ref{cor:A+negA-not-always-true}}, show that it is inconsistent to assume that either implication in\/ {\upshape a')} or\/ {\upshape b')} holds for all\/ $A\colon\univ$ and\/ $B\colon A\to\univ$.
+    Similarly, using\/ {\upshape Corollary~\ref{cor:A+negA-not-always-true}}, show that it is inconsistent to assume that either untruncated implication in\/ {\upshape a)} or\/ {\upshape b)} holds for all\/ $A\colon\univ$ and\/ $B\colon A\to\univ$.
 
     {\upshape Hint: For a) $\Rightarrow$ c), given $P\colon\fun{Prop}$, consider $A\defeq P+\fun{isProp}(P)$. For b) $\Rightarrow$ c), take $B$ as the constant $\fun0$.}
 \end{exr}
@@ -4349,7 +4373,7 @@ More generally, while the inductive definition of the identity family provides t
         \end{align*}
         where $c$ is a center of contraction of $\fun{isProp}(P)$ (or $\fstar$ if we decided to use~$\fun1$ instead).
         
-        For $x\colon P$, define $\phi_x\colon\neg P\to\fun W$ by $\phi_x(\zeta)\defeq\fun{rec}_{\fun0}(\fun W, \zeta(x))$. This yields a term $w_x\defeq\fun{sup}(\fun{inl}(x),\phi_x)\colon\fun W$.
+        For $x\colon P$, define $\phi_x\colon\neg P\to\fun W$ by $\phi_x(\zeta)\defeq\fun{rec}_{\fun0}(\fun W)(\zeta(x))$. This yields a term $w_x\defeq\fun{sup}(\fun{inl}(x),\phi_x)\colon\fun W$.
         
         Moreover, we can reuse $w_x$ to define $\psi\colon P\to\fun W$ by $\psi(x)\defeq w_x$. For the right branch of $A$, take:
         \[
@@ -4408,9 +4432,9 @@ More generally, while the inductive definition of the identity family provides t
         
     \end{enumerate}
 
-    Regarding the final requirement of the exercise, as noted in a)~$\Rightarrow$~c), if we replace $\fun{isProp}(P)$ with $\fun1$, the exact same argument shows that $P+\neg P$ is inhabited for any type $P\colon\univ$. The inconsistency then follows from Corollary~\ref{cor:A+negA-not-always-true}.
+    Regarding the final requirement of the exercise, as noted in a)~$\Rightarrow$~c), if we replace $\fun{isProp}(P)$ with $\fun1$, the exact same argument applied to the untruncated premise~a) shows that $P+\neg P$ is inhabited for any type $P\colon\univ$. The inconsistency then follows from Corollary~\ref{cor:A+negA-not-always-true}.
 
-    The same applies to the solution of b) $\Rightarrow$~c), where none of the restrictions on $A$, $B$, or $P$ were used.
+    The same applies to the solution of b)~$\Rightarrow$~c) using the untruncated premise b), since without truncation we can directly extract a term of $P$ from $\fun W$, bypassing the need for $P$ to be a mere proposition.
 \end{solution}
 
 \begin{exr}
@@ -4449,17 +4473,17 @@ More generally, while the inductive definition of the identity family provides t
         \end{align*}
 
         \item Let $w'\colon\fun W'$. We need to construct a term of $\neg\neg\Sigma_A\neg B$.
-        
+ 
         Consider the case where $C\defeq\fun0$. Then,
         \begin{align*}
             w'(\fun0)&\colon
                 \Bigl(
-                    \prod_{x\colon A}\neg B(x)
+                    \prod_{x\colon A}\neg\neg B(x)
                 \Bigr)
                 \to\fun0.
         \end{align*}
-        By the recursion principle of $\Sigma$-types\footnote{\nref{lpar:Sigma-type-rec-and-ind}.}, the map $\fun{rec}_{\Sigma_A\neg B}(\fun0)$ is an equivalence from $\Pi_A\neg B$ to $\Sigma_A\neg B\to\fun0 \equiv \neg\Sigma_A\neg B$ (Corollary~\ref{cor:Sigma-rec(C)-is-equivalence}). 
-        
+         By the recursion principle of $\Sigma$-types\footnote{\nref{lpar:Sigma-type-rec-and-ind}.}, the map $\fun{rec}_{\Sigma_A\neg B}(\fun0)$ is an equivalence from $\prod_{x\colon A}\neg\neg B(x)$ to $\Sigma_A\neg B\to\fun0 \equiv \neg\Sigma_A\neg B$ (Corollary~\ref{cor:Sigma-rec(C)-is-equivalence}). 
+         
         Consequently, the type of $w'(\fun0)$ is equivalent to $\neg\neg\Sigma_A\neg B$. Mapping $w'(\fun0)$ along this equivalence yields the required term.
 
         \item According to Notation~\ref{ntn:hom-alpha-comp}, we have to prove without invoking $\fun W$-types that, given $C\colon\univ$, there is a constructor
@@ -4527,7 +4551,7 @@ More generally, while the inductive definition of the identity family provides t
             \]
             Therefore, given $f$ as above, $w'(C)(f)$ is a term of type $C$. Consequently, we can define the desired map as $w'\mapsto w'(C)(f)$. In other words
             \begin{equation}\label{eq:hom'}
-                \fun{hom'_C}(f)(w')\defeq w'(C)(f).
+                \fun{hom}'_C(f)(w')\defeq w'(C)(f).
             \end{equation}
             
             \item[Computation:] Using the notation and specifications above, we obtain
@@ -4584,7 +4608,7 @@ More generally, while the inductive definition of the identity family provides t
         \end{align*}
         Let $\ell\colon\Lem$ be a witness of the law of excluded middle. Given $C\colon\univ$, the type $\lVert C\eq\univ\fun2\rVert$ is a mere proposition. Thus, we obtain
         \[
-            \ell(C)\colon
+            \ell(\lVert C\eq\univ\fun2\rVert)\colon
                 \lVert C\eq\univ\fun2\rVert+\neg\lVert C
                 \eq\univ
                 \fun2\rVert.
@@ -4681,7 +4705,8 @@ More generally, while the inductive definition of the identity family provides t
                         \circ\zeta
                     \bigr)\\
             &\eq{\neg\Sigma_A\neg B}
-                \lambda\dep{a,\zeta}.\,\theta(a,\zeta)\\
+                \lambda\dep{a,\zeta}.\,
+                    \theta(\dep{a,\zeta})\\
             &\equiv\theta.\\[2mm]
         g\circ f(\epsilon)
             &\equiv g
@@ -4691,7 +4716,12 @@ More generally, while the inductive definition of the identity family provides t
                             \lambda\dep{a,\zeta}.\,
                                 \epsilon
                                 \bigl(
-                                    \fun{sup}(a,\fun{rec}_{\fun0}(\fun W)\circ\zeta)
+                                    \fun{sup}(
+                                        a,
+                                        \fun{rec}_{\fun0}
+                                            (\fun W)
+                                        \circ\zeta
+                                    )
                                 \bigr)
                         }
                     \Bigr)\\
@@ -4702,7 +4732,12 @@ More generally, while the inductive definition of the identity family provides t
                         \lambda a.\,\lambda\zeta.\,
                             \epsilon
                             \bigl(
-                                \fun{sup}(a,\fun{rec}_{\fun0}(\fun W)\circ\zeta)
+                                \fun{sup}(
+                                    a,
+                                    \fun{rec}_{\fun0}
+                                        (\fun W)
+                                    \circ\zeta
+                                )
                             \bigr)
                     \bigr)\\
                 &\eq{\neg\fun W}\epsilon,
