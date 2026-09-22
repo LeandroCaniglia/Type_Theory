@@ -536,7 +536,7 @@ In this context, $E$ is the \textsl{total space}\footnote{After the French \text
         & B
     \end{tikzcd}
 \]
-In Homotopy Type Theory, given a type family $P\colon A\to\univ$, the first projection $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space} $\sum_{x\colon A}P(x)$ and \textsl{base space} $A$. This structural analogy is established by the lemma below.
+In Homotopy Type Theory, given a type family $P\colon A\to\univ$, the first projection $\fun{\pi}_1\colon \sum_{x\colon A}P(x)\to A$ is analogous to a fibration with \textsl{total space} $\sum_{x\colon A}P(x)$ and \textsl{base space} $A$. This structural analogy is established by the theorem below.
 
 Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ and $P(b)$. Although a point $u\colon P(a)$ cannot be directly compared with $v\colon P(b)$ due to type mismatch, it is possible to establish a connection between the pairs $\dep{a,u}$ and $\dep{b,v}$ within the $\Sigma$-type. Specifically, if there exists a path $p\colon a\eq A b$, we can transport $u$ along $p$ to obtain an element $\fun{transport}^P(p,u)\colon P(b)$. Since this transported term inhabits the same fiber as $v$, the comparison becomes well-defined. More precisely:
 
@@ -547,7 +547,6 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
             \prod_{p\colon a\eq Ab}
             \dep{a,u}\eq E\dep{b,\fun{transport}^P(p,u)}
     \]
-    \needspace{2\baselineskip}
     satisfying the following properties:
     \begin{enumerate}[i),font=\upshape]
         \item $\fun{lift}(u,p)\colon\dep{a,u}\eq E \dep{b,\fun{transport}^P(p,u)}$.
