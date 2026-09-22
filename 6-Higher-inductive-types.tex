@@ -1,1 +1,88 @@
 \chapter{Higher Inductive Types}
+
+\begin{thm}{\upshape[Map Lifting Property]}\label{thm:map-lift}
+    Let\/ $P\colon A\to\univ$ be a type family over\/~$A$ and\/ $E\defeq\sum_{x\colon A}P(x)$ its total space. Given a type\/ $B$ and a map\/ $f\colon B\to A$, there exists a function
+    \[
+        \fun{maplift}\colon
+            \Bigl(
+                \prod_{y\colon B}P(f(y))
+            \Bigr)
+            \to\sum_{\hat f\colon B\to E}
+                \pi_1^E\circ\hat f\sim f
+    \]
+    satisfying, for every section\/ $s\colon\prod_{y\colon B}P(f(y))$, the judgmental identities
+    \[
+        \pi_1(\fun{maplift}(s))\equiv\lambda y.\,\dep{f(y),s(y)}
+        \quad\text{and}\quad
+        \pi_2(\fun{maplift}(s))\equiv\lambda y.\,\fun{refl}_{f(y)},
+    \]
+    where\/ $\pi_1^E\colon E\to A$ is the first projection of the total space, and $\pi_1$ and\/ $\pi_2$ denote the canonical projections of the target type of\/~$\fun{maplift}$.
+\end{thm}
+
+\begin{proof}
+    Given $s\colon\prod_{y\colon B}P(f(y))$, define
+    \begin{align*}
+        \hat f\colon B&\to E\\
+        Y&\mapsto\dep{f(y),s(y)}.
+    \end{align*}
+    This is well-typed because, for $y\colon B$, we have $f(y)\colon A$ and $s(y)\colon P(f(y))$.
+    
+    By the definitional equality of the first projection on a dependent pair, we have
+    \[
+        \pi_1^E(\hat{f}(y))\equiv\pi_1^E(\dep{f(y),s(y)})\equiv f(y).
+    \]
+    Because these are judgmentally equal, the required homotopy $\eta$ between $\pi_1^E\circ\hat{f}$ and $f$ can be given by reflexivity at each point:
+    \[
+        \eta(y)\defeq\fun{refl}_{f(y)}.
+    \]
+    Thus, we can define
+    \[
+        \fun{maplift}(s)\defeq\dep{\hat{f},\eta}. 
+    \]
+    By construction, we have
+    \[
+        \pi_1(\fun{maplift}(s))\equiv\hat{f}\equiv\lambda y.\,\dep{f(y),s(y)}
+    \]
+    and
+    \[
+        \pi_2(\fun{maplift}(s))\equiv \eta\equiv\lambda y.\,\fun{refl}_{f(y)}.
+    \]
+\end{proof}
+
+The Map Lifting Property bridges the type-theoretic presentation of the induction principle with its categorical interpretation as an initial algebra.
+
+The induction principle for the natural numbers $\N$ with respect to a type family $P\colon\N\to\univ$ requires two pieces of data:
+\begin{itemize}
+    \item A base case element $b\colon P(0)$.
+    \item A step function $s\colon\prod_{n\colon\N} P(n)\to P(\fun{succ}(n))$.
+\end{itemize}
+
+We can reinterpret this data structurally by lifting the constructor maps to the total space $E\defeq\sum_{n\colon\N} P(n)$.
+
+Let the base space be $\N$ and the domain of our map be $E$. We define a base map $f\colon E\to\N$ by $f(\dep{n,u})\defeq\fun{succ}(n)$. 
+
+The uncurried step function $s$ assigns to every pair $\dep{n,u}\colon E$ an element in the fiber $P(\fun{succ}(n))$, which is exactly $P(f(\dep{n,u}))$. Therefore, the step function is a section $s\colon\prod_{e\colon E}P(f(e))$. 
+
+By applying the Map Lifting Property, this section $s$ lifts the map $f$ to an endomorphism of the total space bundle, yielding a new map $\hat{\fun{succ}}\colon E\to E$. This lifted map acts by sending every pair $\dep{n,u}$ to the pair $\dep{\fun{succ}(n),s(\dep{n,u})}$.
+
+Similarly, we can apply the Map Lifting Property to the base case. The base constructor is a constant map $0\colon\fun1\to\N$. The base element $b\colon P(0)$ acts as a section over this map. Lifting it yields a point in the total space bundle given by the map $\hat{0}\colon\fun1\to E$, which selects exactly the pair $\dep{0,b}$.
+
+Geometrically, the base space $\N$ comes equipped with the standard constructors $0\colon\fun1\to\N$ and $\fun{succ}\colon\N\to\N$. By using the Map Lifting Property, we have equipped the total space bundle $E\to\N$ with lifted versions of these constructors given by $\hat{0}\colon\fun1\to E$ and $\hat{\fun{succ}}\colon E\to E$.
+
+Categorically, this demonstrates that both the base space $\N$ and the total space $E$ are algebras for the polynomial functor $X\mapsto\fun1 + X$. The induction principle of $\N$ is equivalent to the statement that $\N$ is the \emph{initial} algebra in this category. As the initial algebra, there exists a unique algebra homomorphism from $\N$ to $E$ commuting with the constructors. This unique homomorphism is exactly the global dependent section $\fun{ind}_\N\colon\prod_{n\colon\N} P(n)$.
+
+Here is the commutative diagram illustrating this initial algebra homomorphism:
+
+\[
+    \begin{tikzcd}[column sep=huge,row sep=huge]
+        \fun1+\N
+                \arrow[d,"{[0,\fun{succ}]}"']
+                \arrow[r,"{\id_{\fun1}+\fun{ind}_{\N}}"]
+            &\fun1+E
+                \arrow[d,"{[\hat0,\hat{\fun{succ}}]}"]\\
+        \N
+                \arrow[r,"\fun{ind}_{\N}"']
+                \arrow[ur,"\fun{ind}_{\N}",dashed]
+            &E
+    \end{tikzcd}
+\]

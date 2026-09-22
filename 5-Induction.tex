@@ -135,7 +135,7 @@ which correspond to
         \quad\text{and}\quad
         q_0\colon g(0)\eq{E(0)}e_z,
     \]
-    which we can use to produce $c_z\defeq p_0\ct q_0^{-1}\colon C(0)$.
+    which we can use to produce a path from $f(0)$ to $g(0)$, defining $c_z\defeq p_0\ct q_0^{-1}\colon C(0)$.
 
     To define $c_s$, given $n\colon\N$ and $h\colon C(n)$, we must construct $c_s(n,h)\colon C(\fun{succ}(n))$. Since $h\colon f(n)\eq{E(n)}g(n)$, we can use the action on paths to obtain
     \[
@@ -241,7 +241,7 @@ and also
         \equiv \fun{succ}(g(f(n)))
         \equiv \fun{succ}(g\circ f(n)).
 \]
-Since $\id_\N(\fun{succ}(n))\equiv\fun{succ}(\id_\N(n))$, by setting $e_s(x,y)\defeq \fun{succ}(y)$ we can rewrite the equivalences above as
+By setting $e_s(x,y)\defeq \fun{succ}(y)$ and noting that $\id_\N(\fun{succ}(n))\equiv\fun{succ}(\id_\N(n))$, we can rewrite the equivalences above as
 \[
     g\circ f(\fun{succ}(n))\equiv e_s(n,g\circ f(n))
     \quad\text{and}\quad
@@ -258,7 +258,7 @@ A symmetric argument yields a homotopy $\eta\colon f\circ g\sim\id_{\N'}$. Conse
         \item $0'\defeq\fun{nil}$, and
         \item $\fun{succ}'(\ell)\defeq\fun{cons}(\fstar,\ell)$.
     \end{itemize}
-    The target induction principle for $\N'$ has the signature:
+    The induction principle for the target type\/ $\N'$ has the signature:
     \[
         \fun{ind}_{\N'}\colon\prod_{E\colon\N'\to\univ}
             E(\fun{nil})
@@ -508,7 +508,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \begin{xmpl}\label{xmpl:W-tree-for-N}
     To formalize the natural numbers using $\fun W$-trees, we must define the label type $A$ to represent two constructors: $0$ and $\fun{succ}$.
     
-    Since the former has no recursive arguments, we can consider $\fun1$ for labeling it. The latter has a single argument $n$, which is recursive. So, $\fun1$ would also work for labeling the $\fun{succ}$ constructor. Thus, $\fun1+\fun1$ is appropriate for $A$, and this can be abbreviated by setting $A\defeq\fun2$.
+    Since the former has no recursive arguments, we can consider $\fun1$ for labeling it. The latter has a single argument $n$, which is recursive. Consequently, $\fun1$ is also appropriate for labeling the $\fun{succ}$ constructor. Thus, $\fun1+\fun1$ is appropriate for $A$, and this can be abbreviated by setting $A\defeq\fun2$.
     
     The arity family $B\colon A\to\univ$ needs to represent the recursive arguments of each constructor. Then,
     \begin{align*}
@@ -595,7 +595,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \to\fun W_AB.
     \end{equation}
     
-    \textsc{Elimination:} To construct a dependent function over the $\fun W$-type, we use its induction principle. Given a motive $E\colon\fun W_AB\to\univ$, we must provide an inductive step function $e_s$ that constructs a term in $E(\fun{sup}(a,\phi))$ assuming we already have terms in $E(\phi(b))$ for all $b\colon B(a)$. The required signature for $e_s$ is
+    \textsc{Elimination:} To construct a dependent function over the $\fun W$-type, we use its induction principle. Given a motive $E\colon\fun W_AB\to\univ$, we must provide an inductive step function $e_s$. This function constructs a term in $E(\fun{sup}(a,\phi))$, assuming we already have terms in $E(\phi(b))$ for all $b\colon B(a)$. The required signature for~$e_s$ is
     \begin{equation}\label{eq:ind_W-step-function}
         e_s\colon
             \prod_{a\colon A}\;
@@ -661,7 +661,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
      \equiv\fun{sup}(a,\fun{rec}_{\fun0}(\fun L_X))
      \equiv\fun{nil}.
      \]
-    The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun0}E(\phi(b))$. Because the product runs over the empty type, this type is equivalent to $\fun1$ and contains a unique, trivial inhabitant.
+    The inductive hypothesis is a dependent function $g\colon\prod_{b\colon\fun0}E(\phi(b))$. Because the product runs over the empty type, it is canonically equivalent to $\fun1$ and thus contains a unique, trivial inhabitant.
 
     For this case, the inductive step function of $\fun{ind}_{\fun W}$ needs to map this trivial inhabitant $g$ to a term in $E(\fun{sup}(a,\phi))\equiv E(\fun{nil})$. This is precisely the data required by standard list induction: a term $e_{\fun{nil}}\colon E(\fun{nil})$.
 
@@ -851,7 +851,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
             \bigr)
             \to\fun W.
     \]
-    By the definition of $E$, this judgmentally translates into
+    By the definition of $E$, this expands definitionally to
     \[
         e_s\colon
             \prod_{a\colon A}\,
@@ -937,7 +937,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 
 \begin{defns}\ 
     \begin{enumerate}[-]
-            \item An \textsl{$\fun L_X$-algebra} is a type $C$ provided with an element $c_{\fun{nil}}\colon C$ and a function $c_{\fun{cons}}\colon X\to C\to C$. The type of such algebras is
+            \item An \textsl{$\fun L_X$-algebra} is a type $C$ equipped with an element $c_{\fun{nil}}\colon C$ and a function $c_{\fun{cons}}\colon X\to C\to C$. The type of such algebras is
             \[
                 \fun L_X\fun{Alg}\defeq\sum_{C\colon\univ}C\times(X\to C\to C).
             \]
@@ -1000,7 +1000,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
                 &\equiv c_{\fun{cons}}(x,(g\circ f)(a)).
         \end{align*}
         
-        \item There exist homotopies $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$. We must show that $g$ preserves the algebra constructors.
+        \item Since $g$ is a quasi-inverse of $f$, there exist homotopies $\eta\colon f\circ g\sim\id_B$ and $\vartheta\colon g\circ f\sim\id_A$. We must show that $g$ preserves the algebra constructors.
         
         For the base case, we apply $\fun{ap}_g$ to the equality $f(a_{\fun{nil}})\eq Bb_{\fun{nil}}$ to obtain $g(f(a_{\fun{nil}}))\eq Ag(b_{\fun{nil}})$. By the homotopy $\vartheta$, we know $g(f(a_{\fun{nil}}))\eq Aa_{\fun{nil}}$. Transitivity of equality thus yields $g(b_{\fun{nil}})\eq Aa_{\fun{nil}}$.
         
@@ -1028,7 +1028,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 \end{thm}
 
 \begin{proof}
-    Let $\mathcal I$ and $\mathcal J$ be two $h$-initial $\fun L_X$-algebras. Then, $\fun L_X\Hom(\mathcal I,\mathcal J)$ is contractible, hence inhabited by, say, $f\colon\mathcal I\to\mathcal J$. By symmetry, there is also $g\colon\mathcal J\to\mathcal I$. Since  Lemma~\ref{lem:L_X-morphisms-are-morphisms} implies that $g\circ f$ and $\id_{\mathcal I}$ inhabit $\fun L_X\Hom(\mathcal I,\mathcal I)$, which is contractible, $g\circ f\eq{\fun L_X\Hom(\mathcal I,\mathcal I)}\id_{\mathcal I}$. The same reasoning proves that $f\circ g\eq{\fun L_X\Hom(\mathcal J,\mathcal J)}\id_{\mathcal J}$.
+    Let $\mathcal I$ and $\mathcal J$ be two $h$-initial $\fun L_X$-algebras. Then, $\fun L_X\Hom(\mathcal I,\mathcal J)$ is contractible, hence inhabited by some $f\colon\mathcal I\to\mathcal J$. By symmetry, there is also $g\colon\mathcal J\to\mathcal I$. Since  Lemma~\ref{lem:L_X-morphisms-are-morphisms} implies that $g\circ f$ and $\id_{\mathcal I}$ inhabit $\fun L_X\Hom(\mathcal I,\mathcal I)$, which is contractible, $g\circ f\eq{\fun L_X\Hom(\mathcal I,\mathcal I)}\id_{\mathcal I}$. The same reasoning proves that $f\circ g\eq{\fun L_X\Hom(\mathcal J,\mathcal J)}\id_{\mathcal J}$.
 
     It follows that $f$ and $g$ are quasi-inverses and so $\mathcal I\simeq\mathcal J$. The conclusion follows by the univalence axiom.
 \end{proof}
@@ -1621,6 +1621,7 @@ In this way, the single constructor $\fun{sup}$ expresses the behavior of any nu
 
 Historically, the recursion principles for inductive types were formulated using syntactic text-replacement schemas. While intuitive for simple types, these schemas proved logically inconsistent when extended to operations with negative occurrences. Modern type theory resolves this by grounding recursion in the categorical semantics of endofunctors. In this section we provide both definitions.
 
+\needspace{3\baselineskip}
 \begin{defn}\label{defn:mixed-variance-domain}
     Given an arbitrary type-level operation $\Phi\colon\univ\to\univ$, the \textsl{step-function domain} $\Phi'(X,P)$ is defined by structural induction on $\Phi$:
     \begin{enumerate}[a),font=\upshape]
@@ -1680,7 +1681,7 @@ Historically, the recursion principles for inductive types were formulated using
         \item $f\colon X\to P$,
         \item $g\defeq\lambda x.\,(x,f(x))\colon X\to X\times P$,
         \item $\fun{map}_\Phi(g)\colon\Phi(X)\to\Phi(X\times P)$,
-        \item the strict positivity of $\Phi$ guarantees that $\Phi'(X,X\times P)\equiv\Phi(X\times P)$.
+        \item 5. by Definition~\ref{defn:mixed-variance-domain}, the strict positivity of $\Phi$ guarantees that $\Phi'(X,X\times P)\equiv\Phi(X\times P)$.
     \end{enumerate}
 \end{defn}
 
@@ -1733,7 +1734,7 @@ Let us get back to the alternative definition $\N'$ of the natural numbers given
     \item $0'\defeq\fun{sup}(0_{\fun2},\fun{rec}_{\fun0}(\N'))$, and
     \item $\fun{succ}'(n)\defeq\fun{sup}(1_{\fun2},\lambda{\fstar}.\,n)$.
 \end{itemize}
-To see if the standard computation rules for natural numbers can be derived from the rules for $\fun W$-types, we must define the step function $e_s$ as specified in \eqref{eq:ind_W-step-function}, i.e.,
+To see if the standard computation rules for natural numbers can be derived from the rules for $\fun W$-types, we must define the step function $e_s$ as specified in \eqref{eq:ind_W-step-function}, namely:
 \[
     e_s\colon
     \prod_{a\colon\fun2}\;
@@ -1857,7 +1858,7 @@ To define $e_s(0_{\fun2},\phi,h)\defeq e_{0'}$, we would need the strict syntact
     \equiv
     E(\fun{sup}(0_{\fun2},\fun{rec}_{\fun0}(\N'))).
 \]
-But this would require
+However, this would require
 \[
     \phi\equiv\fun{rec}_{\fun0}(\N'),
 \]
@@ -1884,7 +1885,7 @@ Because $p_\phi$ is constructed using the function extensionality axiom, which i
 
 \medskip
 
-\textbf{Note.} Although relaxing these computation rules to hold only propositionally might seem like a viable workaround, the resulting loss of judgmental equality is precisely why modern proof assistants abandon the\/ $\fun W$-type encoding altogether. By elevating \textit{all} inductive types to primitive status, these systems ensure that base constructors like\/ $\fun{nil}$ and\/ $\fun{zero}$ remain judgmentally unique and perfectly behaved.
+\textbf{Note.} Although relaxing these computation rules to hold only propositionally might seem like a viable workaround, the resulting loss of judgmental equality is precisely why modern proof assistants abandon the\/ $\fun W$-type encoding altogether. By elevating \textit{all} inductive types to primitive status, these systems ensure that base constructors like $\fun{nil}$ and $\fun{zero}$ satisfy their computation rules judgmentally.
 
 As Chapter~6 demonstrates, this foundational shift is also a structural necessity for accommodating higher-dimensional path constructors.
 
@@ -2042,7 +2043,7 @@ which is impossible in the type $\fun2$ [cf.~Exercise~\ref{exr:2-simeq-2-simeq-2
 \end{xmpl}
 
 \begin{rem}
-    The example highlights why type theory specifically demands \textit{strict} positivity rather than just ordinary positivity. If we have $\Phi(X)\defeq X\to A$, which is contravariant in the sense that it maps $f\colon U\to V$ to $f^*\colon\Phi(V)\to\Phi(U)$, then composing it with a second contravariant expression $\Phi'(X)\defeq X\to A'$, results by double inversion of the arrows in the covariant behavior $f\mapsto f^{**}$.
+    The example highlights why type theory specifically demands \textit{strict} positivity rather than just ordinary positivity. If we have $\Phi(X)\defeq X\to A$, which is contravariant in the sense that it maps $f\colon U\to V$ to $f^*\colon\Phi(V)\to\Phi(U)$, then composing it with a second contravariant expression $\Phi'(X)\defeq X\to A'$ results by double inversion of the arrows in the covariant behavior $f\mapsto f^{**}$.
 \end{rem}
 
 \section{Inductive Type Families}
@@ -2356,7 +2357,7 @@ Constructing the function $\fun{isWellFounded}$ proves that recursive functions 
 
 This is perhaps the most important example of an indexed family requiring the full schema. To prove that a relation $R \colon A \times A \to \univ$ is well-founded (allowing us to write terminating recursive functions over it), we define the inductive family $\fun{Acc} \colon A \to \univ$.
 
-The constructor says: an element $x$ is ``accessible'' if every $y$ strictly smaller than $x$ is accessible.
+The constructor says: an element $x$ is ``accessible'' if every $y$ strictly preceding $x$ according to $R$ is accessible.
 \begin{itemize}
     \item \textsc{Context:} We define $C \defeq A$ and let $z\equiv x$, the element we want to prove accessible.
     
@@ -2629,7 +2630,7 @@ The issue is that we cannot even write down the type signature for $B$ without h
         \Gamma\defeq
             [
                 x\colon\fun{Nat},\;
-                y\colon \fun{Vector}(x)
+                y\colon\fun{Vector}(x)
             ]
     \]
     We build contexts one step at a time. We start with the empty context, represented by the $\fun{nil}$ constructor, which has no variables. Then, we extend it by adding one variable at a time, represented by the $\fun{ext}$ constructor.
@@ -2843,7 +2844,7 @@ as an inductive family with one index. Following Definition~\ref{defn:no-recursi
 By the general signature \eqref{eq:no-recursive-args}, the constructor is:
 \[
     \fun{refl}_{a_0}\colon\prod_{z\colon\fun1}X(g(z))
-        \equiv a_0\eq A a_0.
+        \simeq a_0\eq A a_0.
 \]
 
 To derive the based path induction principle, consider a motive of type:
@@ -3101,7 +3102,7 @@ More generally, while the inductive definition of the identity family provides t
             \prod_{r\colon R(b)}
                 f(b,r)\eq{S(b)}g(b,r)
     \]
-    and define $\epsilon\defeq\fun{funext}(\eta)$.
+    and define\/ $\epsilon\defeq\fun{funext}(\lambda b.\,\fun{funext}(\eta(b)))$ by applying function extensionality iteratively.
 
     To construct $\eta$, we again use the induction principle of $\dep{R,r_0}$. We define the motive as $M(b,r)\defeq f(b,r)\eq{S(b)}g(b,r)$ and use the path $p\ct q^{-1}\colon M(a_0,r_0)$ for the base case.
 
@@ -3300,7 +3301,7 @@ More generally, while the inductive definition of the identity family provides t
                 C\bigl(y,\fun{transport}^{R(\dummy,y)}
                     (\fun{refl}_{a}^{-1},r)\bigr),
         \]
-        which reduces definitionally to $C(y,r)$ since $\fun{transport}^{R(\dummy,y)}(\fun{refl}_{a}^{-1},r)\equiv r$.
+        which reduces definitionally to $C(y,r)$ since $\fun{refl}_{a}^{-1}\equiv\fun{refl}_a$, making the transport trivially evaluate to~$r$.
         
         For the computation rule of $g$, we have
         \begin{align*}
