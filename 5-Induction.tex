@@ -4631,7 +4631,6 @@ More generally, while the inductive definition of the identity family provides t
             \item For $C\defeq\fun2\times\fun2$, its truncation $\lVert\fun2\times\fun2\eq\univ\fun2\rVert$ is empty because the type $(\fun2\times\fun2\eq\univ\fun2)\to\fun0$ is inhabited and $\fun0$ is a mere proposition. Therefore, $f(\fun2\times\fun2)=\pi_1$.
         \end{itemize}
         It follows that $f\neq\lambda C.\,\pi_1$ and $f\neq\lambda C.\,\pi_2$. Since $\pi_1,\pi_2\colon\fun2\times\fun2\to\fun2$ are not equal either, the functions $f$, $\lambda C.\,\pi_1$, and $\lambda C.\,\pi_2$ yield three distinct elements in~$\fun W'$.
-        
     \end{enumerate}
 \end{solution}
 
@@ -4674,6 +4673,40 @@ More generally, while the inductive definition of the identity family provides t
     \end{align*}
     To complete the proof, we have to verify that $f$ and $g$ are quasi-inverses:
     \begin{align*}
+            g\circ f(\epsilon)
+            &\equiv g
+                    \Bigl(
+                        \explain[\theta]
+                        {
+                            \lambda\dep{a,\zeta}.\,
+                                \epsilon
+                                \bigl(
+                                    \fun{sup}(
+                                        a,
+                                        \fun{rec}_{\fun0}
+                                            (\fun W)
+                                        \circ\zeta
+                                    )
+                                \bigr)
+                        }
+                    \Bigr)\\
+                &\equiv
+                    \fun{hom}_{\fun W}
+                    \bigl(
+                        \fun0,
+                        \lambda a.\,\lambda\zeta.\,
+                            \epsilon
+                            \bigl(
+                                \fun{sup}(
+                                    a,
+                                    \fun{rec}_{\fun0}
+                                        (\fun W)
+                                    \circ\zeta
+                                )
+                            \bigr)
+                    \bigr)\\
+                &\eq{\neg\fun W}\epsilon.
+        \intertext{On the other hand}
         f\circ g(\theta)
             &\equiv f\bigl(
                 \explain[\epsilon]
@@ -4708,40 +4741,8 @@ More generally, while the inductive definition of the identity family provides t
             &\eq{\neg\Sigma_A\neg B}
                 \lambda\dep{a,\zeta}.\,
                     \theta(\dep{a,\zeta})\\
-            &\equiv\theta.\\[2mm]
-        g\circ f(\epsilon)
-            &\equiv g
-                    \Bigl(
-                        \explain[\theta]
-                        {
-                            \lambda\dep{a,\zeta}.\,
-                                \epsilon
-                                \bigl(
-                                    \fun{sup}(
-                                        a,
-                                        \fun{rec}_{\fun0}
-                                            (\fun W)
-                                        \circ\zeta
-                                    )
-                                \bigr)
-                        }
-                    \Bigr)\\
-                &\equiv
-                    \fun{hom}_{\fun W}
-                    \bigl(
-                        \fun0,
-                        \lambda a.\,\lambda\zeta.\,
-                            \epsilon
-                            \bigl(
-                                \fun{sup}(
-                                    a,
-                                    \fun{rec}_{\fun0}
-                                        (\fun W)
-                                    \circ\zeta
-                                )
-                            \bigr)
-                    \bigr)\\
-                &\eq{\neg\fun W}\epsilon,
+            &\equiv\theta.
     \end{align*}
     where the final propositional equality holds trivially because the codomain of both functions is $\fun0$.
+    
 \end{solution}

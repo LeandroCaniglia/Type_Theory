@@ -1,5 +1,7 @@
 \chapter{Higher Inductive Types}
 
+\section{Initial Algebras Revisited}
+
 \begin{thm}{\upshape[Map Lifting Property]}\label{thm:map-lift}
     Let\/ $P\colon A\to\univ$ be a type family over\/~$A$ and\/ $E\defeq\sum_{x\colon A}P(x)$ its total space. Given a type\/ $B$ and a map\/ $f\colon B\to A$, there exists a function
     \[
@@ -25,8 +27,17 @@
         \hat f\colon B&\to E\\
         Y&\mapsto\dep{f(y),s(y)}.
     \end{align*}
-    This is well-typed because, for $y\colon B$, we have $f(y)\colon A$ and $s(y)\colon P(f(y))$.
-    
+    This is well-typed because, for $y\colon B$, we have $f(y)\colon A$ and $s(y)\colon P(f(y))$, and produces the judgmentally commutative diagram
+    \[
+        \begin{tikzcd}
+                &E
+                    \arrow[d,"\pi_1"]\\
+            B
+                    \arrow[ru,"\hat f"]
+                    \arrow[r,"f"']
+                &A
+        \end{tikzcd}
+    \]
     By the definitional equality of the first projection on a dependent pair, we have
     \[
         \pi_1^E(\hat{f}(y))\equiv\pi_1^E(\dep{f(y),s(y)})\equiv f(y).
@@ -49,40 +60,694 @@
     \]
 \end{proof}
 
-The Map Lifting Property bridges the type-theoretic presentation of the induction principle with its categorical interpretation as an initial algebra.
+\begin{rem}
+    Since the theorem's proof actually establishes a strict, judgmental equality $\pi_1^E\circ\hat{f}\equiv f$ rather than a simple homotopy, one might wonder why the statement claims a weaker conclusion. 
+    
+    This is necessary because judgmental equalities are meta-theoretic relations used by the formal system; they do not produce any type in the universe $\univ$. 
+    
+    An expression such as $\sum_{\hat f\colon B\to E}\pi_1^E\circ\hat{f}\equiv f$ is syntactically ill-formed. The homotopy instead acts as a certificate of commutativity that is visible to the internal logic of the theory and can be invoked in subsequent theorems.
+\end{rem}
 
-The induction principle for the natural numbers $\N$ with respect to a type family $P\colon\N\to\univ$ requires two pieces of data:
+\begin{xmpl}
+    The Map Lifting Property bridges the type-theoretic presentation of the induction principle with its categorical interpretation as an initial algebra.
+    
+    The induction principle for the natural numbers $\N$ with respect to a type family $P\colon\N\to\univ$ requires two pieces of data:
+    \begin{enumerate}[a),font=\upshape]
+        \item A base case element $b\colon P(0)$.
+        \item A step function $s\colon\prod_{n\colon\N} P(n)\to P(\fun{succ}(n))$.
+    \end{enumerate}
+    We can reinterpret this data by lifting the constructor maps to the total space $\Sigma_\N P$. Following the theorem, we define the base map
+    \begin{align*}
+        f\colon\explain[B]{\Sigma_\N P}&\to\explain[A]\N\\
+        \dep{n,u}&\mapsto\fun{succ}(n). 
+    \end{align*}
+    The uncurried step function $s$ assigns to every pair $\dep{n,u}\colon\Sigma_\N P$ an element in the fiber $P(\fun{succ}(n))$, which is exactly $P(f(\dep{n,u}))$. Therefore, the step function can be seen as a section
+    \[
+        s\colon\prod_{e\colon\Sigma_\N P}P(f(e)).
+    \]
+    By applying the Map Lifting Property, this section $s$ lifts the map $f$ to an endomorphism of the total space bundle, yielding a new map $\hat{f}\colon\Sigma_\N P\to\Sigma_\N P$. Denoting $\hat{f}$ by $\hat{\fun{succ}}$ to stress the categorical interpretation, we obtain the propositionally commutative triangle
+    \[
+        \begin{tikzcd}
+                &\Sigma_\N P
+                    \arrow[d,"\pi_1"]\\
+            \Sigma_\N P
+                    \arrow[ru,"\hat{\fun{succ}}"]
+                    \arrow[r,"f"']
+                &\N
+        \end{tikzcd}
+    \]
+    where the lifted map sends every pair $\dep{n,u}$ to the pair $\bigdep{\fun{succ}(n),s(\dep{n,u})}$. 
+    
+    Similarly, we can apply the Map Lifting Property to the base constructor: the constant map $0\colon\fun1\to\N$. The base element $b\colon P(0)$ acts as a section over this map. Lifting it yields a point in the total space bundle given by the map $\hat{0}\colon\fun1\to\Sigma_\N P$, which selects the pair $\dep{0,b}$.
+    \[
+        \begin{tikzcd}
+                &\Sigma_\N P
+                    \arrow[d,"\pi_1"]\\
+            \fun1
+                    \arrow[ru,"\hat{0}"]
+                    \arrow[r,"0"']
+                &\N
+        \end{tikzcd}
+    \]
+    Categorically, this demonstrates that both the base space $\N$ and the total space $\Sigma_\N P$ are algebras for the polynomial functor $F(X)\defeq\fun1+X$.
+    
+    The induction principle of $\N$ is equivalent to the statement that $\N$ is the initial algebra in this category: there exists a unique algebra homomorphism $\N\to\Sigma_\N P$ commuting with the constructors. This unique homomorphism is exactly the global dependent section
+    \[
+        \fun{ind}_\N(P)\colon\prod_{n\colon\N}P(n).
+    \]
+    Here is the commutative diagram illustrating this initial algebra homomorphism:
+    \[
+        \begin{tikzcd}[column sep=3.3cm,row sep=huge]
+            \fun1+\N
+                    \arrow[d,"{[0,\fun{succ}]}"']
+                    \arrow[r,
+                        "{
+                            \id_{\fun1}+
+                                \pi_1(
+                                    \fun{maplift}(
+                                        \fun{ind}_\N(P)
+                                    )
+                                )
+                        }",
+                        dashed]
+                &\fun1+\Sigma_\N P
+                    \arrow[d,"{[\hat{0},\hat{\fun{succ}}]}"]\\
+            \N
+                    \arrow[r,
+                        "{\pi_1(\fun{maplift}(\fun{ind}_\N(P)))}"', dashed]
+                &\Sigma_\N P
+        \end{tikzcd}
+    \]
+    The commutativity of this square translates categorical properties into computation rules for the induction principle.
+\end{xmpl}
+
+\section{Induction Principles and Dependent Paths}
+
+Like the general inductive types, higher inductive types provide a schema for defining new types generated by constructors. The difference is that higher inductive types may have constructors that produce paths and higher paths. For instance, the constructors of the circle~$\sphere^1$ are:
 \begin{itemize}
-    \item A base case element $b\colon P(0)$.
-    \item A step function $s\colon\prod_{n\colon\N} P(n)\to P(\fun{succ}(n))$.
+    \item $\fun{base}\colon\sphere^1$,
+    \item $\fun{loop}\colon\fun{base}\eq{\sphere^1}\fun{base}$.
+\end{itemize}
+This is analogous to the definition of $\N$, whose constructors are $0\colon\N$ and $\fun{succ}\colon\N\to\N$. In the circle, however, the generation extends to higher dimensions, which is natural when types are seen as higher groupoids.
+
+Ordinary constructors, such as $\fun{base}$, are referred as \textsl{point constructors}; the others, such as $\fun{loop}$, as \textsl{path} or \textsl{higher constructors}.
+
+Each path constructor must specify its source and target; for $\fun{loop}$, both are $\fun{base}$. A path constructor generates a new inhabitant of an identity type, which is not \textit{a priori\/} equal to any existing inhabitant. This distinguishes $\sphere^1$ from the inductive type~$\fun1$.
+
+There are some important points regarding this generalization:
+\begin{itemize}
+    \item The operations may create paths that do not come directly from the constructors. For example, in $\sphere^1$, we also obtain nontrivial paths like $\fun{loop}\ct\fun{loop}$ and $\fun{loop}^{-1}$.
+    
+    \item To make two paths equal up to homotopy, the inductive definition must add a new $2$-dimensional constructor relating them. This ensures that the propositional equality between paths comes equipped with the necessary elimination and computation rules.
+        
+    \item Constructors without higher types in their inputs can generate higher paths. For instance, the $2$-dimensional sphere $\sphere^2$, generated by a point $\fun{base}\colon\sphere^2$ and a $2$-dimensional path $\fun{surf}\colon\fun{refl}_{\fun{base}}\eq{}\fun{refl}_{\fun{base}}$, contains a nontrivial $3$-dimensional path corresponding to the Hopf fibration.
 \end{itemize}
 
-We can reinterpret this data structurally by lifting the constructor maps to the total space $E\defeq\sum_{n\colon\N} P(n)$.
+\section{Elimination Rules}
 
-Let the base space be $\N$ and the domain of our map be $E$. We define a base map $f\colon E\to\N$ by $f(\dep{n,u})\defeq\fun{succ}(n)$. 
+To define operations on the circle $\sphere^1$, we must specify their behavior on the fibers above each constructor. We begin by defining the notion of a dependent path, which formalizes what it means for a path to lie over the loop constructor.
 
-The uncurried step function $s$ assigns to every pair $\dep{n,u}\colon E$ an element in the fiber $P(\fun{succ}(n))$, which is exactly $P(f(\dep{n,u}))$. Therefore, the step function is a section $s\colon\prod_{e\colon E}P(f(e))$. 
+\begin{defn}\label{defn:eqt}
+    Let $P\colon\sphere^1\to\univ$ be a type family. A path from $u\colon P(x)$ to $v\colon P(y)$ lying over a path $p\colon x\eq{\sphere^1}y$ is defined as
+    \[
+        u\eqt pPv\defeq\fun{transport}^P(p,u)\eq{}v.
+    \]
+\end{defn}
 
-By applying the Map Lifting Property, this section $s$ lifts the map $f$ to an endomorphism of the total space bundle, yielding a new map $\hat{\fun{succ}}\colon E\to E$. This lifted map acts by sending every pair $\dep{n,u}$ to the pair $\dep{\fun{succ}(n),s(\dep{n,u})}$.
+\begin{prop}\label{prop:eqt}
+    Let\/ $P\colon A\to\univ$ be a type family. The following properties of dependent paths hold.
 
-Similarly, we can apply the Map Lifting Property to the base case. The base constructor is a constant map $0\colon\fun1\to\N$. The base element $b\colon P(0)$ acts as a section over this map. Lifting it yields a point in the total space bundle given by the map $\hat{0}\colon\fun1\to E$, which selects exactly the pair $\dep{0,b}$.
+    \begin{enumerate}[a),font=\upshape]
+        \item \emph{Reduction:} For any\/ $x\colon A$ and\/ $u,w\colon P(x)$,
+        \[
+            (u\eqt{\fun{refl}_x}{P}w)
+            \equiv
+            (u\eq{P(x)}w).
+        \]
 
-Geometrically, the base space $\N$ comes equipped with the standard constructors $0\colon\fun1\to\N$ and $\fun{succ}\colon\N\to\N$. By using the Map Lifting Property, we have equipped the total space bundle $E\to\N$ with lifted versions of these constructors given by $\hat{0}\colon\fun1\to E$ and $\hat{\fun{succ}}\colon E\to E$.
+        \item \emph{Reflexivity:} For any\/ $x\colon A$ and\/ $u\colon P(x)$,
+        \[
+            \fun{refl}_u\colon u\eqt{\fun{refl}_x}{P}u.
+        \]
 
-Categorically, this demonstrates that both the base space $\N$ and the total space $E$ are algebras for the polynomial functor $X\mapsto\fun1 + X$. The induction principle of $\N$ is equivalent to the statement that $\N$ is the \emph{initial} algebra in this category. As the initial algebra, there exists a unique algebra homomorphism from $\N$ to $E$ commuting with the constructors. This unique homomorphism is exactly the global dependent section $\fun{ind}_\N\colon\prod_{n\colon\N} P(n)$.
+        \item \emph{Symmetry:} For any\/ $p\colon x\eq{A}y$,\/ $u\colon P(x)$,\/ $v\colon P(y)$, and\/
+        \[
+            \ell\colon u\eqt{p}{P}v,
+        \]
+        there is a dependent path
+        \[
+            \ell^{-1}\colon v\eqt{p^{-1}}{P}u.
+        \]
 
-Here is the commutative diagram illustrating this initial algebra homomorphism:
+        \item \emph{Transitivity:} For any\/ $p\colon x\eq{A}y$ and\/ $q\colon y\eq{A}z$,\/ if
+        \[
+            \ell_1\colon u\eqt{p}{P}v
+            \qquad\text{and}\qquad
+            \ell_2\colon v\eqt{q}{P}w,
+        \]
+        then
+        \[
+            \ell_1\ct\ell_2\colon u\eqt{p\ct q}{P}w.
+        \]
 
+        \item \emph{Fiberwise concatenation:} For any\/ $p\colon x\eq{A}y$,\/ $u\colon P(x)$,\/ $v,w\colon P(y)$,\/ if
+        \[
+            \ell\colon u\eqt{p}{P}v
+            \qquad\text{and}\qquad
+            r\colon v\eq{P(y)}w,
+        \]
+        then
+        \[
+            \ell\ct r\colon u\eqt{p}{P}w.
+        \]
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}\ 
+    \begin{enumerate}[a),font=\upshape]
+        \item \emph{Reduction:}
+        By definition,
+        \[
+            (u\eqt{\fun{refl}_x}{P}w)
+            \equiv
+            \Bigl(
+                \fun{transport}^P(\fun{refl}_x,u)
+                \eq{P(x)}w
+            \Bigr).
+        \]
+        Since
+        \[
+            \fun{transport}^P(\fun{refl}_x,u)\equiv u,
+        \]
+        the desired definitional equality follows.
+
+        \item \emph{Reflexivity:}
+        By (a), the type
+        \[
+            u\eqt{\fun{refl}_x}{P}u
+        \]
+        is definitionally equal to\/ $u\eq{P(x)}u$. Hence ordinary reflexivity gives
+        \[
+            \fun{refl}_u\colon u\eqt{\fun{refl}_x}{P}u.
+        \]
+
+        \item \emph{Symmetry:}
+        By path induction on\/ $p$, we may assume that
+        \[
+            y\equiv x
+            \qquad\text{and}\qquad
+            p\equiv\fun{refl}_x.
+        \]
+        Thus\/ $v\colon P(x)$, and\/
+        \[
+            \ell\colon u\eqt{\fun{refl}_x}{P}v.
+        \]
+        By (a), this type is definitionally equal to\/ $u\eq{P(x)}v$. Moreover,
+        \[
+            p^{-1}\equiv\fun{refl}_x^{-1}\equiv\fun{refl}_x.
+        \]
+        Hence the required type
+        \[
+            v\eqt{p^{-1}}{P}u
+        \]
+        is definitionally equal to\/ $v\eq{P(x)}u$, which is inhabited by the ordinary inverse\/ $\ell^{-1}$.
+
+        \item \emph{Transitivity:}
+        By path induction on\/ $p$ and then on\/ $q$, we may assume that
+        \[
+            y\equiv x,\qquad z\equiv x,\qquad
+            p\equiv\fun{refl}_x,\qquad
+            q\equiv\fun{refl}_x.
+        \]
+        Consequently,
+        \[
+            \ell_1\colon u\eq{P(x)}v
+            \qquad\text{and}\qquad
+            \ell_2\colon v\eq{P(x)}w
+        \]
+        by (a). Also,
+        \[
+            p\ct q\equiv\fun{refl}_x.
+        \]
+        Therefore the target
+        \[
+            u\eqt{p\ct q}{P}w
+        \]
+        reduces, by (a), to\/ $u\eq{P(x)}w$, which is inhabited by the ordinary concatenation\/ $\ell_1\ct\ell_2$.
+
+        \item \emph{Fiberwise concatenation:}
+        By path induction on\/ $p$, we may assume that
+        \[
+            y\equiv x
+            \qquad\text{and}\qquad
+            p\equiv\fun{refl}_x.
+        \]
+        In this case, both\/ $v$ and\/ $w$ are elements of\/ $P(x)$, and by (a),
+        \[
+            \ell\colon u\eq{P(x)}v.
+        \]
+        Thus\/ the ordinary concatenation\/ $\ell\ct r$ has type\/ $u\eq{P(x)}w$. By (a), this is definitionally equal to
+        \[
+            u\eqt{\fun{refl}_x}{P}w,
+        \]
+        which is the required target.
+    \end{enumerate}
+\end{proof}
+
+With Definition~\ref{defn:eqt}, the fundamental elimination rule for the circle is given by its induction principle:
+
+\begin{description}[font=\normalfont\scshape]
+    \item[Induction:] 
+    Given a type family $P\colon\sphere^1\to\univ$, along with the following data:
+    \begin{itemize}
+        \item $b\colon P(\fun{base})$.
+        \item $\ell\colon b\eqt{\fun{loop}}Pb$,
+    \end{itemize}
+    there exists a dependent function
+    \[
+        \fun{ind}_{\sphere^1}(P)\colon
+            \prod_{x\colon\sphere^1}P(x)
+    \]satisfying the computation rules:\footnote{See Lemma \ref{lem:dependent-map}}
+    \[
+        \fun{ind}_{\sphere^1}(P,\fun{base})\equiv b
+        \quad\text{and}\quad
+        \fun{apd}_{\fun{ind}_{\sphere^1}(P)}(\fun{loop})\coloneqq\ell.
+    \]
+\end{description}
+
+\begin{rem}
+    In the computation rule above, the evaluation at the point constructor is a strict judgmental equality. In contrast, the evaluation at the path constructor is a propositional equality. This \textsl{propositional equality by definition} is denoted using the hybridized symbol `$\coloneqq$'.
+\end{rem}
+
+The recursion principle is the non-dependent version of the induction principle when the type family is constant:
+
+\begin{description}[font=\normalfont\scshape]
+    \item[Recursion:] 
+    Given a type $B$ equipped with a point $b\colon B$ and a path $\ell\colon b\eq Bb$, there exists a function $\fun{rec}_{\sphere^1}(B,b,\ell)\colon\sphere^1\to B$ satisfying the computation rules:
+    \[
+        \fun{rec}_{\sphere^1}(B,b,\ell)(\fun{base})\equiv b
+        \quad\text{and}\quad
+        \fun{ap}_{\fun{rec}_{\sphere^1}(B,b,\ell)}(\fun{loop})\coloneqq\ell.
+    \] 
+\end{description}
+
+The following lemma formalizes the derivation of the recursion principle directly from the induction principle.
+
+\begin{lem}\label{lem:S^1-rec-from-ind}
+    If\/ $B$ is a type together with\/ $b\colon B$ and\/ $p\colon b\eq Bb$, then there is a function\/ $f\colon\sphere^1\to B$ with
+    \begin{enumerate}[a),font=\upshape]
+        \item $f(\fun{base})\equiv b$, and
+        \item $\fun{ap}_f(\fun{loop})\coloneqq p$.
+    \end{enumerate}
+\end{lem}
+
+\begin{proof}
+    By Lemma~\ref{lem:constant-fibration}, we have
+    \begin{align*}
+        \fun{transportconst}^B(\fun{loop},b)
+            &\colon
+                \fun{transport}^{x\mapsto B}(\fun{loop},b)
+                    \eq Bb\\
+            &\equiv b\eqt{\fun{loop}}{x\mapsto B}b.
+    \end{align*}
+    Let
+    \[
+        \ell\defeq\fun{transportconst}^B(\fun{loop},b).
+    \]
+    From Proposition~\ref{prop:eqt}~e) we deduce
+    \[
+        \ell\ct p\colon
+            b\eqt{\fun{loop}}{x\mapsto B}b.
+    \]
+    Applying the induction principle of $\sphere^1$ to the constant type family $x\mapsto B$, we obtain a function
+    \[
+        f\colon\sphere^1\to B
+    \]
+    such that
+    \[
+        f(\fun{base})\equiv b
+        \quad\text{and}\quad
+        \fun{apd}_f(\fun{loop})\coloneqq\ell\ct p.
+    \]
+    Furthermore,
+    \begin{align*}
+        \fun{apd}_f(\fun{loop})
+            &\eq{}
+                \fun{transportconst}^B(
+                        \fun{loop},
+                        f(\fun{base})
+                    )
+                \ct\fun{ap}_f(\fun{loop})
+                &&\text{; Lem~\ref{lem:apd-constant-fibration}}\\
+            &\eq{}
+                \fun{transportconst}^B(\fun{loop},b)
+                \ct\fun{ap}_f(\fun{loop})
+                &&\text{; }f(\fun{base})\equiv b\\
+            &\equiv
+                \ell\ct\fun{ap}_f(\fun{loop}).
+    \end{align*}
+    Hence,
+    \[
+        \ell\ct\fun{ap}_f(\fun{loop})\eq{}\ell\ct p.
+    \]
+    The conclusion follows by left cancellation of $\ell$.
+    %
+    
+\end{proof}
+
+\begin{lem}\label{lem:S^1-f=g}
+    If\/ $A$ is a type and\/ $f, g \colon \sphere^1 \to A$ are two maps together with two equalities\/ $p, q$:
+    \begin{align*}
+        p&\colon f(\fun{base})\eq Ag(\fun{base})\\
+        q&\colon\fun{ap}_f(\fun{loop})
+            \eqt{p}{x\mapsto x\eq Ax}
+            \fun{ap}_g(\fun{loop}),
+    \end{align*}
+    then for all\/ $z\colon\sphere^1$ we have\/ $f(z)\eq Ag(z)$.
+\end{lem}
+
+\begin{proof}
+    Let $P\colon\sphere^1\to\univ$ be the type family defined by $P(z)\defeq f(z)\eq Ag(z)$. Then, $p\colon P(\fun{base})$. On the other hand,
+    \begin{align}
+        (p\eqt{\fun{loop}}Pp)
+            &\equiv
+                \bigl(
+                    \fun{transport}^P(\fun{loop},p)\eq{}p
+                \bigr)\nonumber\\
+            &\eq{}
+                \bigl(
+                    \fun{ap}_f(\fun{loop})^{-1}
+                        \ct p
+                        \ct\fun{ap}_g(\fun{loop})
+                        \eq{}p
+                \big)\label{eq:p=p}
+                &&\text{; Lem.~\ref{lem:transport-in-identity-types}}
+    \end{align}
+    By Proposition~\ref{prop:transport-decomposition-for-paths}, we have
+    \[
+        \fun{transport}^{x\mapsto(x\eq Ax)}(p,\fun{ap}_f(\fun{loop}))
+            \eq{}p^{-1}\ct \fun{ap}_f(\fun{loop})\ct p.
+    \]
+    By definition, $q$ witnesses the equality
+    \[
+        q\colon\fun{transport}^{x\mapsto(x\eq{A}x)}(p,\fun{ap}_f(\fun{loop}))\eq{}\fun{ap}_g(\fun{loop}),
+    \]
+    producing an inhabitant of
+    \[
+        \fun{ap}_g(\fun{loop})
+            \eq{}p^{-1}\ct \fun{ap}_f(\fun{loop})\ct p.
+    \]
+    Hence,
+    \[
+        p\ct \fun{ap}_g(\fun{loop})
+            \eq{}\fun{ap}_f(\fun{loop})\ct p.
+    \]
+    Left-concatenating with $\fun{ap}_f(\fun{loop})^{-1}$ gives a proof of
+    \[
+        \fun{ap}_f(\fun{loop})^{-1}
+        \ct p
+        \ct \fun{ap}_g(\fun{loop})
+        \eq{}p.
+    \]
+    Plugging this proof into \eqref{eq:p=p}, we obtain an element of $p\eqt{\fun{loop}}{P}p$. Then, the induction principle of the circle yields a section of $P$, proving that $f(z)\eq{A}g(z)$ for all $z\colon\sphere^1$.
+    %
+    
+\end{proof}
+
+\begin{thm}
+    For any type\/ $A$, we have a natural equivalence
+    \[
+        (\sphere^1\to A)\simeq\sum_{x\colon A}x\eq Ax.
+    \]
+\end{thm}
+
+\begin{proof}
+    We have two canonical maps
+    \begin{align*}
+        f\colon(\sphere^1\to A)
+            &\to\sum_{x\colon A}x\eq Ax\\
+        \rho
+            &\mapsto
+                \dep{
+                    \rho(\fun{base}),
+                    \fun{ap}_\rho(\fun{loop})
+                }\\[4mm]
+        g\colon\Bigl(\sum_{x\colon A}x\eq Ax\Bigr)
+            &\to(\sphere^1\to A)\\
+        \dep{a,\ell}
+            &\mapsto\fun{rec}_{\sphere^1}(A,a,\ell).
+    \end{align*}
+    To prove that they define an equivalence, we evaluate both compositions:
+    \begin{align*}
+        f\circ g(\dep{a,\ell})
+            &\equiv
+                f\bigl(
+                    \fun{rec}_{\sphere^1}(A,a,\ell)
+                \bigr)\\
+            &\equiv
+                \bigdep{
+                    \fun{rec}_{\sphere^1}(A,a,\ell)
+                        (\fun{base}),
+                    \fun{ap}_{
+                        \fun{rec}_{\sphere^1}(A,a,\ell)
+                        }(\fun{loop})
+                }\\
+            &\eq{}\dep{a,\ell},
+    \intertext{by the computation rules of $\fun{rec}_{\sphere^1}$.}
+        g\circ f(\rho)
+            &\equiv g(
+                \dep{
+                    \rho(\fun{base}),
+                    \fun{ap}_\rho(\fun{loop})
+                }
+            )\\
+            &\equiv\fun{rec}_{\sphere^1}(
+                A,
+                \rho(\fun{base}),
+                \fun{ap}_\rho(\fun{loop})
+                )\\
+            &\sim\rho,
+    \end{align*}
+    by Lemma~\ref{lem:S^1-f=g}. The equality follows from function extensionality.
+
+    Regarding naturality, suppose that $\phi\colon A\to B$. Then, $\phi$ induces a commutative diagram because, by Proposition~\ref{prop:ap-properties}, $\fun{ap}_\phi\circ\fun{ap}_\rho\eq{}\fun{ap}_{\phi\circ\rho}$:
+    \[
+        \begin{tikzcd}
+            \sphere^1\to A
+                    \arrow[r]
+                    \arrow[d]
+                &\sum_{x\colon A}x\eq Ax
+                    \arrow[d]
+                &\rho
+                    \arrow[r,mapsto]
+                    \arrow[d,mapsto]
+                &\dep{
+                    \rho(\fun{base}),
+                    \fun{ap}_\rho(\fun{loop})
+                    }
+                    \arrow[d,mapsto]\\
+            \sphere^1\to B
+                    \arrow[r]
+                &\sum_{y\colon B}y\eq By
+                &\phi\circ\rho
+                    \arrow[r,mapsto]
+                &\dep{
+                    \phi(\rho(\fun{base})),
+                    \fun{ap}_{\phi}(
+                        \fun{ap}_\rho(\fun{loop})
+                        )
+                    }
+        \end{tikzcd}
+    \]
+\end{proof}
+
+\section{The Interval}
+
+The type \textsl{interval}, denoted by $\op I$, is defined inductively as
+\begin{itemize}
+    \item $0_{\op I}\colon\op I$,
+    \item $1_{\op I}\colon\op I$,
+    \item $\fun{seg}\colon 0_{\op I}\eq{\op I}1_{\op I}$.
+\end{itemize}
+
+The recursion principle for the interval says that given a type $B$ along with
+\begin{itemize}
+    \item a point $b_0\colon B$,
+    \item a point $b_1\colon B$, and
+    \item a path $s\colon b_0\eq Bb_1$,
+\end{itemize}
+there is a function
 \[
-    \begin{tikzcd}[column sep=huge,row sep=huge]
-        \fun1+\N
-                \arrow[d,"{[0,\fun{succ}]}"']
-                \arrow[r,"{\id_{\fun1}+\fun{ind}_{\N}}"]
-            &\fun1+E
-                \arrow[d,"{[\hat0,\hat{\fun{succ}}]}"]\\
-        \N
-                \arrow[r,"\fun{ind}_{\N}"']
-                \arrow[ur,"\fun{ind}_{\N}",dashed]
-            &E
-    \end{tikzcd}
+    \fun{rec}_{\op I}(B)\colon\op I\to B
 \]
+such that
+\[
+    f(0_{\op I})\equiv b_0,\quad
+    f(1_{\op I})\equiv b_1,\quad\text{and}\quad
+    \fun{ap}_f(\fun{seg})\coloneqq s.
+\]
+The induction principle says that given $P\colon\op I\to\univ$ along with
+\begin{itemize}
+    \item a point $b_0\colon P(0_{\op I})$,
+    \item a point $b_1\colon P(1_{\op I})$, and
+    \item a path $s\colon b_0\eqt{\fun{seg}}{P} b_1$,
+\end{itemize}
+there is a function
+\[
+    \fun{ind}_{\op I}(P)\colon\prod_{x\colon\op I}P(x)
+\]
+such that
+\[
+    \fun{ind}_{\op I}(P)(0_{\op I})\equiv b_0,\quad
+    \fun{ind}_{\op I}(P)(1_{\op I})\equiv b_1,\quad\text{and}\quad
+    \fun{apd}_{\fun{ind}_{\op I}(P)}(\fun{seg})\coloneqq s.
+\]
+
+\begin{prop}
+    The type\/ $\op I$ is contractible.
+\end{prop}
+
+\begin{proof}
+    We choose $1_{\op I}$ as the center of contraction. We must find a contraction map $f\colon\prod_{x\colon\op I}x\eq{\op I}1_{\op I}$. To define this by induction on $x$ we must provide:
+    \begin{itemize}
+        \item a point $b_0\colon 0_{\op I}\eq{\op I} 1_{\op I}$,
+        
+        \item a point $b_1\colon 1_{\op I}\eq{\op I}1_{\op I}$, and
+        
+        \item a dependent path $s\colon\fun{seg}\eqt{\fun{seg}}{x\mapsto x\eq{\op I}1_{\op I}}\fun{refl}_{1_{\op I}}$.
+    \end{itemize}
+    We can choose $b_0\defeq\fun{seg}$ and $b_1\defeq\fun{refl}_{1_{\op I}}$. Therefore, by Proposition~\ref{prop:transport-decomposition-for-paths}, the type of $s$ is equivalent to
+    \[
+        \fun{seg}^{-1}\ct\fun{seg}
+        \eq{1_{\op I}\eq{\op I}1_{\op I}}
+        \fun{refl}_{1_{\op I}},
+    \]
+    which is trivially inhabited after path cancellation. Therefore, the required dependent path $s$ exists, completing the definition of $f$.
+\end{proof}
+
+\begin{thm} {\upshape[Function Extensionality]}
+    The recursion principle for the interval implies function extensionality.
+\end{thm}
+
+\begin{proof}
+    Let $f,g\colon A\to B$ be two functions such that $f(x)\eq Bg(x)$ for every $x\colon A$. We have to prove that $f\eq{A\to B}g$.
+    
+    Let $\eta\colon\prod_{x\colon A}f(x)\eq Bg(x)$ be the given pointwise equality. For each $x\colon A$, we apply the recursion principle of the interval to the type $B$, the points $f(x)$ and $g(x)$, and the path $\eta(x)$. This yields a function $h_x\colon\op I\to B$ such that $h_x(0_{\op I})\equiv f(x)$, $h_x(1_{\op I})\equiv g(x)$, and $\fun{ap}_{h_x}(\fun{seg})\eq{f(x)\eq{B} g(x)}\eta(x)$.
+    
+    Let $\epsilon\colon\op I\to(A\to B)$ be defined by
+    \[
+        \epsilon(i)\defeq\lambda x.\,h_x(i).
+    \]
+    Evaluating $\epsilon$ at the endpoints of $\op I$, we obtain
+    \[
+        \epsilon(0_{\op I})
+            \equiv(\lambda x.\,h_x(0_{\op I}))
+            \equiv(\lambda x.\,f(x))
+            \equiv f
+    \]
+    and
+    \[
+        \epsilon(1_{\op I})
+            \equiv(\lambda x.\,h_x(1_{\op I}))
+            \equiv(\lambda x.\,g(x))
+            \equiv g.
+    \]
+    Consequently,
+    \[
+        \fun{ap}_\epsilon(\fun{seg})\colon
+            (
+                \epsilon(0_{\op I})
+                \eq{A\to B}
+                \epsilon(1_{\op I})
+            )
+            \equiv(f\eq{A\to B}g).
+    \]
+\end{proof}
+
+\section{Circles \& Spheres}
+
+\begin{lem}
+    The circle\/ $\sphere^1$ satisfies $\fun{loop}\ne\fun{refl}_{base}$. In particular, is not equivalent to the unit type\/~$\fun1$.
+\end{lem}
+
+\begin{proof}
+    We must construct a map
+    \[
+        \fun{loop}
+            \eq{\fun{base}\eq{\sphere^1}\fun{base}}
+            \fun{refl}_{\fun{base}}
+        \to\fun0.
+    \]
+    Let $\zeta\colon\fun{loop}\eq{\fun{base}\eq{\sphere^1}\fun{base}}\fun{refl}_{\fun{base}}$. For any $A\colon\univ$, any $a\colon A$, and any $\ell\colon a\eq Aa$, consider the function
+    \[
+        f_a\defeq
+            \fun{rec}_{\sphere^1}(A,a,\ell)
+            \colon\sphere^1\to A.
+    \]
+    By definition, $f_a(\fun{base})\equiv a$ and $\fun{ap}_{f_a}(\fun{loop})\eq{a\eq Aa}\ell$. It follows that
+    \[
+        \fun{ap}_{\fun{ap}_{f_a}}(\zeta)\colon
+            \fun{ap}_{f_a}(\fun{loop})
+            \eq{a\eq Aa}
+            \fun{ap}_{f_a}(\fun{refl}_{\fun{base}}).
+    \]
+    Since $\fun{ap}_{f_a}(\fun{refl}_{\fun{base}})\equiv\fun{refl}_{f_a(\fun{base})}\equiv\fun{refl}_a$, we obtain a witness of $\ell\eq{a\eq Aa}\fun{refl}_a$.
+
+    As a consequence, given two paths $p,q\colon a\eq Ax$, because
+    \[
+        p\ct q^{-1}\colon a\eq Aa,
+    \]
+    we deduce that $p\ct q^{-1}\eq{a\eq Aa}\fun{refl}_a$, which implies $p\eq{a\eq Ax}q$.
+
+    Thus, $A$ would be a Set. Since the same reasoning can be applied to a higher universe $\univ'$, we would deduce that $\univ\colon\univ'$ is a Set. However, Example~\ref{xmpl:univ-isnt-a-set} yields a contradiction.
+\end{proof}
+
+\begin{rem}
+    The application of the recursion principle for the circle to a target type $A\colon\univ'$ is justified by \nref{lpar:universe-polymorphism}. Although the elimination rule is commonly stated for a target type in $\univ$, it permits the standard recursor $\fun{rec}_{\sphere^1}$ to eliminate into types residing in any universe above $\univ$, without the need of a separate definition of the circle at each universe level.
+\end{rem}
+
+\begin{cor}
+    The type\/ $\sphere^1\eq{\univ}\sphere^1$ is not a set.
+\end{cor}
+
+\begin{proof}
+    By univalence, it suffices to prove that $\sphere^1\simeq\sphere^1$ is not a set. By Definition~\ref{defn:equivalence},
+    \[
+        \sphere^1\simeq\sphere^1\equiv
+            \sum_{f\colon\sphere^1\to\sphere^1}
+                \fun{isequiv}(f).
+    \]
+    Because
+    \[
+        \dep{
+            \id_{\sphere^1},
+            \fun{isequiv}(\id_{\sphere^1})
+        }
+            \colon\sum_{f\colon\sphere^1\to\sphere^1}
+                \fun{isequiv}(f),
+    \]
+    it suffices to show that $\id_{\sphere^1}\eq{\sphere^1\to\sphere^1}\id_{\sphere^1}$ is not a mere proposition.
+
+    By function extensionality, this identity type is equivalent to $\id_{\sphere^1}\sim\id_{\sphere^1}$. Since $\lambda x.\,\fun{refl}_x$ is a homotopy from $\id_{\sphere^1}$ to itself, it suffices to construct another homotopy of this type distinct from this one.
+
+    Let $P\colon\sphere^1\to\univ$ be the type family defined by $P(x)\defeq x\eq{\sphere^1}x$. We define a dependent function
+    \[
+        \eta\colon\prod_{x\colon\sphere^1}x\eq{\sphere^1}x
+    \]
+    by circle induction. We choose $\fun{loop}\colon P(\fun{base})$ as the base point. To complete the definition, we need a dependent path $\ell\colon\fun{loop}\eqt{\fun{loop}}P\fun{loop}$. By Proposition~\ref{prop:transport-decomposition-for-paths},
+    \[
+        \fun{transport}^P(\fun{loop},\fun{loop})
+        \eq{} \fun{loop}^{-1}\ct\fun{loop}\ct\fun{loop}
+        \eq{} \fun{loop}.
+    \]
+    Let $\ell$ denote the witness of this equality. We can then define
+    \[
+        \eta\defeq\fun{ind}_{\sphere^1}
+            (
+                P,
+                \fun{loop},
+                \ell
+            ).
+    \]
+    By the computation rule, $\eta(\fun{base})\equiv\fun{loop}$. Since $\fun{loop}\ne\fun{refl}_{\fun{base}}$, we conclude that $\eta\ne\lambda x.\,\fun{refl}_x$, as required.
+\end{proof}
