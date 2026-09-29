@@ -722,7 +722,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
     
 \end{proof}
 
-\begin{lem}
+\begin{lem}\label{lem:apd-constant-fibration}
     Let\/ $f\colon A\to B$ and define the constant family\/ $P\colon A\to\univ$ by\/ $P(x)\defeq B$. For any path\/ $p\colon x\eq Ay$, we have
     \[
         \fun{apd}_f(p)\eq{p_*(f(x))\eq B f(y)}
@@ -4079,17 +4079,49 @@ Given a path\/ $p\colon x\eq X y$ and a function\/ $f\colon (A\to B)(x)$, we hav
 
 \begin{prop}\label{prop:transport-decomposition-for-paths}
     Let\/ $A\colon\univ$ be a type and\/ $a\colon A$ a term. Given\/ $p\colon x_1\eq Ax_2$, we have
-    \begin{align*}
-        1.\,&\fun{transport}^{x\mapsto(a\eq Ax)}(p,q)
-            \eq{}q\ct p
-            &&\text{for }q\colon a\eq Ax_1,\\
-        2.\,&\fun{transport}^{x\mapsto(x\eq Aa)}(p,q)
-            \eq{}p^{-1}\ct q
-            &&\text{for }q\colon x_1\eq Aa,\\
-        3.\,&\fun{transport}^{x\mapsto(x\eq Ax)}(p,q)
-            \eq{}p^{-1}\ct q\ct p
-            &&\text{for }q\colon x_1\eq Ax_1.
-    \end{align*}
+    \begin{enumerate}[a),font=\upshape]
+        \item $\fun{transport}^{x\mapsto(a\eq Ax)}(p,q)
+            \eq{}q\ct p$, for $q\colon a\eq Ax_1$
+        \[
+            \begin{tikzpicture}[x=1.7cm,y=1.7cm,font=\small]
+                \node (a)  at (0,1) {$a$};
+                \node (x1) at (0,0) {$x_1$};
+                \node (x2) at (1,0) {$x_2$};
+        
+                \draw[->] (a)  -- node[left] {$q$} (x1);
+                \draw[->] (x1) -- node[below] {$p$} (x2);
+                \draw[->, dashed] (a) -- node[above right] {$q\ct p$} (x2);
+            \end{tikzpicture}
+        \]
+        \item $\fun{transport}^{x\mapsto(x\eq Aa)}(p,q)
+            \eq{}p^{-1}\ct q$, for $q\colon x_1\eq Aa$
+        \[
+            \begin{tikzpicture}[x=1.7cm,y=1.7cm,font=\small]
+                \node (a)  at (0,1) {$a$};
+                \node (x1) at (0,0) {$x_1$};
+                \node (x2) at (1,0) {$x_2$};
+        
+                \draw[->] (x1) -- node[left] {$q$} (a);
+                \draw[->,gray] (x1) -- node[above] {$p$} (x2);
+                \draw[->, bend left=40] (x2) to node[below] {$p^{-1}$} (x1);
+                \draw[->, dashed] (x2) -- node[above right] {$p^{-1}\ct q$} (a);
+            \end{tikzpicture}
+        \]
+        \item $\fun{transport}^{x\mapsto(x\eq Ax)}(p,q)
+            \eq{}p^{-1}\ct q\ct p$, for $q\colon x_1\eq Ax_1$.
+        \[
+            \begin{tikzpicture}[x=1.7cm,y=1.7cm,font=\small]
+                \node (x1) at (0,0) {$x_1$};
+                \node (x2) at (1.5,0) {$x_2$};
+        
+                \draw[->] (x1) -- node[above] {$p$} (x2);
+                \draw[->, bend left=30] (x2) to node[below] {$p^{-1}$} (x1);
+                \draw[->] (x1) .. controls (-0.75, 0.75) and (-0.75, -0.75) .. node[left] {$q$} (x1);
+                \draw[->, dashed] (x2) .. controls (2.25, 0.75) and (2.25, -0.75) .. node[right] {$p^{-1}\ct q\ct p$} (x2);
+            \end{tikzpicture}
+        \]
+    \end{enumerate}
+    
 \end{prop}
 
 \begin{proof} For type verification, observe the following
@@ -5139,7 +5171,7 @@ the \textsl{horizontal composition} $\beta\hct\alpha$ is defined using whiskerin
 
 \section{The Univalence Axiom}
 
-To apply the observational framework~\ref{observational-framework} to the universe \/\(\univ\), we identify the observational equality with the type of equivalences.
+To apply the observational framework~\ref{observational-framework} to the universe \/$\univ$, we identify the observational equality with the type of equivalences.
 \begin{description}[font=\normalfont\scshape]
     \item[Code family.]
     \begin{align*}

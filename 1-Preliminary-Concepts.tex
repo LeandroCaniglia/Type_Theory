@@ -616,6 +616,24 @@
     Note that $\fun{ind}_{\fun1}$ is strictly more general than $\fun{uniq}_{\fun1}$, since it is defined for an arbitrary family $C\colon\fun1\to\univ$. Equation~\eqref{eq:uniq1-from-ind1} shows that $\fun{uniq}_{\fun1}$ is simply a specific instance of $\fun{ind}_{\fun1}$. Thus the fact that $\fun1$ is a singleton type is subsumed by the more general induction principle.
 \end{lpar}
 
+\begin{lpar}{Universe Polymorphism}\label{lpar:universe-polymorphism}
+    The principle that mathematical constructions and elimination rules apply uniformly across the entire universe hierarchy, from the smallest upward, is called \textsl{universe polymorphism}.
+    
+    This principle combines with the convention of typical ambiguity, by which universe indices are systematically suppressed.
+    
+    To handle this formally, the primitive type $\fun{Level}$ is introduced to index the universes. Thus, when induction and recursion principles are stated for the universe $\univ$, the simplified quantification
+    \[
+        \prod_{C\colon\univ}\cdots
+    \]
+    must be understood as
+    \[
+        \prod_{i\colon\fun{Level}}\;
+        \prod_{C\colon\univ_i}
+            \cdots
+    \]
+    By quantifying over a level $i\colon\fun{Level}$, we ensure that every induction and recursion principle holds for all universes. This allows us to apply standard structural principles to target types residing in any universe~$\univ_i$.
+\end{lpar}
+
 \section{Dependent Pair Types}
 
 \begin{lpar}{Dependent pairs \textrm{(a.k.a.~$\Sigma$-types)}.}

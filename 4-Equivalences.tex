@@ -826,6 +826,18 @@ By constructing $\fun{ishae}(f)$ as a mere proposition, we attain \textit{proof 
     If $\fun{ishae}(f)$ is inhabited, then $\fun{rinv}(f)$ is contractible by Proposition~\ref{prop:side-inverses-are-contractible}, and $\fun{rcoh}(f)$ is contractible by Lemma~\ref{lem:rcoh-is-contractible}. Thus, the conclusion follows from part~d) of Theorem~\ref{thm:contractible-types}.
 \end{proof}
 
+\begin{cor}\label{cor:isequiv-is-mere-proposition}
+    For any function\/ $f\colon A\to B$, the type\/ $\fun{isequiv}(f)$ is a mere proposition.
+\end{cor}
+
+\begin{proof}
+    By Definitions~\ref{defns:isequiv-qinv} and~\ref{defn:left-right-inverses}, we have the definitional equality
+    \[
+    \fun{isequiv}(f)\equiv\fun{rinv}(f)\times\fun{linv}(f).
+    \]
+    To show that $\fun{isequiv}(f)$ is a mere proposition, it suffices to prove that if it is inhabited, it is contractible. If $\fun{isequiv}(f)$ is inhabited, $f$ has both a right and a left inverse, which implies that it is quasi-invertible. Hence, by Proposition~\ref{prop:side-inverses-are-contractible}, both $\fun{rinv}(f)$ and $\fun{linv}(f)$ are contractible. The conclusion follows from part~c) of Theorem~\ref{thm:contractible-types}.
+\end{proof}
+
 \section{Bi-invertible Maps}
 
 \begin{defn}
