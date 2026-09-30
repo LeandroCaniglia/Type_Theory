@@ -751,3 +751,189 @@ such that
     \]
     By the computation rule, $\eta(\fun{base})\equiv\fun{loop}$. Since $\fun{loop}\ne\fun{refl}_{\fun{base}}$, we conclude that $\eta\ne\lambda x.\,\fun{refl}_x$, as required.
 \end{proof}
+
+\begin{lem}
+    Given\/ $f\colon A\to B$,\/ $x,y\colon A$,\/ $p,q\colon x\eq{A}y$, and\/ $\gamma\colon p\eq{x\eq{A}y}q$, we have a path
+    \[
+        \fun{ap}^2_f(\gamma)\colon\fun{ap}_f(p)\eq{f(x)\eq{B}f(y)}\fun{ap}_f(q).
+    \]
+\end{lem}
+
+\begin{proof}
+    By induction on $\gamma$ it suffices to assume $q\equiv p$ and $\gamma\equiv\fun{refl}_p$. Thus, our goal reduces to $\fun{ap}_f(p)\eq{f(x)\eq Bf(y)}\fun{ap}_f(p)$, which is trivially inhabited by $\fun{ap}^2_f(\fun{refl}_p)\defeq\fun{refl}_{\fun{ap}_f(p)}$.
+    
+\end{proof}
+
+\begin{lem}
+    Given\/ $P\colon A\to\univ$,\/ $x,y\colon A$,\/ $p,q\colon x\eq{A}y$, and\/ $\gamma\colon p\eq{x\eq{A}y}q$, for any\/ $u\colon P(x)$ we have a path
+    \[
+        \fun{transport}^{2P}(\gamma,u)\colon
+        \fun{transport}^P(p,u)
+        \eq{P(y)}
+        \fun{transport}^P(q,u).
+    \]
+\end{lem}
+
+\begin{proof}
+    By induction on $\gamma$ we obtain our goal and the definitional identity
+    \[
+        \fun{transport}^{2P}(\fun{refl}_p,u)
+        \equiv
+        \fun{refl}_{\fun{transport}^P(p,u)}.
+    \]
+\end{proof}
+
+\begin{defn}
+    Let $P\colon A\to\univ$ be a type family, $x,y\colon A$, $p,q\colon x\eq Ay$, and $\gamma\colon p\eq{x\eq Ay}q$. Given points $u\colon P(x)$ and $v\colon P(y)$, along with dependent paths $\rho\colon u\eqt pPv$ and $\sigma\colon u\eqt qPv$, we define the dependent $2$-path over $\gamma$ as
+    \[
+        \rho\eqt\gamma P\sigma
+            \defeq(
+                \rho\eq{}\fun{transport}^{2P}(\gamma,u)
+                \ct
+                \sigma
+                ).
+    \]
+\end{defn}
+
+\begin{rem}
+    The elements of the definition above can be illustrated as follows:
+    \[
+    \begin{tikzpicture}[>=stealth,scale=1.0,font=\small]
+
+        % Vertical dashed lines representing the fibers P(x) and P(y)
+        \draw[dashed] (0,0) -- (0,4.5)
+            node[above] {$P(x)$};
+        \draw[dashed] (4,0) -- (4,4.5)
+            node[above] {$P(y)$};
+
+        % Base points
+        \fill (0,0) circle (1.5pt)
+            node[left=2pt] {$x\colon A$};
+        \fill (4,0) circle (1.5pt)
+            node[right=2pt] {$y\colon A$};
+        
+        % Fiber points
+        \fill (0,3.2) circle (1.5pt)
+            node[left=2pt] {$u$};
+        \fill (4,3.2) circle (1.5pt)
+            node[right=2pt] {$v$};
+        
+        % Base paths
+        \draw[->,orange] (0,0) to[bend left=35]
+            coordinate[midway] (ptop)
+            node[midway,above,black] {$p\colon x\eq Ay$}
+                (4,0);
+        \draw[->,blue] (0,0) to[bend right=35]
+            coordinate[midway] (pbot)
+            node[midway,below,black] {$q\colon x\eq Ay$}
+                (4,0);
+        
+        % 2-path gamma between p and q
+        \draw[->,
+            double,
+            shorten >=0.4cm,
+            shorten <=0.4cm] (ptop) -- (pbot)
+                node[midway,right=2pt] {$\gamma$};
+        
+        % Dependent paths
+        \draw[->,orange] (0,3.2) to[bend left=35]
+            coordinate[midway] (utop)
+            node[midway,above,black]
+                {$\rho\colon u\eqt pPv$} (4,3.2);
+        \draw[->,blue] (0,3.2) to[bend right=35]
+            coordinate[midway] (ubot)
+                node[midway,below,black]
+                    {$\sigma\colon u\eqt qPv$} (4,3.2);
+        
+        % Induced 2-path in the fiber
+        \draw[->,
+            double,
+            shorten >=0.4cm,
+            shorten <=0.4cm]
+                (utop) -- (ubot)
+                node[midway, right=2pt]
+                        {$\rho\eqt\gamma P\sigma$};
+        
+    \end{tikzpicture}
+    \]
+    The term
+    \[
+        \fun{transport}^{2P}(\gamma,u)
+    \]
+    is the path in the fiber $P(y)$ from
+    \[
+        \fun{transport}^{P}(p,u)
+        \quad\text{to}\quad
+        \fun{transport}^{P}(q,u).
+    \]
+    Thus, the definition says that the dependent $2$-path
+    \[
+        \rho\eqt\gamma P\sigma
+    \]
+    witnesses the equality between $\rho$ and the concatenation
+    \[
+        \fun{transport}^{2P}(\gamma,u)\ct\sigma
+    \]
+    in the fiber $P(y)$.
+\end{rem}
+
+
+\begin{lem}
+    Given\/ $P\colon A\to\univ$,\/ $x,y\colon A$,\/ $p,q\colon x\eq{A}y$,\/ $\gamma\colon p\eq{x\eq{A}y}q$, and a function\/ $f\colon\prod_{x\colon A}P(x)$, we have a dependent\/ $2$-path
+    \[
+        \fun{apd}^2_f(\gamma)\colon
+            \fun{apd}_f(p)\eqt\gamma P\fun{apd}_f(q).
+    \]
+\end{lem}
+
+\begin{proof}
+    By path induction on the $2$-path $\gamma$, we only need to address the case where $q\equiv p$ and $\gamma\equiv\fun{refl}_p$. In this case, the target type becomes
+    \[
+        \fun{apd}_f(p)\eqt{\fun{refl}_p}P\fun{apd}_f(p),
+    \]
+    which is definitionally equal to
+    \[
+        \fun{apd}_f(p)\eq{}\fun{apd}_f(p).
+    \]
+    This identity type is trivially inhabited by $\fun{refl}_{\fun{apd}_f(p)}$.
+\end{proof}
+
+\begin{defn}
+    The $2$-sphere $\sphere^2$ is the higher inductive type generated by
+    \begin{itemize}
+        \item $\fun{base}\colon\sphere^2$, and
+        \item $\fun{surf}\colon\fun{refl}_{\fun{base}}\eq{\fun{base}\eq{\sphere^2}\fun{base}}\fun{refl}_{\fun{base}}$.
+    \end{itemize}
+\end{defn}
+
+The recursion principle for $\sphere^2$ says that given $B$ with
+\begin{itemize}
+    \item $b\colon B$ and
+    \item $s\colon\fun{refl}_b\eq{b\eq{B}b}\fun{refl}_b$,
+\end{itemize}
+we have
+\[
+    \fun{rec}_{\sphere^2}(B,b,s)\colon\sphere^2\to B
+\]
+with
+\[
+    \fun{rec}_{\sphere^2}(B,b,s)(\fun{base})\equiv b
+    \quad\text{and}\quad
+    \fun{ap}^2_{\fun{rec}_{\sphere^2}(B,b,s)}(\fun{surf})\eq{}s.
+\]
+The induction principle for $\sphere^2$ says that, given $P\colon\sphere^2\to\univ$ with
+\begin{itemize}
+    \item $b\colon P(\fun{base})$ and 
+    \item $s\colon\fun{refl}_b\eqt{\fun{surf}}Q\fun{refl}_b$,
+\end{itemize}
+where $Q\defeq\lambda p.\,b\eqt pPb$, there is a function 
+\[
+    \fun{ind}_{\sphere^2}(B,b,s)\colon
+        \prod_{x\colon\sphere^2}P(x)
+\]
+such that
+\[
+    \fun{ind}_{\sphere^2}(B,b,s)(\fun{base})\equiv b
+    \quad\text{and}\quad
+    \fun{apd}^2_{\fun{ind}_{\sphere^2}(B,b,s)}(\fun{surf})\eq{}s.
+\]
