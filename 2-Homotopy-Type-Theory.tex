@@ -3111,7 +3111,7 @@ Here is a picture illustrating the construction
   Thus, the term $\fun{pair}^{\eq{}}(p,q)$ reduces definitionally to $\fun{refl}_{(x_1,y_1)}$. Applying the function $\pi_1$ to this path yields $\fun{ap}_{\pi_1}(\fun{refl}_{\dep{x_1,y_1}})$, which is definitionally equal to $\fun{refl}_{x_1}$. Since $p\equiv\fun{refl}_{x_1}$, both sides of the equation are definitionally equal to $\fun{refl}_{x_1}$. Thus, the identity path $\fun{refl}_{\fun{refl}_{x_1}}$ witnesses the required propositional equality.
 \end{proof}
 
-\begin{prop} {\upshape[\textSigma-conmmutativity]} \label{prop:sigma-commutativity}
+\begin{prop} {\upshape[\textSigma-commutativity]} \label{prop:sigma-commutativity}
     Let $B,C\colon\univ$. Given a type family
     \[
         D\colon B\to C\to\univ,
@@ -5773,7 +5773,7 @@ To make sense of these abstract $2$-paths, we must evaluate how paths are transp
 The following results establish computational rules for these transport operations. Beginning with simple identity families where one or both endpoints are fixed, we then consider families defined by functions into a fixed codomain, and finally address the general case of dependent functions. These rules provide the computational engine that allows us to translate abstract transport terms into concrete path concatenations.
 
 \begin{lem}\label{lem:path-equivalences}
-    Let\/ $A$ be a type, let\/ $a, x_1, x_2\colon A$, and consider a path\/ $p\colon x_1\eq{A}x_2$. Then, we have the following:
+    Let\/ $A$ be a type, $a,x_1,x_2\colon A$, and consider a path\/ $p\colon x_1\eq{A}x_2$. Then, we have the following:
     \begin{enumerate}[a),font=\upshape]
         \item Let\/ $E_1\colon A\to\univ$ be the type family\/ $E_1(x)\defeq a\eq{A}x$. Then,
         \begin{enumerate}[i),font=\upshape]
@@ -7531,7 +7531,7 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     \end{align*}
 \end{solution}
 
-\begin{exr}
+\begin{exr}\label{exr:path-equivalence}
     Let\/ $A$ be a type and let\/ $x, y, z\colon A$ with a path\/ $p\colon x\eq{A}y$. Show that the function\/ $(p\ct\dummy)\colon(y\eq{A}z)\to(x\eq{A}z)$ is an equivalence.
 \end{exr}
 
@@ -9118,4 +9118,3 @@ As we discussed in \nref{lpar:products-revisited}, the cartesian product $A\time
     which shows that the \rhs of the equivalence is inhabited by $\dep{\fun{ua}(\fun{not}),\fun{refl}_{1_{\fun2}}}$. Thus, the \lhs is inhabited as well.
     
 \end{solution}
-
