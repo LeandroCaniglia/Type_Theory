@@ -3082,42 +3082,45 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
 \end{solution}
 
 \begin{exr}\label{exr:constant-fibration}
-    Prove that transport over a constant type family is the identity function. That is, given a type\/ $B$ and the constant family\/ $P(x)\defeq B$, construct a witness for
+    Prove that transport over a constant type family acts as the identity function. That is, given a type\/ $B$ and the constant family\/ $P(x)\defeq B$, construct a witness for
     \[
-        \prod_{x,y\colon A}\;
-            \prod_{p\colon x\eq Ay}\;
+        \prod_{x,y\colon A}\,
+            \prod_{p\colon x\eq Ay}\,
             \prod_{b\colon B}\fun{transport}^P(p,b)\eq Bb.
     \]
 \end{exr}
 
 \begin{solution}
-    The motive $C$ used in \nref{lpar:transport} to derive the transport function $\fun{transport}^P$ is given by
+    The motive $C$ used in \nref{lpar:transport} to define the transport function $\fun{transport}^P$ is given by
     \[
-    C(x,y,p)\defeq P(x)\to P(y),
+        C(x,y,p)\defeq P(x)\to P(y),
     \]
     which, in this case, reduces to
     \[
-    C(x,y,p)\defeq B\to B,
+        C(x,y,p)\defeq B\to B,
     \]
-    while $c\colon C(x,x,\fun{refl}_x)$ remains the identity $c\defeq\lambda b\colon B.\,b$. Let us also recall that $\fun{transport}^P(x,y,p)\equiv\fun{ind}_{\eq A}(C,c,x,y,p)$.
+    while the base case $c(x)\colon C(x,x,\fun{refl}_x)$ is the identity function $c(x)\defeq\lambda b\colon B.\,b$. Let us also recall that $\fun{transport}^P(p)\equiv\fun{ind}_{\eq A}(C,c,x,y,p)$.
     
-    Consider the motive
+    To construct the required witness, consider the motive
     \[
-    D(x,y,p)\defeq\prod_{b\colon B}\fun{transport}^P(p,b)\eq B b.
+        D(x,y,p)\defeq\prod_{b\colon B}
+            \fun{transport}^P(p,b)\eq Bb.
     \]
-    For the base case, we need a witness $d$ of type $\prod_{x\colon A} D(x,x,\fun{refl}_x)$.
-    Since
+    Because the expression is well-typed we can proceed by path induction on $p$. This reduces the goal to the case where $y\equiv x$ and $p\equiv\fun{refl}_x$.
+    For this base case, we need a dependent function $d$ of type $\prod_{x\colon A}D(x,x,\fun{refl}_x)$. Since
     \[
-        \fun{transport}^P(x,x,\fun{refl}_x)\equiv\id_B,
+        \fun{transport}^P(\fun{refl}_x)\equiv\id_B,
     \]
     and $\id_B(b)\equiv b$, evaluating the motive at the base yields
     \[
-    D(x,x,\fun{refl}_x) \equiv \prod_{b\colon B}b\eq B b.
+        D(x,x,\fun{refl}_x)\equiv\prod_{b\colon B}b\eq Bb.
     \]
-    Hence, we can define $d(x)\defeq\lambda b.\,\fun{refl}_b$.
-    We can now invoke the induction principle $\fun{ind}_{\eq A}$ to produce the desired function
+    Thus, we may define $d(x)\defeq\lambda b.\,\fun{refl}_b$. Path induction then provides the desired function
     \[
-    \fun{ind}_{\eq A}(D,d)\colon\prod_{x,y\colon A}\;\prod_{p\colon x\eq A y} D(x,y,p).
+        \fun{ind}_{\eq A}(D,d)\colon
+            \prod_{x,y\colon A}\,
+            \prod_{p\colon x\eq Ay}
+                D(x,y,p).
     \]
 \end{solution}
 
