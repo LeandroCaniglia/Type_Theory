@@ -373,7 +373,7 @@
     \end{align*}
     An element of the underlying type $a\eq Aa$ is called a \textsl{loop} at $a$.
     
-    For $n\colon\N$, we define the iterated loop space operation $\Omega^n\colon\puniv\to\puniv$ by recursion as follows: 
+    For $n\colon\N$, we define the \textsl{loop space operation} $\Omega^n\colon\puniv\to\puniv$ by recursion as follows: 
     \begin{align*}
         C&\defeq\puniv\to\puniv\\
         c_0&\defeq\id_\puniv\\
@@ -391,7 +391,41 @@
         \Omega^{n+1}(\dep{A,a})
             \equiv\Omega^n(\Omega(\dep{A,a})).
     \]
+    Since $\Omega^0$ is the identity, $\Omega^1\equiv\Omega$.
 \end{defn}
+
+\begin{lem}\label{lem:omega^(n+1)-identity}
+    For any external natural number\/ $n\in\N$ and any pointed type\/ $\dep{A,a}$, we have the judgmental equality
+    \begin{equation}\label{eq:omega^(n+1)-identity}
+        \Omega^n(\Omega(\dep{A,a}))
+            \equiv\Omega(\Omega^n(\dep{A,a})).
+    \end{equation}
+\end{lem}
+
+\begin{proof}
+    Since a judgmental equality cannot be expressed as a type family, we proceed by metatheoretic induction on\/ $n$.
+ 
+     For the base case\/ $n=0$, the equality holds trivially because\/ $\Omega^0\equiv\id_{\puniv}$.
+     
+     For the inductive step, assume the judgmental equality holds for\/ $n$. Applying the inductive hypothesis to the pointed type\/ $\Omega(\dep{A,a})$, we have
+    \begin{align*}
+        \Omega^{n+1}(\Omega(\dep{A,a}))
+            &\equiv\Omega^n(\Omega(\Omega(\dep{A,a})))\\
+            &\equiv\Omega(\Omega^n(\Omega(\dep{A,a})))\\
+            &\equiv\Omega(\Omega^{n+1}(\dep{A,a})).
+    \end{align*}
+    This completes the metatheoretic induction, establishing the judgmental equality for any external natural number~$n$.
+    
+\end{proof}
+
+\begin{rem}\label{rem:trivial-n-loop}
+    Let $c_n\defeq\pi_2(\Omega^n(\dep{A,a}))$ be the \textsl{trivial $n$-loop}. Applying the projection $\pi_2$ to both sides of \eqref{eq:omega^(n+1)-identity}, we obtain
+    \[
+        c_{n+1}\equiv\fun{refl}_{c_n}
+            \colon c_n\eq{\pi_1(\Omega^n(\dep{A,a}))}c_n,
+    \]
+    with $c_0\equiv a$. In particular $(c_n\eq{\pi_1(\Omega^n(\dep{A,a}))}c_n)\equiv\pi_1(\Omega^{n+1}(\dep{A,a}))$.
+\end{rem}
 
 \begin{ntn}\label{ntn:loop-space}
     By abuse of notation, we will sometimes identify $\Omega(\dep{A,a})$ with $\pi_1(\Omega(\dep{A,a}))\equiv a\eq Aa$. The following definition is an example.
@@ -774,6 +808,7 @@ Given $a,b\colon A$, the type family $P$ structurally relates the fibers $P(a)$ 
         \end{tikzcd}
     \]    
 \end{rem}
+
 
 \begin{lem}\label{lem:transport-composition}
     Let\/ $P\colon A\to\univ$ be a type family. Given paths\/ $p\colon x\eq Ay$ and\/ $q\colon y\eq Az$, and a term\/ $u\colon P(x)$, we have
