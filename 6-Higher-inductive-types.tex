@@ -672,7 +672,7 @@ such that
     \]
 \end{proof}
 
-\section{Circles \& Spheres}
+\section{Circles \texorpdfstring{\&}{and}\ Spheres}
 
 \begin{lem}
     The circle\/ $\sphere^1$ satisfies $\fun{loop}\ne\fun{refl}_{base}$. In particular, is not equivalent to the unit type\/~$\fun1$.
@@ -1064,6 +1064,7 @@ such that
     \end{description}
 \end{defn}
 
+\phantomsection\label{n-sphere-induction}
 \paragraph{Induction Principle for $\sphere^n$.}
     Given a type family $P\colon\sphere^n\to\univ$, along with the following data:
     \begin{itemize}
@@ -1118,6 +1119,46 @@ such that
             \equiv\fun{refl}_{f(a)}\equiv d_1(f(a)).
     \]
 
+    We can represent\/ $q\colon\Omega^1_a(P,u,p)$ as follows.
+    \[
+        \begin{tikzpicture}[scale=1.5]
+            % Base space A
+            % 1. Shade the trapezoid without drawing any boundary lines
+            \path[top color=gray!35, bottom color=gray!5]
+                (-2,-1) -- (-0.8,-0.1) -- (0.8,-0.1) -- (2,-1) -- cycle;
+            
+            % 2. Stroke the bottom and slanted sides thick
+            \draw[thick] (-0.8,-0.1) -- (-2,-1) -- (2,-1) -- (0.8,-0.1);
+            
+            % 3. Stroke only the top edge thin
+            \draw[thin] (-0.8,-0.1) -- (0.8,-0.1);
+            
+            \node at (1.65,-0.5) {$A$};
+    
+            % Basepoint a
+            \fill (0,-0.5) circle (1.5pt) node[left] {$a$};
+    
+            % 1-loop p in the base space
+            \draw[thick, green!50!black, ->, >=stealth] (0,-0.5) .. controls (0.35,0.1) and (1.8,-0.8) .. (0,-0.5);
+            \node at (0.95,-0.7) {$p$};
+    
+            % The Fiber P(a) over a
+            \draw[thick] (0,-0.5) -- (0,2.5) node[above] {$P(a)$};
+    
+            % Original point u and the transported point p_*(u)
+            \fill (0, 2.0) circle (1.5pt) node[left] {$u$};
+            \fill (0, 0.7) circle (1.5pt) node[left] {$p_*(u)$};
+    
+            % The lift of p (transport trace)
+            \draw[thick, orange, ->, >=stealth,dotted] (0,2.0) .. controls (1.2,2.2) and (1.2,0.3) .. (0,0.7);
+            \node[orange!80!black] at (0.95, 0.5) {\footnotesize transport trace};
+    
+            % The dependent loop q bridging the gap
+            \draw[very thick, blue!50!white, ->, >=stealth] (0, 0.7) -- (0, 2.0);
+            \node[left] at (0, 1.3) {$q\colon\Omega^1_a(P,u,p)$};
+        \end{tikzpicture}
+    \]
+    
     For $n=2$, an ordinary $2$-loop $p$ inhabits $\pi_1(\Omega^2(\dep{A,a}))$, which evaluates to $\fun{refl}_a\eq{a\eq{A}a}\fun{refl}_a$. Using our computations for $n=1$, we obtain:
     \begin{itemize}
         \item $\Omega^2_a(P,u,p)\defeq\bigl(d_1(u)\eqt p{\Omega^1_a(P,u,\dummy)}d_1(u)\bigr)\equiv\bigl(\fun{refl}_u\eqt{p}{x\mapsto(u\eqt xPu)}\fun{refl}_u\bigr)$.
@@ -1141,6 +1182,291 @@ such that
     \]
     which ensures that both sides of the computation rule $\fun{apd}_{\fun{apd}_f}(\fun{surf})\coloneqq\ell$ inhabit the type $\fun{refl}_b\eqt{\fun{surf}}{x\mapsto(b\eqt{x}{P}b)}\fun{refl}_b$.
 \end{xmpl}
+
+\subsection{Recursion}
+
+\begin{defn}\label{defn:ap-n}
+    Let $B,C\colon\univ$, $b\colon B$, and $g\colon B\to C$. Denote the respective trivial $n$-loops by
+    \[
+        c_n^B\defeq\pi_2(\Omega^n(\dep{B,b}))
+        \quad\text{and}\quad
+        c_n^C\defeq\pi_2(\Omega^n(\dep{C,g(b)})).
+    \]
+    By induction on $n\colon\N$, we define the \textsl{action $\fun{ap}^n_g$ on $n$-loops},
+    \begin{equation}\label{eq:ap^n_g}\tag{1}
+        \fun{ap}^n_g\colon
+            \pi_1(\Omega^n(\dep{B,b}))
+            \to
+            \pi_1(\Omega^n(\dep{C,g(b)})),
+    \end{equation}
+    satisfying the invariant
+    \begin{equation}\label{eq:ap^n_g-invariant}\tag{2}
+        \fun{ap}^n_g(c_n^B)\equiv c_n^C,
+    \end{equation}
+    as follows:
+    \begin{description}[font=\normalfont\scshape]
+        \item[Base Case ($n=0$):] $\fun{ap}^0_g(x)\defeq g(x)$.
+        
+        Conditions \eqref{eq:ap^n_g} and \eqref{eq:ap^n_g-invariant} hold trivially because $\Omega^0\equiv\id_\puniv$.
+
+        \item[Inductive Step ($n\mapsto n+1$):] $\fun{ap}^{n+1}_g(p)\defeq\fun{ap}_{\fun{ap}^n_g}(p)$.
+
+        Conditions \eqref{eq:ap^n_g} and \eqref{eq:ap^n_g-invariant} are verified as follows:
+        \begin{enumerate}[(1)]
+            \item Applying $\fun{ap}$ to $\fun{ap}^n_g$ along $p\colon c_n^B\eq{}c_n^B$ yields a path
+            \begin{align*}
+                \fun{ap}_{\fun{ap}^n_g}(p)
+                    &\colon
+                        \fun{ap}^n_g(c_n^B)
+                        \eq{}
+                        \fun{ap}^n_g(c_n^B)\\
+                    &\equiv c_n^C\eq{}c_n^C
+                    &&\text{; IH~\eqref{eq:ap^n_g-invariant}}\\
+                    &\equiv\pi_1(
+                        \Omega^{n+1}(\dep{C,g(b)})
+                    ).
+                    &&\text{; Rem.~\ref{rem:trivial-n-loop}}
+            \end{align*}
+
+            \item Evaluating $\fun{ap}^{n+1}_g$ at the trivial loop $c_{n+1}^B\equiv\fun{refl}_{c_n^B}$ gives
+            \begin{align*}
+                \fun{ap}^{n+1}_g(c_{n+1}^B)
+                    &\equiv \fun{ap}_{\fun{ap}^n_g}(\fun{refl}_{c_n^B})\\
+                    &\equiv \fun{refl}_{\fun{ap}^n_g(c_n^B)}\\
+                    &\equiv \fun{refl}_{c_n^C}
+                    &&\text{; IH~\eqref{eq:ap^n_g-invariant}}\\
+                    &\equiv c_{n+1}^C.
+                    &&\text{; Rem.~\ref{rem:trivial-n-loop}}
+            \end{align*}
+        \end{enumerate}
+    \end{description}
+\end{defn}
+
+\begin{prop}\label{prop:apd-n-constant}
+    Let\/ $B,C\colon\univ$,\/ $b\colon B$, and let\/ $P\colon B\to\univ$ be the constant type family\/ $P(x)\defeq C$. Write\/ $c_n^B\defeq\pi_2(\Omega^n(\dep{B,b}))$ and\/ $c_n(u)\defeq\pi_2(\Omega^n(\dep{C,u}))$ for\/ $u\colon C$. Then for every\/ $n\colon\N$,\/ $u\colon C$, and\/ $p\colon\pi_1(\Omega^n(\dep{B,b}))$, there is an equivalence
+    \begin{equation}\label{eq:phi-n-equiv}\tag{1}
+        \phi_n(u,p)\colon \Omega^n_b(P,u,p) \simeq \pi_1(\Omega^n(\dep{C,u}))
+    \end{equation}
+    satisfying the invariant
+    \begin{equation}\label{eq:phi-n-base}\tag{2}
+        \phi_n(u,c_n^B)(d_n(u)) \equiv c_n(u),
+    \end{equation}
+    such that for any function\/ $g\colon B\to C$,
+    \begin{equation}\label{eq:phi-n-apd}\tag{3}
+        \phi_n(g(b),p)\bigl(\fun{apd}^n_g(p)\bigr) \eq{\pi_1(\Omega^n(\dep{C,g(b)}))} \fun{ap}^n_g(p).
+    \end{equation}
+\end{prop}
+
+\begin{proof}
+    We proceed by induction on $n\colon\N$.
+
+    \begin{description}[font=\normalfont\scshape]
+        \item[Base Case ($n=0$):] In this case, $p$ is simply an element $x\colon B$. Since
+        \[
+            \Omega^0_b(P,u,x)
+                \equiv P(x)
+                \equiv C
+                \equiv\pi_1(\Omega^0(\dep{C,u})),
+        \]
+        we define $\phi_0(u,x)\defeq\fun{id}_C$.
+
+        Then $\phi_0(u,x)$ is an equivalence, and conditions \eqref{eq:phi-n-base} and \eqref{eq:phi-n-apd} hold judgmentally.
+
+        \item[Inductive Step ($n\mapsto n+1$):] Introduce
+        \[
+            Q(u,x)\defeq\Omega^n_b(P,u,x)
+            \quad\text{and}\quad
+            D(u)\defeq\pi_1(\Omega^n(\dep{C,u})).
+        \]
+        For an $(n+1)$-loop $p\colon c_n^B\eq{}c_n^B$ and a dependent loop $q\colon\Omega^{n+1}_b(P,u,p)$, Definition~\ref{defn:dependent-n-loops} yields
+        \[
+            q\colon
+                \fun{transport}^{Q(u,\dummy)}(p,d_n(u))
+                \eq{Q(u,c_n^B)}
+                d_n(u).
+        \]
+        First, we construct a path
+        \[
+        \tau_n(u,p)\colon
+            \phi_n(u,c_n^B)
+                \bigl(
+                    \fun{transport}^{Q(u,\dummy)}
+                        (p,d_n(u))
+                \bigr)
+                \eq{D(u)}c_n(u)
+        \]
+        by based path induction on $p\colon c_n^B\eq{}x$ for a generic $x\colon\pi_1(\Omega^n(\dep{B,b}))$.
+
+        Replacing $c_n^B$ with $x$, the left-hand side of the identity type above becomes
+        \[
+            \phi_n(u,x)(
+                \explain[Q(u,x)]{\fun{transport}^{Q(u,\dummy)}
+                    (
+                        p,
+                        \explain[Q(u,c_n^B)]{d_n(u)}
+                    )
+                }
+            ).
+        \]
+        When $p\equiv\fun{refl}_{c_n^B}$, the inductive condition \eqref{eq:phi-n-base} reduces judgmentally this expression to
+        \[
+            \phi_n(u,c_n^B)(d_n(u))\equiv c_n(u).
+        \]
+        Hence, we can set
+        \[
+            \tau_n(u,\fun{refl}_{c_n^B})
+                \defeq\fun{refl}_{c_n(u)}.
+        \]
+        %In particular, for $n=0$, $\phi_0(u,x)\equiv\fun{id}_C$ and $\tau_0(u,p)\equiv\fun{transportconst}^C_p(u)$ by Lemma~\ref{lem:constant-fibration}.
+        %
+        We then define
+        \begin{equation}\label{eq:phi_(n+1)}
+        \begin{aligned}
+            \phi_{n+1}(u,p)\colon
+            \Omega^{n+1}_b(P,u,p)
+            &\to
+            \bigl(c_n(u)\eq{D(u)}c_n(u)\bigr)\\
+            q&\mapsto
+                \tau_n(u,p)^{-1}
+                \ct
+                \fun{ap}_{\phi_n(u,c_n^B)}(q).
+        \end{aligned}
+        \end{equation}
+        This is well-typed in $(c_n(u)\eq{D(u)}c_n(u))\equiv\pi_1(\Omega^{n+1}(\dep{C,u}))$ because condition~\eqref{eq:phi-n-base} implies that $\fun{ap}_{\phi_n(u,c_n^B)}(q)$ has right endpoint $c_n(u)$.
+
+        We now verify the three conditions for $n+1$:
+        \begin{enumerate}[a),font=\upshape]
+            \item By the inductive hypothesis, $\phi_n(u,c_n^B)$ is an equivalence. Hence, $\fun{ap}_{\phi_n(u,c_n^B)}$ is an equivalence, and post-concatenation with $\tau_n(u,p)^{-1}$ is also an equivalence.
+
+            \item At the trivial loop $c_{n+1}^B\equiv\fun{refl}_{c_n^B}$ and $d_{n+1}(u)\equiv\fun{refl}_{d_n(u)}$, both $\tau_n(u,\fun{refl}_{c_n^B})$ and $\fun{ap}_{\phi_n(u,c_n^B)}(\fun{refl}_{d_n(u)})$ reduce judgmentally to $\fun{refl}_{c_n(u)}$. Thus,
+            \[
+                \phi_{n+1}(u,c_{n+1}^B)(d_{n+1}(u)) \equiv \fun{refl}_{c_n(u)}^{-1}\ct\fun{refl}_{c_n(u)} \equiv \fun{refl}_{c_n(u)} \equiv c_{n+1}(u).
+            \]
+
+            \item To simplify the notation, let us introduce $X\defeq\pi_1(\Omega^n(\dep{B,b}))$ and put $s\defeq\fun{apd}^n_g$. Define $f_1,f_2\colon X\to D(u)$ by
+            \begin{align*}
+                f_1(x)&\defeq\phi_n(u,x)(s(x)),\\
+                f_2(x)&\defeq\fun{ap}^n_g(x).
+            \end{align*}
+            The inductive hypothesis \eqref{eq:phi-n-apd} provides a homotopy $\eta\colon f_1\sim f_2$. By function extensionality, we obtain a path $f_1\eq{}f_2$. Consequently, for an $(n+1)$-loop $p\colon c_n^B\eq{}c_n^B$, we have
+            \[
+                \fun{ap}_{f_1}(p)\eq{}\fun{ap}_{f_2}(p).
+            \]
+            Since the \rhs is definitionally equal to $\fun{ap}^{n+1}_g(p)$, our goal reduces to proving that $\fun{ap}_{f_1}(p)$ is equal to the \lhs of the target equation. We proceed by path induction on $p$.
+
+            Let us generalize $p$ to a path with a free right endpoint, $p\colon c_n^B\eq{X}x$. We want to establish a path between:
+            \begin{enumerate}[a),font=\upshape]
+                \item $\fun{ap}_{f_1}(p) \colon f_1(c_n^B) \eq{D(u)} f_1(x)$
+                
+                \item $\tau_n(u,p)^{-1} \ct \fun{ap}_{\phi_n(u,x)}\bigl(\fun{apd}_s(p)\bigr) \colon f_1(c_n^B) \eq{D(u)} f_1(x)$
+            \end{enumerate}
+
+            Let us verify that the endpoints of the second expression match the first:
+            \begin{itemize}
+                \item $\fun{apd}_s(p)\colon\fun{transport}^{Q(u,\dummy)}(p, s(c_n^B))\eq{}s(x)$.
+
+                \item $s(c_n^B)\equiv\fun{apd}^n_g(c_n^B)\equiv d_n(u)$.
+
+                \item $\fun{ap}_{\phi_n(u,x)}\bigl(\fun{apd}_s(p)\bigr)\colon\phi_n(u,x)\bigl(\fun{transport}^{Q(u,\dummy)}(p, d_n(u))\bigr)\eq{}f_1(x)$.
+
+                \item $\tau_n(u,p)\colon\phi_n(u,x)\bigl(\fun{transport}^{Q(u,\dummy)}(p, d_n(u))\bigr)\eq{}c_n(u)$.
+
+                \item Since $c_n(u)\equiv f_1(c_n^B)$ by~\eqref{eq:phi-n-base}, $\tau_n(u,p)^{-1}$ bridges $f_1(c_n^B)$ to the start of the second path, making the concatenation in b) well-typed.
+            \end{itemize}
+
+            To prove these two paths are equal for all $x$ and $p$, by path induction it suffices to check the case where $x\equiv c_n^B$ and $p\equiv\fun{refl}_{c_n^B}$. Evaluating both sides at reflexivity, we obtain:
+            \begin{itemize}
+                \item The path in a) reduces to $\fun{ap}_{f_1}(\fun{refl})\equiv\fun{refl}_{f_1(c_n^B)}$.
+
+                \item The path in b) reduces judgmentally to $\fun{refl}\ct\fun{refl}\equiv\fun{refl}_{c_n(u)}$.
+            \end{itemize}
+            Since $f_1(c_n^B)\equiv c_n(u)$, both sides reduce to the same reflexivity path. Therefore, the equality holds for all paths $p$.
+
+            In conclusion, when we restrict $p$ back to being an $(n+1)$-loop by setting $x\defeq c_n^B$, the equality just proven yields
+            \[
+                \fun{ap}_{f_1}(p) = \tau_n(u,p)^{-1} \ct \fun{ap}_{\phi_n(u,c_n^B)}\bigl(\fun{apd}_s(p)\bigr).
+            \]
+            According to \eqref{eq:phi_(n+1)}, the \rhs is definitionally equal to $\phi_{n+1}(u,p)$ applied to $\fun{apd}_s(p)$. Since
+            \[
+                \fun{apd}_s(p)
+                    \equiv\fun{apd}_{\fun{apd}^n_g}(p)
+                    \equiv\fun{apd}^{n+1}_g(p),
+            \]
+            we arrive at
+            \[
+                \phi_{n+1}(u,p)
+                    \bigl(
+                        \fun{apd}^{n+1}_g(p)
+                    \bigr)
+                    \eq{}\fun{ap}_{f_1}(p)
+                    \eq{}\fun{ap}_{f_2}(p)
+                    \equiv \fun{ap}^{n+1}_g(p),
+            \]
+            proving condition \eqref{eq:phi-n-apd}.
+        \end{enumerate}
+    \end{description}
+\end{proof}
+
+\begin{thm}\label{thm:sn-recursion}
+    For any type\/ $C$ and any\/ $n\colon\N$, the\/ $n$-sphere\/ $\sphere^n$ satisfies the non-dependent recursion principle. That is, given a point\/ $u\colon C$ and an\/ $n$-loop\/ $\ell\colon\pi_1(\Omega^n(\dep{C,u}))$, there exists a function\/ $g\colon\sphere^n\to C$ such that
+    \[
+        g(\fun{base}_n) \equiv u
+        \quad\text{and}\quad
+        \fun{ap}^n_g(\fun{loop}_n) \eq{\pi_1(\Omega^n(\dep{C,u}))} \ell.
+    \]
+\end{thm}
+
+\begin{proof}
+    Let $P\colon\sphere^n\to\univ$ be the constant type family $P(x)\defeq C$. To construct a non-dependent function $g\colon\sphere^n\to C$, which is equivalent to a dependent function $\prod_{x\colon\sphere^n} P(x)$, we apply the induction principle of the $n$-sphere~\ref{n-sphere-induction}. To that end we must specify
+    \begin{itemize}
+        \item $u\colon P(\fun{base}_n)\equiv C$,
+        
+        \item $q\colon\Omega^n_b(P,u,\fun{loop}_n)$.
+    \end{itemize}
+    Since $q$ is given, it remains to provide $q$.
+    
+    By Proposition~\ref{prop:apd-n-constant}, we have an equivalence
+    \[
+        \phi_n(u, \fun{loop}_n)\colon \Omega^n_b(P,u,\fun{loop}_n) \simeq \pi_1(\Omega^n(\dep{C,u})).
+    \]
+    From the ordinary $n$-loop $\ell\colon\pi_1(\Omega^n(\dep{C,u}))$, we can derive the required dependent loop:
+    \[
+        q\defeq\phi_n(u,\fun{loop}_n)^{-1}(\ell).
+    \]
+    Thus, we obtain
+    \begin{align*}
+        g&\colon\sphere^n\to C\\
+        g&\equiv\fun{ind}_{\sphere^n}(P,u,q)
+    \end{align*}
+    satisfying the computation rules:
+    \begin{enumerate}[i)]
+        \item $g(\fun{base}_n) \equiv u$,
+        \item $\fun{apd}^n_g(\fun{loop}_n) \eq{\Omega^n_b(P,u,\fun{loop}_n)} q$.
+    \end{enumerate}
+    The first rule matches our goal for $\fun{base}_n$. Therefore, we need to prove the second requirement.
+    
+    By condition \eqref{eq:phi-n-apd} of Proposition~\ref{prop:apd-n-constant}, we have
+    \[
+        \phi_n(g(\fun{base}_n), \fun{loop}_n)\bigl(\fun{apd}^n_g(\fun{loop}_n)\bigr) \eq{\pi_1(\Omega^n(\dep{C,u}))} \fun{ap}^n_g(\fun{loop}_n).
+    \]
+    Using rules i) and ii) above, we obtain
+    \[
+        \phi_n(u, \fun{loop}_n)(q) \eq{\pi_1(\Omega^n(\dep{C,u}))} \fun{ap}^n_g(\fun{loop}_n),
+    \]
+    which, by the definition of $q$, computes to
+    \[
+        \phi_n(u,\fun{loop}_n)
+            \bigl(
+                \phi_n(u,\fun{loop}_n)^{-1}(\ell)
+            \bigr)
+            \eq{\pi_1(\Omega^n(\dep{C,u}))}
+            \ell.
+    \]
+    Concatenating with the previous path yields $\fun{ap}^n_g(\fun{loop}_n) \eq{\pi_1(\Omega^n(\dep{C,u}))}\ell$.
+    %
+    
+\end{proof}
+
 
 \section{Suspensions}
 
@@ -2001,246 +2327,20 @@ We can now compute both compositions:
 
 \subsection{Functoriality}
 
-\begin{defn}\label{defn:ap-n}
-    Let $B,C\colon\univ$, $b\colon B$, and $g\colon B\to C$. Denote the respective trivial $n$-loops by
-    \[
-        c_n^B\defeq\pi_2(\Omega^n(\dep{B,b}))
-        \quad\text{and}\quad
-        c_n^C\defeq\pi_2(\Omega^n(\dep{C,g(b)})).
-    \]
-    By induction on $n\colon\N$, we define the \textsl{action $\fun{ap}^n_g$ on $n$-loops},
-    \begin{equation}\label{eq:ap^n_g}\tag{1}
-        \fun{ap}^n_g\colon
-            \pi_1(\Omega^n(\dep{B,b}))
-            \to
-            \pi_1(\Omega^n(\dep{C,g(b)})),
-    \end{equation}
-    satisfying the invariant
-    \begin{equation}\label{eq:ap^n_g-invariant}\tag{2}
-        \fun{ap}^n_g(c_n^B)\equiv c_n^C,
-    \end{equation}
-    as follows:
-    \begin{description}[font=\normalfont\scshape]
-        \item[Base Case ($n=0$):] $\fun{ap}^0_g(x)\defeq g(x)$.
-        
-        Conditions \eqref{eq:ap^n_g} and \eqref{eq:ap^n_g-invariant} hold trivially because $\Omega^0\equiv\id_\puniv$.
-
-        \item[Inductive Step ($n\mapsto n+1$):] $\fun{ap}^{n+1}_g(p)\defeq\fun{ap}_{\fun{ap}^n_g}(p)$.
-
-        Conditions \eqref{eq:ap^n_g} and \eqref{eq:ap^n_g-invariant} are verified as follows:
-        \begin{enumerate}[(1)]
-            \item Applying $\fun{ap}$ to $\fun{ap}^n_g$ along $p\colon c_n^B\eq{}c_n^B$ yields a path
-            \begin{align*}
-                \fun{ap}_{\fun{ap}^n_g}(p)
-                    &\colon
-                        \fun{ap}^n_g(c_n^B)
-                        \eq{}
-                        \fun{ap}^n_g(c_n^B)\\
-                    &\equiv c_n^C\eq{}c_n^C
-                    &&\text{; IH~\eqref{eq:ap^n_g-invariant}}\\
-                    &\equiv\pi_1(
-                        \Omega^{n+1}(\dep{C,g(b)})
-                    ).
-                    &&\text{; Rem.~\ref{rem:trivial-n-loop}}
-            \end{align*}
-
-            \item Evaluating $\fun{ap}^{n+1}_g$ at the trivial loop $c_{n+1}^B\equiv\fun{refl}_{c_n^B}$ gives
-            \begin{align*}
-                \fun{ap}^{n+1}_g(c_{n+1}^B)
-                    &\equiv \fun{ap}_{\fun{ap}^n_g}(\fun{refl}_{c_n^B})\\
-                    &\equiv \fun{refl}_{\fun{ap}^n_g(c_n^B)}\\
-                    &\equiv \fun{refl}_{c_n^C}
-                    &&\text{; IH~\eqref{eq:ap^n_g-invariant}}\\
-                    &\equiv c_{n+1}^C.
-                    &&\text{; Rem.~\ref{rem:trivial-n-loop}}
-            \end{align*}
-        \end{enumerate}
-    \end{description}
-\end{defn}
-
-\begin{prop}\label{prop:apd-n-constant}
-    Let\/ $B,C\colon\univ$,\/ $b\colon B$, and let\/ $P\colon B\to\univ$ be the constant type family\/ $P(x)\defeq C$. Write\/ $c_n^B\defeq\pi_2(\Omega^n(\dep{B,b}))$ and\/ $c_n(u)\defeq\pi_2(\Omega^n(\dep{C,u}))$ for\/ $u\colon C$. Then for every\/ $n\colon\N$,\/ $u\colon C$, and\/ $p\colon\pi_1(\Omega^n(\dep{B,b}))$, there is an equivalence
-    \begin{equation}\label{eq:phi-n-equiv}\tag{1}
-        \phi_n(u,p)\colon \Omega^n_b(P,u,p) \simeq \pi_1(\Omega^n(\dep{C,u}))
-    \end{equation}
-    satisfying the invariant
-    \begin{equation}\label{eq:phi-n-base}\tag{2}
-        \phi_n(u,c_n^B)(d_n(u)) \equiv c_n(u),
-    \end{equation}
-    such that for any function\/ $g\colon B\to C$,
-    \begin{equation}\label{eq:phi-n-apd}\tag{3}
-        \phi_n(g(b),p)\bigl(\fun{apd}^n_g(p)\bigr) \eq{\pi_1(\Omega^n(\dep{C,g(b)}))} \fun{ap}^n_g(p).
-    \end{equation}
-\end{prop}
-
-\begin{proof}
-    We proceed by induction on $n\colon\N$.
-
-    \begin{description}[font=\normalfont\scshape]
-        \item[Base Case ($n=0$):] In this case, $p$ is simply an element $x\colon B$. Since
-        \[
-            \Omega^0_b(P,u,x)
-                \equiv P(x)
-                \equiv C
-                \equiv\pi_1(\Omega^0(\dep{C,u})),
-        \]
-        we define $\phi_0(u,x)\defeq\fun{id}_C$.
-
-        Then $\phi_0(u,x)$ is an equivalence, and conditions \eqref{eq:phi-n-base} and \eqref{eq:phi-n-apd} hold judgmentally.
-
-        \item[Inductive Step ($n\mapsto n+1$):] Introduce
-        \[
-            Q(u,x)\defeq\Omega^n_b(P,u,x)
-            \quad\text{and}\quad
-            D(u)\defeq\pi_1(\Omega^n(\dep{C,u})).
-        \]
-        For an $(n+1)$-loop $p\colon c_n^B\eq{}c_n^B$ and a dependent loop $q\colon\Omega^{n+1}_b(P,u,p)$, Definition~\ref{defn:dependent-n-loops} yields
-        \[
-            q\colon
-                \fun{transport}^{Q(u,\dummy)}(p,d_n(u))
-                \eq{Q(u,c_n^B)}
-                d_n(u).
-        \]
-        First, we construct a path
-        \[
-        \tau_n(u,p)\colon
-            \phi_n(u,c_n^B)
-                \bigl(
-                    \fun{transport}^{Q(u,\dummy)}
-                        (p,d_n(u))
-                \bigr)
-                \eq{D(u)}c_n(u)
-        \]
-        by based path induction on $p\colon c_n^B\eq{}x$ for a generic $x\colon\pi_1(\Omega^n(\dep{B,b}))$.
-
-        Replacing $c_n^B$ with $x$, the left-hand side of the identity type above becomes
-        \[
-            \phi_n(u,x)(
-                \explain[Q(u,x)]{\fun{transport}^{Q(u,\dummy)}
-                    (
-                        p,
-                        \explain[Q(u,c_n^B)]{d_n(u)}
-                    )
-                }
-            ).
-        \]
-        When $p\equiv\fun{refl}_{c_n^B}$, the inductive condition \eqref{eq:phi-n-base} reduces judgmentally this expression to
-        \[
-            \phi_n(u,c_n^B)(d_n(u))\equiv c_n(u).
-        \]
-        Hence, we can set
-        \[
-            \tau_n(u,\fun{refl}_{c_n^B})
-                \defeq\fun{refl}_{c_n(u)}.
-        \]
-        %In particular, for $n=0$, $\phi_0(u,x)\equiv\fun{id}_C$ and $\tau_0(u,p)\equiv\fun{transportconst}^C_p(u)$ by Lemma~\ref{lem:constant-fibration}.
-        %
-        We then define
-        \begin{equation}\label{eq:phi_(n+1)}
-        \begin{aligned}
-            \phi_{n+1}(u,p)\colon
-            \Omega^{n+1}_b(P,u,p)
-            &\to
-            \bigl(c_n(u)\eq{D(u)}c_n(u)\bigr)\\
-            q&\mapsto
-                \tau_n(u,p)^{-1}
-                \ct
-                \fun{ap}_{\phi_n(u,c_n^B)}(q).
-        \end{aligned}
-        \end{equation}
-        This is well-typed in $(c_n(u)\eq{D(u)}c_n(u))\equiv\pi_1(\Omega^{n+1}(\dep{C,u}))$ because condition~\eqref{eq:phi-n-base} implies that $\fun{ap}_{\phi_n(u,c_n^B)}(q)$ has right endpoint $c_n(u)$.
-
-        We now verify the three conditions for $n+1$:
-        \begin{enumerate}[a),font=\upshape]
-            \item By the inductive hypothesis, $\phi_n(u,c_n^B)$ is an equivalence. Hence, $\fun{ap}_{\phi_n(u,c_n^B)}$ is an equivalence, and post-concatenation with $\tau_n(u,p)^{-1}$ is also an equivalence.
-
-            \item At the trivial loop $c_{n+1}^B\equiv\fun{refl}_{c_n^B}$ and $d_{n+1}(u)\equiv\fun{refl}_{d_n(u)}$, both $\tau_n(u,\fun{refl}_{c_n^B})$ and $\fun{ap}_{\phi_n(u,c_n^B)}(\fun{refl}_{d_n(u)})$ reduce judgmentally to $\fun{refl}_{c_n(u)}$. Thus,
-            \[
-                \phi_{n+1}(u,c_{n+1}^B)(d_{n+1}(u)) \equiv \fun{refl}_{c_n(u)}^{-1}\ct\fun{refl}_{c_n(u)} \equiv \fun{refl}_{c_n(u)} \equiv c_{n+1}(u).
-            \]
-
-            \item To simplify the notation, let us introduce $X\defeq\pi_1(\Omega^n(\dep{B,b}))$ and put $s\defeq\fun{apd}^n_g$. Define $f_1,f_2\colon X\to D(u)$ by
-            \begin{align*}
-                f_1(x)&\defeq\phi_n(u,x)(s(x)),\\
-                f_2(x)&\defeq\fun{ap}^n_g(x).
-            \end{align*}
-            The inductive hypothesis \eqref{eq:phi-n-apd} provides a homotopy $\eta\colon f_1\sim f_2$. By function extensionality, we obtain a path $f_1\eq{}f_2$. Consequently, for an $(n+1)$-loop $p\colon c_n^B\eq{}c_n^B$, we have
-            \[
-                \fun{ap}_{f_1}(p)\eq{}\fun{ap}_{f_2}(p).
-            \]
-            Since the \rhs is definitionally equal to $\fun{ap}^{n+1}_g(p)$, our goal reduces to proving that $\fun{ap}_{f_1}(p)$ is equal to the \lhs of the target equation. We proceed by path induction on $p$.
-
-            Let us generalize $p$ to a path with a free right endpoint, $p\colon c_n^B\eq{X}x$. We want to establish a path between:
-            \begin{enumerate}[a),font=\upshape]
-                \item $\fun{ap}_{f_1}(p) \colon f_1(c_n^B) \eq{D(u)} f_1(x)$
-                
-                \item $\tau_n(u,p)^{-1} \ct \fun{ap}_{\phi_n(u,x)}\bigl(\fun{apd}_s(p)\bigr) \colon f_1(c_n^B) \eq{D(u)} f_1(x)$
-            \end{enumerate}
-
-            Let us verify that the endpoints of the second expression match the first:
-            \begin{itemize}
-                \item $\fun{apd}_s(p)\colon\fun{transport}^{Q(u,\dummy)}(p, s(c_n^B))\eq{}s(x)$.
-
-                \item $s(c_n^B)\equiv\fun{apd}^n_g(c_n^B)\equiv d_n(u)$.
-
-                \item $\fun{ap}_{\phi_n(u,x)}\bigl(\fun{apd}_s(p)\bigr)\colon\phi_n(u,x)\bigl(\fun{transport}^{Q(u,\dummy)}(p, d_n(u))\bigr)\eq{}f_1(x)$.
-
-                \item $\tau_n(u,p)\colon\phi_n(u,x)\bigl(\fun{transport}^{Q(u,\dummy)}(p, d_n(u))\bigr)\eq{}c_n(u)$.
-
-                \item Since $c_n(u)\equiv f_1(c_n^B)$ by~\eqref{eq:phi-n-base}, $\tau_n(u,p)^{-1}$ bridges $f_1(c_n^B)$ to the start of the second path, making the concatenation in b) well-typed.
-            \end{itemize}
-
-            To prove these two paths are equal for all $x$ and $p$, by path induction it suffices to check the case where $x\equiv c_n^B$ and $p\equiv\fun{refl}_{c_n^B}$. Evaluating both sides at reflexivity, we obtain:
-            \begin{itemize}
-                \item The path in a) reduces to $\fun{ap}_{f_1}(\fun{refl})\equiv\fun{refl}_{f_1(c_n^B)}$.
-
-                \item The path in b) reduces judgmentally to $\fun{refl}\ct\fun{refl}\equiv\fun{refl}_{c_n(u)}$.
-            \end{itemize}
-            Since $f_1(c_n^B)\equiv c_n(u)$, both sides reduce to the same reflexivity path. Therefore, the equality holds for all paths $p$.
-
-            \paragraph{Conclusion.}
-            When we restrict $p$ back to being an $(n+1)$-loop by setting $x\defeq c_n^B$, the equality just proven yields
-            \[
-                \fun{ap}_{f_1}(p) = \tau_n(u,p)^{-1} \ct \fun{ap}_{\phi_n(u,c_n^B)}\bigl(\fun{apd}_s(p)\bigr).
-            \]
-            According to \eqref{eq:phi_(n+1)}, the \rhs is definitionally equal to $\phi_{n+1}(u,p)$ applied to $\fun{apd}_s(p)$. Since
-            \[
-                \fun{apd}_s(p)
-                    \equiv\fun{apd}_{\fun{apd}^n_g}(p)
-                    \equiv\fun{apd}^{n+1}_g(p),
-            \]
-            we arrive at
-            \[
-                \phi_{n+1}(u,p)
-                    \bigl(
-                        \fun{apd}^{n+1}_g(p)
-                    \bigr)
-                    \eq{}\fun{ap}_{f_1}(p)
-                    \eq{}\fun{ap}_{f_2}(p)
-                    \equiv \fun{ap}^{n+1}_g(p),
-            \]
-            proving condition \eqref{eq:phi-n-apd}.
-        \end{enumerate}
-    \end{description}
-\end{proof}
-
-\begin{rem}\label{rem:apd-n-transport}
-    If dependent paths over $P$ are instead defined uniformly via transport as $(u\eqt{p}{P}v)\defeq (\fun{tr}^P(p,u)\eq{P(y)}v)$ without a strict reduction rule for constant families, then for $P(x)\defeq C$ we have a canonical family of equivalences $\phi_n(u,p)\colon\Omega^n_b(P,u,p)\simeq\pi_1(\Omega^n(\dep{C,u}))$ constructed by iterated transport along the propositional law $\fun{tr}^{x\mapsto D}(p,y)=y$ (HoTT Book, Lemma~2.3.5), under which $\phi_n(g(b),p)(\fun{apd}^n_g(p)) = \fun{ap}^n_g(p)$ holds propositionally (HoTT Book, Lemma~2.3.8).
-\end{rem}
-
 \begin{prop}\label{prop:functoriality-F}
-    For any\/ $n\colon\N$, let\/ $F\colon\univ\to\univ$ be defined on any type\/ $B\colon\univ$ by
+    For any\/ $n\colon\N$, let\/ $F\colon\univ\to\univ$ be the operation defined on any type\/ $B\colon\univ$ by
     \[
         F(B) \defeq \sum_{b\colon B}\pi_1(\Omega^n(\dep{B,b})),
     \]
-    and on any function\/ $g\colon B\to C$ by\/ $F(g)\colon F(B)\to F(C)$,
-    \[
-        F(g)(\dep{b,\ell}) \defeq \dep{g(b),\fun{ap}^n_g(\ell)},
-    \]
-    where\/ $\fun{ap}^n_g\colon\pi_1(\Omega^n(\dep{B,b}))\to\pi_1(\Omega^n(\dep{C,g(b)}))$ denotes the induced action on\/ $n$-loops. Then\/ $F$ satisfies the functoriality laws up to homotopy:
+    and on any function\/ $g\colon B\to C$ by\/ 
+    \begin{align*}
+        F(g)\colon F(B)&\to F(C)\\
+        \dep{b,\ell}&\mapsto\dep{g(b),\fun{ap}^n_g(\ell)}.
+    \end{align*}
+    Then\/ $F$ satisfies the functoriality laws up to homotopy:
     \begin{enumerate}[a),font=\upshape]
-        \item For any type\/ $B\colon\univ$,\/ $F(\fun{id}_B) \sim \fun{id}_{F(B)}$.
-        \item For any functions\/ $g\colon B\to C$ and\/ $h\colon C\to D$,\/ $F(h\circ g) \sim F(h)\circ F(g)$.
+        \item Given\/ $B\colon\univ$,\/ $F(\fun{id}_B) \sim \fun{id}_{F(B)}$.
+        \item Given\/ $g\colon B\to C$ and\/ $h\colon C\to D$,\/ $F(h\circ g) \sim F(h)\circ F(g)$.
     \end{enumerate}
 \end{prop}
 
