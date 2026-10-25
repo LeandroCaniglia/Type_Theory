@@ -751,7 +751,7 @@
     \end{enumerate}
 \end{proof}
 
-\begin{ntn}
+\begin{ntn}\label{ntn:subtypes}
     When\/ $P\colon A\to\univ$ is a family of mere propositions, an alternative notation for\/ $\Sigma_AP$ will be
     \begin{equation}\label{eq:set-notation}
         \set{x\colon A\mid P(x)}.
@@ -1682,6 +1682,90 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     Consequently, the map $\lambda f.\,f(\zeta)\circ\epsilon$ fulfills the requirement of the statement.
     %
+    
+\end{proof}
+
+\section{Hedberg's Theorem}
+
+\begin{defn}
+    A type family of mere propositions $R\colon X\times X\to\fun{Prop}_\univ$ is \textsl{reflexive} if there is an inhabitant
+    \begin{equation}\label{eq:reflexive-relation}
+        \rho\colon\prod_{x\colon X}R(x,x).
+    \end{equation}
+    It \textsl{implies identity} if there is a map 
+    \begin{equation}\label{eq:implies-=}
+        f\colon\prod_{x,y\colon X}R(x,y)\to(x\eq Xy).
+    \end{equation}
+\end{defn}
+
+\begin{thm}\label{thm:reflexive-mere-relation-impl-id}
+    Suppose that $R$ is a reflexive mere relation on a type $X$ implying identity. Then $X$ is a set.
+\end{thm}
+
+\begin{proof}
+    We must prove that for any $x,y\colon X$ and any paths $p,q\colon x\eq Xy$, we have $p\eq{x\eq Xy}q$.
+
+    Let $\rho$ and $f$ as in \eqref{eq:reflexive-relation} and \eqref{eq:implies-=}. 
+    
+    By path induction on $q$, we may assume $y\equiv x$ and $q\equiv\fun{refl}_x$. Then the goal reduces to showing that for any $p\colon x\eq Xx$, we have $p\eq{x\eq Xx}\fun{refl}_x$.
+
+    Consider the dependent function
+    \[
+        f(x)\colon\prod_{y\colon X}(R(x,y)\to(x\eq{X}y)).
+    \]
+    According to Lemma~\ref{lem:dependent-map}, we have
+    \[
+        \fun{apd}_{f(x)}(p)\colon
+        p_*(f(x,x))\eq{R(x,x)\to(x\eq{X}x)}f(x,x).
+    \]
+    We can apply Theorem~\ref{thm:function-equality-equivalence} by taking the type families $A(y)\equiv R(x,y)$ and $B(y)\equiv (x\eq{X}y)$, with the functions $f$ and $g$ both being $f(x,x)$. The theorem establishes an equivalence between paths of the form 
+    \[
+        p_*(f(x,x))\eq{R(x,x)\to(x\eq{X}x)}f(x,x)
+    \]
+    and homotopies
+    \[
+        p_*\circ f(x,x)\sim f(x,x)\circ p_*.
+    \]
+    Therefore, the path $\fun{apd}_{f(x)}(p)$ corresponds under this equivalence to a homotopy. Evaluating this homotopy at any $r\colon R(x,x)$ yields the path
+    \[
+        p_*(f(x,x,r))\eq{x\eq{X}x}f(x,x,p_*(r)).
+    \]
+    The \lhs computes as follows
+    \begin{align*}
+        \lhs&\equiv p_*(f(x,x,r))\\
+            &\equiv\fun{transport}^B(p,f(x,x,r))\\
+            &\eq{}f(x,x,r)\ct p
+                &&\text{; Prop.~\ref{prop:transport-decomposition-for-paths} a)}
+    \end{align*}
+    The \rhs is propositionally equal to $f(x,x,r)$ because both $r$ and
+    \[
+        p_*(r)\equiv\fun{transport}^A(p,r)
+    \]
+    inhabit $A(x)\equiv R(x,x)$, which is a mere proposition.
+
+    Substituting $r \equiv \rho(x)$, we obtain
+    \[
+        f(x,x,\rho(x))\cdot p\eq{x\eq Xx}f(x,x,\rho(x)).
+    \]
+    Hence, $p\eq{x\eq Xx}\fun{refl}_x$, which completes the proof.
+    
+\end{proof}
+
+\begin{cor}\label{cor:double-neg-condition-for-set}
+    If a type\/ $X$ satisfies\/ $\neg\neg(x\eq Xy)\to(x\eq Xy)$ for any\/ $x, y\colon X$, then\/ $X$ is a set.
+\end{cor}
+
+\begin{proof}
+    Let $R(x,y)\equiv\neg\neg(x\eq Xy)$. Then $R(x,y)$ is a mere proposition by Theorem~\ref{thm:mere-propositions}. Moreover $R$ is reflexive because $\ev{\fun{refl}_x}\colon\neg(x\eq Xx)\to\fun0$.
+    By hypothesis, $R$ implies identity. Thus, by Theorem~\ref{thm:reflexive-mere-relation-impl-id}, $X$ is a set.
+\end{proof}
+
+\begin{thm}[Hedberg]
+    If equality is decidable in\/ $X$, then\/ $X$ is a set.
+\end{thm}
+
+\begin{proof}
+    The hypothesis means that for all $x,y\colon X$ we have $(x\eq Xy)+\neg(x\eq Xy)$. By Lemma~\ref{lem:A+negA-to-negnegA-to-A}, we obtain $\neg\neg(x\eq Xy)\to(x\eq Xy)$. The result follows from Corollary~\ref{cor:double-neg-condition-for-set}.
     
 \end{proof}
 

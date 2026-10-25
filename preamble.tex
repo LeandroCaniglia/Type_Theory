@@ -130,28 +130,55 @@
 \newcommand{\seq}[2][n]{(#2)_{#1\in\N}}
 \newcommand{\set}[1]{\{#1\}}
 \newcommand{\blank}{\vbox{\medskip\medskip}}
+
+% Custom style for plain/italic theorems with controlled spacing and square-bracketed notes
+\newtheoremstyle{ourplain}
+  {\medskipamount}                  % Space above
+  {\medskipamount}                  % Space below
+  {\itshape}                        % Body font
+  {}                                % Indent amount
+  {\bfseries}                       % Theorem head font
+  {.}                               % Punctuation after theorem head
+  { }                               % Space after theorem head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\ \normalfont[#3]}} % Head spec: renders [Note] instead of (Note)
+
+% Custom style for upright definition/example environments with square-bracketed notes
+\newtheoremstyle{ourdefinition}
+  {\medskipamount}                  % Space above
+  {\medskipamount}                  % Space below
+  {\upshape}                        % Body font
+  {}                                % Indent amount
+  {\bfseries}                       % Theorem head font
+  {.}                               % Punctuation after theorem head
+  { }                               % Space after theorem head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{\ \normalfont[#3]}} % Head spec: renders [Note] instead of (Note)
+
+% --- Theorems and Assertions (Italic) ---
+\theoremstyle{ourplain}
 \newtheorem{thm}{\blank Theorem}[section]
 \newtheorem{ntn}[thm]{\blank Notation}
-\newtheorem{ntns}[thm]{\blank Notations}
 \newtheorem{lem}[thm]{\blank Lemma}
 \newtheorem{cor}[thm]{\blank Corollary}
 \newtheorem{prop}[thm]{\blank Proposition}
 \newtheorem{probl}[thm]{\blank Problem}
 \newtheorem{exr}[thm]{\blank Exercise}
 \newtheorem{ill}[thm]{Illustration}
-\theoremstyle{definition}
+
+% --- Definitions, Examples, and Remarks (Upright) ---
+\theoremstyle{ourdefinition}
 \newtheorem{defn}[thm]{Definition}
 \newtheorem{defns}[thm]{Definitions}
+\newtheorem{rem}[thm]{\blank Remark}
+\newtheorem{rems}[thm]{\blank Remarks}
+\newtheorem{xmpl}[thm]{Example}
+\newtheorem{xmpls}[thm]{Examples}
+\newtheorem{test}[thm]{\blank Test}
 
-\theoremstyle{definition}
-    \newtheorem{rem}[thm]{\blank Remark}
-    \newtheorem{rems}[thm]{\blank Remarks}
-    \newenvironment{solution}[1][]
-      {\begin{proof}[Solution#1]${}$}
-      {\end{proof}}
-    \newtheorem{xmpl}[thm]{Example}
-    \newtheorem{xmpls}[thm]{Examples}
-    \newtheorem{test}[thm]{\blank Test}
+% --- Custom Environments ---
+\newenvironment{solution}[1][]
+  {\begin{proof}[Solution#1]${}$}
+  {\end{proof}}
+
 \theoremstyle{plain}
 
 \AtBeginEnvironment{test}{\small}
