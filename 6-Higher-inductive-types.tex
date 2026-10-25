@@ -769,7 +769,6 @@ such that
 
 \begin{proof}
     By induction on $\gamma$ it suffices to assume $q\equiv p$ and $\gamma\equiv\fun{refl}_p$. Thus, our goal reduces to $\fun{ap}_f(p)\eq{f(x)\eq Bf(y)}\fun{ap}_f(p)$, which is trivially inhabited by $\fun{ap}^2_f(\fun{refl}_p)\defeq\fun{refl}_{\fun{ap}_f(p)}$.
-    
 \end{proof}
 
 \begin{lem}
@@ -787,7 +786,7 @@ such that
     \[
         \fun{transport}^{2P}(\fun{refl}_p,u)
         \equiv
-        \fun{refl}_{\fun{transport}^P(p,u)}.
+        \fun{refl}_{\fun{transport}^P(p,u)}.\qedhere
     \]
 \end{proof}
 
@@ -1463,7 +1462,6 @@ such that
             \ell.
     \]
     Concatenating with the previous path yields $\fun{ap}^n_g(\fun{loop}_n) \eq{\pi_1(\Omega^n(\dep{C,u}))}\ell$.
-    %
     
 \end{proof}
 
@@ -1595,6 +1593,7 @@ and for each $a\colon A$ we have
     Now the induction principle yields the required homotopy
     \[
         \eta\defeq\fun{ind}_{\fun{Susp}(A)}(P,p,q,\mu).
+        \qedhere
     \]
 \end{proof}
 
@@ -1659,8 +1658,6 @@ and for each $a\colon A$ we have
                 \bigr).
     \end{align*}
     The conclusion follows from Lemma~\ref{lem:Susp-rec-equality}.
-    %
-    
 \end{proof}
 
 \begin{lem}\label{lem:Susp(S0)=S1}
@@ -1808,7 +1805,6 @@ and for each $a\colon A$ we have
         &\equiv s.
     \end{align*}
     This provides the witnesses $\mathfrak m(0_{\fun2})$ and $\mathfrak m(1_{\fun2})$, completing the proof.
-    
 \end{proof}
 
 \begin{lem}\label{lem:Susp(S-1)=S0}
@@ -1852,8 +1848,6 @@ and for each $a\colon A$ we have
         \fun{ind}_{\fun{Susp}(\fun0)}(P,n,s,m)
     \]
     as the witness for $g\circ f\sim\id_{\fun{Susp}(\fun0)}$.
-    %
-    
 \end{proof}
 
 \begin{rem}
@@ -1921,7 +1915,7 @@ and for each $a\colon A$ we have
     The result is a direct consequence of the equality
     \[
         \fun{happly}(\fun{funext}(\eta),x_0)
-            \eq{}\eta(x_0).
+            \eq{}\eta(x_0).\qedhere
     \]
 \end{proof}
 
@@ -1964,8 +1958,8 @@ We can now compute both compositions:
                 B,
                 g,
                 \lambda\fstar.\,b_0
-            )\circ\fun{inl}\\
-            &\equiv g.
+            )\circ\fun{inl}
+            \equiv g.
     \intertext{The other composition yields}
         \psi\circ\phi(\dep{f,p})
             &\equiv\dep{
@@ -2027,7 +2021,6 @@ We can now compute both compositions:
             &\eq{}\fun{refl}_{b_0},
     \end{align*}
     which provides the required witness $\beta$.
-    
 \end{proof}
 
 \begin{lem}\label{lem:sigma-identity-product}
@@ -2044,14 +2037,13 @@ We can now compute both compositions:
     First, we rewrite the cartesian product as a non-dependent $\Sigma$-type:
     \begin{align*}
         \lhs
-            &\simeq\sum_{a\colon A}\;\sum_{p\colon a\eq{A}a_0}P(a).
-    \intertext{By $\Sigma$-associativity (Proposition~\ref{prop:sigma-associativity}),}
-                &\simeq\sum_{\omega\colon\sum_{a\colon A}a\eq{A}a_0}P(\pi_1(\omega)).
-    \intertext{By Lemma~\ref{lem:Sigma-identity-is-contractible}, $\sum_{a\colon A}a\eq{A}a_0$ is contractible with center $\dep{a_0,\fun{refl}_{a_0}}$. Hence, Theorem~\ref{thm:contractible-types}~b) reduces the entire sum to}
+            &\simeq\sum_{a\colon A}\;\sum_{p\colon a\eq{A}a_0}P(a)\\
+            &\simeq\sum_{\omega\colon\sum_{a\colon A}a\eq{A}a_0}P(\pi_1(\omega))
+            &&\text{; Prop.~\ref{prop:sigma-associativity}.}\\
             &\simeq P(\pi_1(\dep{a_0,\fun{refl}_{a_0}})),
+            &&\text{; Lem.~\ref{lem:Sigma-identity-is-contractible} \& Thm.~\ref{thm:contractible-types}~b)}
     \end{align*}
     which is definitionally equal to $P(a_0)$.
-    
 \end{proof}
 
 \begin{lem}\label{lem:map-graph-equivalence}
@@ -2079,8 +2071,8 @@ We can now compute both compositions:
         &\simeq
         \Bigl(
             \sum_{y\colon Y}(y\eq Yf(x))\times\fun1
-        \Bigr)\\
-        &\simeq
+        \Bigr)
+        \simeq
         \fun1
         &&\text{; Lem.~\ref{lem:sigma-identity-product}}.
     \end{align*}
@@ -2091,12 +2083,10 @@ We can now compute both compositions:
             \sum_{y\colon Y}f(x)\eq Yy
         \Bigr)
         &\simeq
-        \sum_{x\colon X}\fun1\\
-        &\simeq X,
+        \sum_{x\colon X}\fun1
+        \simeq X,
     \end{align*}
     which proves the first equivalence. The second equivalence follows from the first by setting $X\defeq A\to Y$ and $f\defeq\ev{a_0}\colon(A\to Y)\to Y$.
-    %
-    
 \end{proof}
 
 \begin{rem}
@@ -2116,7 +2106,7 @@ We can now compute both compositions:
 
 \begin{proof}
     We construct the equivalence between the \lhs and the \rhs via the following chain of equivalences:
-    \begin{align*}
+    {\small\begin{align*}
         \lhs
             &\equiv\sum_{f\colon\fun{Susp}(A)\to B} f(\fun N)\eq{B}b_0\\
             &\simeq
@@ -2168,7 +2158,8 @@ We can now compute both compositions:
                 &&\text{; Thm.~\ref{thm:contractible-types}~b)}\\
             &\equiv\rhs
                 &&\text{; Defns.\ of $\Omega$ and $\fun{Map}_\sbull$},
-    \end{align*}
+    \end{align*}}
+    
     where the application of Theorem~\ref{thm:contractible-types}~b) is justified because
     \[
         \sum_{s\colon B}b_0\eq{B}s
@@ -2328,58 +2319,69 @@ We can now compute both compositions:
 \subsection{Functoriality}
 
 \begin{prop}\label{prop:functoriality-F}
-    For any\/ $n\colon\N$, let\/ $F\colon\univ\to\univ$ be the operation defined on any type\/ $B\colon\univ$ by
+    For\/ $n\colon\N$, let\/ $F\colon\univ\to\univ$ be the operation defined on a type\/ $B\colon\univ$ by
     \[
         F(B) \defeq \sum_{b\colon B}\pi_1(\Omega^n(\dep{B,b})),
     \]
-    and on any function\/ $g\colon B\to C$ by\/ 
+    and on a function\/ $g\colon B\to C$ by
     \begin{align*}
         F(g)\colon F(B)&\to F(C)\\
         \dep{b,\ell}&\mapsto\dep{g(b),\fun{ap}^n_g(\ell)}.
     \end{align*}
     Then\/ $F$ satisfies the functoriality laws up to homotopy:
-    \begin{enumerate}[a),font=\upshape]
-        \item Given\/ $B\colon\univ$,\/ $F(\fun{id}_B) \sim \fun{id}_{F(B)}$.
-        \item Given\/ $g\colon B\to C$ and\/ $h\colon C\to D$,\/ $F(h\circ g) \sim F(h)\circ F(g)$.
+    \begin{enumerate}[-]
+        \item $F(\fun{id}_B) \sim \fun{id}_{F(B)}$.
+        \item If\/ $h\colon C\to D$, then\/ $F(h\circ g) \sim F(h)\circ F(g)$.
     \end{enumerate}
 \end{prop}
 
 \begin{proof}
-    First, we verify by induction on $n\colon\N$ that for every basepoint $b\colon B$ and every $n$-loop $\ell\colon\pi_1(\Omega^n(\dep{B,b}))$, the action $\fun{ap}^n$ satisfies the identity and composition laws:
+    Let us first establish, by induction on $n\colon\N$, the action laws
+    \begin{itemize}
+        \item $\fun{ap}^n_{\fun{id}_B}(\ell)\eq{}\ell$ and
+        
+        \item $\fun{ap}^n_{h\circ g}(\ell)\eq{}\fun{ap}^n_h\bigl(\fun{ap}^n_g(\ell)\bigr)$.
+    \end{itemize}
+    For $n=0$, both hold judgmentally.
+    
+    For the inductive step, the functoriality of standard $\fun{ap}$ yields
     \[
-        \fun{ap}^n_{\fun{id}_B}(\ell) = \ell
-        \quad\text{and}\quad
-        \fun{ap}^n_{h\circ g}(\ell) = \fun{ap}^n_h\bigl(\fun{ap}^n_g(\ell)\bigr).
+        \fun{ap}^{n+1}_{\fun{id}_B}(\ell)
+            \equiv\fun{ap}_{\fun{ap}^n_{\fun{id}_B}}(\ell)
+            \eq{}\fun{ap}_{\fun{id}}(\ell)
+            \eq{}\ell
     \]
-    For the base case $n\equiv 0$, we have $\pi_1(\Omega^0(\dep{B,b})) \equiv B$ and $\fun{ap}^0_g(x) \defeq g(x)$. Thus, $\fun{ap}^0_{\fun{id}_B}(x) \equiv x$ and $\fun{ap}^0_{h\circ g}(x) \equiv h(g(x)) \equiv \fun{ap}^0_h(\fun{ap}^0_g(x))$ hold judgmentally by the definition of identity and composition of functions.
-
-    For the inductive step from $n$ to $n+1$, recall that $\Omega^{n+1}(\dep{B,b}) \equiv \Omega(\Omega^n(\dep{B,b}))$, and the $(n+1)$-fold action $\fun{ap}^{n+1}_g$ is obtained by applying the standard $1$-loop functor $\Omega_1$ to the induced pointed map on the $n$th loop space. Since standard path application $\fun{ap}$ (and its whiskered pointed counterpart $\Omega_1$) preserves identity maps and composition up to homotopy—namely, $\fun{ap}_{\fun{id}}(p) = p$ and $\fun{ap}_{u\circ v}(p) = \fun{ap}_u(\fun{ap}_v(p))$ by path induction—applying the inductive hypothesis to the underlying maps on $\Omega^n$ yields $\fun{ap}^{n+1}_{\fun{id}_B}(\ell) = \ell$ and $\fun{ap}^{n+1}_{h\circ g}(\ell) = \fun{ap}^{n+1}_h(\fun{ap}^{n+1}_g(\ell))$ for all $\ell\colon\pi_1(\Omega^{n+1}(\dep{B,b}))$.
-
-    We now deduce the two functoriality laws for $F$:
-    \begin{enumerate}[a),font=\upshape]
-        \item Given $\dep{b,\ell}\colon F(B)$, evaluating $F(\fun{id}_B)$ gives
-        \[
-            F(\fun{id}_B)(\dep{b,\ell}) \defeq \dep{\fun{id}_B(b),\fun{ap}^n_{\fun{id}_B}(\ell)} \equiv \dep{b,\fun{ap}^n_{\fun{id}_B}(\ell)}.
-        \]
-        Since the first components are judgmentally equal to $b$, transport in the fiber $\pi_1(\Omega^n(\dep{B,b}))$ along $\fun{refl}_b$ is the identity, and the path $\fun{ap}^n_{\fun{id}_B}(\ell) = \ell$ lifts via $\fun{pair}^=$ to a path
-        \[
-            F(\fun{id}_B)(\dep{b,\ell}) = \dep{b,\ell} \equiv \fun{id}_{F(B)}(\dep{b,\ell}).
-        \]
-
-        \item Given $\dep{b,\ell}\colon F(B)$, evaluating both sides of the composition law gives
-        \[
-            F(h\circ g)(\dep{b,\ell}) \defeq \dep{h(g(b)),\fun{ap}^n_{h\circ g}(\ell)}
-        \]
-        and
-        \[
-            (F(h)\circ F(g))(\dep{b,\ell}) \equiv F(h)\bigl(\dep{g(b),\fun{ap}^n_g(\ell)}\bigr) \defeq \dep{h(g(b)),\fun{ap}^n_h(\fun{ap}^n_g(\ell))}.
-        \]
-        Again, the first components are judgmentally equal to $h(g(b))$. Using $\fun{refl}_{h(g(b))}$ on the base component together with the fiberwise equality $\fun{ap}^n_{h\circ g}(\ell) = \fun{ap}^n_h(\fun{ap}^n_g(\ell))$ produces a path in $F(D)$:
-        \[
-            F(h\circ g)(\dep{b,\ell}) = (F(h)\circ F(g))(\dep{b,\ell}),
-        \]
-        completing the proof.
-    \end{enumerate}
+    and
+    \[
+        \fun{ap}^{n+1}_{h\circ g}(\ell)
+            \equiv\fun{ap}_{\fun{ap}^n_{h\circ g}}(\ell)
+            \eq{}\fun{ap}_{\fun{ap}^n_h\circ\fun{ap}^n_g}
+                    (\ell)
+            \eq{}\fun{ap}_{\fun{ap}^n_h}\bigl(
+                    \fun{ap}_{\fun{ap}^n_g}(\ell)
+                \bigr)
+            \equiv\fun{ap}^{n+1}_h\bigl(
+                    \fun{ap}^{n+1}_g(\ell)
+                \bigr).
+    \]
+    Now, using trivial transport along reflexivity in the base components, we deduce the functoriality laws as follows:
+    \begin{align*}
+        F(\fun{id}_B)(\dep{b,\ell})
+            &\equiv\dep{b,\fun{ap}^n_{\fun{id}_B}(\ell)}\\
+            &\eq{}\dep{b,\ell}\\
+            &\equiv\fun{id}_{F(B)}\dep{b,\ell}).
+        \intertext{and}
+        F(h\circ g)(\dep{b,\ell})
+            &\equiv\dep{
+                h(g(b)),
+                \fun{ap}^n_{h\circ g}(\ell)
+            }\\
+            &\eq{}\dep{
+                h(g(b)),
+                \fun{ap}^n_h(\fun{ap}^n_g(\ell))
+            }\\
+            &\equiv(F(h)\circ F(g))(\dep{b,\ell})).
+    \end{align*}
 \end{proof}
 
 \begin{rem}\label{rem:yoneda-sn}
@@ -2416,3 +2418,4 @@ We can now compute both compositions:
     \]
     and symmetrically $g\circ f = \fun{id}_X$ by naturality of $\Theta^{-1}$ along $g\colon Y\to X$. Thus, $\sphere^n_{\text{Susp}}\simeq\sphere^n_{\text{HIT}}$, and by Univalence, $\sphere^n_{\text{Susp}}\eq{\univ}\sphere^n_{\text{HIT}}$.
 \end{rem}
+
