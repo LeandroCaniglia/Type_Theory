@@ -1375,7 +1375,7 @@
     \end{align*}
     As usual, we will refer to $C$ as the \textsl{theorem}, to $c_0$ as the \textsl{base case}, and to $c_s$ as the \textsl{inductive step}. More precisely,
     \[
-        c_s\defeq\lambda n.\,\lambda h.\, \textit{witness},
+        c_s\defeq\lambda n.\,\lambda h.\,\textit{witness},
     \]
     where $n$ is a generic natural, $h\colon C(n)$ is our \textsl{inductive hypothesis} and \textit{witness} is an element of $C(\fun{succ}(n))$.\footnote{In other words, $c_s$ is a function that produces a proof of $C(\fun{succ}(n))$ from a proof of $C(n)$.}
 \end{lpar}
@@ -2133,11 +2133,59 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
             \[
                 \fun{succ}(n)\eq\N\fun{succ}(n),
             \]
-            which is trivially inhabited by $\fun{refl}_{\fun{succ}(n)}$, regardless of~$u$ and the inductive hypothesis.
-            
+            which is trivially inhabited by $\fun{refl}_{\fun{succ}(n)}$, regardless of~$u$ and the inductive hypothesis.\qedhere
         \end{enumerate}
     \end{proof}
 \end{lpar}
+
+\section{Strong Induction}
+
+\begin{thm}[Strong Induction]
+    Let\/ $P\colon\N\to\univ$ be a type family over the natural numbers. The \textsl{principle of strong induction} states that there exists a term of type:
+    \[
+        \Bigl(
+            \prod_{n\colon\N}
+                \Bigl(
+                    \prod_{m\colon\N}m<n\to P(m)
+                \Bigr)
+                \to P(n)
+        \Bigr)
+        \to\prod_{n\colon\N}P(n)
+    \]
+    where\/ $m<n$ is the standard strict inequality type defined on\/ $\N$.
+    
+    Alternatively, to avoid explicit propositions for the inequality relation, one can recursively define a type family\/ $P^{<}\colon\N\to\univ$ that accumulates the sequence of previous values:
+    \begin{align*}
+        P^{<}(0)&\equiv\fun1\\
+        P^{<}(\fun{succ}(n))&\equiv P^{<}(n)\times P(n).
+    \end{align*}
+    In this formulation, the strong induction principle provides a term of type:
+    \[
+        \Bigl(
+            \prod_{n\colon\N}P^<(n)\to P(n)
+        \Bigr)
+        \to \prod_{n\colon\N}P(n).
+    \]
+\end{thm}
+
+\begin{proof}
+    Let $h\colon\prod_{n\colon\N}P^<(n)\to P(n)$ be given. We first construct a dependent function $g\colon\prod_{n\colon\N}P^<(n)$ by ordinary induction.
+    
+    For the base case $n\equiv 0$, we must provide a term of type $P^<(0)\equiv\fun1$. We set $g(0)\defeq\fstar$.
+    
+    For the inductive step, let $n\colon\N$ and $x\colon P^<(n)$. We must construct a term of type $P^<(\fun{succ}(n))\equiv P^<(n)\times P(n)$. This is given by the pair $(x,h(n)(x))$. 
+    
+    Applying the standard induction principle for $\N$ yields the desired function $g\colon\prod_{n\colon\N} P^{<}(n)$, namely 
+    \[
+        g\defeq\fun{ind}_\N\bigl(
+            P^<,
+            \fstar,
+            \lambda n.\,\lambda x.\,(x,h(n)(x))
+        \bigr).
+    \]
+    Finally, to construct the required term of type $\prod_{n\colon\N}P(n)$, let $n\colon\N$. Since $g(n)\colon P^<(n)$, we can define $\lambda n.\,h(n)(g(n))$, which concludes the proof.
+    
+\end{proof}
 
 \section{Summary of Constructors and Eliminators}
 
