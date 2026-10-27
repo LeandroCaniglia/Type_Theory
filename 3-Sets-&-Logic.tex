@@ -593,6 +593,13 @@
         %\item Given $n,m\colon\N$, we have $(n<\fun{succ}(m))\simeq(n\le m)$.
 
         \item Given $n,m\colon\N$, if\/ $n<\fun{succ}(m)$ then\/ $n\le m$.
+
+        \item Inequality on $\N$ is decidable; that is, given $n,m\colon\N$, we have
+        \[
+            (n<m)+(m\le n).
+        \]
+
+        \item If $A$ and $B$ are decidable, then $A\times B$ is decidable.
     \end{enumerate}   
 \end{prop}
 
@@ -706,6 +713,35 @@
             \fun{succ}(n+\fun{pred}(k))\eq\N\fun{succ}(m).
         \]
         Hence, $n+\fun{pred}(k)\eq\N m$, which proves that $n\le m$.
+
+        \item The coproduct is definitionally equal to $(n<m)+\neg(n<m)$. We proceed by induction on $n\colon\N$.
+
+        \textsc{Base Case: $n\equiv0$.} We proceed by induction on $m\colon\N$.
+        \begin{itemize}
+            \item If $m\equiv0$, then $\neg(0\eq\N0)$ holds, so we inject into the right summand.
+            \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, then $0<\fun{succ}(k)$ holds, so we inject into the left summand.
+        \end{itemize}
+
+        \textsc{Inductive Step: $n\mapsto\fun{succ}(n)$).} Assume the property holds for $n$ and all $m\colon\N$. We again proceed by induction on $m\colon\N$.
+        \begin{itemize}
+            \item If $m\equiv0$, then $0\le\fun{succ}(n)$ holds, yielding the right summand.
+            \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, we apply the outer inductive hypothesis to $n$ and $k$, which yields $(n<k)+\neg(n<k)$. We perform case analysis on this coproduct:
+            \begin{enumerate}[i)]
+                \item Assume $n<k$. Then, $\fun{succ}(n)<\fun{succ}(k)$, meaning $\fun{succ}(n)<m$. This injects into the left summand.
+                \item Assume $\neg(n<k)$. Then $k\le n$ and so $\fun{succ}(k)\le\fun{succ}(n)$, meaning $\neg(\fun{succ}(n)<m)$. This injects into the right summand.
+            \end{enumerate}
+        \end{itemize}
+
+        \item
+        Since $A$ and $B$ are decidable, we have elements of the coproducts $A+\neg A$ and $B+\neg B$. We proceed by case analysis on $A + \neg A$:
+        \begin{enumerate}[i)]
+            \item Assume $a\colon A$. By case analysis on $B+\neg B$:
+            \begin{itemize}
+                \item If $b\colon B$, then $(a,b)$ injects into the left summand $(A\times B)$.
+                \item If $\zeta\colon\neg B$, then $\zeta\circ\pi_2\colon\neg(A\times B)$ injects into the right summand.
+            \end{itemize}
+            \item If $\xi\colon\neg A$, then $\xi\circ\pi_1\colon\neg(A\times B)$ injects into the right summand.
+        \end{enumerate}
     \end{enumerate}
 \end{proof}
 

@@ -2232,14 +2232,14 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
     
     \textsc{Eliminators:} $\fun{ind}_{A+B}$ (case analysis)
     \begin{align*}
-        \beta & \colon \begin{cases}
-            \fun{ind}_{A+B}(\fun{inl}(a), l, r) \equiv l(a) \\
-            \fun{ind}_{A+B}(\fun{inr}(b), l, r) \equiv r(b)
-        \end{cases} \\
-        \eta & \colon z \equiv \fun{ind}_{A+B}(z, \fun{inl}, \fun{inr})
+        \beta&\colon \begin{cases}
+            \fun{ind}_{A+B}(\fun{inl}(a),l,r) \equiv l(a)\\
+            \fun{ind}_{A+B}(\fun{inr}(b),l,r) \equiv r(b)
+        \end{cases}\\
+        \eta&\colon z\equiv\fun{ind}_{A+B}(z,\fun{inl},\fun{inr})
     \end{align*}
 
-    \item $\fun{2}$
+    \item $\fun2$
     
     \textsc{Constructors:} $0_{\fun2},1_{\fun2}$
     
@@ -2248,7 +2248,7 @@ In particular, if $b\equiv a$, then $\fun{refl}_a\colon a\eq Ab$.
         \beta&\colon\begin{cases}
             \fun{ind}_{\fun2}(0_{\fun2},c_0,c_1)\equiv c_0\\
             \fun{ind}_{\fun2}(1_{\fun2},c_0,c_1)\equiv c_1
-        \end{cases} \\
+        \end{cases}\\
         \eta&\colon x\equiv\fun{ind}_{\fun2}(x,0_{\fun2},1_{\fun2})
     \end{align*}
 
