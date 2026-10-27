@@ -579,74 +579,24 @@
 
 \begin{prop}\label{prop:decidability-of-equality-on-N}${}$
     \begin{enumerate}[a), font=\upshape]
-        \item The types\/ $\fun0$ and\/ $\fun1$ are both decidable.
-
-        \item If\/ $A$ and\/ $B$ are decidable, then\/ $A+B$ is decidable.
-
         \item Equality on\/ $\N$ is decidable; that is, given\/ $n,m\colon\N$, we have 
         \[
             (n\eq{\N} m)+\neg(n\eq{\N} m).
         \]
-
-        \item Given $n,m\colon\N$, if\/ $\neg(n<m)$ and $\neg(m<n)$ then\/ $n\eq\N m$.
-
-        %\item Given $n,m\colon\N$, we have $(n<\fun{succ}(m))\simeq(n\le m)$.
-
-        \item Given $n,m\colon\N$, if\/ $n<\fun{succ}(m)$ then\/ $n\le m$.
-
-        \item Inequality on $\N$ is decidable; that is, given $n,m\colon\N$, we have
+        
+        \item Given\/ $n,m\colon\N$, if\/ $\neg(n<m)$ and\/ $\neg(m<n)$ then\/ $n\eq\N m$.
+        
+        \item Given\/ $n,m\colon\N$, if\/ $n<\fun{succ}(m)$ then\/ $n\le m$.
+        
+        \item Inequality on\/ $\N$ is decidable; that is, given\/ $n,m\colon\N$, we have
         \[
             (n<m)+(m\le n).
         \]
-
-        \item If $A$ and $B$ are decidable, then $A\times B$ is decidable.
-    \end{enumerate}   
+    \end{enumerate} 
 \end{prop}
 
-\begin{proof}${}$
+\begin{proof}\ 
     \begin{enumerate}[a), font=\upshape]
-        \item We have the terms $\fun{inr}(\id_{\fun0})\colon\fun0+\neg\fun0$ and $\fun{inl}(\fstar)\colon\fun1+\neg\fun1$.
-        
-        \item The diagram below captures the cases needed to define a map
-        \[
-            \bigl((A+\neg A)\times(B+\neg B)\bigr)\to\bigl((A+B)+\neg(A+B)\bigr).
-        \]
-        \[
-            \begin{tikzcd}[column sep=-0.8cm]
-                    &\fun0\\
-                A
-                    \arrow[rd,"\fun{inl}"']
-                    \arrow[ru,"u"]
-                    &&B
-                    \arrow[ld,"\fun{inr}"]
-                    \arrow[lu,"v"']\\
-                &A+B
-                    \arrow[d,"\fun{inl}"']
-                    \arrow[uu,"u+v"]\\
-                &(A+B)+\neg(A+B)
-            \end{tikzcd}
-        \]
-        More precisely, let $C\defeq(A+B)+\neg(A+B)$. By the universal property of the product, we can equivalently define a curried map
-        \[
-            f\colon(A+\neg A)\to(B+\neg B)\to C.
-        \]
-        To construct $f$, we apply the recursion principle for $A+\neg A$. 
-        
-        For the left branch, we take
-        \[
-            \phi\defeq\lambda a.\,\lambda y.\,\fun{inl}(\fun{inl}(a))\colon A\to((B+\neg B)\to C).
-        \]
-        
-        For the right branch, we define
-        \begin{align*}
-            \psi&\colon\neg A\to((B+\neg B)\to C)\\
-            \psi(u)&\defeq\fun{rec}_{B+\neg B}(C,\fun{inl}\circ\fun{inr},\lambda v.\,\fun{inr}(\fun{rec}_{A+B}(\fun0,u,v))).
-        \end{align*}
-        
-        Combining these branches, we obtain
-        \[
-            f\defeq\fun{rec}_{A+\neg A}((B+\neg B)\to C,\phi,\psi).
-        \]
         \item Using the encoding and decoding of equalities in $\N$ introduced in \S\,\ref{equality-in-N}, it is straightforward to construct a witness
         \[
             \epsilon\colon
@@ -654,7 +604,7 @@
                 +(\fun{Code}(n,m)\simeq\fun1).
         \]
         Let $E$ be the coproduct above and $C\defeq\fun{Code}(n,m)+\neg\fun{Code}(n,m)$. To construct an inhabitant of $C$, it suffices to define a map from $E$ to $C$. We proceed by recursion on the coproduct $E$.
-        \begin{enumerate}[-]
+        \begin{itemize}
             \item For the left case, given an equivalence $\dep{f_0,(\eta_0,\vartheta_0)}\colon\fun{Code}(n,m)\simeq\fun0$, since $f_0\colon\fun{Code}(n,m)\to\fun0$, we can specify
             \[
                 g_0(\dep{f_0,(\eta_0,\vartheta_0)})
@@ -665,18 +615,18 @@
                 g_1(\dep{f_1,(\eta_1,\vartheta_1)})
                     \defeq\fun{inl}(f_1^{-1}(\fstar)).
             \]
-        \end{enumerate}
+        \end{itemize}
         As a result, we obtain
         \[
             \fun{rec}_E(C,g_0,g_1,\epsilon)\colon C.
         \]
-
-        \item Let $u\colon\neg(n<m)$ and $v\colon\neg(m<n)$ be two witnesses. By part~c) the type $(n\eq\N m)+\neg(n\eq\N m)$ is inhabited. Therefore, to prove that $n\eq\N m$ it suffices to define a map
+        
+        \item Let $u\colon\neg(n<m)$ and $v\colon\neg(m<n)$ be two witnesses. By part~a) the type $(n\eq\N m)+\neg(n\eq\N m)$ is inhabited. Therefore, to prove that $n\eq\N m$ it suffices to define a map
         \[
             \bigl((n\eq\N m)+\neg(n\eq\N m)\bigr)\to(n\eq\N m).
         \]
         We proceed by recursion on the coproduct.
-        \begin{enumerate}[-]
+        \begin{itemize}
             \item For the left case, we take the identity $\id_{n\eq\N m}$.
             
             \item For the right case, consider $z\colon\neg(n\eq\N m)$. By Lemma~\ref{lem:order-in-N}, there is a term
@@ -697,11 +647,12 @@
                 
                 \item If $s\colon m\le n$, then $(s,z')$, with $z'\defeq\lambda q\colon(m\eq\N n).\,z(q^{-1})$, is a term of $m<n$. Thus, $v(s,z')\colon\fun0$ and
                 \[
-                    \fun{rec}_{\fun0}(n\eq\N m,v(s,z'))\colon(n\eq\N m).
+                    \fun{rec}_{\fun0}(n\eq\N m,v(s,z'))
+                        \colon(n\eq\N m).
                 \]
             \end{itemize}
-        \end{enumerate}
-
+        \end{itemize}
+        
         \item By definition $(n<\fun{succ}(m))\equiv(n\le \fun{succ}(m))\times\neg(n\eq\N\fun{succ}(m))$. Take $(p,u)$ in the \rhs with 
         \[
             p\equiv\dep{k,q},
@@ -713,35 +664,113 @@
             \fun{succ}(n+\fun{pred}(k))\eq\N\fun{succ}(m).
         \]
         Hence, $n+\fun{pred}(k)\eq\N m$, which proves that $n\le m$.
-
+        
         \item The coproduct is definitionally equal to $(n<m)+\neg(n<m)$. We proceed by induction on $n\colon\N$.
-
+        
         \textsc{Base Case: $n\equiv0$.} We proceed by induction on $m\colon\N$.
         \begin{itemize}
             \item If $m\equiv0$, then $\neg(0\eq\N0)$ holds, so we inject into the right summand.
+        
             \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, then $0<\fun{succ}(k)$ holds, so we inject into the left summand.
         \end{itemize}
-
-        \textsc{Inductive Step: $n\mapsto\fun{succ}(n)$).} Assume the property holds for $n$ and all $m\colon\N$. We again proceed by induction on $m\colon\N$.
+        
+        \textsc{Inductive Step: $n\mapsto\fun{succ}(n)$.} Assume the property holds for $n$ and all $m\colon\N$. We again proceed by induction on $m\colon\N$.
         \begin{itemize}
             \item If $m\equiv0$, then $0\le\fun{succ}(n)$ holds, yielding the right summand.
             \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, we apply the outer inductive hypothesis to $n$ and $k$, which yields $(n<k)+\neg(n<k)$. We perform case analysis on this coproduct:
-            \begin{enumerate}[i)]
+            \begin{itemize}
                 \item Assume $n<k$. Then, $\fun{succ}(n)<\fun{succ}(k)$, meaning $\fun{succ}(n)<m$. This injects into the left summand.
                 \item Assume $\neg(n<k)$. Then $k\le n$ and so $\fun{succ}(k)\le\fun{succ}(n)$, meaning $\neg(\fun{succ}(n)<m)$. This injects into the right summand.
-            \end{enumerate}
+            \end{itemize}
         \end{itemize}
+    \end{enumerate}
+\end{proof}
 
-        \item
-        Since $A$ and $B$ are decidable, we have elements of the coproducts $A+\neg A$ and $B+\neg B$. We proceed by case analysis on $A + \neg A$:
-        \begin{enumerate}[i)]
+\begin{prop}\label{prop:decidability-of-types}${}$
+    \begin{enumerate}[a), font=\upshape]
+    \item The types\/ $\fun0$ and\/ $\fun1$ are both decidable.
+    
+    \item If\/ $A$ and\/ $B$ are decidable, then\/ $A+B$ is decidable.
+    
+    \item If\/ $A$ and\/ $B$ are decidable, then\/ $A\times B$ is decidable.
+    
+    \item If\/ $A$ and\/ $B$ are decidable, then\/ $A\to B$ is decidable.
+    \end{enumerate} 
+\end{prop}
+
+\begin{proof}${}$
+    \begin{enumerate}[a), font=\upshape]
+        \item We have the terms $\fun{inr}(\id_{\fun0})\colon\fun0+\neg\fun0$ and $\fun{inl}(\fstar)\colon\fun1+\neg\fun1$.
+        
+        \item The diagram below captures the cases needed to define a map
+        \[
+            \bigl((A+\neg A)\times(B+\neg B)\bigr)
+                \to\bigl((A+B)+\neg(A+B)\bigr).
+        \]
+        \[
+            \begin{tikzcd}[column sep=-0.8cm]
+                    &\fun0\\
+                A
+                        \arrow[rd,"\fun{inl}"']
+                        \arrow[ru,"u"]
+                    &&B
+                        \arrow[ld,"\fun{inr}"]
+                        \arrow[lu,"v"']\\
+                    &A+B
+                        \arrow[d,"\fun{inl}"']
+                        \arrow[uu,"u+v"]\\
+                    &(A+B)+\neg(A+B)
+            \end{tikzcd}
+        \]
+        More precisely, let $C\defeq(A+B)+\neg(A+B)$. By the universal property of the product, we can equivalently define a curried map
+        \[
+            f\colon(A+\neg A)\to(B+\neg B)\to C.
+        \]
+        To construct $f$, we apply the recursion principle for $A+\neg A$. 
+        
+        For the left branch, we take
+        \[
+            \phi\defeq\lambda a.\,\lambda y.\,
+                \fun{inl}(\fun{inl}(a))
+                    \colon A\to((B+\neg B)\to C).
+        \]
+        For the right branch, we define
+        \begin{align*}
+            \psi&\colon\neg A\to((B+\neg B)\to C)\\
+            \psi(u)&\defeq\fun{rec}_{B+\neg B}
+                (
+                    C,
+                    \fun{inl}\circ\fun{inr},
+                    \lambda v.\,\fun{inr}
+                        (\fun{rec}_{A+B}(\fun0,u,v))
+                ).
+        \end{align*}
+        Combining these branches, we obtain
+        \[
+            f\defeq\fun{rec}_{A+\neg A}((B+\neg B)\to C,\phi,\psi).
+        \]
+        
+        \item Since $A$ and $B$ are decidable, we have elements of the coproducts $A+\neg A$ and $B+\neg B$. We proceed by case analysis on $A + \neg A$:
+        \begin{enumerate}[a), font=\upshape]
             \item Assume $a\colon A$. By case analysis on $B+\neg B$:
             \begin{itemize}
                 \item If $b\colon B$, then $(a,b)$ injects into the left summand $(A\times B)$.
+                
                 \item If $\zeta\colon\neg B$, then $\zeta\circ\pi_2\colon\neg(A\times B)$ injects into the right summand.
             \end{itemize}
             \item If $\xi\colon\neg A$, then $\xi\circ\pi_1\colon\neg(A\times B)$ injects into the right summand.
         \end{enumerate}
+        
+        \item Since $A$ and $B$ are decidable, we have elements of the coproducts $A+\neg A$ and $B+\neg B$. We proceed by case analysis on $A+\neg A$:
+        \begin{itemize}
+            \item Assume $a\colon A$. By case analysis on $B+\neg B$:
+            \begin{itemize}
+                \item If $b\colon B$, then the constant function $\lambda x.\,b\colon A\to B$ injects into the left summand.
+                \item If $\zeta\colon\neg B$, given $f\colon A\to B$, we have $f(a)\colon B$, and so $\zeta(f(a))\colon\fun0$. Hence, $\lambda f.\,\zeta(f(a))\colon\neg(A\to B)$ injects into the right summand.
+            \end{itemize}
+            
+            \item Assume $\xi\colon\neg A$. Given $x\colon A$, we have $\xi(x)\colon\fun0$, so $\fun{rec}_{\fun0}(B,\xi(x))\colon B$. Hence, $\lambda x.\,\fun{rec}_{\fun0}(B,u(x))\colon A\to B$ injects into the left summand.
+        \end{itemize}
     \end{enumerate}
 \end{proof}
 
@@ -2666,7 +2695,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
     \]
     However, $\pi_2(g)\colon P(k)$, which yields $\pi_1(f)(u)(\pi_2(g))\colon\fun0$.
 
-    By symmetry, $n<k$ also yields a contradiction. Hence, by part~d) of Proposition~\ref{prop:decidability-of-equality-on-N}, we deduce that $n\eq\N k$, proving our claim that $S$ is a mere proposition.
+    By symmetry, $n<k$ also yields a contradiction. Hence, by part~b) of Proposition~\ref{prop:decidability-of-equality-on-N}, we deduce that $n\eq\N k$, proving our claim that $S$ is a mere proposition.
 
     Consequently, by recursion on the truncated type, to define a map $\lVert\Sigma_\N P\rVert\to S$, it suffices to define a map $\Sigma_\N P\to S$. And since the second projection induces a map from $S$ to $\Sigma_\N P$, the solution would be complete if we define said map.
     
@@ -2702,7 +2731,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
             q(k)&\colon(k<n)\to\neg P(k),\\
             \zeta_z&\colon(k\eq\N n)\to\neg P(k),\quad p\mapsto\fun{transport}^{\neg P}(p^{-1},z).
         \end{align*}
-        Thus, precomposing $v_z$ with the canonical map\footnote{This is easily deduced from part e) of Proposition~\ref{prop:decidability-of-equality-on-N}.}
+        Thus, precomposing $v_z$ with the canonical map\footnote{This is easily deduced from part c) of Proposition~\ref{prop:decidability-of-equality-on-N}.}
         \[
             (k<\fun{succ}(n))\to(k<n)+(k\eq\N n),
         \]
