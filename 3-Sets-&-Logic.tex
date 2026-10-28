@@ -577,114 +577,6 @@
     \end{enumerate}
 \end{defns}
 
-\begin{prop}\label{prop:decidability-of-equality-on-N}${}$
-    \begin{enumerate}[a), font=\upshape]
-        \item Equality on\/ $\N$ is decidable; that is, given\/ $n,m\colon\N$, we have 
-        \[
-            (n\eq{\N} m)+\neg(n\eq{\N} m).
-        \]
-        
-        \item Given\/ $n,m\colon\N$, if\/ $\neg(n<m)$ and\/ $\neg(m<n)$ then\/ $n\eq\N m$.
-        
-        \item Given\/ $n,m\colon\N$, if\/ $n<\fun{succ}(m)$ then\/ $n\le m$.
-        
-        \item Inequality on\/ $\N$ is decidable; that is, given\/ $n,m\colon\N$, we have
-        \[
-            (n<m)+(m\le n).
-        \]
-    \end{enumerate} 
-\end{prop}
-
-\begin{proof}\ 
-    \begin{enumerate}[a), font=\upshape]
-        \item Using the encoding and decoding of equalities in $\N$ introduced in \S\,\ref{equality-in-N}, it is straightforward to construct a witness
-        \[
-            \epsilon\colon
-                (\fun{Code}(n,m)\simeq\fun0)
-                +(\fun{Code}(n,m)\simeq\fun1).
-        \]
-        Let $E$ be the coproduct above and $C\defeq\fun{Code}(n,m)+\neg\fun{Code}(n,m)$. To construct an inhabitant of $C$, it suffices to define a map from $E$ to $C$. We proceed by recursion on the coproduct $E$.
-        \begin{itemize}
-            \item For the left case, given an equivalence $\dep{f_0,(\eta_0,\vartheta_0)}\colon\fun{Code}(n,m)\simeq\fun0$, since $f_0\colon\fun{Code}(n,m)\to\fun0$, we can specify
-            \[
-                g_0(\dep{f_0,(\eta_0,\vartheta_0)})
-                    \defeq\fun{inr}(f_0).
-            \]
-            \item For the right case, given $\dep{f_1,(\eta_1,\vartheta_1)}\colon\fun{Code}(n,m)\simeq\fun1$, we specify
-            \[
-                g_1(\dep{f_1,(\eta_1,\vartheta_1)})
-                    \defeq\fun{inl}(f_1^{-1}(\fstar)).
-            \]
-        \end{itemize}
-        As a result, we obtain
-        \[
-            \fun{rec}_E(C,g_0,g_1,\epsilon)\colon C.
-        \]
-        
-        \item Let $u\colon\neg(n<m)$ and $v\colon\neg(m<n)$ be two witnesses. By part~a) the type $(n\eq\N m)+\neg(n\eq\N m)$ is inhabited. Therefore, to prove that $n\eq\N m$ it suffices to define a map
-        \[
-            \bigl((n\eq\N m)+\neg(n\eq\N m)\bigr)\to(n\eq\N m).
-        \]
-        We proceed by recursion on the coproduct.
-        \begin{itemize}
-            \item For the left case, we take the identity $\id_{n\eq\N m}$.
-            
-            \item For the right case, consider $z\colon\neg(n\eq\N m)$. By Lemma~\ref{lem:order-in-N}, there is a term
-            \[
-                w\colon(n\le m)+(m\le n).
-            \]
-            We will use $z$ to define a map
-            \[
-                \zeta_z\colon ((n\le m)+(m\le n))\to(n\eq\N m),
-            \]
-            and $z\mapsto\zeta_z(w)$ will provide the required map 
-            \[
-                \neg(n\eq\N m)\to(n\eq\N m).
-            \]
-            We proceed by recursion on the coproduct domain:
-            \begin{itemize}
-                \item If $r\colon n\le m$, the pair $(r,z)$ inhabits $(n\le m)\times\neg(n\eq\N m)$, which is definitionally $n<m$. Applying $u$ to this pair yields a term in~$\fun0$. Hence, we can apply $\fun{rec}_{\fun0}(n\eq\N m)$ to obtain our goal.
-                
-                \item If $s\colon m\le n$, then $(s,z')$, with $z'\defeq\lambda q\colon(m\eq\N n).\,z(q^{-1})$, is a term of $m<n$. Thus, $v(s,z')\colon\fun0$ and
-                \[
-                    \fun{rec}_{\fun0}(n\eq\N m,v(s,z'))
-                        \colon(n\eq\N m).
-                \]
-            \end{itemize}
-        \end{itemize}
-        
-        \item By definition $(n<\fun{succ}(m))\equiv(n\le \fun{succ}(m))\times\neg(n\eq\N\fun{succ}(m))$. Take $(p,u)$ in the \rhs with 
-        \[
-            p\equiv\dep{k,q},
-            \quad q\colon n+k\eq\N\fun{succ}(m),
-            \quad\text{and }u\colon(n\eq\N\fun{succ}(m))\to\fun0.
-        \]
-        Since $(k\eq\N0)+\neg(k\eq\N0)$, we deduce from $u$ and $q$ that $\neg(k\eq\N0)$. Then, by Lemma~\ref{lem:order-in-N}, $k\eq\N\fun{succ}(\fun{pred}(k))$. It follows that
-        \[
-            \fun{succ}(n+\fun{pred}(k))\eq\N\fun{succ}(m).
-        \]
-        Hence, $n+\fun{pred}(k)\eq\N m$, which proves that $n\le m$.
-        
-        \item The coproduct is definitionally equal to $(n<m)+\neg(n<m)$. We proceed by induction on $n\colon\N$.
-        
-        \textsc{Base Case: $n\equiv0$.} We proceed by induction on $m\colon\N$.
-        \begin{itemize}
-            \item If $m\equiv0$, then $\neg(0\eq\N0)$ holds, so we inject into the right summand.
-        
-            \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, then $0<\fun{succ}(k)$ holds, so we inject into the left summand.
-        \end{itemize}
-        
-        \textsc{Inductive Step: $n\mapsto\fun{succ}(n)$.} Assume the property holds for $n$ and all $m\colon\N$. We again proceed by induction on $m\colon\N$.
-        \begin{itemize}
-            \item If $m\equiv0$, then $0\le\fun{succ}(n)$ holds, yielding the right summand.
-            \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, we apply the outer inductive hypothesis to $n$ and $k$, which yields $(n<k)+\neg(n<k)$. We perform case analysis on this coproduct:
-            \begin{itemize}
-                \item Assume $n<k$. Then, $\fun{succ}(n)<\fun{succ}(k)$, meaning $\fun{succ}(n)<m$. This injects into the left summand.
-                \item Assume $\neg(n<k)$. Then $k\le n$ and so $\fun{succ}(k)\le\fun{succ}(n)$, meaning $\neg(\fun{succ}(n)<m)$. This injects into the right summand.
-            \end{itemize}
-        \end{itemize}
-    \end{enumerate}
-\end{proof}
 
 \begin{prop}\label{prop:decidability-of-types}${}$
     \begin{enumerate}[a), font=\upshape]
@@ -1192,6 +1084,210 @@ In the case of non-dependent mere proposition families, we have the recursion pr
         \exists(x\colon A).\,P(x)&\defeq\Bigl\lVert\sum_{x\colon A}P(x)\Bigr\rVert
     \end{align*}
 \end{ntn}
+
+\begin{lem}\label{lem:decidability-truncation}
+    For any type $P$, there is a map $(P+\neg P)\to(\lVert P\rVert+\neg\lVert P\rVert)$. In particular, if $P$ is decidable, then $\lVert P\rVert$ is decidable as well.
+\end{lem}
+
+\begin{proof}
+        We proceed by induction on the coproduct $P+\neg P$.
+        
+        For the left branch, we take the composition $\fun{inl}\circ\lvert-\rvert$.
+        
+        For the right branch, observe that since $\fun0$ is a mere proposition, every map $u\colon P\to\fun0$ factors through the canonical map $\lvert-\rvert\colon P\to\lVert P\rVert$; i.e., there is a commutative triangle
+        \[
+            \begin{tikzcd}
+                P
+                    \arrow[r,"u"]
+                    \arrow[d,"\lvert-\rvert"']
+                &\fun0\\
+                \lVert P\rVert
+                    \arrow[ur,"\tilde u"']
+            \end{tikzcd}
+        \]
+        Therefore, we can define the mapping for this branch as $u\mapsto\fun{inr}(\tilde u)$.
+\end{proof}
+
+\begin{prop}\label{prop:decidability-of-equality-on-N}${}$
+    \begin{enumerate}[a), font=\upshape]
+        \item Equality on\/ $\N$ is decidable; that is, given\/ $n,m\colon\N$, we have 
+        \[
+            (n\eq{\N} m)+\neg(n\eq{\N} m).
+        \]
+        
+        \item Given\/ $n,m\colon\N$, if\/ $\neg(n<m)$ and\/ $\neg(m<n)$ then\/ $n\eq\N m$.
+        
+        \item Given\/ $n,m\colon\N$, if\/ $n<\fun{succ}(m)$ then\/ $n\le m$.
+        
+        \item Inequality on\/ $\N$ is decidable; that is, given\/ $n,m\colon\N$, we have
+        \[
+            (n<m)+(m\le n).
+        \]
+
+        \item If\/ $P\colon\N\to\univ$ is a family of decidable types, then for any\/ $n\colon\N$, the bounded dependent types
+        \[
+            \sum_{m\le n}P(m)
+            \quad\text{and}\quad
+            \prod_{m\le n}P(m)
+        \]
+        are decidable.
+        
+        \item Divisibility in\/ $\N$, defined by
+        \[
+            k\mid n\defeq
+                \Bigl\lVert
+                    \sum_{m:\N}k\cdot m\eq\N n
+                \Bigr\rVert
+        \]
+        is a decidable mere proposition.\footnote{Unlike inequality, which is a similar concept applied to the sum, the need for truncating the defining $\Sigma$-type comes from the fact that $\dep{m,\fun{refl}_0}\colon 0\mid0$ for all $m\colon\N$.}
+    \end{enumerate} 
+\end{prop}
+
+\begin{proof}\ 
+    \begin{enumerate}[a), font=\upshape]
+        \item Using the encoding and decoding of equalities in $\N$ introduced in \S\,\ref{equality-in-N}, it is straightforward to construct a witness
+        \[
+            \epsilon\colon
+                (\fun{Code}(n,m)\simeq\fun0)
+                +(\fun{Code}(n,m)\simeq\fun1).
+        \]
+        Let $E$ be the coproduct above and $C\defeq\fun{Code}(n,m)+\neg\fun{Code}(n,m)$. To construct an inhabitant of $C$, it suffices to define a map from $E$ to $C$. We proceed by recursion on the coproduct $E$.
+        \begin{itemize}
+            \item For the left case, given an equivalence $\dep{f_0,(\eta_0,\vartheta_0)}\colon\fun{Code}(n,m)\simeq\fun0$, since $f_0\colon\fun{Code}(n,m)\to\fun0$, we can specify
+            \[
+                g_0(\dep{f_0,(\eta_0,\vartheta_0)})
+                    \defeq\fun{inr}(f_0).
+            \]
+            \item For the right case, given $\dep{f_1,(\eta_1,\vartheta_1)}\colon\fun{Code}(n,m)\simeq\fun1$, we specify
+            \[
+                g_1(\dep{f_1,(\eta_1,\vartheta_1)})
+                    \defeq\fun{inl}(f_1^{-1}(\fstar)).
+            \]
+        \end{itemize}
+        As a result, we obtain
+        \[
+            \fun{rec}_E(C,g_0,g_1,\epsilon)\colon C.
+        \]
+        
+        \item Let $u\colon\neg(n<m)$ and $v\colon\neg(m<n)$ be two witnesses. By part~a) the type $(n\eq\N m)+\neg(n\eq\N m)$ is inhabited. Therefore, to prove that $n\eq\N m$ it suffices to define a map
+        \[
+            \bigl((n\eq\N m)+\neg(n\eq\N m)\bigr)\to(n\eq\N m).
+        \]
+        We proceed by recursion on the coproduct.
+        \begin{itemize}
+            \item For the left case, we take the identity $\id_{n\eq\N m}$.
+            
+            \item For the right case, consider $z\colon\neg(n\eq\N m)$. By Lemma~\ref{lem:order-in-N}, there is a term
+            \[
+                w\colon(n\le m)+(m\le n).
+            \]
+            We will use $z$ to define a map
+            \[
+                \zeta_z\colon ((n\le m)+(m\le n))\to(n\eq\N m),
+            \]
+            and $z\mapsto\zeta_z(w)$ will provide the required map 
+            \[
+                \neg(n\eq\N m)\to(n\eq\N m).
+            \]
+            We proceed by recursion on the coproduct domain:
+            \begin{itemize}
+                \item If $r\colon n\le m$, the pair $(r,z)$ inhabits $(n\le m)\times\neg(n\eq\N m)$, which is definitionally $n<m$. Applying $u$ to this pair yields a term in~$\fun0$. Hence, we can apply $\fun{rec}_{\fun0}(n\eq\N m)$ to obtain our goal.
+                
+                \item If $s\colon m\le n$, then $(s,z')$, with $z'\defeq\lambda q\colon(m\eq\N n).\,z(q^{-1})$, is a term of $m<n$. Thus, $v(s,z')\colon\fun0$ and
+                \[
+                    \fun{rec}_{\fun0}(n\eq\N m,v(s,z'))
+                        \colon(n\eq\N m).
+                \]
+            \end{itemize}
+        \end{itemize}
+        
+        \item By definition $(n<\fun{succ}(m))\equiv(n\le \fun{succ}(m))\times\neg(n\eq\N\fun{succ}(m))$. Take $(p,u)$ in the \rhs with 
+        \[
+            p\equiv\dep{k,q},
+            \quad q\colon n+k\eq\N\fun{succ}(m),
+            \quad\text{and }u\colon(n\eq\N\fun{succ}(m))\to\fun0.
+        \]
+        Since $(k\eq\N0)+\neg(k\eq\N0)$, we deduce from $u$ and $q$ that $\neg(k\eq\N0)$. Then, by Lemma~\ref{lem:order-in-N}, $k\eq\N\fun{succ}(\fun{pred}(k))$. It follows that
+        \[
+            \fun{succ}(n+\fun{pred}(k))\eq\N\fun{succ}(m).
+        \]
+        Hence, $n+\fun{pred}(k)\eq\N m$, which proves that $n\le m$.
+        
+        \item The coproduct is definitionally equal to $(n<m)+\neg(n<m)$. We proceed by induction on $n\colon\N$.
+        
+        \textsc{Base Case: $n\equiv0$.} We proceed by induction on $m\colon\N$.
+        \begin{itemize}
+            \item If $m\equiv0$, then $\neg(0<0)$ holds, so we inject into the right summand.
+        
+            \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, then $0<\fun{succ}(k)$ holds, so we inject into the left summand.
+        \end{itemize}
+        
+        \textsc{Inductive Step: $n\mapsto\fun{succ}(n)$.} Assume the property holds for $n$ and all $m\colon\N$. We again proceed by induction on $m\colon\N$.
+        \begin{itemize}
+            \item If $m\equiv0$, then $0\le\fun{succ}(n)$ holds, yielding the right summand.
+            \item If $m\equiv\fun{succ}(k)$ for some $k\colon\N$, we apply the outer inductive hypothesis to $n$ and $k$, which yields $(n<k)+\neg(n<k)$. We perform case analysis on this coproduct:
+            \begin{itemize}
+                \item Assume $n<k$. Then, $\fun{succ}(n)<\fun{succ}(k)$, meaning $\fun{succ}(n)<m$. This injects into the left summand.
+                \item Assume $\neg(n<k)$. Then $k\le n$ and so $\fun{succ}(k)\le\fun{succ}(n)$, meaning $\neg(\fun{succ}(n)<m)$. This injects into the right summand.
+            \end{itemize}
+        \end{itemize}
+
+        \item We proceed by induction on $n\colon\N$.
+
+        \textsc{Base Case: $n\equiv0$.} Both the bounded sum and the bounded product are equivalent to $P(0)$, which is decidable by hypothesis.
+        
+        \textsc{Inductive Step: $n\mapsto\fun{succ}(n)$.} Assume $\sum_{m\le n}P(m)$ and $\prod_{m\le n}P(m)$ are decidable. The equivalence
+        \[
+            (m\le\fun{succ}(n))
+                \simeq(m\le n)+(m\eq\N\fun{succ}(n))
+        \]
+        implies that
+        \begin{align*}
+            \sum_{m\le\fun{succ}(n)}P(m)
+                &\simeq
+                \Bigl(\sum_{m\le n}P(m)\Bigr)
+                +P(\fun{succ}(n)),\\
+            \prod_{m\le\fun{succ}(n)}P(m)
+                &\simeq
+                \Bigl(\prod_{m\le n}P(m)\Bigr)
+                \times P(\fun{succ}(n)).
+        \end{align*}
+        Thus, as the coproduct and the cartesian product of two decidable types are decidable by Proposition~\ref{prop:decidability-of-types}, the result follows from the inductive hypothesis and the decidability of $P(\fun{succ}(n))$.
+
+        \item By definition, $k \mid n$ is a mere proposition. To show it is decidable, we proceed by induction on $k$.
+        
+        If $k \equiv 0$, then $0 \cdot m \eq\N 0$ for all $m \colon \N$. This yields the equivalences
+        \[
+            0\mid n\simeq
+            \Bigl\lVert
+                \sum_{m\colon\N}0\eq\N n
+            \Bigr\rVert
+            \simeq
+            \lVert\N\times(0\eq\N n)\rVert.
+        \]
+        Since $\N$ is trivially decidable because $\fun{inl}(0)\colon\N+\neg\N$, and $0\eq\N n$ is decidable by part~a), their product is decidable by Proposition~\ref{prop:decidability-of-types}. Therefore, its truncation is also decidable by Lemma~\ref{lem:decidability-truncation}.
+        
+        If $k\equiv\fun{succ}(h)$, by definition we obtain
+        \[
+            k\cdot m
+                \equiv\fun{succ}(h)\cdot m
+                \equiv h\cdot m+m
+                \ge0+m
+                \equiv m.
+        \]
+        Since the condition $k\cdot m\eq\N n$ implies $m\le n$, we obtain
+        \[
+            \Bigl(
+                \sum_{m\colon\N}k\cdot m\eq\N n
+            \Bigr)
+            \simeq
+            \Bigl(
+                \sum_{m\le n}k\cdot m\eq\N n
+            \Bigr),
+        \]
+        which yields an equivalence between their propositional truncations. Since the $\Sigma$-type on the \rhs is decidable by parts~a) and~e), the result follows from Lemma~\ref{lem:decidability-truncation}.
+    \end{enumerate}
+\end{proof}
 
 
 \section{Contractibility}
@@ -2875,31 +2971,7 @@ To formulate the classical Axiom of Choice, we must express the proposition that
 \end{exr}
 
 \begin{solution}
-    We open our reasoning by establishing the following
-
-    \textbf{Lemma.} {\itshape For any type $P$, there is a map $(P+\neg P)\to(\lVert P\rVert+\neg\lVert P\rVert)$. In particular, if $P$ is decidable, then $\lVert P\rVert$ is decidable as well.}
-
-    \textsc{Proof:}
-        We proceed by induction on the coproduct $P+\neg P$.
-        
-        For the left branch, we take the composition $\fun{inl}\circ\lvert-\rvert$.
-        
-        For the right branch, observe that since $\fun0$ is a mere proposition, every map $u\colon P\to\fun0$ factors through the canonical map $\lvert-\rvert\colon P\to\lVert P\rVert$; i.e., there is a commutative triangle
-        \[
-            \begin{tikzcd}
-                P
-                    \arrow[r,"u"]
-                    \arrow[d,"\lvert-\rvert"']
-                &\fun0\\
-                \lVert P\rVert
-                    \arrow[ur,"\tilde u"']
-            \end{tikzcd}
-        \]
-        Therefore, we can define the mapping for this branch as $u\mapsto\fun{inr}(\tilde u)$. \localqed
-    
-    \medskip
-
-    In our case, since the family $P(n)$ is decidable, we deduce that the family of types $\lVert P(n)\rVert$ satisfies the hypothesis of Exercise~\ref{exr:decidable+mere-proposition-family}. Therefore, we have a map
+    Applying Lemma~\ref{lem:decidability-truncation} to our case, since the family $P(n)$ is decidable, we deduce that the family of types $\lVert P(n)\rVert$ satisfies the hypothesis of Exercise~\ref{exr:decidable+mere-proposition-family}. Therefore, we have a map
     \[
         \Bigl\lVert
             \sum_{n\colon\N}\lVert P(n)\rVert
